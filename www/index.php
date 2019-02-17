@@ -18,8 +18,12 @@ $SiteRoot = $_SERVER['DOCUMENT_ROOT'];  // Корневой каталог са�
 $SiteAbove = iGetAbove($SiteRoot);      // Надсайтовый каталог
 $SiteHost = iGetAbove($SiteAbove);      // Каталог хостинга
 
-echo $SiteHost."/TPhpTools/TException/ExceptionClass.php"."<br>";
-require_once $SiteHost."/TPhpTools/TException/ExceptionClass.php";
+//echo $SiteHost."/TPhpTools/TException/ExceptionClass.php"."<br>";
+//require_once $SiteHost."/TPhpTools/TException/ExceptionClass.php";
+
+echo $SiteAbove."/TPhpTools/TException/ExceptionClass.php"."<br>";
+require_once $SiteAbove."/TPhpTools/TException/ExceptionClass.php";
+
 $w2e = new Exceptionizer(E_ALL);
 
 try 
