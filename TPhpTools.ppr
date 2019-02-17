@@ -1,0 +1,57 @@
+[Config]
+Compilator.SaveAll=0
+Compilator.Capture=0
+Compilator.HideOutput=0
+Compilator.ProgSaveAll=0
+Compilator.ProgRunSelection=0
+Compilator.LogType=0
+DefaultDir=C:\Webservers\TPhpTools
+DefaultCPIndex=0
+LogtoEnd=1
+DontOpen=0
+AbsolutePath=0
+FileFormat=0
+ProjectFilesOnly=0
+HTServer=localhost
+Extensions=*.*
+[Project tree]
+TPhpTools
+	+TPhpTools
+		+TPhpTools
+			-TCtrlDir
+				TPhpTools\TCtrlDir\CtrlDir.php
+				TPhpTools\TCtrlDir\ViewDir.php
+			+TException
+				TPhpTools\TException\ExceptionClass.php
+		+TPhpToolsTest
+			+www
+				TPhpToolsTest\www\favicon.ico
+				TPhpToolsTest\www\iGetAbove.php
+				TPhpToolsTest\www\index.php
+				TPhpToolsTest\www\Main.php
+		-Материалы
+			Материалы\Исключения PHP часть 1.doc
+		LICENSE
+		README.md
+		TPhpTools.ppr
+		Пример формы класса.php
+[Open project files]
+0=TPhpToolsTest\www\index.php
+1=TPhpTools\TException\ExceptionClass.php
+2=README.md
+3=TPhpToolsTest\www\Main.php
+[Selected Project Files]
+Main=
+Selected=TPhpToolsTest\www\Main.php
+[TPhpToolsTest\www\index.php]
+TopLine=23
+Caret=23,22
+[TPhpTools\TException\ExceptionClass.php]
+TopLine=1
+Caret=53,9
+[README.md]
+TopLine=1
+Caret=38,12
+[TPhpToolsTest\www\Main.php]
+TopLine=5
+Caret=1,14
