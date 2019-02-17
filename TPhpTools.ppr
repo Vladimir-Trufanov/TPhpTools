@@ -37,9 +37,13 @@ TPhpTools
 		Пример формы класса.php
 [Open project files]
 0=www\index.php
+1=www\Main.php
 [Selected Project Files]
 Main=
-Selected=www\index.php
+Selected=www\Main.php
 [www\index.php]
-TopLine=9
+TopLine=19
 Caret=1,1
+[www\Main.php]
+TopLine=13
+Caret=3,24
