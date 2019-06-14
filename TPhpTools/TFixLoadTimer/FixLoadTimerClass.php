@@ -59,63 +59,55 @@ class FixLoadTimer
       {
          var MaxiLoadTime;
          // Выбираем прежнее значение максимального времени загрузки
-         MaxiLoadTime = 800; 
-         // Пересчитываем среднее значение
+         MaxiLoadTime = 1000; 
+         // Пересчитываем максимальное значение
          if (msecs>MaxiLoadTime) MaxiLoadTime=msecs; 
          return MaxiLoadTime;
+      }
+      // ----------------------------------------------------------------------
+      //        Пересчитать минимальное время загрузки страницы сайта
+      // ----------------------------------------------------------------------
+      function getMiniLoadTime($msecs) 
+      {
+         var $MiniLoadTime;
+         // Выбираем прежнее значение минимального времени загрузки
+         $MiniLoadTime = 100; 
+         // Пересчитываем минимальное значение
+         if ($msecs<$MiniLoadTime) $MiniLoadTime=$msecs; 
+         return $MiniLoadTime;
       }
       // ----------------------------------------------------------------------
       //        Выполнить пересчет данных по завершению загрузки страницы
       // ----------------------------------------------------------------------
       function window_onload()
       {
-         var CurrLoadTime,MiddLoadTime,MaxiLoadTime; 
+         var CurrLoadTime,MiddLoadTime,MaxiLoadTime,MiniLoadTime; 
          // Пересчитываем текущее время загрузки страницы сайта
          CurrLoadTime=window.performance.now();
-         // Cтавим cookie текущего времени загрузки страницы сайта
-         // по текущему пути с бесконечной датой истечения
-         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=0x6FFFFFFF";
-
          // Пересчитываем среднее время загрузки страницы сайта
          MiddLoadTime=getMiddLoadTime(CurrLoadTime);
-         // Cтавим cookie среднего времени загрузки страницы сайта
-         // по текущему пути с бесконечной датой истечения
-         document.cookie = "MiddLoadTime="+MiddLoadTime+"; path=/; expires=0x6FFFFFFF";
-         // Удаляем кукис
-         var date = new Date(0);
-         document.cookie = "MiddleLoadTime=; path=/; expires=" + date.toUTCString();
-
-         // Пересчитываем максимальное время загрузки страницы сайта
-         MaxiLoadTime=getMaxiLoadTime(CurrLoadTime);
-         // Cтавим cookie максимального времени загрузки страницы сайта
-         // по текущему пути с бесконечной датой истечения
-         document.cookie = "MaxiLoadTime="+MaxiLoadTime+"; path=/; expires=0x6FFFFFFF";
-         
-         // Выводим данные в консоль
-         console.log('Текущее время загрузки страницы сайта: '+CurrLoadTime);
-         console.log('Среднее время загрузки страницы сайта: '+MiddLoadTime);
-         console.log('Большее время загрузки страницы сайта: '+MaxiLoadTime);
-         
-      }
-      
-      // Выполняем пересчет по завершении загрузки страницы
-      addLoadEvent(window_onload);
-
-
-
-      /*
-      window.onload = function()
-      {
-         console.log('say onload');
-         window_onload();
-         // Cтавим cookie name=value по текущему пути с бесконечной датой истечения
-         document.cookie = "name=value; path=/; expires=0x6FFFFFFF";
          // Удаляем кукис
          //var date = new Date(0);
-         //document.cookie = "name=; path=/; expires=" + date.toUTCString();
+         //document.cookie = "MiddleLoadTime=; path=/; expires=" + date.toUTCString();
+         // Пересчитываем максимальное время загрузки страницы сайта
+         MaxiLoadTime=getMaxiLoadTime(CurrLoadTime);
+         // Пересчитываем минимальное время загрузки страницы сайта
+         MiniLoadTime=getMiniLoadTime(CurrLoadTime);
+         // Выводим данные в консоль
+         console.log('Время загрузки страницы сайта:');
+         console.log('Текущее = '+CurrLoadTime);
+         console.log('Среднее = '+MiddLoadTime);
+         console.log('Большее = '+MaxiLoadTime);
+         console.log('Меньшее = '+MiniLoadTime);
+         // Отправляем кукисы с временами загрузки страницы сайта
+         // по текущему пути с бесконечной датой истечения
+         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=0x6FFFFFFF";
+         document.cookie = "MiddLoadTime="+MiddLoadTime+"; path=/; expires=0x6FFFFFFF";
+         document.cookie = "MaxiLoadTime="+MaxiLoadTime+"; path=/; expires=0x6FFFFFFF";
+         document.cookie = "MiniLoadTime="+MiniLoadTime+"; path=/; expires=0x6FFFFFFF";
       }
-      */
-      
+      // Выполняем пересчет по завершении загрузки страницы
+      addLoadEvent(window_onload);
       </script>
       <?php
    }
