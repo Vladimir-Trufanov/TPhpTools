@@ -14,7 +14,7 @@ class FixLoadTimer
 {
    public function __construct($mask=E_ALL,$ignoreOther=false)
    {
-      echo '***'.$mask.'***<br>';
+      //echo '***'.$mask.'***<br>';
       ?>
       <script>
 
