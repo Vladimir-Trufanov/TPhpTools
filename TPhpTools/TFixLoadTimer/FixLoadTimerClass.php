@@ -8,60 +8,21 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  03.06.2019
-// Copyright © 2019 tve                              Посл.изменение: 14.06.2019
+// Copyright © 2019 tve                              Посл.изменение: 17.06.2019
 
 /**
  * Класс FixLoadTimer обеспечивает расчет и регистрацию текущего, среднего,
  * наибольшего и наименьшего времени загрузки страницы сайта. По умолчанию 
- * определенные данные записываются в памяти браузера LocalStorage. Если 
- * браузером LocalStorage не поддерживается, то расчитанные значения 
- * записываются в кукисы.
- *"Жёсткая" система обработки ошибок/исключений представляется
- * 
- * следующим образом:
- *    а) ошибка является контроллируемой в случае, когда известно в каком месте 
- * сайта она может возникнуть и, таким образом, сообщение об ошибке можно 
- * вывести на экран по разметке сайта;
- *    б) в остальных случаях ошибка является неконтроллируемой и вывод сообщения
- * об ошибке выполняется на отдельной странице;
- *    в) по умолчанию функция генерирует неконтроллируемую ошибку/исключение:
- * trigger_error($Message,E_USER_ERROR), предполагая на верхнем уровне обработку
- * ошибки через сайт doortry.ru, где неконтроллируемая ошибка возникает не 
- * чистом экране с трассировкой всплывания исключения;
- *    г) режим функции "по умолчанию" может быть изменен значением глобальной 
- *    переменной $ModeError;
- *    
- * в режиме $ModeError==rvsCurrentPos просто выводится сообщение в текущей 
- * позиции сайта. Данный режим используется при тестировании модулей;
- * 
- * в режиме по умолчанию $ModeError==rvsTriggerError вызывается исключение с 
- * пользовательской ошибкой через trigger_error($Message,$errtype), 
- * где $errtype может быть одним из значений E_USER_ERROR, E_USER_WARNING, 
- * E_USER_NOTICE, E_USER_DEPRECATED. По умолчанию E_USER_ERROR.
- * 
- * в режиме $ModeError==rvsMakeDiv предполагается, что ошибка произошла в 
- * php-коде до разворачивания html-страницы и, в этом случае, формируется 
- * дополнительный div сообщения с id="Ers";
- * 
- * в режиме $Mode==rvsDialogWindow разворачивается сообщение в диалоговом окне 
- * с помощью JQueryUI. И в этом случае на вызывающем сайте должны быть 
- * подключены модули jquery, jquery-ui, jquery-ui.css, например от Microsoft:
- * 
- * <link rel="stylesheet" type="text/css"
- *    href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/ui-lightness/jquery-ui.css">
- *    <script
- *       src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js">
- *    </script>
- *    <script
- *       src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js">
- *    </script>
+ * определенные данные записываются в памяти браузера LocalStorage. 
+ * Если браузером LocalStorage не поддерживается, то расчитанные значения 
+ * записываются в кукисы. 
 **/
 
-// Определяем константы управления временами загрузки
-define ("fltNotKeepSafeAtfirst",    "atf");    // Перевести переменные в начальные условия  
-define ("ChangeSize", "chs");    // "Изменить размер базового шрифта"  
-define ("Computer", "Computer"); // устройство, запросившее сайт - компьютер  
-define ("Mobile", "Mobile");     // устройство, запросившее сайт - смартфон  
+// ----------------------- Константы управления передачей данных о загрузке ---
+define ("fltNotTransmit",  0); // данные не передаются  
+define ("fltWriteConsole", 1); // записываются в консоль
+define ("fltSendCookies",  2); // отправляются в кукисы
+define ("fltAll",          3); // записываются в консоль, отправляются в кукисы  
 
 class FixLoadTimer
 {
@@ -94,15 +55,50 @@ class FixLoadTimer
          }
       }
       // ----------------------------------------------------------------------
+      //                       Записать время загрузки
+      // ----------------------------------------------------------------------
+      function putLoadTime(varName,varValue)                               
+      {
+         if (window.localStorage)
+         {
+            localStorage.setItem(varName,varValue);
+           //document.cookie = "CurrLo=Объект localStorage поддерживается"+"; path=/; expires=0x6FFFFFFF";
+         }
+         else
+         {
+            //console.log('Объект localStorage не поддерживаются');
+            //document.cookie = "CurrLo=Объект localStorage НЕ поддерживается"+"; path=/; expires=0x6FFFFFFF";
+         }
+      }
+      // ----------------------------------------------------------------------
+      //                        Выбрать время загрузки
+      // ----------------------------------------------------------------------
+      function getLoadTime(varName)                               
+      {
+         varValue=0;
+         if (window.localStorage)
+         {
+            varValue=localStorage.getItem(varName);
+            if (typeof varValue == "object") varValue=0;
+            if (typeof varValue == "undefined") varValue=0;
+         }
+         else
+         {
+         }
+         return varValue;
+      }
+      // ----------------------------------------------------------------------
       //          Пересчитать среднее время загрузки страницы сайта
       // ----------------------------------------------------------------------
       function getMiddLoadTime(msecs) 
       {
          var MiddLoadTime;
          // Выбираем прежнее значение среднего времени загрузки
-         MiddLoadTime = 1000; 
+         MiddLoadTime = getLoadTime('MiddLoadTime');                               
          // Пересчитываем среднее значение
-         MiddLoadTime = (MiddLoadTime+msecs)/2;
+         MiddLoadTime = (Number(MiddLoadTime)+Number(msecs))/2;
+         // Записываем новое значение
+         putLoadTime('MiddLoadTime',MiddLoadTime); 
          return MiddLoadTime;
       }
       // ----------------------------------------------------------------------
@@ -112,22 +108,28 @@ class FixLoadTimer
       {
          var MaxiLoadTime;
          // Выбираем прежнее значение максимального времени загрузки
-         MaxiLoadTime = 1000; 
+         MaxiLoadTime = getLoadTime('MaxiLoadTime');                               
          // Пересчитываем максимальное значение
-         if (msecs>MaxiLoadTime) MaxiLoadTime=msecs; 
+         if (Number(msecs)>Number(MaxiLoadTime)) MaxiLoadTime=msecs; 
+         // Записываем новое значение
+         putLoadTime('MaxiLoadTime',MaxiLoadTime); 
          return MaxiLoadTime;
       }
       // ----------------------------------------------------------------------
       //        Пересчитать минимальное время загрузки страницы сайта
       // ----------------------------------------------------------------------
-      function getMiniLoadTime($msecs) 
+      function getMiniLoadTime(msecs) 
       {
-         var $MiniLoadTime;
+         var MiniLoadTime;
          // Выбираем прежнее значение минимального времени загрузки
-         $MiniLoadTime = 100; 
+         MiniLoadTime = getLoadTime('MiniLoadTime'); 
+         // Отключаем нулевое значение
+         if (MiniLoadTime<0.001) MiniLoadTime=100000;                             
          // Пересчитываем минимальное значение
-         if ($msecs<$MiniLoadTime) $MiniLoadTime=$msecs; 
-         return $MiniLoadTime;
+         if (Number(msecs)<Number(MiniLoadTime)) MiniLoadTime=msecs; 
+         // Записываем новое значение
+         putLoadTime('MiniLoadTime',MiniLoadTime); 
+         return MiniLoadTime;
       }
       // ----------------------------------------------------------------------
       //        Выполнить пересчет данных по завершению загрузки страницы
@@ -135,13 +137,14 @@ class FixLoadTimer
       function window_onload()
       {
          var CurrLoadTime,MiddLoadTime,MaxiLoadTime,MiniLoadTime; 
-         // Пересчитываем текущее время загрузки страницы сайта
+         // Пересчитываем и записываем текущее время загрузки страницы сайта
          CurrLoadTime=window.performance.now();
+         putLoadTime('CurrLoadTime',CurrLoadTime); 
          // Пересчитываем среднее время загрузки страницы сайта
          MiddLoadTime=getMiddLoadTime(CurrLoadTime);
          // Удаляем кукис
          //var date = new Date(0);
-         //document.cookie = "MiddleLoadTime=; path=/; expires=" + date.toUTCString();
+         //document.cookie = "CurrLo=; path=/; expires=" + date.toUTCString();
          // Пересчитываем максимальное время загрузки страницы сайта
          MaxiLoadTime=getMaxiLoadTime(CurrLoadTime);
          // Пересчитываем минимальное время загрузки страницы сайта
@@ -161,7 +164,19 @@ class FixLoadTimer
       }
       // Выполняем пересчет по завершении загрузки страницы
       addLoadEvent(window_onload);
+      
+      // Перебираем все элементы, находящиеся в контейнере localStorage
       </script>
+      <div id="elements"></div>
+      <script>
+      var str="";
+      for (var i=0; i<localStorage.length; i++)
+      {
+         str+="Ключ: "+localStorage.key(i)+"; Значение: "+localStorage.getItem(localStorage.key(i))+".<br>";
+      }
+      document.getElementById("elements").innerHTML = str;
+      </script>
+
       <?php
    }
    public function __destruct()
