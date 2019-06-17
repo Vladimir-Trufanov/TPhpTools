@@ -78,6 +78,37 @@ class FixLoadTimer
             //document.cookie=varName+'='+String(varValue)+"; path=/; expires=34560000";
          }
       }
+      
+      /*
+      Определить, включены у пользователя cookie или нет можно при помощи следующей функции:
+
+// Функция  возвращает true, если cookie включены,
+// в ином случае - false
+
+function IsCookieEnabled()
+{
+		// проверяем существование свойства navigator.cookieEnabled
+		if(typeof(navigator.cookieEnabled) != "undefined")
+			return navigator.cookieEnabled;
+		else
+		{
+			// если свойство navigator.cookieEnabled 
+			// не поддерживается, то просто попробуем
+			// установить и получить назад тестовый cookie
+			var tmpCookie = "testCookieForCheck";
+			SetCookie(tmpCookie, "1");
+			if(GetCookie(tmpCookie) != null)
+  		{
+  			DeleteCookie(tmpCookie);
+  			return true;
+  		}
+			return false;
+  	}
+}
+
+      */
+      
+      
       // ----------------------------------------------------------------------
       //                        Выбрать время загрузки
       // ----------------------------------------------------------------------
@@ -148,6 +179,13 @@ class FixLoadTimer
          // Пересчитываем и записываем текущее время загрузки страницы сайта
          CurrLoadTime=window.performance.now();
          putLoadTime('CurrLoadTime',CurrLoadTime); 
+         
+         ///var date = new Date;
+         //date.setDate(date.getDate() + 400);
+         //console.log(date.toUTCString());
+         
+         
+         
          // Пересчитываем среднее время загрузки страницы сайта
          MiddLoadTime=getMiddLoadTime(CurrLoadTime);
          // Удаляем кукис
@@ -165,7 +203,12 @@ class FixLoadTimer
          console.log('Меньшее = '+MiniLoadTime);
          // Отправляем кукисы с временами загрузки страницы сайта
          // по текущему пути на 400 дней
-         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=34560000";
+         
+         var date = new Date;
+         date.setDate(date.getDate() + 400);
+         console.log(date.toUTCString());
+          
+         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=" + date.toUTCString();
          document.cookie = "MiddLoadTime="+MiddLoadTime+"; path=/; expires=34560000";
          document.cookie = "MaxiLoadTime="+MaxiLoadTime+"; path=/; expires=34560000";
          document.cookie = "MiniLoadTime="+MiniLoadTime+"; path=/; expires=34560000";
