@@ -59,15 +59,23 @@ class FixLoadTimer
       // ----------------------------------------------------------------------
       function putLoadTime(varName,varValue)                               
       {
+         // Объект localStorage поддерживается, записываем данное в память
          if (window.localStorage)
          {
             localStorage.setItem(varName,varValue);
-           //document.cookie = "CurrLo=Объект localStorage поддерживается"+"; path=/; expires=0x6FFFFFFF";
          }
+         // Объект localStorage НЕ поддерживается, передаем данное в кукис
+         // современем хранения 400 дней
          else
          {
-            //console.log('Объект localStorage не поддерживаются');
-            //document.cookie = "CurrLo=Объект localStorage НЕ поддерживается"+"; path=/; expires=0x6FFFFFFF";
+            // https://learn.javascript.ru/cookie
+            // Иногда посетители отключают cookie. Отловить это можно проверкой
+            // свойства navigator.cookieEnabled
+            // if (!navigator.cookieEnabled) 
+            // {
+            //    alert('Включите cookie для комфортной работы с этим сайтом');
+            // }
+            //document.cookie=varName+'='+String(varValue)+"; path=/; expires=34560000";
          }
       }
       // ----------------------------------------------------------------------
@@ -156,11 +164,11 @@ class FixLoadTimer
          console.log('Большее = '+MaxiLoadTime);
          console.log('Меньшее = '+MiniLoadTime);
          // Отправляем кукисы с временами загрузки страницы сайта
-         // по текущему пути с бесконечной датой истечения
-         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=0x6FFFFFFF";
-         document.cookie = "MiddLoadTime="+MiddLoadTime+"; path=/; expires=0x6FFFFFFF";
-         document.cookie = "MaxiLoadTime="+MaxiLoadTime+"; path=/; expires=0x6FFFFFFF";
-         document.cookie = "MiniLoadTime="+MiniLoadTime+"; path=/; expires=0x6FFFFFFF";
+         // по текущему пути на 400 дней
+         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=34560000";
+         document.cookie = "MiddLoadTime="+MiddLoadTime+"; path=/; expires=34560000";
+         document.cookie = "MaxiLoadTime="+MaxiLoadTime+"; path=/; expires=34560000";
+         document.cookie = "MiniLoadTime="+MiniLoadTime+"; path=/; expires=34560000";
       }
       // Выполняем пересчет по завершении загрузки страницы
       addLoadEvent(window_onload);
