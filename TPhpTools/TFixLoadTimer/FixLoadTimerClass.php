@@ -55,60 +55,19 @@ class FixLoadTimer
          }
       }
       // ----------------------------------------------------------------------
-      //                       Записать время загрузки
+      //                  Записать время загрузки страницы сайта
       // ----------------------------------------------------------------------
-      function putLoadTime(varName,varValue)                               
+      function putLoadTime(varName,varValue,stringDate)                               
       {
          // Объект localStorage поддерживается, записываем данное в память
          if (window.localStorage)
          {
             localStorage.setItem(varName,varValue);
          }
-         // Объект localStorage НЕ поддерживается, передаем данное в кукис
-         // современем хранения 400 дней
-         else
-         {
-            // https://learn.javascript.ru/cookie
-            // Иногда посетители отключают cookie. Отловить это можно проверкой
-            // свойства navigator.cookieEnabled
-            // if (!navigator.cookieEnabled) 
-            // {
-            //    alert('Включите cookie для комфортной работы с этим сайтом');
-            // }
-            //document.cookie=varName+'='+String(varValue)+"; path=/; expires=34560000";
-         }
+         // Если разрешено, то данное дублируем кукисом по текущему пути 
+         // с временем хранения на 400 дней
+         setCookie(varName,String(varValue),stringDate,"/");
       }
-      
-      /*
-      Определить, включены у пользователя cookie или нет можно при помощи следующей функции:
-
-// Функция  возвращает true, если cookie включены,
-// в ином случае - false
-
-function IsCookieEnabled()
-{
-		// проверяем существование свойства navigator.cookieEnabled
-		if(typeof(navigator.cookieEnabled) != "undefined")
-			return navigator.cookieEnabled;
-		else
-		{
-			// если свойство navigator.cookieEnabled 
-			// не поддерживается, то просто попробуем
-			// установить и получить назад тестовый cookie
-			var tmpCookie = "testCookieForCheck";
-			SetCookie(tmpCookie, "1");
-			if(GetCookie(tmpCookie) != null)
-  		{
-  			DeleteCookie(tmpCookie);
-  			return true;
-  		}
-			return false;
-  	}
-}
-
-      */
-      
-      
       // ----------------------------------------------------------------------
       //                        Выбрать время загрузки
       // ----------------------------------------------------------------------
@@ -129,7 +88,7 @@ function IsCookieEnabled()
       // ----------------------------------------------------------------------
       //          Пересчитать среднее время загрузки страницы сайта
       // ----------------------------------------------------------------------
-      function getMiddLoadTime(msecs) 
+      function getMiddLoadTime(msecs,stringDate) 
       {
          var MiddLoadTime;
          // Выбираем прежнее значение среднего времени загрузки
@@ -137,13 +96,13 @@ function IsCookieEnabled()
          // Пересчитываем среднее значение
          MiddLoadTime = (Number(MiddLoadTime)+Number(msecs))/2;
          // Записываем новое значение
-         putLoadTime('MiddLoadTime',MiddLoadTime); 
+         putLoadTime('MiddLoadTime',MiddLoadTime,stringDate); 
          return MiddLoadTime;
       }
       // ----------------------------------------------------------------------
       //        Пересчитать максимальное время загрузки страницы сайта
       // ----------------------------------------------------------------------
-      function getMaxiLoadTime(msecs) 
+      function getMaxiLoadTime(msecs,stringDate) 
       {
          var MaxiLoadTime;
          // Выбираем прежнее значение максимального времени загрузки
@@ -151,13 +110,13 @@ function IsCookieEnabled()
          // Пересчитываем максимальное значение
          if (Number(msecs)>Number(MaxiLoadTime)) MaxiLoadTime=msecs; 
          // Записываем новое значение
-         putLoadTime('MaxiLoadTime',MaxiLoadTime); 
+         putLoadTime('MaxiLoadTime',MaxiLoadTime,stringDate); 
          return MaxiLoadTime;
       }
       // ----------------------------------------------------------------------
       //        Пересчитать минимальное время загрузки страницы сайта
       // ----------------------------------------------------------------------
-      function getMiniLoadTime(msecs) 
+      function getMiniLoadTime(msecs,stringDate) 
       {
          var MiniLoadTime;
          // Выбираем прежнее значение минимального времени загрузки
@@ -167,7 +126,7 @@ function IsCookieEnabled()
          // Пересчитываем минимальное значение
          if (Number(msecs)<Number(MiniLoadTime)) MiniLoadTime=msecs; 
          // Записываем новое значение
-         putLoadTime('MiniLoadTime',MiniLoadTime); 
+         putLoadTime('MiniLoadTime',MiniLoadTime,stringDate); 
          return MiniLoadTime;
       }
       // ----------------------------------------------------------------------
@@ -175,43 +134,32 @@ function IsCookieEnabled()
       // ----------------------------------------------------------------------
       function window_onload()
       {
+         // Задаем период хранения кукисов 400 дней
+         var dateCookie,stringDate;
+         dateCookie=new Date;
+         dateCookie.setDate(dateCookie.getDate() + 400);
+         stringDate=dateCookie.toUTCString();
+         console.log(stringDate);
+         
          var CurrLoadTime,MiddLoadTime,MaxiLoadTime,MiniLoadTime; 
          // Пересчитываем и записываем текущее время загрузки страницы сайта
          CurrLoadTime=window.performance.now();
-         putLoadTime('CurrLoadTime',CurrLoadTime); 
-         
-         ///var date = new Date;
-         //date.setDate(date.getDate() + 400);
-         //console.log(date.toUTCString());
-         
-         
-         
+         putLoadTime('CurrLoadTime',CurrLoadTime,stringDate); 
          // Пересчитываем среднее время загрузки страницы сайта
-         MiddLoadTime=getMiddLoadTime(CurrLoadTime);
+         MiddLoadTime=getMiddLoadTime(CurrLoadTime,stringDate);
          // Удаляем кукис
          //var date = new Date(0);
          //document.cookie = "CurrLo=; path=/; expires=" + date.toUTCString();
          // Пересчитываем максимальное время загрузки страницы сайта
-         MaxiLoadTime=getMaxiLoadTime(CurrLoadTime);
+         MaxiLoadTime=getMaxiLoadTime(CurrLoadTime,stringDate);
          // Пересчитываем минимальное время загрузки страницы сайта
-         MiniLoadTime=getMiniLoadTime(CurrLoadTime);
+         MiniLoadTime=getMiniLoadTime(CurrLoadTime,stringDate);
          // Выводим данные в консоль
          console.log('Время загрузки страницы сайта:');
          console.log('Текущее = '+CurrLoadTime);
          console.log('Среднее = '+MiddLoadTime);
          console.log('Большее = '+MaxiLoadTime);
          console.log('Меньшее = '+MiniLoadTime);
-         // Отправляем кукисы с временами загрузки страницы сайта
-         // по текущему пути на 400 дней
-         
-         var date = new Date;
-         date.setDate(date.getDate() + 400);
-         console.log(date.toUTCString());
-          
-         document.cookie = "CurrLoadTime="+CurrLoadTime+"; path=/; expires=" + date.toUTCString();
-         document.cookie = "MiddLoadTime="+MiddLoadTime+"; path=/; expires=34560000";
-         document.cookie = "MaxiLoadTime="+MaxiLoadTime+"; path=/; expires=34560000";
-         document.cookie = "MiniLoadTime="+MiniLoadTime+"; path=/; expires=34560000";
       }
       // Выполняем пересчет по завершении загрузки страницы
       addLoadEvent(window_onload);
