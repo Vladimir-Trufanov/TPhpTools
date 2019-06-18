@@ -82,6 +82,9 @@ class FixLoadTimer
          }
          else
          {
+            varValue=getCookie(varName);
+            if (typeof varValue == "object") varValue=0;
+            if (typeof varValue == "undefined") varValue=0;
          }
          return varValue;
       }
@@ -145,11 +148,16 @@ class FixLoadTimer
          // Пересчитываем и записываем текущее время загрузки страницы сайта
          CurrLoadTime=window.performance.now();
          putLoadTime('CurrLoadTime',CurrLoadTime,stringDate); 
+         
+         var proba=getCookie('name');
+         console.log('***'+proba+'***'+(typeof proba)+'***');
+         var proba=getCookie('CurrLoadTime');
+         console.log('***'+proba+'***'+(typeof proba)+'***');
+         
          // Пересчитываем среднее время загрузки страницы сайта
          MiddLoadTime=getMiddLoadTime(CurrLoadTime,stringDate);
          // Удаляем кукис
-         //var date = new Date(0);
-         //document.cookie = "CurrLo=; path=/; expires=" + date.toUTCString();
+         // DeleteCookie('Currlo');
          // Пересчитываем максимальное время загрузки страницы сайта
          MaxiLoadTime=getMaxiLoadTime(CurrLoadTime,stringDate);
          // Пересчитываем минимальное время загрузки страницы сайта
