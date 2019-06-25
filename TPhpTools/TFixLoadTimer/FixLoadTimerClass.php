@@ -8,7 +8,7 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  03.06.2019
-// Copyright © 2019 tve                              Посл.изменение: 17.06.2019
+// Copyright © 2019 tve                              Посл.изменение: 25.06.2019
 
 /**
  * Класс FixLoadTimer обеспечивает расчет и регистрацию текущего, среднего,
@@ -36,12 +36,20 @@ class FixLoadTimer
 {
    public function __construct($FltLead=fltNotTransmit)
    {
-      // Выполняем пересчет данных по завершении загрузки страницы
+      // Принимаем команду управления передачей данных из PHP и 
+      // выполняем пересчет данных по завершении загрузки страницы
       ?>
       <script>
+
+      const NOTTRANSMIT  = "<?php echo fltNotTransmit;?>";
+      const WRITECONSOLE = "<?php echo fltWriteConsole;?>";
+      const SENDCOOKIES  = "<?php echo fltSendCookies;?>";
+      const FLTALL       = "<?php echo fltAll;?>";
+      
+      var FltLead = "<?php echo $FltLead;?>";
       ViewLocalStorage();
-      function window_onload() {proba();}
-      addLoadEvent(window_onload);
+      function _window_onload() {window_onload(FltLead);}
+      addLoadEvent(_window_onload);
       </script>
       <?php
    }
