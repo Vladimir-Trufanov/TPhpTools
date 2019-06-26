@@ -47,7 +47,6 @@ class FixLoadTimer
       const FLTALL       = "<?php echo fltAll;?>";
       
       var FltLead = "<?php echo $FltLead;?>";
-      ViewLocalStorage();
       function _window_onload() {window_onload(FltLead);}
       addLoadEvent(_window_onload);
       </script>

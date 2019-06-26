@@ -7,7 +7,7 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  03.06.2019
-// Copyright © 2019 tve                              Посл.изменение: 25.06.2019
+// Copyright © 2019 tve                              Посл.изменение: 26.06.2019
 
 // ----------------------------------------------------------------------------
 //                   Записать время загрузки страницы сайта
@@ -32,7 +32,7 @@ function putLoadTime(varName,varValue,stringDate,FltLead)
    }
 }
 // ----------------------------------------------------------------------------
-//                            Выбрать время загрузки
+//                         Выбрать время загрузки из кукиса
 // ----------------------------------------------------------------------------
 function getCookieTime(varName)
 {
@@ -41,6 +41,9 @@ function getCookieTime(varName)
    if (typeof varValue == "undefined") varValue=0;
    return varValue;
 }
+// ----------------------------------------------------------------------------
+//                            Выбрать время загрузки
+// ----------------------------------------------------------------------------
 function getLoadTime(varName)                               
 {
    varValue=0;
@@ -101,11 +104,40 @@ function getMiniLoadTime(msecs,stringDate,FltLead)
    return MiniLoadTime;
 }
 // ----------------------------------------------------------------------------
+//          Вывести в консоль данные о времени загрузки страницы
+// ----------------------------------------------------------------------------
+function ViewFixLoadTime(Caption,FltLead)
+{   
+   // Если разрешено, то выводим данные в консоль
+   if ((FltLead==WRITECONSOLE)||(FltLead==FLTALL)) 
+   {
+      if (window.localStorage)
+      {
+         console.log(Caption);
+         console.log('Текущее = '+getLoadTime('CurrLoadTime'));
+         console.log('Среднее = '+getLoadTime('MiddLoadTime'));
+         console.log('Большее = '+getLoadTime('MaxiLoadTime'));
+         console.log('Меньшее = '+getLoadTime('MiniLoadTime'));
+         console.log('--- localStorage ---');
+      }
+      else
+      {
+         console.log('Текущее = '+getCookieTime('CurrLoadTime'));
+         console.log('Среднее = '+getCookieTime('MiddLoadTime'));
+         console.log('Большее = '+getCookieTime('MaxiLoadTime'));
+         console.log('Меньшее = '+getCookieTime('MiniLoadTime'));
+         console.log('--- $_COOKIE ---');
+      }
+   }
+}
+// ----------------------------------------------------------------------------
 //          Выполнить пересчет данных по завершению загрузки страницы
 // ----------------------------------------------------------------------------
 function window_onload(FltLead)
 {
    var CurrLoadTime,MiddLoadTime,MaxiLoadTime,MiniLoadTime; 
+   // Выводим в консоль данные о предыдущей загрузке страницы
+   ViewFixLoadTime('Время предыдущей загрузки страницы:',FltLead);
    // Задаем период хранения кукисов 400 дней
    var dateCookie,stringDate;
    dateCookie=new Date;
@@ -126,25 +158,7 @@ function window_onload(FltLead)
    MaxiLoadTime=getMaxiLoadTime(CurrLoadTime,stringDate,FltLead);
    // Пересчитываем минимальное время загрузки страницы сайта
    MiniLoadTime=getMiniLoadTime(CurrLoadTime,stringDate,FltLead);
-   
-   // Если разрешено, то выводим данные в консоль
-   if ((FltLead==WRITECONSOLE)||(FltLead==FLTALL)) 
-   {
-      if (window.localStorage)
-      {
-         console.log('Время загрузки страницы:');
-         console.log('Текущее = '+CurrLoadTime);
-         console.log('Среднее = '+MiddLoadTime);
-         console.log('Большее = '+MaxiLoadTime);
-         console.log('Меньшее = '+MiniLoadTime);
-         console.log('--- localStorage ---');
-      }
-      console.log('Время предыдущей загрузки страницы:');
-      console.log('Текущее = '+CurrLoadTime);
-      console.log('Среднее = '+MiddLoadTime);
-      console.log('Большее = '+MaxiLoadTime);
-      console.log('Меньшее = '+MiniLoadTime);
-      console.log('--- $_COOKIE ---');
-   }
+   // Выводим в консоль данные о времени загрузки страницы
+   ViewFixLoadTime('Время загрузки страницы:',FltLead);
 }
 // ******************************************************** FixLoadTimer.js ***
