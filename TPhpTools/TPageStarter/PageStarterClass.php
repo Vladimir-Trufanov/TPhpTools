@@ -8,7 +8,7 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  11.10.2019
-// Copyright © 2019 tve                              Посл.изменение: 11.10.2019
+// Copyright © 2019 tve                              Посл.изменение: 22.10.2019
 
 /**
  * Класс PageStarter обеспечивает запуск сессии страницы и регистрацию 
@@ -16,36 +16,31 @@
  * 
  * Пользовательская информация:
  * 
- * название (доменное имя) сайта, название страницы сайта. 
+ * страница сайта. 
 **/
 
 // Свойства:
 //
-// $SiteName - название (доменное имя) сайта;
-// $PageName - название страницы сайта;
+// $Page - название страницы сайта;
+// $Uagent - браузер пользователя;
 
-// ----------------------- Константы управления передачей данных о загрузке ---
-//define ("fltNotTransmit",  0); // данные не передаются  
-//define ("fltWriteConsole", 1); // записываются в консоль
-//define ("fltSendCookies",  2); // отправляются в кукисы
-//define ("fltAll",          3); // записываются в консоль, отправляются в кукисы  
+define ("BeginSession",  1); // Флаг первого обращения к объекту в сессии  
 
 class PageStarter
 {
 
-   private $SiteName;
-   private $PageName;
+   private $Page;    // страница сайта
    private $dtime;
    private $ip;
-   private $agent;
+   private $Uagent;  // браузер пользователя
    private $uri;
 
    // *************************************************************************
    // *      Выбираем и формируем элементы пользовательской информации        *
    // *************************************************************************
-   private function MakeOunInfo(&$dtime,&$ip,&$agent,&$uri)
+   private function MakeOunInfo(&$dtime,&$ip,&$Uagent,&$uri)
    {
-      $agent=$_SERVER['HTTP_USER_AGENT'];
+      $Uagent=$_SERVER['HTTP_USER_AGENT'];
       $uri=$_SERVER['REQUEST_URI'];
       //$useri = 'PHP_AUTH_USER';
       $ip = $_SERVER['REMOTE_ADDR'];
@@ -65,27 +60,27 @@ class PageStarter
    // *************************************************************************
    // *      Склеить строку пользовательской информации для лог-файла         *
    // *************************************************************************
-   private function GlueString($PageName,$dtime,$ip,$agent,$uri,$BegSess=true)
+   private function GlueString($Page,$dtime,$ip,$Uagent,$uri,$BegSess=true)
    {
-      // Формируем префикс строки по имени страницы. Если строка формируетя в 
+      // Формируем префикс строки по имени страницы. Если строка формируется в 
       // начале сессии ($BegSess=true), то префикс заключаем в '***', если в
       // продолжении сессии, то префикс заключаем в '==='.
-      if ($BegSess==true) $Prefix='***'.$PageName.'***';
-      else $Prefix='==='.$PageName.'===';
+      if ($BegSess==true) $Prefix='***'.$Page.'***';
+      else $Prefix='==='.$Page.'===';
       // Подклеиваем остальную пользовательскую информацию
       $Result=
          $Prefix.
          "$dtime ".
          "IP: $ip ".
-         "Agent: $agent ".
-         "URL: $uri \r\n";
+         "URL: $uri \r\n".
+         "Agent: $Uagent \r\n";
       return $Result;
    }
    // *************************************************************************
    // *         Занести строку пользовательской информации в лог-файл         *
    // *           (лог-файл разместить в корневом каталоге страницы)          *
    // *************************************************************************
-   private function PutString($String)
+   private function PutString($String,$Page)
    {
       $fp = fopen("logis.txt","a+");
       if (flock($fp,LOCK_EX)) 
@@ -96,26 +91,29 @@ class PageStarter
       } 
       else 
       {
-         echo "Не могу запереть файл! [".$PageName.']';  // Далее уйти в исключение
+         echo "Не могу запереть файл! [".$Page.']';  // Далее уйти в исключение
       }
    }
 
-   public function __construct($iSiteName,$iPageName)
+   public function __construct($iPage)
    {
-      $SiteName=$iSiteName;
-      $PageName=$iPageName;
-      
+      $this->Page=$iPage;
       session_start();
-      if (!isset($_SESSION[$PageName]))
+      // Регистрируем первое открытие страницы в сессии
+      if (!isset($_SESSION[$this->Page]))
       {
-         $this->MakeOunInfo($this->dtime,$this->ip,$this->agent,$this->uri);
-         $entry_line=$this->GlueString($this->PageName,$this->dtime,$this->ip,$this->agent,$this->uri);
-         $this->PutString($entry_line);
-         $_SESSION[$PageName]='yes';
+         $this->MakeOunInfo($this->dtime,$this->ip,$this->Uagent,$this->uri);
+         $entry_line=$this->GlueString($this->Page,$this->dtime,$this->ip,$this->Uagent,$this->uri);
+         $this->PutString($entry_line,$this->Page);
+         $_SESSION[$this->Page]=BeginSession; // отметили первое обращение к странице в сессии
       }
-      $this->MakeOunInfo($this->dtime,$this->ip,$this->agent,$this->uri);
-      $entry_line=$this->GlueString($this->PageName,$this->dtime,$this->ip,$this->agent,$this->uri,false);
-      $this->PutString($entry_line);
+      // Регистрируем повторные обращения к странице в сессии
+      else
+      {
+         $this->MakeOunInfo($this->dtime,$this->ip,$this->Uagent,$this->uri);
+         $entry_line=$this->GlueString($this->Page,$this->dtime,$this->ip,$this->Uagent,$this->uri,false);
+         $this->PutString($entry_line,$this->Page);
+      }
    }
    public function __destruct()
    {
