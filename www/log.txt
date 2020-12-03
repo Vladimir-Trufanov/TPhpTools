@@ -1,0 +1,102 @@
+[02-Mar-2020 16:39:50 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'MakeCookieTest' (T_STRING), expecting ',' or ';' in C:\TPhpPrown\www\Main.php on line 28
+[02-Mar-2020 16:39:50 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'MakeCookieTest' (T_STRING), expecting ',' or ';' in C:\TPhpPrown\www\Main.php on line 28
+[02-Mar-2020 16:41:00 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\MakeSession() in C:\TPhpPrown\www\Main.php:26
+Stack trace:
+#0 C:\TPhpPrown\www\index.php(33): require_once()
+#1 {main}
+  thrown in C:\TPhpPrown\www\Main.php on line 26
+[02-Mar-2020 19:15:11 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ViewArray() in C:\TPhpPrown\www\Main.php:29
+Stack trace:
+#0 C:\TPhpPrown\www\index.php(33): require_once()
+#1 {main}
+  thrown in C:\TPhpPrown\www\Main.php on line 29
+[02-Mar-2020 20:13:36 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\Alert() in C:\TPhpPrown\TPhpPrown\ViewGlobal.php:165
+Stack trace:
+#0 C:\TPhpPrown\www\Main.php(29): prown\ViewGlobal(528)
+#1 C:\TPhpPrown\www\index.php(33): require_once('C:\\TPhpPrown\\ww...')
+#2 {main}
+  thrown in C:\TPhpPrown\TPhpPrown\ViewGlobal.php on line 165
+[02-Mar-2020 20:15:34 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\Alert() in C:\TPhpPrown\TPhpPrown\DebugBlock.php:26
+Stack trace:
+#0 C:\TPhpPrown\TPhpPrown\ViewGlobal.php(40): require_once()
+#1 C:\TPhpPrown\www\Main.php(22): require_once('C:\\TPhpPrown\\TP...')
+#2 C:\TPhpPrown\www\index.php(33): require_once('C:\\TPhpPrown\\ww...')
+#3 {main}
+  thrown in C:\TPhpPrown\TPhpPrown\DebugBlock.php on line 26
+[02-Mar-2020 20:16:40 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting '{' in C:\TPhpPrown\TPhpPrown\DebugBlock.php on line 13
+[02-Mar-2020 20:17:07 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ''$Parm'' (T_CONSTANT_ENCAPSED_STRING), expecting variable (T_VARIABLE) in C:\TPhpPrown\TPhpPrown\DebugBlock.php on line 26
+[03-Mar-2020 15:40:42 Asia/Kuwait] PHP Fatal error:  Cannot redeclare iniWorkSpace() (previously declared in C:\TPhpPrown\www\iniWorkSpace.php:25) in C:\TPhpPrown\TPhpPrown\WorkSpace\iniWorkSpace.php on line 42
+[03-Mar-2020 15:44:09 Asia/Kuwait] PHP Fatal error:  Cannot redeclare iniWorkSpace() (previously declared in C:\TPhpPrown\www\iniWorkSpace.php:25) in C:\TPhpPrown\TPhpPrown\WorkSpace\iniWorkSpace.php on line 42
+[03-Mar-2020 15:57:35 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '-' in C:\TPhpPrown\TPhpPrown\MakeCookie.php on line 75
+[03-Mar-2020 21:18:27 Asia/Kuwait] PHP Fatal error:  Cannot redeclare prown\MakeType() (previously declared in C:\TPhpPrown\www\MakeType.php:53) in C:\TPhpPrown\TPhpPrown\MakeType.php on line 74
+[03-Mar-2020 21:26:19 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ',' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 114
+[03-Mar-2020 21:27:46 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ',' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 114
+[09-Mar-2020 17:32:33 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function Alert() in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php:106
+Stack trace:
+#0 C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php(61): isMakeCookie(Array)
+#1 C:\TPhpPrown\www\Main.php(117): FunctionsCheckbox(Array, '\xD0\x9F\xD1\x80\xD0\xBE\xD1\x82\xD0\xB5\xD1\x81\xD1\x82\xD0...', '\xD0\xA3\xD0\xBA\xD0\xB0\xD0\xB6\xD0\xB8\xD1\x82\xD0\xB5 ...')
+#2 C:\TPhpPrown\www\index.php(35): require_once('C:\\TPhpPrown\\ww...')
+#3 {main}
+  thrown in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 106
+[09-Mar-2020 17:39:03 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'DebugBlock.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 29
+[09-Mar-2020 18:01:25 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'DebugBlock.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 29
+[16-Mar-2020 18:51:01 Asia/Kuwait] PHP Parse error:  syntax error, unexpected end of file in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php on line 92
+[18-Mar-2020 19:44:11 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function MakeCookieTest() in C:\TPhpPrown\www\Main.php:32
+Stack trace:
+#0 C:\TPhpPrown\www\index.php(35): require_once()
+#1 {main}
+  thrown in C:\TPhpPrown\www\Main.php on line 32
+[18-Mar-2020 19:59:13 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required '/TPhpPrownTests/MakeCookie_test_D.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 15
+[18-Mar-2020 19:59:13 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required '/TPhpPrownTests/MakeCookie_test_D.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 15
+[20-Mar-2020 21:41:48 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrown/DebugBlock.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\www\Main.php on line 15
+[20-Mar-2020 21:43:01 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'DebugBlock.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrown\ViewGlobal.php on line 40
+[20-Mar-2020 21:58:33 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function GetAbove() in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php:123
+Stack trace:
+#0 C:\TPhpPrown\www\Main.php(170): MakeTest('C:\\TPhpPrown\\ww...', Array)
+#1 C:\TPhpPrown\www\index.php(35): require_once('C:\\TPhpPrown\\ww...')
+#2 {main}
+  thrown in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 123
+[25-Mar-2020 18:27:22 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$aCookMessa' (T_VARIABLE) in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 70
+[25-Mar-2020 18:27:22 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$aCookMessa' (T_VARIABLE) in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 70
+[25-Mar-2020 18:43:21 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ',' in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 100
+[25-Mar-2020 18:43:21 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ',' in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 100
+[26-Mar-2020 15:31:58 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'if' (T_IF), expecting ',' or ';' in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php on line 28
+[27-Mar-2020 14:00:42 Asia/Kuwait] PHP Fatal error:  Constant expression contains invalid operations in C:\TPhpPrown\TPhpPrown\MakeCookie.php on line 142
+[27-Mar-2020 14:18:06 Asia/Kuwait] PHP Fatal error:  Constant expression contains invalid operations in C:\TPhpPrown\TPhpPrown\MakeCookie.php on line 138
+[27-Mar-2020 15:49:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'elseif' (T_ELSEIF) in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 25
+[27-Mar-2020 15:49:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'elseif' (T_ELSEIF) in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 25
+[27-Mar-2020 15:49:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'elseif' (T_ELSEIF) in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 25
+[27-Mar-2020 18:57:42 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '=' in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 61
+[27-Mar-2020 18:57:42 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '=' in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 61
+[27-Mar-2020 18:57:42 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '=' in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test.php on line 61
+[29-Mar-2020 07:20:12 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function sayLogic() in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php:66
+Stack trace:
+#0 C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php(22): _MakeCookieTest()
+#1 C:\TPhpPrown\www\Main.php(31): MakeCookieTest()
+#2 C:\TPhpPrown\www\index.php(35): require_once('C:\\TPhpPrown\\ww...')
+#3 {main}
+  thrown in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php on line 66
+[29-Mar-2020 07:26:39 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function sayLogic() in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php:66
+Stack trace:
+#0 C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php(22): _MakeCookieTest()
+#1 C:\TPhpPrown\www\Main.php(31): MakeCookieTest()
+#2 C:\TPhpPrown\www\index.php(35): require_once('C:\\TPhpPrown\\ww...')
+#3 {main}
+  thrown in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php on line 66
+[29-Mar-2020 07:27:32 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function sayLogic() in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php:66
+Stack trace:
+#0 C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php(22): _MakeCookieTest()
+#1 C:\TPhpPrown\www\Main.php(31): MakeCookieTest()
+#2 C:\TPhpPrown\www\index.php(35): require_once('C:\\TPhpPrown\\ww...')
+#3 {main}
+  thrown in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php on line 66
+[29-Mar-2020 10:39:24 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'prown' (T_STRING) in C:\TPhpPrown\TPhpPrownTests\MakeCookie_test_I.php on line 70
+[30-Mar-2020 10:19:11 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ')' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 218
+[30-Mar-2020 10:31:38 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$n' (T_VARIABLE), expecting ',' or ';' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 225
+[30-Mar-2020 10:32:22 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$nl' (T_VARIABLE), expecting ',' or ';' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 225
+[30-Mar-2020 10:32:31 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$nl' (T_VARIABLE), expecting ',' or ';' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 225
+[30-Mar-2020 10:36:45 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$nl' (T_VARIABLE), expecting ',' or ';' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 224
+[30-Mar-2020 10:37:20 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '',$Color='' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 229
+[07-Apr-2020 10:40:40 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in C:\TPhpPrown\TPhpPrown\MakeRegExp.php on line 82
+[07-Apr-2020 10:41:11 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING), expecting ',' or ';' in C:\TPhpPrown\TPhpPrown\MakeRegExp.php on line 82
+[07-Apr-2020 14:32:31 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ''.$preg.'' (T_CONSTANT_ENCAPSED_STRING) in C:\TPhpPrown\TPhpPrownTests\MakeRegExp_test.php on line 30

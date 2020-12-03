@@ -1,18 +1,17 @@
 [Config]
 Compilator.SaveAll=0
 Compilator.Capture=0
-Compilator.HideOutput=0
+Compilator.CompileOnBackground=0
 Compilator.ProgSaveAll=0
 Compilator.ProgRunSelection=0
 Compilator.LogType=0
-DefaultDir=C:\Webservers\TPhpTools
-DefaultCPIndex=0
+DefaultDir=C:\TPhpTools
+DefaultCP=0
 LogtoEnd=1
 DontOpen=0
 AbsolutePath=0
 FileFormat=0
 ProjectFilesOnly=0
-HTServer=localhost
 Extensions=*.*
 [Project tree]
 TPhpTools
@@ -23,27 +22,27 @@ TPhpTools
 				TPhpTools\TCtrlDir\ViewDir.php
 			-TException
 				TPhpTools\TException\ExceptionClass.php
-		-TPhpToolsTest
+			-TFixLoadTimer
+				TPhpTools\TFixLoadTimer\FixLoadTimer.js
+				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
+			-TPageStarter
+				TPhpTools\TPageStarter\PageStarterClass.php
+			-TUploadToServer
+		-TPhpToolsTests
 		+www
+			www\89.gif
 			www\favicon.ico
-			www\iGetAbove.php
 			www\index.php
+			www\iniWorkSpace.php
+			www\log.txt
 			www\Main.php
-		-Материалы
-			Материалы\Исключения PHP часть 1.doc
-		LICENSE
+			www\TPhpPrownTests.js
 		README.md
-		TPhpTools.ppr
-		Пример формы класса.php
 [Open project files]
 0=www\index.php
-1=www\Main.php
 [Selected Project Files]
 Main=
-Selected=www\Main.php
+Selected=www\index.php
 [www\index.php]
-TopLine=19
-Caret=1,1
-[www\Main.php]
-TopLine=13
-Caret=3,24
+TopLine=1
+Caret=20,12
