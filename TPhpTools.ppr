@@ -12,11 +12,12 @@ DontOpen=0
 AbsolutePath=0
 FileFormat=0
 ProjectFilesOnly=0
+HTServer=localhost
 Extensions=*.*
 [Project tree]
 TPhpTools
 	+TPhpTools
-		-TPhpTools
+		+TPhpTools
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDir.php
 				TPhpTools\TCtrlDir\ViewDir.php
@@ -37,12 +38,179 @@ TPhpTools
 			www\log.txt
 			www\Main.php
 			www\TPhpPrownTests.js
+		-Материалы
+			-DownUpLoad
+				-Proba
+					-images
+						-thumbs
+							Материалы\DownUpLoad\Proba\images\thumbs\basin.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\fountains.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\kinkakuji.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\maiko.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\maiko_phone.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\menu.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\monk.jpg
+							Материалы\DownUpLoad\Proba\images\thumbs\ryoanji.jpg
+						Материалы\DownUpLoad\Proba\images\basin.jpg
+						Материалы\DownUpLoad\Proba\images\fountains.jpg
+						Материалы\DownUpLoad\Proba\images\fuji.jpg
+						Материалы\DownUpLoad\Proba\images\getTranslit.php
+						Материалы\DownUpLoad\Proba\images\kinkakuji.jpg
+						Материалы\DownUpLoad\Proba\images\logis.txt
+						Материалы\DownUpLoad\Proba\images\maiko.jpg
+						Материалы\DownUpLoad\Proba\images\maiko_phone.jpg
+						Материалы\DownUpLoad\Proba\images\maiko_phone_1.jpg
+						Материалы\DownUpLoad\Proba\images\menu.jpg
+						Материалы\DownUpLoad\Proba\images\monk.jpg
+						Материалы\DownUpLoad\Proba\images\ryoanji.jpg
+						Материалы\DownUpLoad\Proba\images\ryoanji_1.jpg
+					Материалы\DownUpLoad\Proba\blog.php
+					Материалы\DownUpLoad\Proba\contact.php
+					Материалы\DownUpLoad\Proba\download.php
+					Материалы\DownUpLoad\Proba\error.php
+					Материалы\DownUpLoad\Proba\gallery.php
+					Материалы\DownUpLoad\Proba\index_01.php
+					Материалы\DownUpLoad\Proba\ProbaTest.php
+				Материалы\DownUpLoad\Примеры загрузки файлов с сервера на локальный компьютер.doc
+			-DropZone
+				-dropzone-master
+					-dropzone-master
+						-dist
+							-min
+								Материалы\DropZone\dropzone-master\dropzone-master\dist\min\basic.min.css
+								Материалы\DropZone\dropzone-master\dropzone-master\dist\min\dropzone.min.css
+								Материалы\DropZone\dropzone-master\dropzone-master\dist\min\dropzone.min.js
+								Материалы\DropZone\dropzone-master\dropzone-master\dist\min\dropzone-amd-module.min.js
+							Материалы\DropZone\dropzone-master\dropzone-master\dist\basic.css
+							Материалы\DropZone\dropzone-master\dropzone-master\dist\dropzone.css
+							Материалы\DropZone\dropzone-master\dropzone-master\dist\dropzone.js
+							Материалы\DropZone\dropzone-master\dropzone-master\dist\dropzone-amd-module.js
+							Материалы\DropZone\dropzone-master\dropzone-master\dist\readme.md
+						Материалы\DropZone\dropzone-master\dropzone-master\.gitignore
+						Материалы\DropZone\dropzone-master\dropzone-master\.tagconfig
+						Материалы\DropZone\dropzone-master\dropzone-master\bower.json
+						Материалы\DropZone\dropzone-master\dropzone-master\component.json
+						Материалы\DropZone\dropzone-master\dropzone-master\composer.json
+						Материалы\DropZone\dropzone-master\dropzone-master\CONTRIBUTING.md
+						Материалы\DropZone\dropzone-master\dropzone-master\index.js
+						Материалы\DropZone\dropzone-master\dropzone-master\LICENSE
+						Материалы\DropZone\dropzone-master\dropzone-master\package.json
+						Материалы\DropZone\dropzone-master\dropzone-master\README.md
+				-html5_drag_and_drop
+				-jquery.dropzone-master
+					-jquery.dropzone-master
+						-dist
+							Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\dist\jquery.dropzone.js
+							Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\dist\jquery.dropzone.min.js
+						-src
+							Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\src\index.js
+						Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\.gitignore
+						Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\Gruntfile.js
+						Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\LICENSE
+						Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\package.json
+						Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\README.md
+				-Upload1
+					-www
+						-upload
+						Материалы\DropZone\Upload1\www\dropzone.css
+						Материалы\DropZone\Upload1\www\dropzone.js
+						Материалы\DropZone\Upload1\www\favicon.ico
+						Материалы\DropZone\Upload1\www\index.html
+						Материалы\DropZone\Upload1\www\script.js
+						Материалы\DropZone\Upload1\www\style.css
+						Материалы\DropZone\Upload1\www\upload.php
+				-Upload2
+					-www
+						-uploads
+						Материалы\DropZone\Upload2\www\dropzone.css
+						Материалы\DropZone\Upload2\www\dropzone.js
+						Материалы\DropZone\Upload2\www\favicon.ico
+						Материалы\DropZone\Upload2\www\index.html
+						Материалы\DropZone\Upload2\www\upload.php
+				-Uploadi
+					-www
+						-assets
+							-css
+								Материалы\DropZone\Uploadi\www\assets\css\style.css
+							-img
+								Материалы\DropZone\Uploadi\www\assets\img\border-image.png
+								Материалы\DropZone\Uploadi\www\assets\img\icons.png
+							-js
+								Материалы\DropZone\Uploadi\www\assets\js\jquery.fileupload.js
+								Материалы\DropZone\Uploadi\www\assets\js\jquery.iframe-transport.js
+								Материалы\DropZone\Uploadi\www\assets\js\jquery.knob.js
+								Материалы\DropZone\Uploadi\www\assets\js\jquery.ui.widget.js
+								Материалы\DropZone\Uploadi\www\assets\js\script.js
+						-uploads
+						Материалы\DropZone\Uploadi\www\code.rar
+						Материалы\DropZone\Uploadi\www\favicon.ico
+						Материалы\DropZone\Uploadi\www\index.html
+						Материалы\DropZone\Uploadi\www\upload.php
+				-UploadR
+					-www
+						-uploads
+						Материалы\DropZone\UploadR\www\.htaccess
+						Материалы\DropZone\UploadR\www\favicon.ico
+						Материалы\DropZone\UploadR\www\index.html
+						Материалы\DropZone\UploadR\www\style.css
+						Материалы\DropZone\UploadR\www\upload.php
+					Материалы\DropZone\UploadR\UploadR.ppr
+				-www
+					-assets
+						-css
+							Материалы\DropZone\www\assets\css\style.css
+						-img
+							Материалы\DropZone\www\assets\img\border-image.png
+							Материалы\DropZone\www\assets\img\icons.png
+						-js
+							Материалы\DropZone\www\assets\js\jquery.fileupload.js
+							Материалы\DropZone\www\assets\js\jquery.iframe-transport.js
+							Материалы\DropZone\www\assets\js\jquery.knob.js
+							Материалы\DropZone\www\assets\js\jquery.ui.widget.js
+							Материалы\DropZone\www\assets\js\script.js
+					-uploads
+					Материалы\DropZone\www\code.rar
+					Материалы\DropZone\www\favicon.ico
+					Материалы\DropZone\www\index.html
+					Материалы\DropZone\www\upload.php
+				-Дистрибутивы
+					-Ver1
+						Материалы\DropZone\Дистрибутивы\Ver1\dropzone.css
+						Материалы\DropZone\Дистрибутивы\Ver1\dropzone.js
+				-Материалы
+					Материалы\DropZone\Материалы\Ajax для загрузки.doc
+					Материалы\DropZone\Материалы\Drag and Drop загрузка файлов на сервер.doc
+					Материалы\DropZone\Материалы\DropzoneJS is an open source library that provides drag.doc
+					Материалы\DropZone\Материалы\Dropzone-PHP.doc
+					Материалы\DropZone\Материалы\HTML5 Drag and Drop загрузка файлов.doc
+				Материалы\DropZone\dropzone.js
+				Материалы\DropZone\dropzone-master.zip
+				Материалы\DropZone\html5_drag_and_drop.zip
+				Материалы\DropZone\jquery.dropzone-master.zip
+			Материалы\Исключения PHP часть 1.doc
+			Материалы\Как в PHP вывести текст на Русском языке на изображении.doc
+		Developer_Black.png
+		LICENSE
 		README.md
+		TPhpTools.ppr
+		Пример формы класса.php
 [Open project files]
 0=www\index.php
+1=www\Main.php
+2=TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
+3=TPhpTools\TPageStarter\PageStarterClass.php
 [Selected Project Files]
 Main=
 Selected=www\index.php
 [www\index.php]
+TopLine=17
+Caret=6,38
+[www\Main.php]
 TopLine=1
-Caret=20,12
+Caret=1,17
+[TPhpTools\TFixLoadTimer\FixLoadTimerClass.php]
+TopLine=1
+Caret=70,11
+[TPhpTools\TPageStarter\PageStarterClass.php]
+TopLine=3
+Caret=78,6

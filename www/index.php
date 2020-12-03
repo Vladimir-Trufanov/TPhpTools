@@ -2,15 +2,12 @@
 // PHP7/HTML5, EDGE/CHROME                                    *** index.php ***
 
 // ****************************************************************************
-// * TPhpPrown-test             TPhpPrown - библиотека PHP-прикладных функций *
+// * TPhpTools-test             TPhpTools - библиотека PHP-прикладных классов *
 // ****************************************************************************
 
 //                                                   Автор:       Труфанов В.Е.
-//                                                   Дата создания:  13.01.2019
-// Copyright © 2019 tve                              Посл.изменение: 15.02.2020
-
-echo 'Привет!<br>';
-/*
+//                                                   Дата создания:  03.06.2019
+// Copyright © 2019 tve                              Посл.изменение: 03.12.2020
 
 // Инициализируем рабочее пространство: корневой каталог сайта и т.д.
 session_start();
@@ -36,8 +33,10 @@ try
 {
    // Запускаем сценарий сайта
    //require_once $SiteRoot."/Main.php";
-   // Запускаем примеры ошибок и исключений
-   //require_once $_SERVER['DOCUMENT_ROOT']."/MainDoorTry.php";
+   $TPhpPrown=$SiteHost.'/TPhpPrown';
+   require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
+   //echo  prown\getTranslit('загрузчик файлов на сервер').'<br>';
+   echo 'Привет снова!<br>';
 }
 catch (E_EXCEPTION $e) 
 {
@@ -45,4 +44,3 @@ catch (E_EXCEPTION $e)
    DoorTryPage($e);
 }
 // ************************************************************** index.php ***
-*/
