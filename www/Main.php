@@ -2,20 +2,22 @@
 // PHP7/HTML5, EDGE/CHROME                                     *** Main.php ***
 
 // ****************************************************************************
-// * TPhpPrown-test                   Кто прожил жизнь, тот больше не спешит! *
+// * TPhpTools-test                   Кто прожил жизнь, тот больше не спешит! *
 // ****************************************************************************
 
 //                                                   Автор:       Труфанов В.Е.
-//                                                   Дата создания:  13.01.2019
-// Copyright © 2019 tve                              Посл.изменение: 10.03.2020
+//                                                   Дата создания:  03.12.2020
+// Copyright © 2020 tve                              Посл.изменение: 03.12.2020
+
 // Определяем сайтовые константы
 define ("ChooseAll",  "Выбрать все элементы"); // Первая кнопка Submit  
 define ("ToTest",     "Протестировать");       // Вторая кнопка Submit 
-define ("ChoiceList", "Укажите список прикладных функций библиотеки TPhpPrown"); 
+define ("ChoiceList", "Укажите список прикладных классов библиотеки TPhpTools"); 
 // Подключаем файлы библиотеки прикладных модулей и рабочего пространства
 $TPhpPrown=$SiteHost.'/TPhpPrown';
 require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
 require_once $TPhpPrown."/TPhpPrown/Findes.php";
+/*
 require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
 require_once $TPhpPrown."/TPhpPrown/iniConstMem.php";
 require_once $TPhpPrown."/TPhpPrown/isCalcInBrowser.php";
@@ -25,22 +27,14 @@ require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
 require_once $TPhpPrown."/TPhpPrown/MakeType.php";
 require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
 require_once $TPhpPrown."/TPhpPrown/ViewSimpleArray.php";
+*/
 // Подключаем модуль обеспечения тестов
 require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
-require_once $TPhpPrown."/TPhpPrownTests/MakeCookie_test_D.php";
-require_once $TPhpPrown."/TPhpPrownTests/MakeCookie_test_I.php";
-// Инициализируем сессионную переменную для возможного теста MakeCookie
-// и делаем подготовку текущего прохода этого теста
-//prown\ViewGlobal(avgCOOKIE);
-if (prown\isComRequest(ToTest,'formSubmit')&&(isChecked('formDoor','MakeCookie')))
-{
-   MakeCookieTest();
-} 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>TPhpPrown - библиотека PHP-прикладных функций</title>
+<title>TPhpTools - библиотека PHP-прикладных классов</title>
 <meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro:400,400i,700,700i&amp;subset=cyrillic" rel="stylesheet">
 
@@ -52,7 +46,7 @@ if (prown\isComRequest(ToTest,'formSubmit')&&(isChecked('formDoor','MakeCookie')
 <script 
    src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js">
 </script>
-<script src="/TPhpPrownTests.js"> </script>
+<script src="/TPhpToolsTests.js"> </script>
 
 <script>
    function isCheckClick() 
@@ -71,40 +65,7 @@ if (prown\isComRequest(ToTest,'formSubmit')&&(isChecked('formDoor','MakeCookie')
             }
          }  
       }
-      // Находим MakeCookie и не даем его включать
-      // одновременно с другими чекбоксами
       var Result=false;
-      var i = 0;
-      while (i<up_names.length) 
-      {
-         if (up_names[i].value=="MakeCookie")
-         {
-            // Если MakeCokie включен, то выводим предупреждение
-            // и выключаем чекбокс
-            if (up_names[i].checked) 
-            {
-               if (count>1)
-               {
-                  MakeCookie.checked=false;
-                  spMakeCookie.innerHTML="<br>MakeCokie должен быть выбран отдельно от всех!";
-                  Result=true;
-               }
-               else
-               {
-                  spMakeCookie.innerHTML="<br>Для успешного выполнения всех "+
-                  "тестов MakeCokie браузер лучше перезапустить!";
-                  Result=true;
-               }
-            }
-            // Если MakeCokie выключен, сбрасываем предупреждение
-            else
-            {
-               spMakeCookie.innerHTML="";
-            }
-            break
-         }
-         i++;
-      }
       return Result;
    }
 </script>
@@ -117,15 +78,12 @@ if (prown\isComRequest(ToTest,'formSubmit')&&(isChecked('formDoor','MakeCookie')
 <?php
 // Инициализируем список прикладных функций библиотеки TPhpPrown 
 // и рабочего пространства сайта
-$aPhpPrown=array
+$aPhpTools=array
 (            
-   'iniWorkSpace'   =>'cформировать массив параметров рабочего пространства сайта',   
-   'Findes'         =>'выбрать из строки подстроку, соответствующую регулярному выражению',   
-   'isCalcInBrowser'=>'определить по родительским браузерам работает ли функция Calc для CSS',   
-   'MakeCookie'     =>'установить новое значение COOKIE в браузере и в массиве $_COOKIE',
-   'MakeRegExp'     =>'отработать регулярное выражение на тексте и оттрассировать разбор',
-   'MakeType'       =>'преобразовать значение к заданному типу',
-   'MakeUserError'  =>'cгенерировать ошибку/исключение или просто сформировать сообщение об ошибке',
+   'TCtrlDir'        =>'контроллер каталогов и файлов',   
+   'TFixLoadTimer'   =>'регистратор времени загрузки страницы',   
+   'TPageStarter'    =>'cтартер сессии страницы и регистратор пользовательских данных',   
+   'TUploadToServer' =>'загрузчик файлов на сервер',
 );
 
 // ---
@@ -169,7 +127,7 @@ $aPhpPrown=array
 if (prown\isComRequest(ChooseAll,'formSubmit'))
 {
    // Вырисовываем чекбоксы для тестирования
-   FunctionsCheckbox($aPhpPrown,ChooseAll,ChoiceList);
+   FunctionsCheckbox($aPhpTools,ChooseAll,ChoiceList);
    // Завершаем разметку, так как здесь теста не будет
    echo "\n</body>\n</html>\n";   
 }
@@ -177,15 +135,15 @@ if (prown\isComRequest(ChooseAll,'formSubmit'))
 elseif (prown\isComRequest(ToTest,'formSubmit'))
 {
    // Вырисовываем чекбоксы для тестирования
-   FunctionsCheckbox($aPhpPrown,ToTest,ChoiceList);
+   FunctionsCheckbox($aPhpTools,ToTest,ChoiceList);
    // Запускаем тестирование (тестом будет и завершена разметка)
-   MakeTest($SiteRoot,$aPhpPrown);
+   MakeTest($SiteRoot,$aPhpTools,'PHP','/TPhpTools/TPhpToolsTests/');
 }
 // Выполнить третью ветку (при начальном запуске страницы)
 else
 {
    // Вырисовываем чекбоксы 
-   FunctionsCheckbox($aPhpPrown,ToTest,ChoiceList);
+   FunctionsCheckbox($aPhpTools,ToTest,ChoiceList);
    // Завершаем разметку, так как здесь теста не будет
    echo "\n</body>\n</html>\n";   
 }

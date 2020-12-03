@@ -32,11 +32,11 @@ require_once $SiteHost."/TDoorTryer/DoorTryerPage.php";
 try 
 {
    // Запускаем сценарий сайта
-   //require_once $SiteRoot."/Main.php";
-   $TPhpPrown=$SiteHost.'/TPhpPrown';
-   require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
+   require_once $SiteRoot."/Main.php";
+   //$TPhpPrown=$SiteHost.'/TPhpPrown';
+   //require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
    //echo  prown\getTranslit('загрузчик файлов на сервер').'<br>';
-   echo 'Привет снова!<br>';
+   //echo 'Привет снова!<br>';
 }
 catch (E_EXCEPTION $e) 
 {

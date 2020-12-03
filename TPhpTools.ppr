@@ -21,23 +21,23 @@ TPhpTools
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDir.php
 				TPhpTools\TCtrlDir\ViewDir.php
-			-TException
-				TPhpTools\TException\ExceptionClass.php
-			-TFixLoadTimer
+			+TFixLoadTimer
 				TPhpTools\TFixLoadTimer\FixLoadTimer.js
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
 			-TUploadToServer
-		-TPhpToolsTests
-		+www
+		+TPhpToolsTests
+			TPhpToolsTests\TUploadToServer_test.php
+			TPhpToolsTests\TCtrlDir_test.php
+		-www
 			www\89.gif
 			www\favicon.ico
 			www\index.php
 			www\iniWorkSpace.php
 			www\log.txt
 			www\Main.php
-			www\TPhpPrownTests.js
+			www\TPhpToolsTests.js
 		-Материалы
 			-DownUpLoad
 				-Proba
@@ -197,20 +197,24 @@ TPhpTools
 [Open project files]
 0=www\index.php
 1=www\Main.php
-2=TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
-3=TPhpTools\TPageStarter\PageStarterClass.php
+2=TPhpTools\TPageStarter\PageStarterClass.php
+3=..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php
+4=TPhpToolsTests\TUploadToServer_test.php
 [Selected Project Files]
 Main=
-Selected=www\index.php
+Selected=TPhpToolsTests\TUploadToServer_test.php
 [www\index.php]
-TopLine=17
-Caret=6,38
+TopLine=13
+Caret=6,39
 [www\Main.php]
-TopLine=1
-Caret=1,17
-[TPhpTools\TFixLoadTimer\FixLoadTimerClass.php]
-TopLine=1
-Caret=70,11
+TopLine=130
+Caret=66,140
 [TPhpTools\TPageStarter\PageStarterClass.php]
-TopLine=3
+TopLine=1
 Caret=78,6
+[..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php]
+TopLine=131
+Caret=1,122
+[TPhpToolsTests\TUploadToServer_test.php]
+TopLine=1
+Caret=17,5
