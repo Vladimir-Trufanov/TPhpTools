@@ -106,3 +106,31 @@ Stack trace:
 [03-Dec-2020 21:40:49 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/TCtrlDir_test.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 146
 [03-Dec-2020 21:46:22 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/TCtrlDir_test.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 146
 [03-Dec-2020 21:58:09 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/TFixLoadTimer_test.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 146
+[04-Dec-2020 19:01:09 Asia/Kuwait] PHP Fatal error:  Class 'UnitTestCase' not found in C:\TPhpTools\TPhpToolsTests\TUploadToServer_test.php on line 17
+[04-Dec-2020 19:05:53 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/TPageStarter_proba.php' (include_path='.;C:\php\pear') in C:\TPhpPrown\TPhpPrownTests\FunctionsBlock.php on line 214
+[04-Dec-2020 19:06:07 Asia/Kuwait] PHP Fatal error:  Class 'UnitTestCase' not found in C:\TPhpPrown\TPhpPrownTests\FinalMessage_test.php on line 13
+[04-Dec-2020 19:12:54 Asia/Kuwait] PHP Parse error:  syntax error, unexpected end of file in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 24
+[04-Dec-2020 19:49:06 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'TUploadToServer_proba.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 80
+[04-Dec-2020 22:24:49 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:TUploadToServerUploadToServerClass.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 87
+[04-Dec-2020 22:25:33 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/TUploadToServerUploadToServerClass.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 87
+[04-Dec-2020 22:26:47 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'UploadToServer' not found in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php:20
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(91): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 20
+[04-Dec-2020 22:39:00 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'UploadToServer' not found in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php:25
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(86): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 25
+[04-Dec-2020 22:42:04 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/TUploadToServer/UploadToServerClassi.php' (include_path='.;C:\php\pear') in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 23
+[04-Dec-2020 22:43:16 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'UploadToServer' (T_STRING) in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 36
+[04-Dec-2020 22:48:16 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools' not found in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php:25
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(86): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 25
+[04-Dec-2020 23:05:17 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'try' (T_TRY) in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 19

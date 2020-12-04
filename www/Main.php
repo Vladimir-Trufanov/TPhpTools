@@ -7,25 +7,25 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  03.12.2020
-// Copyright © 2020 tve                              Посл.изменение: 03.12.2020
+// Copyright © 2020 tve                              Посл.изменение: 04.12.2020
 
 // Определяем сайтовые константы
 define ("ChooseAll",  "Выбрать все элементы"); // Первая кнопка Submit  
 define ("ToTest",     "Протестировать");       // Вторая кнопка Submit 
-define ("ChoiceList", "Укажите список прикладных классов библиотеки TPhpTools"); 
+define ("ChoiceList", "Выберите прикладной класс библиотеки TPhpTools для тестирования"); 
 // Подключаем файлы библиотеки прикладных модулей и рабочего пространства
 $TPhpPrown=$SiteHost.'/TPhpPrown';
+require_once $TPhpPrown."/TPhpPrown/iniConstMem.php";
 require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
 require_once $TPhpPrown."/TPhpPrown/Findes.php";
+require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
 /*
 require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
-require_once $TPhpPrown."/TPhpPrown/iniConstMem.php";
 require_once $TPhpPrown."/TPhpPrown/isCalcInBrowser.php";
 require_once $TPhpPrown."/TPhpPrown/MakeCookie.php";
 require_once $TPhpPrown."/TPhpPrown/MakeRegExp.php";
 require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
 require_once $TPhpPrown."/TPhpPrown/MakeType.php";
-require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
 require_once $TPhpPrown."/TPhpPrown/ViewSimpleArray.php";
 */
 // Подключаем модуль обеспечения тестов
@@ -76,6 +76,24 @@ require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
 <a target="_blank" href="#"><img src="89.gif" ></a>
 
 <?php
+
+//prown\ViewGlobal(avgGET);
+//prown\ViewGlobal(avgFILES);
+//prown\ViewGlobal(avgPOST);
+
+$ToolsSubDir='/TPhpTools/TPhpTools/';
+$k='TUploadToServer/';
+require_once $SiteHost.$ToolsSubDir.$k."UploadToServerClass.php";
+//echo $SiteHost.$ToolsSubDir.$k."UploadToServerClass.php";
+
+$TestsSubDir='/TPhpTools/TPhpToolsTests/';
+$k='TUploadToServer';
+require_once $SiteHost.$TestsSubDir.$k."_proba.php";
+
+
+
+
+/*
 // Инициализируем список прикладных функций библиотеки TPhpPrown 
 // и рабочего пространства сайта
 $aPhpTools=array
@@ -127,7 +145,7 @@ $aPhpTools=array
 if (prown\isComRequest(ChooseAll,'formSubmit'))
 {
    // Вырисовываем чекбоксы для тестирования
-   FunctionsCheckbox($aPhpTools,ChooseAll,ChoiceList);
+   FunctionsCheckbox($aPhpTools,ChooseAll,ChoiceList,"radio");
    // Завершаем разметку, так как здесь теста не будет
    echo "\n</body>\n</html>\n";   
 }
@@ -135,16 +153,18 @@ if (prown\isComRequest(ChooseAll,'formSubmit'))
 elseif (prown\isComRequest(ToTest,'formSubmit'))
 {
    // Вырисовываем чекбоксы для тестирования
-   FunctionsCheckbox($aPhpTools,ToTest,ChoiceList);
+   FunctionsCheckbox($aPhpTools,ToTest,ChoiceList,"radio");
    // Запускаем тестирование (тестом будет и завершена разметка)
-   MakeTest($SiteRoot,$aPhpTools,'PHP','/TPhpTools/TPhpToolsTests/');
+   MakeTToolsTest($SiteRoot,$aPhpTools,'PHP','/TPhpTools/TPhpToolsTests/');
 }
 // Выполнить третью ветку (при начальном запуске страницы)
 else
 {
    // Вырисовываем чекбоксы 
-   FunctionsCheckbox($aPhpTools,ToTest,ChoiceList);
+   FunctionsCheckbox($aPhpTools,ToTest,ChoiceList,"radio");
    // Завершаем разметку, так как здесь теста не будет
    echo "\n</body>\n</html>\n";   
 }
+*/
+
 // *************************************************************** Main.php ***
