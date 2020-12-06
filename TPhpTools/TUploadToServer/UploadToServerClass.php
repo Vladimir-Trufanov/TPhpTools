@@ -64,14 +64,23 @@ class UploadToServer
       // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
       // массив для простого доступа к параметрам этого файла
 	   $field = current($this->_uploaded);
-	   $success = move_uploaded_file($field['tmp_name'], $this->_destination . $field['name']);
-      if ($success) 
+      $OK = $this->checkError($field['name'], $field['error']);
+      if ($OK) 
       {
-         $this->_messages[] = $field['name'] . ' uploaded successfully';
-      } 
-      else 
-      {
-         $this->_messages[] = 'Could not upload ' . $field['name'];
+         $sizeOK = $this->checkSize($field['name'], $field['size']);
+         $typeOK = $this->checkType($field['name'], $field['type']);
+         if ($sizeOK && $typeOK) 
+         {
+            $success = move_uploaded_file($field['tmp_name'], $this->_destination . $field['name']);
+            if ($success)
+            {
+               $this->_messages[] = $field['name'] . ' uploaded successfully';
+            } 
+            else 
+            {
+               $this->_messages[] = 'Could not upload ' . $field['name'];
+            }
+         }
       }
    }
    
@@ -80,9 +89,85 @@ class UploadToServer
    {
       return $this->_messages;
    }
-
-
-   
+   // Перевести размер файла в байтах в КБайты
+   public function getMaxSize() 
+   {
+      return number_format($this->_max/1024, 1).'kB';
+   }
+   // Сформировать сообщение по коду ошибки
+   protected function checkError($filename, $error) 
+   {
+      switch ($error) 
+      {
+      case 0:
+         // Загрузка файла успешна, просто возвращаем true
+         return true;
+      case 1:
+         // Размер файла превышает максимальный, указанный в php.ini
+         $this->_messages[] = "$filename exceeds maximum size on PHP.INI: " . $this->getMaxSize();
+      case 2:
+         // Размер файла превышает максимальный, указанный в скрытом поле MAX_FILE_SIZE
+         $this->_messages[] = "$filename exceeds maximum size on MAX_FILE_SIZE: " . $this->getMaxSize();
+         return true;
+      case 3:
+         // Файл загружен частично
+         $this->_messages[] = "Party uploading $filename. Please try again.";
+         return false;
+      case 4:
+         // Данные формы загружены, но файл не был указан
+         $this->_messages[] = 'No file selected.';
+         return false;
+      case 6:
+         // Временная папка отсутствует
+         $this->_messages[] = 'Временная папка отсутствует.';
+         return false;
+      case 7:
+         // Файл невозможно записать на диск
+         $this->_messages[] = 'Файл невозможно записать на диск.';
+         return false;
+      case 8:
+         // Загрузка остановлена неопределенным PHP-расширением
+         $this->_messages[] = 'Загрузка остановлена неопределенным PHP-расширением.';
+         return false;
+      default:
+         $this->_messages[] = 'System error['.$error.'] uploading $filename. Contact webmaster.';
+		return false;
+      }
+   }
+   // Проверить размер файла
+   protected function checkSize($filename, $size) 
+   {
+      if ($size == 0)
+      {
+         // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
+         $this->_messages[] = "$filename ".'слишком большой или не выбран.';
+         return false;
+      } 
+      elseif ($size > $this->_max) 
+      {
+         // Проверяем возможный обход скрытого задания максимального размера 
+         // файла через MAX_FILE_SIZE. 
+         $this->_messages[] = "$filename exceeds maximum size: " . $this->getMaxSize();
+         return false;
+      } 
+      else 
+      {
+         return true;
+      }
+   }
+   // Проверить MIME-тип
+   protected function checkType($filename, $type) 
+   {
+      if (!in_array($type, $this->_permitted)) 
+      {
+         $this->_messages[] = "$filename is not a permitted type of file.";
+         return false;
+      } 
+      else 
+      {
+         return true;
+      }
+   }
    // *************************************************************************
    // *  Проинициализировать параметры php.ini для управления выводом ошибок  *
    // *************************************************************************
