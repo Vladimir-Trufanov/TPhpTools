@@ -42,7 +42,7 @@ class UploadToServer
    protected $_max = 57200;         // максимальный размер файла
    protected $_messages = array();  // массив сообщений по загрузке файла
    protected $_renamed = false;
-   protected $_permitted = array(   // MIME-типы изображений
+   protected $_permitted = array(   // разрешенные MIME-типы (здесь для изображений)
                                  'image/gif',    
 	          							'image/jpeg',
 								         'image/pjpeg',
@@ -158,7 +158,14 @@ class UploadToServer
    // Проверить MIME-тип
    protected function checkType($filename, $type) 
    {
-      if (!in_array($type, $this->_permitted)) 
+      if (empty($type)) 
+      {
+         // Некрасиво! Сюда приходим, когда срабатывает проверка в HTML на MAX_FILE_SIZE
+         // и загрузки не происходит, говорим про это
+         $this->_messages[] = "Не произошло загрузки файла из-за превышения размера по MAX_FILE_SIZE.";
+         return false;
+      } 
+      elseif (!in_array($type, $this->_permitted)) 
       {
          $this->_messages[] = "$filename is not a permitted type of file.";
          return false;
@@ -167,6 +174,52 @@ class UploadToServer
       {
          return true;
       }
+   }
+   // Добавить новые разрешенные типы файлов
+   public function addPermittedTypes($types) 
+   {
+      // Оператором приведения типа реализуем возможность передачи новых
+      // MIME-типов через список, например:
+      // $upload->addPermittedTypes(array('application/pdf','text/plain'));
+      $types = (array) $types;
+      $this->isValidMime($types);
+      $this->_permitted = array_merge($this->_permitted, $types);
+   }
+   // Заменить список разрешенных типов файлов
+   public function setPermittedTypes($types) 
+   {
+      $types = (array) $types;
+      $this->isValidMime($types);
+      $this->_permitted = $types;
+   }
+   // Проверить переданные значения (исключение, если неверный тип)
+   protected function isValidMime($types) 
+   {
+      // 07.12.2020 Здесь сделать в дальнейшем так, чтобы содержался полный список MIME-типов
+      // без добавления на лету (заложить возможность работы с группами типов файлов - изображения,
+      // документы ... и пользовательская группа, собираемая через setPermittedTypes)
+      $alsoValid = array(
+         'image/tiff',
+			'application/pdf',
+			'text/plain',
+			'text/rtf');
+      $valid = array_merge($this->_permitted, $alsoValid);
+      foreach ($types as $type) 
+      {
+         if (!in_array($type, $valid)) 
+         {
+            throw new Exception("$type is not a permitted MIME type");
+         }
+      }
+   }
+   // Изменить значение максимально допустимого размера файла
+   public function setMaxSize($num) 
+   {
+      if (!is_numeric($num)) 
+      {
+         throw new Exception("Maximum size must be a number.");
+      }
+      $this->_max = (int) $num;
    }
    // *************************************************************************
    // *  Проинициализировать параметры php.ini для управления выводом ошибок  *

@@ -21,6 +21,7 @@ if (isset($_POST['upload']))
    
       $upload = new UploadToServer($destination);
       $upload->move();
+      $upload->setMaxSize($max);
       $result = $upload->getMessages();
    } 
    catch (Exception $e) 

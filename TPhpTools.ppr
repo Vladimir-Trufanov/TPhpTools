@@ -207,19 +207,19 @@ TPhpTools
 4=TPhpTools\TUploadToServer\UploadToServerClass.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TUploadToServer\UploadToServerClass.php
+Selected=TPhpToolsTests\TUploadToServer_proba.php
 [www\index.php]
 TopLine=15
 Caret=6,39
 [www\Main.php]
 TopLine=71
-Caret=1,87
+Caret=15,82
 [..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php]
 TopLine=182
 Caret=16,204
 [TPhpToolsTests\TUploadToServer_proba.php]
-TopLine=35
-Caret=6,18
+TopLine=11
+Caret=12,13
 [TPhpTools\TUploadToServer\UploadToServerClass.php]
-TopLine=59
-Caret=4,85
+TopLine=148
+Caret=88,165
