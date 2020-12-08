@@ -41,7 +41,7 @@ class UploadToServer
    protected $_destination;         // каталог для размещения изображения
    protected $_max = 57200;         // максимальный размер файла
    protected $_messages = array();  // массив сообщений по загрузке файла
-   protected $_renamed = false;
+   protected $_renamed = false;     // "имя загруженного файла изменилось"
    protected $_permitted = array(   // разрешенные MIME-типы (здесь для изображений)
                                  'image/gif',    
 	          							'image/jpeg',
@@ -59,7 +59,7 @@ class UploadToServer
    }
    
    // Переместить временный файл в заданный каталог
-   public function move() 
+   public function move($overwrite = false) 
    {
       // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
       // массив для простого доступа к параметрам этого файла
@@ -71,10 +71,16 @@ class UploadToServer
          $typeOK = $this->checkType($field['name'], $field['type']);
          if ($sizeOK && $typeOK) 
          {
-            $success = move_uploaded_file($field['tmp_name'], $this->_destination . $field['name']);
+         	$name = $this->checkName($field['name'], $overwrite);
+            $success = move_uploaded_file($field['tmp_name'],$this->_destination.$name);
             if ($success)
             {
-               $this->_messages[] = $field['name'] . ' uploaded successfully';
+               $message=$field['name'].' uploaded successfully';
+               if ($this->_renamed) 
+               {
+                  $message.=" and renamed $name";
+               }
+               $this->_messages[]=$message;
             } 
             else 
             {
@@ -220,6 +226,53 @@ class UploadToServer
          throw new Exception("Maximum size must be a number.");
       }
       $this->_max = (int) $num;
+   }
+   // Избежать перезаписи существующего файла с таким же именем,
+   // для этого: вставить очередное число перед именем загружаемого файла,
+   // все пробелы в имени файла заменить на символы подчеркивания
+   protected function checkName($name, $overwrite) 
+   {
+      // Заменяем пробелы символами подчеркивания
+      $nospaces = str_replace(' ', '_', $name);
+      // В случае отмечаем, что имя файла изменилось
+      if ($nospaces != $name) 
+      {
+         $this->_renamed = true;
+      }
+      // Если нельзя перезаписывать одноименные файлы,
+      // то готовим измененное имя файла
+      if (!$overwrite) 
+      {
+         // Вытаскиваем массив с именами всех файлов и папок в целевом каталоге
+         $existing = scandir($this->_destination);
+         // Определяем, есть ли имя загруженного файла 
+         // в массиве имен файлов и каталогов
+         if (in_array($nospaces, $existing)) 
+         {
+            // Выделяем имя файла и расширение
+            $dot = strrpos($nospaces, '.');
+            if ($dot) 
+            {
+               $base = substr($nospaces, 0, $dot);
+               $extension = substr($nospaces, $dot);
+            } 
+            else 
+            {
+               $base = $nospaces;
+               $extension = '';
+            }
+            // Генерируем имена файлов с очередным номером и проверяем их присутствие в списке.
+            // В случае отсутствия в списке запоминаем имя и выходим из цикла
+            $i = 1;
+            do 
+            {
+               $nospaces = $base . '_' . $i++ . $extension;
+            } 
+            while (in_array($nospaces, $existing));
+            $this->_renamed = true;
+         }
+      }
+      return $nospaces;
    }
    // *************************************************************************
    // *  Проинициализировать параметры php.ini для управления выводом ошибок  *
