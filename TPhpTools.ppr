@@ -218,8 +218,8 @@ Caret=15,82
 TopLine=182
 Caret=16,204
 [TPhpToolsTests\TUploadToServer_proba.php]
-TopLine=5
-Caret=21,23
+TopLine=11
+Caret=28,22
 [TPhpTools\TUploadToServer\UploadToServerClass.php]
-TopLine=62
-Caret=1,84
+TopLine=1
+Caret=23,1

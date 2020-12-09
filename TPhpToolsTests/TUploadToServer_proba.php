@@ -19,7 +19,7 @@ if (isset($_POST['upload']))
    try 
    {
    
-      $upload = new UploadToServer($destination);
+      $upload = new ttools\UploadToServer($destination);
       $upload->move();
       $upload->setMaxSize($max);
       $result = $upload->getMessages();

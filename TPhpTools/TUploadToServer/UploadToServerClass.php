@@ -1,5 +1,4 @@
-<?php 
-// namespace ttools; 
+<?php namespace ttools; 
                                          
 // PHP7/HTML5, EDGE/CHROME                      *** UploadToServerClass.php ***
 
