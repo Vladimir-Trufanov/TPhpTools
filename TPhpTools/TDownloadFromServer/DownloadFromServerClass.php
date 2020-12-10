@@ -1,0 +1,334 @@
+<?php namespace ttools; 
+                                         
+// PHP7/HTML5, EDGE/CHROME                  *** DownloadFromServerClass.php ***
+
+// ****************************************************************************
+// * TPhpTools                                     Выгрузчик файлов с сервера *
+// *                                                                          *
+// * v1.0, 10.12.2020                              Автор:       Труфанов В.Е. *
+// * Copyright © 2020 tve                          Дата создания:  10.12.2020 *
+// ****************************************************************************
+
+/**
+ * Класс FixLoadTimer обеспечивает расчет и регистрацию текущего, среднего,
+ * наибольшего и наименьшего времени загрузки страницы сайта. По умолчанию 
+ * определенные данные записываются в памяти браузера LocalStorage. 
+ * Если браузером LocalStorage не поддерживается, то расчитанные значения 
+ * записываются в кукисы. 
+**/
+
+// Свойства:
+//
+// $FltLead - команда управления передачей данных. По умолчанию fltNotTransmit,
+//            то есть данные о загрузке не передаются для контроля ни в кукисы, 
+// ни в консоль, а только записываются в LocalStorage. Если LocalStorage,
+// браузером не поддерживается, то данные будут записываться в кукисы при 
+// установке свойства $FltLead в значение fltSendCookies или fltAll 
+// $Page - название страницы сайта;
+// $Uagent - браузер пользователя;
+
+// ----------------------- Константы управления передачей данных о загрузке ---
+/*
+define ("fltNotTransmit",  0); // данные не передаются  
+define ("fltWriteConsole", 1); // записываются в консоль
+define ("fltSendCookies",  2); // отправляются в кукисы
+define ("fltAll",          3); // записываются в консоль, отправляются в кукисы  
+*/
+
+class DownloadFromServer
+{
+
+   protected $_filepath = '';        
+
+   public function __construct($filepath) 
+   {
+ 
+	   $this->_filepath = $filepath;
+   }
+
+// Переместить временный файл в заданный каталог
+public function move() 
+{
+        // define error page
+        //$error = 'error.php';
+        //header("Location: $error");
+        //echo 'Привет!';
+        
+        
+   $getfile = NULL;
+
+   // block any attempt to explore the filesystem
+   if (isset($_GET['file']) && basename($_GET['file']) == $_GET['file']) 
+   {
+      $getfile = $_GET['file'];
+   } 
+   else 
+   {
+      header("Location: $error");
+      exit;
+   }
+
+   if ($getfile) 
+   {
+      $path = $this->_filepath . $getfile;
+      // check that it exists and is readable
+      if (file_exists($path) && is_readable($path)) 
+      {
+         // send the appropriate headers
+         header('Content-Type: application/octet-stream');
+         header('Content-Length: '. filesize($path));
+         header('Content-Disposition: attachment; filename=' . $getfile);
+         header('Content-Transfer-Encoding: binary');
+         // output the file content
+         readfile($path);
+      } 
+      else 
+      {
+         header("Location: $error");
+      }
+   }
+
+        
+}
+
+/*   
+   
+   // Вывести массив сообщений о загрузке файла
+   public function getMessages() 
+   {
+      return $this->_messages;
+   }
+   // Перевести размер файла в байтах в КБайты
+   public function getMaxSize() 
+   {
+      return number_format($this->_max/1024, 1).'kB';
+   }
+   // Сформировать сообщение по коду ошибки
+   protected function checkError($filename, $error) 
+   {
+      switch ($error) 
+      {
+      case 0:
+         // Загрузка файла успешна, просто возвращаем true
+         return true;
+      case 1:
+         // Размер файла превышает максимальный, указанный в php.ini
+         $this->_messages[] = "$filename exceeds maximum size on PHP.INI: " . $this->getMaxSize();
+      case 2:
+         // Размер файла превышает максимальный, указанный в скрытом поле MAX_FILE_SIZE
+         $this->_messages[] = "$filename exceeds maximum size on MAX_FILE_SIZE: " . $this->getMaxSize();
+         return true;
+      case 3:
+         // Файл загружен частично
+         $this->_messages[] = "Party uploading $filename. Please try again.";
+         return false;
+      case 4:
+         // Данные формы загружены, но файл не был указан
+         $this->_messages[] = 'No file selected.';
+         return false;
+      case 6:
+         // Временная папка отсутствует
+         $this->_messages[] = 'Временная папка отсутствует.';
+         return false;
+      case 7:
+         // Файл невозможно записать на диск
+         $this->_messages[] = 'Файл невозможно записать на диск.';
+         return false;
+      case 8:
+         // Загрузка остановлена неопределенным PHP-расширением
+         $this->_messages[] = 'Загрузка остановлена неопределенным PHP-расширением.';
+         return false;
+      default:
+         $this->_messages[] = 'System error['.$error.'] uploading $filename. Contact webmaster.';
+		return false;
+      }
+   }
+   // Проверить размер файла
+   protected function checkSize($filename, $size) 
+   {
+      if ($size == 0)
+      {
+         // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
+         $this->_messages[] = "$filename ".'слишком большой или не выбран.';
+         return false;
+      } 
+      elseif ($size > $this->_max) 
+      {
+         // Проверяем возможный обход скрытого задания максимального размера 
+         // файла через MAX_FILE_SIZE. 
+         $this->_messages[] = "$filename exceeds maximum size: " . $this->getMaxSize();
+         return false;
+      } 
+      else 
+      {
+         return true;
+      }
+   }
+   // Проверить MIME-тип
+   protected function checkType($filename, $type) 
+   {
+      if (empty($type)) 
+      {
+         // Некрасиво! Сюда приходим, когда срабатывает проверка в HTML на MAX_FILE_SIZE
+         // и загрузки не происходит, говорим про это
+         $this->_messages[] = "Не произошло загрузки файла из-за превышения размера по MAX_FILE_SIZE.";
+         return false;
+      } 
+      elseif (!in_array($type, $this->_permitted)) 
+      {
+         $this->_messages[] = "$filename is not a permitted type of file.";
+         return false;
+      } 
+      else 
+      {
+         return true;
+      }
+   }
+   // Добавить новые разрешенные типы файлов
+   public function addPermittedTypes($types) 
+   {
+      // Оператором приведения типа реализуем возможность передачи новых
+      // MIME-типов через список, например:
+      // $upload->addPermittedTypes(array('application/pdf','text/plain'));
+      $types = (array) $types;
+      $this->isValidMime($types);
+      $this->_permitted = array_merge($this->_permitted, $types);
+   }
+   // Заменить список разрешенных типов файлов
+   public function setPermittedTypes($types) 
+   {
+      $types = (array) $types;
+      $this->isValidMime($types);
+      $this->_permitted = $types;
+   }
+   // Проверить переданные значения (исключение, если неверный тип)
+   protected function isValidMime($types) 
+   {
+      // 07.12.2020 Здесь сделать в дальнейшем так, чтобы содержался полный список MIME-типов
+      // без добавления на лету (заложить возможность работы с группами типов файлов - изображения,
+      // документы ... и пользовательская группа, собираемая через setPermittedTypes)
+      $alsoValid = array(
+         'image/tiff',
+			'application/pdf',
+			'text/plain',
+			'text/rtf');
+      $valid = array_merge($this->_permitted, $alsoValid);
+      foreach ($types as $type) 
+      {
+         if (!in_array($type, $valid)) 
+         {
+            throw new Exception("$type is not a permitted MIME type");
+         }
+      }
+   }
+   // Изменить значение максимально допустимого размера файла
+   public function setMaxSize($num) 
+   {
+      if (!is_numeric($num)) 
+      {
+         throw new Exception("Maximum size must be a number.");
+      }
+      $this->_max = (int) $num;
+   }
+   // Избежать перезаписи существующего файла с таким же именем,
+   // для этого: вставить очередное число перед именем загружаемого файла,
+   // все пробелы в имени файла заменить на символы подчеркивания
+   protected function checkName($name, $overwrite) 
+   {
+      // Заменяем пробелы символами подчеркивания
+      $nospaces = str_replace(' ', '_', $name);
+      // В случае отмечаем, что имя файла изменилось
+      if ($nospaces != $name) 
+      {
+         $this->_renamed = true;
+      }
+      // Если нельзя перезаписывать одноименные файлы,
+      // то готовим измененное имя файла
+      if (!$overwrite) 
+      {
+         // Вытаскиваем массив с именами всех файлов и папок в целевом каталоге
+         $existing = scandir($this->_destination);
+         // Определяем, есть ли имя загруженного файла 
+         // в массиве имен файлов и каталогов
+         if (in_array($nospaces, $existing)) 
+         {
+            // Выделяем имя файла и расширение
+            $dot = strrpos($nospaces, '.');
+            if ($dot) 
+            {
+               $base = substr($nospaces, 0, $dot);
+               $extension = substr($nospaces, $dot);
+            } 
+            else 
+            {
+               $base = $nospaces;
+               $extension = '';
+            }
+            // Генерируем имена файлов с очередным номером и проверяем их присутствие в списке.
+            // В случае отсутствия в списке запоминаем имя и выходим из цикла
+            $i = 1;
+            do 
+            {
+               $nospaces = $base . '_' . $i++ . $extension;
+            } 
+            while (in_array($nospaces, $existing));
+            $this->_renamed = true;
+         }
+      }
+      return $nospaces;
+   }
+   // *************************************************************************
+   // *  Проинициализировать параметры php.ini для управления выводом ошибок  *
+   // *************************************************************************
+   private function InisetErrors()
+   {
+   // Определяем режим вывода ошибок:
+   //   если display_errors = on, то в случае ошибки браузер получит html 
+   // c текстом ошибки и кодом 200
+   //   если же display_errors = off, то для фатальных ошибок код ответа будет 500
+   // и результат не будет возвращён пользователю, для остальных ошибок – 
+   // код будет работать неправильно, но никому об этом не расскажет
+   ini_set('display_errors','Off');
+   // Определяем режим вывода ошибок при запуске PHP:
+   //   если = on, то даже при включённом display_errors возникающие ошибки во 
+   // время запуска PHP, не будут отображаться. 
+   ini_set('display_startup_errors','Off');
+   // Определяем ведение журнала, в котором будут сохраняться сообщения об ошибках.
+   // Это может быть журнал сервера или error_log. Применимость этой настройки 
+   // зависит от конкретного сервера.
+   //   При работе на готовых работающих web сайтах следует протоколировать 
+   // ошибки там, где они отображаются. Настойчиво рекомендуем включать директиву 
+   // display_startup_errors только для отладки.
+   ini_set('log_errors','On');
+   ini_set('error_log','log.txt');
+   // Определяем типы выводимых ошибок
+   // (здесь указываем все, кроме устаревающих)
+   error_reporting(E_ALL & ~E_DEPRECATED);
+   }
+   
+   // .HTACCESS
+   // ## Устанавливаем кодировку сайта по умолчанию
+   // AddDefaultCharset utf-8
+   // ## Определяем, что будет использоваться кукис для хранения идентификатора 
+   // ## сессии на стороне клиента. on[boolean] = "включено".
+   // php_flag session.use_cookies on
+   // php_flag session.use_cookies on
+   // php_value session.cookie_lifetime 10800
+   // 
+   // .USER.INI
+   // ; Определяем, что будет использоваться кукис для хранения идентификатора 
+   // ; сессии на стороне клиента. 1[boolean] = "включено".
+   // session.use_cookies = 1
+   // session.cookie_lifetime = 10803
+   // ; Определяем, что сессию автоматически при старте не запускать.
+   // session.auto_start = 0
+
+*/
+
+   
+   
+   
+   
+} 
+
+// ******************************************** DownloadFromServerClass.php ***
