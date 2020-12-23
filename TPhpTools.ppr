@@ -17,31 +17,41 @@ Extensions=*.*
 [Project tree]
 TPhpTools
 	+TPhpTools
-		+TPhpTools
+		-TPhpTools
+			-TBaseMaker
+				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDir.php
 				TPhpTools\TCtrlDir\ViewDir.php
-			+TFixLoadTimer
+			-TDownloadFromServer
+				TPhpTools\TDownloadFromServer\download.php
+				TPhpTools\TDownloadFromServer\DownloadFromServerClass.php
+				TPhpTools\TDownloadFromServer\pic.png
+			-TFixLoadTimer
 				TPhpTools\TFixLoadTimer\FixLoadTimer.js
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			+TUploadToServer
+			-TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
-		+TPhpToolsTests
+		-TPhpToolsTests
 			TPhpToolsTests\Findes_test.php
 			TPhpToolsTests\TCtrlDir_test.php
 			TPhpToolsTests\TFixLoadTimer_test.php
 			TPhpToolsTests\TPageStarter_test.php
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
-		-www
+		+www
+			+css
+				www\css\Styles.css
+			-Gallery
 			www\89.gif
 			www\favicon.ico
 			www\index.php
 			www\iniWorkSpace.php
 			www\log.txt
 			www\Main.php
+			www\MainOld.php
 			www\TPhpToolsTests.js
 		-Материалы
 			-DownUpLoad
@@ -202,24 +212,16 @@ TPhpTools
 [Open project files]
 0=www\index.php
 1=www\Main.php
-2=..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php
-3=TPhpToolsTests\TUploadToServer_proba.php
-4=TPhpTools\TUploadToServer\UploadToServerClass.php
+2=www\css\Styles.css
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TUploadToServer_proba.php
+Selected=www\Main.php
 [www\index.php]
-TopLine=15
-Caret=6,39
+TopLine=25
+Caret=1,47
 [www\Main.php]
-TopLine=71
-Caret=15,82
-[..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php]
-TopLine=182
-Caret=16,204
-[TPhpToolsTests\TUploadToServer_proba.php]
-TopLine=11
-Caret=28,22
-[TPhpTools\TUploadToServer\UploadToServerClass.php]
-TopLine=1
-Caret=23,1
+TopLine=23
+Caret=13,44
+[www\css\Styles.css]
+TopLine=35
+Caret=1,2
