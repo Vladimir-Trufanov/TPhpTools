@@ -1,0 +1,94 @@
+/* CSS Document */
+body 
+{
+   font-size: 16px;
+}
+*, *:before, *:after 
+{
+   -webkit-border-sizing: border-box;
+   -moz-border-sizing: border-box;
+   border-sizing: border-box;
+}
+.dropdown 
+{
+   position: relative;
+}
+.dropdown [data-toggle="dropdown"] 
+{
+   display: block;
+}
+/**
+ * input[type="checkbox"] нужен для того, чтобы определить, когда нужно 
+ * разворачивать меню. 
+**/
+.dropdown > input[type="checkbox"] 
+{
+   opacity: 1;
+   display: block;
+   position: absolute;
+   top: 0;
+   right: 0;
+   /*width: 100%;
+   height: 100%;*/
+   cursor: pointer;
+}
+/**
+ * В обычном состоянии подпункты меню свернуты (max-height=0), пока не выбран checkbox
+**/
+.dropdown > .dropdown-menu  
+{
+   max-height: 0;
+   display: block;
+   overflow: hidden;
+   list-style: none;
+   padding: 0;
+   margin: 0;
+}
+.dropdown > input[type="checkbox"]:checked ~ .dropdown-menu 
+{
+   max-height: 100%;
+}
+/**
+ * Устанавливаем фоны
+**/
+li
+{
+   background: yellow;
+   width: 100%;
+}
+a
+{
+   background: red;
+   width: 100%;
+}
+ul
+{
+   background: green;
+}
+
+li:hover
+{
+   background: orange;
+}
+a:hover
+{
+   background: magenta;
+}
+li:target
+{
+   background: white;
+}
+ul:hover
+{
+   background: teal;
+}
+
+.dropdown input
+{
+   z-index: 100; 
+}
+.dropdown a
+{
+   z-index: 200; 
+}
+

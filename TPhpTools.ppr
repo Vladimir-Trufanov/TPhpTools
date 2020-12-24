@@ -43,8 +43,10 @@ TPhpTools
 			TPhpToolsTests\TUploadToServer_test.php
 		+www
 			+css
-				www\css\Styles 1.css
 				www\css\Styles.css
+				www\css\Styles 2.css
+				www\css\Styles.css
+				www\css\Styles3.css
 			-Gallery
 			www\89.gif
 			www\favicon.ico
@@ -213,7 +215,9 @@ TPhpTools
 [Open project files]
 0=www\index.php
 1=www\Main.php
-2=www\css\Styles.css
+2=www\css\Styles 2.css
+3=www\css\Styles3.css
+4=www\css\Styles.css
 [Selected Project Files]
 Main=
 Selected=www\css\Styles.css
@@ -221,8 +225,14 @@ Selected=www\css\Styles.css
 TopLine=25
 Caret=1,47
 [www\Main.php]
-TopLine=26
-Caret=20,23
+TopLine=9
+Caret=85,29
+[www\css\Styles 2.css]
+TopLine=91
+Caret=1,75
+[www\css\Styles3.css]
+TopLine=13
+Caret=20,49
 [www\css\Styles.css]
-TopLine=95
-Caret=24,111
+TopLine=65
+Caret=8,55

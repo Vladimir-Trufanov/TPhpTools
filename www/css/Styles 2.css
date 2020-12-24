@@ -1,0 +1,122 @@
+/* CSS Document */
+body 
+{
+   font-size: 16px;
+}
+*, *:before, *:after 
+{
+   -webkit-border-sizing: border-box;
+   -moz-border-sizing: border-box;
+   border-sizing: border-box;
+}
+.container 
+{
+   background: white; /*#C0392B;*/
+  /* width: 350px;
+   margin: 50px auto; */
+   
+}
+.container > ul 
+{
+   list-style: none;
+   padding: 0;
+   margin: 0 0 20px 0;
+}
+.dropdown 
+{
+   position: relative;
+}
+.dropdown a 
+{
+   text-decoration: none;
+}
+.dropdown [data-toggle="dropdown"] 
+{
+   display: block;
+   /*
+   -moz-box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
+   -webkit-box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
+   box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
+   */
+   /*text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);*/
+   padding: 10px;
+}
+/*.dropdown:hover
+.dropdown li input:hover,
+.dropdown li input:hover,*/
+/*
+li:hover,
+.dropdown:hover
+{
+   background: #cd3d2e;
+}
+*/
+.dropdown > .dropdown-menu  /* когда скрываем подменю */
+{
+   max-height: 0;
+   overflow: hidden;
+   list-style: none;
+   padding: 0;
+   margin: 0;
+   -moz-transform: scaleY(0);
+   -ms-transform: scaleY(0);
+   -webkit-transform: scaleY(0);
+   transform: scaleY(0);
+}
+.dropdown > .dropdown-menu li \
+{
+   padding: 0;
+}
+.dropdown > .dropdown-menu li a 
+{
+   display: block;
+   color: #6f6f6f;
+   background: red; /* #EEE; */
+   -moz-box-shadow: 0 1px 0 white inset, 0 -1px 0 #d5d5d5 inset;
+   -webkit-box-shadow: 0 1px 0 white inset, 0 -1px 0 #d5d5d5 inset;
+   box-shadow: 0 1px 0 white inset, 0 -1px 0 #d5d5d5 inset;
+   text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.3);
+   padding: 10px 10px;
+}
+
+.dropdown > input[type="checkbox"] 
+{
+   opacity: 0;
+   display: block;
+   position: absolute;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   cursor: pointer;
+}
+
+.dropdown > input[type="checkbox"]:checked ~ .dropdown-menu 
+{
+   max-height: 9999px;
+   display: block;
+   -moz-transform: scaleY(1);
+   -ms-transform: scaleY(1);
+   -webkit-transform: scaleY(1);
+   transform: scaleY(1);
+   
+   -moz-transition: max-height 4s ease-in-out;
+   -o-transition: max-height 4s ease-in-out;
+   -webkit-transition: max-height 4s ease-in-out;
+   transition: max-height 4s ease-in-out;
+}
+
+/* Выделяем пункты меню при наезде */
+.dropdown > .dropdown-menu li a:hover 
+{
+   background: #f6f6f6;
+}
+.dropdown [data-toggle="dropdown"] 
+{
+   color: white;
+   background: #C0392B;
+}
+.dropdown [data-toggle="dropdown"]:hover 
+{
+   color: black;
+   background: yellow;
+}

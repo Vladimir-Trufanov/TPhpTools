@@ -21,17 +21,17 @@
    <div class="container">
    <ul>
    <li id=AllTests class="dropdown">
-      <input type="checkbox" />
+      <!-- <input type="checkbox" /> -->
       <a href="#" data-toggle="dropdown">Все тесты</a>
    </li>
    <li class="dropdown">
-      <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">TBaseMaker</a>
+      <input type="checkbox">
+      <a href="#TBaseMaker" data-toggle="dropdown">TBaseMaker<span>10.07.2010</span></a> 
       <ul class="dropdown-menu">
-         <li><a href="#">TBaseMaker 1</a></li>
-         <li><a href="#">TBaseMaker 2</a></li>
-         <li><a href="#">TBaseMaker 3</a></li>
-         <li><a href="#">TBaseMaker 3</a></li>
+         <li><a href="#TBaseMaker1">TBaseMaker1<span>10.07.2010</span></a></li>
+         <li><a href="#TBaseMaker2">TBaseMaker2<span>10.07.2010</span></a></li>
+         <li><a href="#TBaseMaker3">TBaseMaker3<span>10.07.2010</span></a></li>
+         <li><a href="#TBaseMaker4">TBaseMaker4<span>10.07.2010</span></a></li>
       </ul>
    </li>
    <li class="dropdown">
