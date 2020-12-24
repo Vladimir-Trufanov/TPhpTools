@@ -43,6 +43,7 @@ TPhpTools
 			TPhpToolsTests\TUploadToServer_test.php
 		+www
 			+css
+				www\css\Styles 1.css
 				www\css\Styles.css
 			-Gallery
 			www\89.gif
@@ -215,13 +216,13 @@ TPhpTools
 2=www\css\Styles.css
 [Selected Project Files]
 Main=
-Selected=www\Main.php
+Selected=www\css\Styles.css
 [www\index.php]
 TopLine=25
 Caret=1,47
 [www\Main.php]
-TopLine=23
-Caret=13,44
+TopLine=26
+Caret=20,23
 [www\css\Styles.css]
-TopLine=35
-Caret=1,2
+TopLine=95
+Caret=24,111

@@ -8,61 +8,84 @@
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  03.12.2020
 // Copyright © 2020 tve                              Посл.изменение: 23.12.2020
-
 ?>
 <!DOCTYPE html>
-<html >
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Only CSS3 Dropdown Menu</title>
-  
- <!-- 
-      <link rel="stylesheet" href="css/Styles.css">
-  --> 
-  
+   <meta charset="UTF-8">
+   <title>TPhpTools-test</title>
+   <link rel="stylesheet" href="css/Styles.css">
 </head>
 
 <body>
-  <div class="container">
-  <h1 class="title">Dropdown Menu</h1>
-  <ul>
-    <li class="dropdown">
+   <div class="container">
+   <ul>
+   <li id=AllTests class="dropdown">
       <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">First Menu</a>
-      <ul class="dropdown-menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </li>
-    <li class="dropdown">
+      <a href="#" data-toggle="dropdown">Все тесты</a>
+   </li>
+   <li class="dropdown">
       <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">Second Menu</a>
+      <a href="#" data-toggle="dropdown">TBaseMaker</a>
       <ul class="dropdown-menu">
-        <li>
-            <input type="checkbox" />
-            <a href="#">Home</a>
-        </li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
+         <li><a href="#">TBaseMaker 1</a></li>
+         <li><a href="#">TBaseMaker 2</a></li>
+         <li><a href="#">TBaseMaker 3</a></li>
+         <li><a href="#">TBaseMaker 3</a></li>
       </ul>
-    </li>
-    <li class="dropdown">
+   </li>
+   <li class="dropdown">
       <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">Third Menu</a>
+      <a href="#" data-toggle="dropdown">TCtrlDir</a>
       <ul class="dropdown-menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
+         <li><a href="#">TCtrlDir 1</a></li>
+         <li><a href="#">TCtrlDir 2</a></li>
+         <li><a href="#">TCtrlDir 3</a></li>
+         <li><a href="#">TCtrlDir 4</a></li>
       </ul>
-    </li>
-  </ul>
-</div>
-  
-  
+   </li>
+   <li class="dropdown">
+      <input type="checkbox" />
+      <a href="#" data-toggle="dropdown">TDownloadFromServer</a>
+      <ul class="dropdown-menu">
+         <li><a href="#">TDownloadFromServer 1</a></li>
+         <li><a href="#">TDownloadFromServer 2</a></li>
+         <li><a href="#">TDownloadFromServer 3</a></li>
+         <li><a href="#">TDownloadFromServer 4</a></li>
+      </ul>
+   </li>
+   <li class="dropdown">
+      <input type="checkbox" />
+      <a href="#" data-toggle="dropdown">TFixLoadTimer</a>
+      <ul class="dropdown-menu">
+         <li><a href="#">TFixLoadTimer 1</a></li>
+         <li><a href="#">TFixLoadTimer 2</a></li>
+         <li><a href="#">TFixLoadTimer 3</a></li>
+         <li><a href="#">TFixLoadTimer 4</a></li>
+      </ul>
+   </li>
+   <li class="dropdown">
+      <input type="checkbox" />
+      <a href="#" data-toggle="dropdown">TPageStarter</a>
+      <ul class="dropdown-menu">
+         <li><a href="#">TPageStarter 1</a></li>
+         <li><a href="#">TPageStarter 2</a></li>
+         <li><a href="#">TPageStarter 3</a></li>
+         <li><a href="#">TPageStarter 4</a></li>
+      </ul>
+   </li>
+   <li class="dropdown">
+      <input type="checkbox" />
+      <a href="#" data-toggle="dropdown">TUploadToServer</a>
+      <ul class="dropdown-menu">
+         <li><a href="#">TUploadToServer 1</a></li>
+         <li><a href="#">TUploadToServer 2</a></li>
+         <li><a href="#">TUploadToServer 3</a></li>
+         <li><a href="#">TUploadToServer 4</a></li>
+      </ul>
+   </li>
+   </ul>
+   </div>
 </body>
 </html>
 <?php
