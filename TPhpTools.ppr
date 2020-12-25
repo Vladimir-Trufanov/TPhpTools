@@ -220,19 +220,19 @@ TPhpTools
 4=www\css\Styles.css
 [Selected Project Files]
 Main=
-Selected=www\css\Styles.css
+Selected=www\Main.php
 [www\index.php]
 TopLine=25
 Caret=1,47
 [www\Main.php]
-TopLine=9
-Caret=85,29
+TopLine=119
+Caret=1,134
 [www\css\Styles 2.css]
-TopLine=91
+TopLine=75
 Caret=1,75
 [www\css\Styles3.css]
-TopLine=13
+TopLine=21
 Caret=20,49
 [www\css\Styles.css]
-TopLine=65
+TopLine=55
 Caret=8,55
