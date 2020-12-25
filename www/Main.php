@@ -9,13 +9,11 @@
 //                                                   Дата создания:  03.12.2020
 // Copyright © 2020 tve                              Посл.изменение: 23.12.2020
 
-
+/*
 ?>
 <div>
 
 <style>
-
-/* *{font-family: 'Roboto', sans-serif;} */
 
 @keyframes click-wave {
   0% {
@@ -100,39 +98,45 @@ body {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   text-align: center;
 }
-body div {
-  padding: 5rem;
+body div 
+{
+  padding: .5rem;
 }
-body label {
+body label 
+{
   display: block;
   line-height: 40px;
 }
 
-.f
+.dd
 {
-   float: left;
-   width: 10%;
+   backgroung: red;
+   width: 20rem;
 }
-.s
+index
 {
-   width: 10%;
+   width: 10rem;
 }
 
 </style>
 
   <label>
     <input type="checkbox" class="option-input checkbox" checked />
-    Checkbox
+    
   </label>
+  
+  <div class="dd">
+  <label class="ld">
+    <input type="checkbox" class="option-input checkbox" />
+  </label>
+  </div>
+  
   <label>
     <input type="checkbox" class="option-input checkbox" />
-    Checkbox
-  </label>
-  <label>
-    <input type="checkbox" class="option-input checkbox" />
-    Checkbox
+    <!-- Checkbox -->
     </label>
 </div>
+<!--  
 <div>
   <label>
     <input type="radio" class="option-input radio" name="example" checked />
@@ -146,8 +150,11 @@ body label {
     <input type="radio" class="option-input radio" name="example" />
     Radio option
   </label>
+-->
 </div>
 <?php
+*/
+
 
 /*
 ?>
@@ -188,7 +195,7 @@ body label {
 <?php
 */
 
-/*
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -227,7 +234,7 @@ body label {
    </li>
    <li class="dropdown">
       <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">TDownloadFromServer</a>
+      <a href="#" data-toggle="dropdown">TDownloadFromServer<span id="s1" class='sp'>&#9788;</span></a>
       <ul class="dropdown-menu">
          <li><a href="#">TDownloadFromServer 1</a></li>
          <li><a href="#">TDownloadFromServer 2</a></li>
@@ -237,7 +244,7 @@ body label {
    </li>
    <li class="dropdown">
       <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">TFixLoadTimer</a>
+      <a href="#" data-toggle="dropdown">TFixLoadTimer<span id="s2" class='sp'>&#9788;</span></a>
       <ul class="dropdown-menu">
          <li><a href="#">TFixLoadTimer 1</a></li>
          <li><a href="#">TFixLoadTimer 2</a></li>
@@ -246,8 +253,8 @@ body label {
       </ul>
    </li>
    <li class="dropdown">
-      <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">TPageStarter</a>
+      <input type="checkbox" />  
+      <a href="#" data-toggle="dropdown">TPageStarter<span id="s3" class='sp'>&#9788;</span></a>
       <ul class="dropdown-menu">
          <li><a href="#">TPageStarter 1</a></li>
          <li><a href="#">TPageStarter 2</a></li>
@@ -257,7 +264,7 @@ body label {
    </li>
    <li class="dropdown">
       <input type="checkbox" />
-      <a href="#" data-toggle="dropdown">TUploadToServer</a>
+      <a href="#" data-toggle="dropdown">TUploadToServer<span id="s4" class='sp'>&#9788;</span></a>
       <ul class="dropdown-menu">
          <li><a href="#">TUploadToServer 1</a></li>
          <li><a href="#">TUploadToServer 2</a></li>
@@ -266,9 +273,65 @@ body label {
       </ul>
    </li>
    </ul>
+   
+<!-- -->
+<ul>
+   
+<li id=AllTests1 class="dropdown1">
+   <label>
+      <input type="checkbox" class="option-input checkbox1" /> 
+   </label>
+   <a href="#" data-toggle="dropdown1">Проба1 Проба1 Проба1 Все тесты</a>
+</li>
+<li id=AllTests2 class="dropdown1">
+   <label>
+      <input type="checkbox" class="option-input checkbox1" /> 
+   </label>
+   <a href="#" data-toggle="dropdown1">Проба2 Проба2 Проба2 Все тесты</a>
+</li>
+</ul>
+<!-- -->
+   
    </div>
+
+<style>
+.dropdown1 {position:relative;}
+.dropdown1 a{text-decoration:none;}
+
+.dropdown1 [data-toggle="dropdown1"] 
+{
+   display: block;
+   color: white;
+   background: #C0392B;
+   padding: 10px;
+   /*
+   -moz-box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
+   -webkit-box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
+   box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
+   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+   */
+}
+
+
+.dropdown1 > label > input[type="checkbox"] 
+{
+   opacity: 1;
+   display: block;
+   position: absolute;
+   top: 0;
+   /*
+   width: 100%;
+   height: 100%;
+   */
+   cursor: pointer;
+}
+
+</style>   
+
 </body>
 </html>
+
+
 <?php
-*/
+
 // <!-- --> ************************************************** MobiSite.php ***

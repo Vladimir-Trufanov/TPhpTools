@@ -214,25 +214,25 @@ TPhpTools
 		Пример формы класса.php
 [Open project files]
 0=www\index.php
-1=www\Main.php
-2=www\css\Styles 2.css
-3=www\css\Styles3.css
+1=www\css\Styles 2.css
+2=www\css\Styles3.css
+3=www\Main.php
 4=www\css\Styles.css
 [Selected Project Files]
 Main=
-Selected=www\Main.php
+Selected=www\css\Styles.css
 [www\index.php]
 TopLine=25
 Caret=1,47
-[www\Main.php]
-TopLine=119
-Caret=1,134
 [www\css\Styles 2.css]
 TopLine=75
 Caret=1,75
 [www\css\Styles3.css]
-TopLine=21
+TopLine=49
 Caret=20,49
+[www\Main.php]
+TopLine=242
+Caret=1,256
 [www\css\Styles.css]
-TopLine=55
-Caret=8,55
+TopLine=23
+Caret=21,34
