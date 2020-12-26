@@ -218,10 +218,9 @@ TPhpTools
 2=www\css\Styles3.css
 3=www\Main.php
 4=www\css\Styles.css
-5=www\MainOld.php
 [Selected Project Files]
 Main=
-Selected=www\css\Styles.css
+Selected=www\Main.php
 [www\index.php]
 TopLine=25
 Caret=1,47
@@ -232,11 +231,8 @@ Caret=1,75
 TopLine=49
 Caret=20,49
 [www\Main.php]
-TopLine=198
-Caret=87,199
+TopLine=1
+Caret=1,35
 [www\css\Styles.css]
-TopLine=150
-Caret=30,169
-[www\MainOld.php]
-TopLine=23
-Caret=1,1
+TopLine=21
+Caret=1,37
