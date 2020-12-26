@@ -203,6 +203,8 @@ index
    <meta charset="UTF-8">
    <title>TPhpTools-test</title>
    <link rel="stylesheet" href="css/Styles.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body>
@@ -254,7 +256,11 @@ index
    </li>
    <li class="dropdown">
       <input type="checkbox" />  
+       <!-- 
       <a href="#" data-toggle="dropdown">TPageStarter<span id="s3" class='sp'>&#9788;</span></a>
+      -->
+      <a href="#" data-toggle="dropdown">TPageStarter<span id="s3" 
+         class='sp'><i class="fa fa-snowflake-o" aria-hidden="true"></i></span></a>
       <ul class="dropdown-menu">
          <li><a href="#">TPageStarter 1</a></li>
          <li><a href="#">TPageStarter 2</a></li>

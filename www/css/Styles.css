@@ -31,10 +31,8 @@ body
 .dropdown [data-toggle="dropdown"] 
 {
    display: block;
-   /*color: white;*/
-   /*background: #C0392B; */
-   color: #6f6f6f;
-   background: #EEE;
+   color: white;
+   background: #C0392B; 
    -moz-box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
    -webkit-box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
    box-shadow: 0 1px 0 #d65548 inset, 0 -1px 0 #962d22 inset;
@@ -64,21 +62,6 @@ body
   }
 }
 
-
-
-.dropdown > input[type="checkbox"]:checked:after 
-{
-  /*
-  -webkit-animation: click-wave 0.65s;
-  -moz-animation: click-wave 0.65s;
-  animation: click-wave 0.65s;
-  background: #40e0d0;
-  content: '';
-  display: block;
-  position: relative;
-  z-index: 100;
-  */
-}
 
 .sp
 {
@@ -146,16 +129,17 @@ input[type="checkbox"]:checked + a .sp
 
 
 
-/* Вертим треугольник справа на пункте меню НАПРАВО */
+/**
+ * Подключаем лампочку (вертим в начальное положение очень быстро)
+**/
 .dropdown [data-toggle="dropdown"]:before 
 {
    position: absolute;
    display: block;
-   /*content: '\25BC'; */
-   content: '\263C';
+   font-family: FontAwesome;
+   content: '\f2dc';
    font-size: 1.7rem;
-   color: yellow; /*#fff; */
-   /*background: magenta;*/
+   color: yellow; 
    font-weight: 600; 
    text-align: center;
    border-radius: 50%;
@@ -163,28 +147,31 @@ input[type="checkbox"]:checked + a .sp
    right: 10px;
    hight: 1.7rem;
    width: 1.7rem;
+   transform-origin: 50% 50% 0
+   
    -moz-transform: rotate(0deg);
    -ms-transform: rotate(0deg);
    -webkit-transform: rotate(0deg);
    transform: rotate(0deg);
-   -moz-transition: -moz-transform 0.6s;
-   -o-transition: -o-transform 0.6s;
-   -webkit-transition: -webkit-transform 0.6s;
-   transition: transform 0.6s;
+   -moz-transition: -moz-transform 0s;
+   -o-transition: -o-transform 0s;
+   -webkit-transition: -webkit-transform 0s;
+   transition: transform 0s;
 }
-/* Вертим треугольник справа на пункте меню НАЛЕВО */
+/**
+ * Вертим лампочку 1 минуту по часовой стрелке, когда на чекбокс кликнули 
+**/
 .dropdown > input[type="checkbox"]:checked + a[data-toggle="dropdown"]:before 
 {
-   -moz-transform: rotate(-180deg);
-   -ms-transform: rotate(-180deg);
-   -webkit-transform: rotate(-180deg);
-   transform: rotate(-180deg);
-   -moz-transition: -moz-transform 0.6s;
-   -o-transition: -o-transform 0.6s;
-   -webkit-transition: -webkit-transform 0.6s;
-   transition: transform 0.6s;
+   -moz-transform: rotate(18432deg);
+   -ms-transform: rotate(18432deg);
+   -webkit-transform: rotate(18432deg);
+   transform: rotate(18432deg);
+   -moz-transition: -moz-transform 60s;
+   -o-transition: -o-transform 60s;
+   -webkit-transition: -webkit-transform 60s;
+   transition: transform 60s;
 }
-
 
 
 
@@ -231,6 +218,10 @@ input[type="checkbox"]:checked + a .sp
 {
    background: #f6f6f6;
 }
+/** 
+ * Скрываем, но размазываем чекбокс по ссылке, 
+ * чтобы вызов всегда срабатывал
+**/ 
 .dropdown > input[type="checkbox"] 
 {
    opacity: 0;
