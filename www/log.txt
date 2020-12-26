@@ -134,3 +134,10 @@ Stack trace:
 #2 {main}
   thrown in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 25
 [04-Dec-2020 23:05:17 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'try' (T_TRY) in C:\TPhpTools\TPhpToolsTests\TUploadToServer_proba.php on line 19
+[26-Dec-2020 23:38:12 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in C:\TPhpTools\www\Main.php on line 89
+[26-Dec-2020 23:45:34 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ',' or ')' in C:\TPhpTools\www\Main.php on line 78
+[26-Dec-2020 23:46:04 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function string() in C:\TPhpTools\www\Main.php:78
+Stack trace:
+#0 C:\TPhpTools\www\index.php(35): require_once()
+#1 {main}
+  thrown in C:\TPhpTools\www\Main.php on line 78

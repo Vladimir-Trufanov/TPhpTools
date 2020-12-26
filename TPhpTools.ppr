@@ -231,8 +231,8 @@ Caret=1,75
 TopLine=49
 Caret=20,49
 [www\Main.php]
-TopLine=1
-Caret=1,35
+TopLine=83
+Caret=21,97
 [www\css\Styles.css]
-TopLine=21
-Caret=1,37
+TopLine=71
+Caret=45,91
