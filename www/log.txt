@@ -141,3 +141,5 @@ Stack trace:
 #0 C:\TPhpTools\www\index.php(35): require_once()
 #1 {main}
   thrown in C:\TPhpTools\www\Main.php on line 78
+[27-Dec-2020 20:03:06 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'iniMem.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 37
+[27-Dec-2020 20:03:06 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'iniMem.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 37

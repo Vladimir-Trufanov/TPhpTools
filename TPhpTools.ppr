@@ -42,19 +42,22 @@ TPhpTools
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
 		+www
-			+css
-				www\css\Styles.css
+			-css
+				www\css\Styles 1.css
 				www\css\Styles 2.css
 				www\css\Styles.css
 				www\css\Styles3.css
 			-Gallery
 			www\89.gif
+			www\check.png
+			www\Common.php
 			www\favicon.ico
 			www\index.php
 			www\iniWorkSpace.php
 			www\log.txt
 			www\Main.php
 			www\MainOld.php
+			www\MainRes.php
 			www\TPhpToolsTests.js
 		-Материалы
 			-DownUpLoad
@@ -207,6 +210,7 @@ TPhpTools
 				Материалы\DropZone\jquery.dropzone-master.zip
 			Материалы\Исключения PHP часть 1.doc
 			Материалы\Как в PHP вывести текст на Русском языке на изображении.doc
+			Материалы\Опыты с чекбоксом.doc
 		Developer_Black.png
 		LICENSE
 		README.md
@@ -216,23 +220,39 @@ TPhpTools
 0=www\index.php
 1=www\css\Styles 2.css
 2=www\css\Styles3.css
-3=www\Main.php
+3=www\MainRes.php
 4=www\css\Styles.css
+5=www\MainOld.php
+6=www\Main.php
+7=www\Common.php
+8=www\iniMem.php
 [Selected Project Files]
 Main=
-Selected=www\Main.php
+Selected=www\iniMem.php
 [www\index.php]
-TopLine=25
-Caret=1,47
+TopLine=1
+Caret=6,5
 [www\css\Styles 2.css]
 TopLine=75
 Caret=1,75
 [www\css\Styles3.css]
 TopLine=49
 Caret=20,49
-[www\Main.php]
-TopLine=77
+[www\MainRes.php]
+TopLine=61
 Caret=1,89
 [www\css\Styles.css]
 TopLine=77
 Caret=17,94
+[www\MainOld.php]
+TopLine=31
+Caret=1,1
+[www\Main.php]
+TopLine=1
+Caret=1,53
+[www\Common.php]
+TopLine=1
+Caret=6,5
+[www\iniMem.php]
+TopLine=1
+Caret=20,5

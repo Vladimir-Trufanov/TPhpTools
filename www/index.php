@@ -7,7 +7,7 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  03.06.2019
-// Copyright © 2019 tve                              Посл.изменение: 03.12.2020
+// Copyright © 2019 tve                              Посл.изменение: 27.12.2020
 
 // Инициализируем рабочее пространство: корневой каталог сайта и т.д.
 session_start();
@@ -33,10 +33,6 @@ try
 {
    // Запускаем сценарий сайта
    require_once $SiteRoot."/Main.php";
-   //$TPhpPrown=$SiteHost.'/TPhpPrown';
-   //require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
-   //echo  prown\getTranslit('загрузчик файлов на сервер').'<br>';
-   //echo 'Привет снова!<br>';
 }
 catch (E_EXCEPTION $e) 
 {
