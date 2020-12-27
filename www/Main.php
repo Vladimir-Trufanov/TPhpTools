@@ -9,6 +9,27 @@
 //                                                   Дата создания:  03.12.2020
 // Copyright © 2020 tve                              Посл.изменение: 23.12.2020
 
+
+// Спецификация сайта: "http://ittve.me" или "http://localhost:83"                                 
+
+function isNichost()
+{ 
+   $Result=false;
+   if (($_SERVER['HTTP_HOST']=='ittve.me')||($_SERVER['HTTP_HOST']=='kwinflatht.nichost.ru'))
+   {
+      $Result=true;
+   }
+   return $Result;
+}
+if (isNichost())
+{
+   $SpecSite="http://".$_SERVER['HTTP_HOST'];  
+}
+else
+{
+   $SpecSite="http://localhost:99";  
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,44 +51,33 @@
       #liPageStarter        > [data-toggle="dropdown"]:before {color: green;}
       #liUploadToServer     > [data-toggle="dropdown"]:before {color: red;}
    </style>
-
-   <div class="container">
-   <ul>
-   <li id=liAllTests class="dropdown">
-      <input type="checkbox">
-      <a href="#" data-toggle="dropdown">Все тесты</a>
-   </li>
-   <li id="liBaseMaker" class="dropdown">
-      <input type="checkbox">
-      <a href="#TBaseMaker" data-toggle="dropdown">TBaseMaker</a> 
-   </li>
-   <li id="liCtrlDir" class="dropdown">
-      <input type="checkbox">
-      <a href="#" data-toggle="dropdown">TCtrlDir</a>
-   </li>
-   <li id="liDownloadFromServer" class="dropdown">
-      <input type="checkbox">
-      <a href="#" data-toggle="dropdown">TDownloadFromServer</a>
-   </li>
-   <li id="liFixLoadTimer" class="dropdown">
-      <input type="checkbox">
-      <a href="#" data-toggle="dropdown">TFixLoadTimer</a>
-   </li>
-   <li id=liPageStarter class="dropdown">
-      <input type="checkbox">  
-      <a href="#" data-toggle="dropdown">TPageStarter</a>
-   </li>
-   <li id=liUploadToServer class="dropdown">
-      <input type="checkbox">
-      <a href="#" data-toggle="dropdown">TUploadToServer</a>
-   </li>
-   </ul>
-   </div>
-
+   
    <?php
    
+   // Готовим форму с меню вызова тестов классов следующего вида
+   /*
+   ?>
+      <form id="fImg" action="http://localhost:99/">
+      <div class="container">
+      <ul>
+      
+      <li id="liBaseMaker" class="dropdown">
+         <input type="checkbox" name="test" value="BaseMaker">
+         <a href="http://localhost:99/?test=BaseMaker" data-toggle="dropdown">TBaseMaker</a>
+      </li>
+
+      <li id="liDownloadFromServer" class="dropdown">
+         <input type="checkbox" name="test" value="DownloadFromServer">
+         <a href="http://localhost:99/?test=DownloadFromServer" data-toggle="dropdown">TDownloadFromServer</a> 
+      </li>
+
+      </ul>
+      </div>
+      </form>
+   <?php
+   */
+   
    $arr = array(
-      'AllTests'           => 'notest',
       'BaseMaker'          => 'notest',
       'CtrlDir'            => 'notest',
       'DownloadFromServer' => 'notest',
@@ -77,6 +87,29 @@
 
    echo '<br>';
    foreach ($arr as $k => $v) echo "$k => $v<br>";
+   echo '<br>';
+   
+   // Выводим меню запуска тестов классов
+   echo 
+      '<form id="fImg"  action="'.$SpecSite.'">'.
+      '<div class="container">'.
+      '<ul>';
+   foreach ($arr as $k => $v) 
+   {
+      $classTT=$k;
+      echo 
+      '<li id=li'.$classTT.' class="dropdown">'.
+      '<input type="checkbox" name="test" value="'.$classTT.'">'.
+      '<a href="'.$SpecSite.'/?test='.$classTT.'" data-toggle="dropdown">T'.$classTT.'</a>'.
+      '</li>';
+   }
+   echo 
+      '</ul>'.
+      '</div>'.
+      '</form>';
+   
+   
+   
       
    $json=json_encode($arr);
    if ($json)
