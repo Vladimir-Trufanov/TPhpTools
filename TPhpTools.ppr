@@ -16,7 +16,20 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 TPhpTools
-	+TPhpTools
+	-TPhpTools
+		-Favicon
+			-favicon_package_v0.16
+				Favicon\favicon_package_v0.16\android-chrome-192x192.png
+				Favicon\favicon_package_v0.16\android-chrome-256x256.png
+				Favicon\favicon_package_v0.16\apple-touch-icon.png
+				Favicon\favicon_package_v0.16\browserconfig.xml
+				Favicon\favicon_package_v0.16\favicon.ico
+				Favicon\favicon_package_v0.16\favicon-16x16.png
+				Favicon\favicon_package_v0.16\favicon-32x32.png
+				Favicon\favicon_package_v0.16\mstile-150x150.png
+				Favicon\favicon_package_v0.16\safari-pinned-tab.svg
+				Favicon\favicon_package_v0.16\site.webmanifest
+			Favicon\favicon.png
 		-TPhpTools
 			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
@@ -41,24 +54,36 @@ TPhpTools
 			TPhpToolsTests\TPageStarter_test.php
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
-		+www
+		-www
 			-css
 				www\css\Styles 1.css
 				www\css\Styles 2.css
 				www\css\Styles.css
 				www\css\Styles3.css
+			-favicon260x260
+				www\favicon260x260\android-chrome-192x192.png
+				www\favicon260x260\android-chrome-256x256.png
+				www\favicon260x260\apple-touch-icon.png
+				www\favicon260x260\browserconfig.xml
+				www\favicon260x260\favicon.ico
+				www\favicon260x260\favicon-16x16.png
+				www\favicon260x260\favicon-32x32.png
+				www\favicon260x260\mstile-150x150.png
+				www\favicon260x260\safari-pinned-tab.svg
 			-Gallery
 			www\89.gif
 			www\check.png
 			www\Common.php
 			www\favicon.ico
 			www\index.php
+			www\iniMem.php
 			www\iniWorkSpace.php
 			www\log.txt
 			www\Main.php
 			www\MainOld.php
-			www\MainRes.php
+			www\manifest.json
 			www\TPhpToolsTests.js
+			www\UpSite.php
 		-Материалы
 			-DownUpLoad
 				-Proba
@@ -220,17 +245,17 @@ TPhpTools
 0=www\index.php
 1=www\css\Styles 2.css
 2=www\css\Styles3.css
-3=www\MainRes.php
-4=www\css\Styles.css
-5=www\MainOld.php
-6=www\Main.php
-7=www\Common.php
-8=www\iniMem.php
+3=www\css\Styles.css
+4=www\Main.php
+5=www\Common.php
+6=www\iniMem.php
+7=www\UpSite.php
+8=www\MainOld.php
 [Selected Project Files]
 Main=
-Selected=www\iniMem.php
+Selected=www\MainOld.php
 [www\index.php]
-TopLine=1
+TopLine=7
 Caret=6,5
 [www\css\Styles 2.css]
 TopLine=75
@@ -238,21 +263,21 @@ Caret=1,75
 [www\css\Styles3.css]
 TopLine=49
 Caret=20,49
-[www\MainRes.php]
-TopLine=61
-Caret=1,89
 [www\css\Styles.css]
 TopLine=77
 Caret=17,94
-[www\MainOld.php]
-TopLine=31
-Caret=1,1
 [www\Main.php]
-TopLine=1
-Caret=1,53
+TopLine=13
+Caret=1,13
 [www\Common.php]
-TopLine=1
+TopLine=13
 Caret=6,5
 [www\iniMem.php]
-TopLine=1
-Caret=20,5
+TopLine=50
+Caret=3,44
+[www\UpSite.php]
+TopLine=127
+Caret=1,146
+[www\MainOld.php]
+TopLine=75
+Caret=1,1

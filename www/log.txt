@@ -143,3 +143,16 @@ Stack trace:
   thrown in C:\TPhpTools\www\Main.php on line 78
 [27-Dec-2020 20:03:06 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'iniMem.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 37
 [27-Dec-2020 20:03:06 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'iniMem.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 37
+[28-Dec-2020 20:16:02 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\MakeCookie() in C:\TPhpTools\www\iniMem.php:30
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(37): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\www\iniMem.php on line 30
+[28-Dec-2020 20:17:43 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\MakeCookie() in C:\TPhpTools\www\iniMem.php:30
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(35): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\www\iniMem.php on line 30
+[28-Dec-2020 20:19:55 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\TPhpTools\www\UpSite.php on line 61

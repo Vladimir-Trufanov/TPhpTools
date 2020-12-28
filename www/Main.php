@@ -8,9 +8,7 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  13.01.2019
-// Copyright © 2019 tve                              Посл.изменение: 27.12.2020
-
-session_start(); 
+// Copyright © 2019 tve                              Посл.изменение: 28.12.2020
 
 // Подключаем файлы библиотеки прикладных модулей:
 $TPhpPrown=$SiteHost.'/TPhpPrown';
@@ -35,7 +33,6 @@ require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";
 // Выполняем начальную инициализацию
 require_once "Common.php";     // Всегда 1-ый корневой модуль в списке
 require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
-
 require_once "UpSite.php";
    
 // При необходимости выводим дополнительную информацию
