@@ -16,7 +16,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 TPhpTools
-	-TPhpTools
+	+TPhpTools
 		-Favicon
 			-favicon_package_v0.16
 				Favicon\favicon_package_v0.16\android-chrome-192x192.png
@@ -54,8 +54,9 @@ TPhpTools
 			TPhpToolsTests\TPageStarter_test.php
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
-		-www
-			-css
+		+www
+			+css
+				www\css\iniStyles.css
 				www\css\Styles 1.css
 				www\css\Styles 2.css
 				www\css\Styles.css
@@ -74,6 +75,7 @@ TPhpTools
 			www\89.gif
 			www\check.png
 			www\Common.php
+			www\ControlDiv.php
 			www\favicon.ico
 			www\index.php
 			www\iniMem.php
@@ -82,6 +84,7 @@ TPhpTools
 			www\Main.php
 			www\MainOld.php
 			www\manifest.json
+			www\TestsDiv.php
 			www\TPhpToolsTests.js
 			www\UpSite.php
 		-Материалы
@@ -243,41 +246,45 @@ TPhpTools
 		Пример формы класса.php
 [Open project files]
 0=www\index.php
-1=www\css\Styles 2.css
-2=www\css\Styles3.css
-3=www\css\Styles.css
-4=www\Main.php
-5=www\Common.php
-6=www\iniMem.php
-7=www\UpSite.php
-8=www\MainOld.php
+1=www\Main.php
+2=www\Common.php
+3=www\iniMem.php
+4=www\MainOld.php
+5=www\css\Styles.css
+6=www\TestsDiv.php
+7=www\ControlDiv.php
+8=www\UpSite.php
+9=www\css\iniStyles.css
 [Selected Project Files]
 Main=
-Selected=www\MainOld.php
+Selected=www\UpSite.php
 [www\index.php]
-TopLine=7
+TopLine=5
 Caret=6,5
-[www\css\Styles 2.css]
-TopLine=75
-Caret=1,75
-[www\css\Styles3.css]
-TopLine=49
-Caret=20,49
-[www\css\Styles.css]
-TopLine=77
-Caret=17,94
 [www\Main.php]
-TopLine=13
-Caret=1,13
+TopLine=11
+Caret=1,21
 [www\Common.php]
-TopLine=13
+TopLine=5
 Caret=6,5
 [www\iniMem.php]
-TopLine=50
-Caret=3,44
-[www\UpSite.php]
-TopLine=127
-Caret=1,146
+TopLine=19
+Caret=1,53
 [www\MainOld.php]
-TopLine=75
+TopLine=11
 Caret=1,1
+[www\css\Styles.css]
+TopLine=97
+Caret=13,120
+[www\TestsDiv.php]
+TopLine=8
+Caret=1,27
+[www\ControlDiv.php]
+TopLine=11
+Caret=1,27
+[www\UpSite.php]
+TopLine=59
+Caret=1,75
+[www\css\iniStyles.css]
+TopLine=47
+Caret=40,76

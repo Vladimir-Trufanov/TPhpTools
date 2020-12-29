@@ -27,21 +27,33 @@ define ("fimColorGround", 2);    // фон с помощью цветной картинки
 define ("fimAnimation",   3);    // анимационный фон
 
 // »нициализируем переменные-кукисы
-/*
 $c_UserName=prown\MakeCookie('UserName',"√ость",tStr,true);            // логин авторизованного посетител€
 $c_PersName=prown\MakeCookie('PersName',"√ость",tStr,true);            // логин посетител€
 $c_BrowEntry=prown\MakeCookie('BrowEntry',0,tInt,true);                // число запросов сайта из браузера
 $c_PersEntry=prown\MakeCookie('PersEntry',0,tInt,true);                // счетчик посещений текущим посетителем
-*/
+
 // »нициализируем сессионные переменные (сессионные переменные инициируютс€ после
 // переменных-кукисов, так как некоторые переменные-кукисы переопредел€ютс€ по€вившимис€
 // сессионными переменными. Ќапример: $s_ModeImg --> $c_ModeImg)
-//$s_Counter=prown\MakeSession('Counter',0,tInt,true);              // посещени€ за сессию
+$s_Counter=prown\MakeSession('Counter',0,tInt,true);              // посещени€ за сессию
 //$s_isJScript=prown\MakeSession('isJScript','no',tInt,false);    // JavaScript не включен
 
 // »нициализируем параметры страницы сайта 
 //$p_ittveLife="ittve01-001-20130201-ќсобенности-устройства-винтиков-в-моей-голове.html";
 //$p_ittveNews="ittve01-001-20130201-ќсобенности-устройства-винтиков-в-моей-голове.html";
+
+
+// »змен€ем счетчик запросов сайта из браузера и, таким образом,       
+// регистрируем новую загрузку страницы
+$c_BrowEntry=prown\MakeCookie('BrowEntry',$c_BrowEntry+1,tInt);  
+// »змен€ем счетчик посещений текущим посетителем      
+$c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
+// »змен€ем счетчик посещений за сессию                 
+$s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);   
+
+
+
+
 /*
 if ($SiteDevice==Mobile) 
 {   

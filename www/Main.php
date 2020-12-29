@@ -13,12 +13,11 @@
 // Подключаем файлы библиотеки прикладных модулей:
 $TPhpPrown=$SiteHost.'/TPhpPrown';
 require_once $TPhpPrown."/TPhpPrown/DebugInfo.php";
-
-/*
 require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
 require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
 require_once $TPhpPrown."/TPhpPrown/MakeCookie.php";
 require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
+/*
 require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
 require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
 require_once $TPhpPrown."/TPhpPrown/ViewSimpleArray.php";
@@ -34,6 +33,7 @@ require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";
 require_once "Common.php";     // Всегда 1-ый корневой модуль в списке
 require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
 require_once "UpSite.php";
+
    
 // При необходимости выводим дополнительную информацию
 // Header("Content-type: text/plain");
