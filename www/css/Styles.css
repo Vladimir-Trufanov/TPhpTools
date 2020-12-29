@@ -17,7 +17,8 @@
 {
    text-decoration: none;
 }
-.dropdown [data-toggle="dropdown"] 
+.dropdown [data-toggle="dropdown"],
+.dropdown [data-toggle="dropdownA"]
 {
    display: block;
    color: white;
@@ -26,7 +27,8 @@
 	-webkit-box-shadow:inset 0 .1rem 0 0 rgba(255,255,255,.1), 0 .1rem 0 0 rgba(0,0,0,.1);
 	-moz-box-shadow:inset 0 .1rem 0 0 rgba(255,255,255,.1), 0 .1rem 0 0 rgba(0,0,0,.1);
 	box-shadow:inset 0 .1rem 0 0 rgba(255,255,255,.1), 0 .1rem 0 0 rgba(0,0,0,.1); 
-   padding: 6px 10px 6px 10px;
+   padding: 6px;
+   cursor: alias;
 }
 /**
  * Подключаем лампочку (вертим в начальное положение очень быстро)
@@ -43,7 +45,7 @@
    font-weight: 600; 
    text-align: center;
    top: .4rem;
-   right: .3rem;
+   right: 6px; 
    hight: 2.6rem;
    width: 2.6rem;
    transform-origin: 50% 50% 0
@@ -56,6 +58,55 @@
    -o-transition: -o-transform 0s;
    -webkit-transition: -webkit-transform 0s;
    transition: transform 0s;
+}
+.dropdown span 
+{
+   position: absolute;
+   display: block;
+   cursor: pointer;
+   top: 4px;
+   right: 6px;
+   font-family: FontAwesome;
+   font-size: 26px;
+   font-weight: 600; 
+   text-align: center;
+   
+   /*
+   hight: 26px;
+   width: 26px;
+   */
+
+   /*
+   font-size: 2.6rem;
+   color: white; 
+   font-weight: 600; 
+   text-align: center;
+   top: .4rem;
+   right: 6px; 
+   hight: 2.6rem;
+   width: 2.6rem;
+   */
+   transform-origin: 50% 50% 0
+   
+   -moz-transform: rotate(0deg);
+   -ms-transform: rotate(0deg);
+   -webkit-transform: rotate(0deg);
+   transform: rotate(0deg);
+   -moz-transition: -moz-transform 0s;
+   -o-transition: -o-transform 0s;
+   -webkit-transition: -webkit-transform 0s;
+   transition: transform 0s;
+}
+.dropdown span:hover 
+{
+   -moz-transform: rotate(21420deg);
+   -ms-transform: rotate(21420deg);
+   -webkit-transform: rotate(21420deg);
+   transform: rotate(21420deg);
+   -moz-transition: -moz-transform 60s;
+   -o-transition: -o-transform 60s;
+   -webkit-transition: -webkit-transform 60s;
+   transition: transform 60s;
 }
 /**
  * Вертим лампочку 1 минуту по часовой стрелке, когда на чекбокс кликнули 
@@ -93,29 +144,29 @@
 {
    cursor: not-allowed;
 }
-
-
-
-
 /**
  * НАСТРАИВАЕМ ЛЕВУЮ ЧАСТЬ ЭКРАНА
 **/ 
 #ControlDiv
 {
    position: absolute;
-   margin: .5rem;
-	background: magenta;
+   top: 0;
+   left: 0;
+   padding: 5px;
+   height: 90%;
    width: 50%;
+	background: magenta;
 }
-
 /**
  * НАСТРАИВАЕМ ПРАВУЮ ЧАСТЬ ЭКРАНА
 **/ 
 #TestsDiv
 {
    position: absolute;
-   margin: .5rem;
-	background: magenta;
-   width: 50%;
+   top: 0;
    right: 0;
+   padding: 5px;
+   height: 98%;
+   width: 50%;
+	background: teal;
 }

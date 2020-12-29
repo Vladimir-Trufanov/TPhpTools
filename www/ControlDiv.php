@@ -28,29 +28,6 @@
    
    <?php
    
-   // Готовим форму с меню вызова тестов классов следующего вида
-   /*
-   ?>
-      <form id="fImg" action="http://localhost:99/">
-      <div class="container">
-      <ul>
-      
-      <li id="liBaseMaker" class="dropdown">
-         <input type="checkbox" name="test" value="BaseMaker">
-         <a href="http://localhost:99/?test=BaseMaker" data-toggle="dropdown">TBaseMaker</a>
-      </li>
-
-      <li id="liDownloadFromServer" class="dropdown">
-         <input type="checkbox" name="test" value="DownloadFromServer">
-         <a href="http://localhost:99/?test=DownloadFromServer" data-toggle="dropdown">TDownloadFromServer</a> 
-      </li>
-
-      </ul>
-      </div>
-      </form>
-   <?php
-   */
-   
    $arr = array(
       'BaseMaker'          => 'notest',
       'CtrlDir'            => 'notest',
@@ -63,10 +40,12 @@
    //foreach ($arr as $k => $v) echo "$k => $v<br>";
    //echo '<br>';
    
-   // Выводим меню запуска тестов классов
+   // Начинаем div контроля тестов классов
    echo 
       '<div id="ControlDiv">'.
-      '<form id="fImg"  action="'.$SpecSite.'">'.
+      '<!-- <form id="fControl"  action="'.$SpecSite.'"> -->';
+   // Выводим меню запуска тестов классов (начальный вариант)
+   echo 
       '<div class="container">'.
       '<ul>';
    foreach ($arr as $k => $v) 
@@ -80,8 +59,49 @@
    }
    echo 
       '</ul>'.
-      '</div>'.
-      '</form>'.
+      '</div>';
+   
+   echo '<br>';
+
+   // Выводим меню запуска тестов классов 
+   echo 
+      '<div class="container">'.
+      '<ul>';
+   foreach ($arr as $k => $v) 
+   {
+      $classTT=$k;
+      echo 
+      '<li id=li'.$classTT.' class="dropdown">'.
+      '<a href="'.$SpecSite.'/?test='.$classTT.'" data-toggle="dropdownA">T'.$classTT.
+      '<span><i class="fa fa-snowflake-o" aria-hidden="true"></i></span>'.
+      '</a>'.
+      '</li>';
+   }
+   
+   /*
+   <div class="container">
+   <ul>
+      <li id=liBaseMaker class="dropdown">
+         <a href="http://localhost:99/?test=BaseMaker" data-toggle="dropdown">TBaseMaker</a>
+      </li>
+      <li id=liCtrlDir class="dropdown">
+         <a href="http://localhost:99/?test=CtrlDir" data-toggle="dropdown">TCtrlDir 
+         <i class="fa fa-snowflake-o" aria-hidden="true"></i>
+         </a>
+      </li>
+         
+         <li id=liDownloadFromServer class="dropdown"><a href="http://localhost:99/?test=DownloadFromServer" data-toggle="dropdown">TDownloadFromServer</a></li><li id=liFixLoadTimer class="dropdown"><a href="http://localhost:99/?test=FixLoadTimer" data-toggle="dropdown">TFixLoadTimer</a></li><li id=liPageStarter class="dropdown"><a href="http://localhost:99/?test=PageStarter" data-toggle="dropdown">TPageStarter</a></li><li id=liUploadToServer class="dropdown"><a href="http://localhost:99/?test=UploadToServer" data-toggle="dropdown">TUploadToServer</a></li></ul></div><!-- </form> --><div id="InfoLeft">Computer Гость 12.3494[3494]</div></div>
+   */
+   
+   
+   
+   echo 
+      '</ul>'.
+      '</div>';
+
+   //
+   echo
+      '<!-- </form> -->'.
             
       '<div id="InfoLeft">'.
       $SiteDevice." ".$c_PersName." ".$_SESSION['Counter'].".".$c_PersEntry."[".$c_BrowEntry."]". 
