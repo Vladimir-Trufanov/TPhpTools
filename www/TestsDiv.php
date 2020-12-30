@@ -10,10 +10,20 @@
 //                                                   Дата создания:  13.01.2019
 // Copyright © 2019 tve                              Посл.изменение: 30.12.2020
 
+$classTT=prown\getComRequest('test');
+
+
 echo '<div id="TestsDiv">';
+   require_once($SiteHost.'/TSimpleTest/autorun.php');
+   require_once "Proba.php";
+   probatest($classTT);
+echo 
+   '</div>';
+
+
 
 // Принимаем команду на запуск тестов
-$classTT=prown\getComRequest('test');
+//$classTT=prown\getComRequest('test');
 if ($classTT===NULL)
 {
    $classTT='NULL';
@@ -23,6 +33,8 @@ if ($classTT===NULL)
 else 
 {
    // Выводим меню для возврата в контрольное меню тестов
+   echo $classTT.'<br>';
+
    echo '<div class="container">';
    echo '<ul>';
    
@@ -38,7 +50,6 @@ else
       '<div id="InfoRight">'.
       $SiteDevice." ".$c_PersName." ".$_SESSION['Counter'].".".$c_PersEntry."[".$c_BrowEntry."]". 
       '</div>';
-   require_once "Proba.php";
 }
 echo 
    '</div>';

@@ -57,19 +57,25 @@ echo '<link rel="stylesheet" type="text/css"
 // Начинаем html-страницу
 echo '</head>'; 
 echo '<body>'; 
+echo '===body===<br>'; 
 
 // Выбираем страницу ---для отправки сообщения автору
 if (prown\getComRequest('test')<>NULL)
 {
    //echo 'Отправить сообщение автору'.'<br>';
-   //$page='/DetmanPage/www/index1.php';
+   //$page='/Proba.php';
+   //echo  "Location: http://".$_SERVER['HTTP_HOST'].$page;
+   //exit;
    //Header("Location: http://".$_SERVER['HTTP_HOST'].$page);
+   
+   
    ?>
    <style>
       #InfoLeft {display: none;}
       #InfoRight {display: block;}
    </style>
    <?php
+   
 }
 // Выбираем ----страницу для изменения настроек
 else 
@@ -82,8 +88,8 @@ else
    <?php
 }
 
-   require_once "TestsDiv.php";
-   require_once "ControlDiv.php";
+require_once "ControlDiv.php";
+require_once "TestsDiv.php";
 
 // Выводим завершающие теги страницы
 echo '</body>'; 

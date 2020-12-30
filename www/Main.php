@@ -22,6 +22,8 @@ require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
 require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
 require_once $TPhpPrown."/TPhpPrown/ViewSimpleArray.php";
 */
+// Подключаем модуль обеспечения тестов
+require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
 
 // Подключаем файлы библиотеки прикладных классов:
 $TPhpTools=$SiteHost.'/TPhpTools';

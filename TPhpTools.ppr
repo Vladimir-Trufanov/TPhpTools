@@ -31,7 +31,7 @@ TPhpTools
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
 		+TPhpTools
-			-TBaseMaker
+			+TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDirClass.php
@@ -47,7 +47,7 @@ TPhpTools
 				TPhpTools\TPageStarter\PageStarterClass.php
 			+TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
-		+TPhpToolsTests
+		-TPhpToolsTests
 			TPhpToolsTests\TBaseMaker_test.php
 			TPhpToolsTests\TCtrlDir_test.php
 			TPhpToolsTests\TDownloadFromServer_test.php
@@ -55,8 +55,8 @@ TPhpTools
 			TPhpToolsTests\TPageStarter_test.php
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
-		-www
-			-css
+		+www
+			+css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
 				www\css\Styles 2.css
@@ -250,15 +250,43 @@ TPhpTools
 0=www\Main.php
 1=www\MainOld.php
 2=www\Proba.php
+3=TPhpTools\TBaseMaker\BaseMakerClass.php
+4=TPhpToolsTests\TBaseMaker_test.php
+5=www\UpSite.php
+6=www\ControlDiv.php
+7=www\index.php
+8=www\TestsDiv.php
+9=www\css\Styles.css
 [Selected Project Files]
 Main=
 Selected=www\Proba.php
 [www\Main.php]
-TopLine=1
-Caret=1,36
+TopLine=16
+Caret=1,27
 [www\MainOld.php]
 TopLine=87
 Caret=1,1
 [www\Proba.php]
+TopLine=75
+Caret=21,98
+[TPhpTools\TBaseMaker\BaseMakerClass.php]
+TopLine=5
+Caret=1,1
+[TPhpToolsTests\TBaseMaker_test.php]
 TopLine=1
-Caret=74,16
+Caret=7,27
+[www\UpSite.php]
+TopLine=77
+Caret=1,92
+[www\ControlDiv.php]
+TopLine=65
+Caret=1,1
+[www\index.php]
+TopLine=17
+Caret=1,28
+[www\TestsDiv.php]
+TopLine=29
+Caret=1,37
+[www\css\Styles.css]
+TopLine=143
+Caret=13,156

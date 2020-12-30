@@ -158,3 +158,6 @@ Stack trace:
 [28-Dec-2020 20:19:55 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in C:\TPhpTools\www\UpSite.php on line 61
 [29-Dec-2020 17:00:42 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '.' in C:\TPhpTools\www\TestsDiv.php on line 61
 [30-Dec-2020 11:26:19 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:_test.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Proba.php on line 16
+[30-Dec-2020 11:55:22 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*', expecting end of file in C:\TPhpTools\TPhpToolsTests\TBaseMaker_test.php on line 30
+[30-Dec-2020 17:26:18 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '<' in C:\TPhpTools\www\Proba.php on line 77
+[30-Dec-2020 17:26:21 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '<' in C:\TPhpTools\www\Proba.php on line 77
