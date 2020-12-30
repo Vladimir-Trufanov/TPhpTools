@@ -1,6 +1,7 @@
 <?php
 
 // PHP7/HTML5, EDGE/CHROME                     *** TUploadToServer_test.php ***
+
 // ****************************************************************************
 // * TPhpPrown      Тест класса TUploadToServer - загрузчика файлов на сервер *
 // ****************************************************************************
@@ -9,6 +10,9 @@
 // * Copyright © 2020 tve                          Дата создания:  03.12.2020 *
 // ****************************************************************************
 
+echo 'Тестируется TUploadToServer_test.php'.'<br>';
+
+/*
 function proba_TUploadToServer()
 {
    echo 'Ghbdtn<br>';
@@ -32,4 +36,5 @@ class test_TUploadToServer extends UnitTestCase
       
   }
 }
+*/
 // *********************************************** TUploadToServer_test.php ***

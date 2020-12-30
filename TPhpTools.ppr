@@ -30,11 +30,11 @@ TPhpTools
 				Favicon\favicon_package_v0.16\safari-pinned-tab.svg
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
-		-TPhpTools
+		+TPhpTools
 			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
-				TPhpTools\TCtrlDir\CtrlDir.php
+				TPhpTools\TCtrlDir\CtrlDirClass.php
 				TPhpTools\TCtrlDir\ViewDir.php
 			-TDownloadFromServer
 				TPhpTools\TDownloadFromServer\download.php
@@ -45,16 +45,17 @@ TPhpTools
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			-TUploadToServer
+			+TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
-		-TPhpToolsTests
-			TPhpToolsTests\Findes_test.php
+		+TPhpToolsTests
+			TPhpToolsTests\TBaseMaker_test.php
 			TPhpToolsTests\TCtrlDir_test.php
+			TPhpToolsTests\TDownloadFromServer_test.php
 			TPhpToolsTests\TFixLoadTimer_test.php
 			TPhpToolsTests\TPageStarter_test.php
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
-		+www
+		-www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -246,50 +247,18 @@ TPhpTools
 		TPhpTools.ppr
 		Пример формы класса.php
 [Open project files]
-0=www\index.php
-1=www\Main.php
-2=www\Common.php
-3=www\iniMem.php
-4=www\MainOld.php
-5=www\css\Styles.css
-6=www\ControlDiv.php
-7=www\UpSite.php
-8=www\css\iniStyles.css
-9=www\Proba.php
-10=www\TestsDiv.php
+0=www\Main.php
+1=www\MainOld.php
+2=www\Proba.php
 [Selected Project Files]
 Main=
-Selected=www\TestsDiv.php
-[www\index.php]
-TopLine=5
-Caret=6,5
+Selected=www\Proba.php
 [www\Main.php]
-TopLine=21
+TopLine=1
 Caret=1,36
-[www\Common.php]
-TopLine=5
-Caret=6,5
-[www\iniMem.php]
-TopLine=25
-Caret=1,53
 [www\MainOld.php]
-TopLine=11
+TopLine=87
 Caret=1,1
-[www\css\Styles.css]
-TopLine=32
-Caret=1,32
-[www\ControlDiv.php]
-TopLine=53
-Caret=6,64
-[www\UpSite.php]
-TopLine=39
-Caret=1,67
-[www\css\iniStyles.css]
-TopLine=52
-Caret=40,76
 [www\Proba.php]
 TopLine=1
-Caret=1,14
-[www\TestsDiv.php]
-TopLine=27
-Caret=1,1
+Caret=74,16

@@ -10,6 +10,11 @@
 //                                                   Дата создания:  13.01.2019
 // Copyright © 2019 tve                              Посл.изменение: 30.12.2020
 
-echo 'Класс: '.$classTT.'<br>';
+require_once($SiteHost.'/TSimpleTest/autorun.php');
+
+//echo $SiteHost."/TPhpTools/TPhpToolsTests/T".$classTT."_test.php";
+require_once $SiteHost."/TPhpTools/TPhpToolsTests/T".$classTT."_test.php";
+
+//echo 'Класс: '.$classTT.'<br>';
 
 // <!-- --> ************************************************** TestsDiv.php ***
