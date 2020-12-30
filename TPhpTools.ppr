@@ -55,7 +55,7 @@ TPhpTools
 			TPhpToolsTests\TUploadToServer_proba.php
 			TPhpToolsTests\TUploadToServer_test.php
 		+www
-			+css
+			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
 				www\css\Styles 2.css
@@ -84,6 +84,7 @@ TPhpTools
 			www\Main.php
 			www\MainOld.php
 			www\manifest.json
+			www\Proba.php
 			www\TestsDiv.php
 			www\TPhpToolsTests.js
 			www\UpSite.php
@@ -251,19 +252,20 @@ TPhpTools
 3=www\iniMem.php
 4=www\MainOld.php
 5=www\css\Styles.css
-6=www\TestsDiv.php
-7=www\ControlDiv.php
-8=www\UpSite.php
-9=www\css\iniStyles.css
+6=www\ControlDiv.php
+7=www\UpSite.php
+8=www\css\iniStyles.css
+9=www\Proba.php
+10=www\TestsDiv.php
 [Selected Project Files]
 Main=
-Selected=www\css\Styles.css
+Selected=www\TestsDiv.php
 [www\index.php]
 TopLine=5
 Caret=6,5
 [www\Main.php]
-TopLine=11
-Caret=1,21
+TopLine=21
+Caret=1,36
 [www\Common.php]
 TopLine=5
 Caret=6,5
@@ -274,17 +276,20 @@ Caret=1,53
 TopLine=11
 Caret=1,1
 [www\css\Styles.css]
-TopLine=71
+TopLine=32
 Caret=1,32
-[www\TestsDiv.php]
-TopLine=17
-Caret=4,32
 [www\ControlDiv.php]
-TopLine=85
-Caret=73,76
+TopLine=53
+Caret=6,64
 [www\UpSite.php]
-TopLine=1
-Caret=1,75
+TopLine=39
+Caret=1,67
 [www\css\iniStyles.css]
 TopLine=52
 Caret=40,76
+[www\Proba.php]
+TopLine=1
+Caret=1,14
+[www\TestsDiv.php]
+TopLine=27
+Caret=1,1

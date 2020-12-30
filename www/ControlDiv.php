@@ -44,7 +44,7 @@
    echo 
       '<div id="ControlDiv">'.
       '<!-- <form id="fControl"  action="'.$SpecSite.'"> -->';
-   // Выводим меню запуска тестов классов (начальный вариант)
+   // Выводим меню запуска тестов классов 
    echo 
       '<div class="container">'.
       '<ul>';
@@ -61,9 +61,10 @@
       '</ul>'.
       '</div>';
    
-   echo '<br>';
+   //echo '<br>';
 
-   // Выводим меню запуска тестов классов 
+   // Выводим меню запуска тестов классов (как вариант)
+   /*
    echo 
       '<div class="container">'.
       '<ul>';
@@ -77,29 +78,11 @@
       '</a>'.
       '</li>';
    }
-   
-   /*
-   <div class="container">
-   <ul>
-      <li id=liBaseMaker class="dropdown">
-         <a href="http://localhost:99/?test=BaseMaker" data-toggle="dropdown">TBaseMaker</a>
-      </li>
-      <li id=liCtrlDir class="dropdown">
-         <a href="http://localhost:99/?test=CtrlDir" data-toggle="dropdown">TCtrlDir 
-         <i class="fa fa-snowflake-o" aria-hidden="true"></i>
-         </a>
-      </li>
-         
-         <li id=liDownloadFromServer class="dropdown"><a href="http://localhost:99/?test=DownloadFromServer" data-toggle="dropdown">TDownloadFromServer</a></li><li id=liFixLoadTimer class="dropdown"><a href="http://localhost:99/?test=FixLoadTimer" data-toggle="dropdown">TFixLoadTimer</a></li><li id=liPageStarter class="dropdown"><a href="http://localhost:99/?test=PageStarter" data-toggle="dropdown">TPageStarter</a></li><li id=liUploadToServer class="dropdown"><a href="http://localhost:99/?test=UploadToServer" data-toggle="dropdown">TUploadToServer</a></li></ul></div><!-- </form> --><div id="InfoLeft">Computer Гость 12.3494[3494]</div></div>
-   */
-   
-   
-   
    echo 
       '</ul>'.
       '</div>';
-
-   //
+   */
+   // Временный подвальчик
    echo
       '<!-- </form> -->'.
             
