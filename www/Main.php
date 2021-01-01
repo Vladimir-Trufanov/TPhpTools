@@ -17,6 +17,7 @@ require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
 require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
 require_once $TPhpPrown."/TPhpPrown/MakeCookie.php";
 require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
+require_once $TPhpPrown."/TPhpPrown/Findes.php";
 /*
 require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
 require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";

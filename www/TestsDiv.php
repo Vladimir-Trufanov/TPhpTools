@@ -13,14 +13,6 @@
 $classTT=prown\getComRequest('test');
 
 
-echo '<div id="TestsDiv">';
-   require_once($SiteHost.'/TSimpleTest/autorun.php');
-   require_once "Proba.php";
-   probatest($classTT);
-echo 
-   '</div>';
-
-
 
 // Принимаем команду на запуск тестов
 //$classTT=prown\getComRequest('test');
@@ -32,6 +24,22 @@ if ($classTT===NULL)
 }
 else 
 {
+
+   echo '+++'.$classTT.'+++';
+
+
+//echo '<div id="TestsDiv">';
+   require_once($SiteHost.'/TSimpleTest/autorun.php');
+   require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_test.php";
+
+   //require_once "Proba.php";
+   //probatest($classTT);
+//echo '</div>';
+
+
+
+
+
    // Выводим меню для возврата в контрольное меню тестов
    echo $classTT.'<br>';
 
@@ -46,10 +54,16 @@ else
    echo 
       '</ul>'.
       '</div>';
-   echo
-      '<div id="InfoRight">'.
-      $SiteDevice." ".$c_PersName." ".$_SESSION['Counter'].".".$c_PersEntry."[".$c_BrowEntry."]". 
-      '</div>';
+   //echo
+   //   '<div id="InfoRight">'.
+   //   $SiteDevice." ".$c_PersName." ".$_SESSION['Counter'].".".$c_PersEntry."[".$c_BrowEntry."]". 
+   //   '</div>';
+   // Возвращаемся в меню выбора тестов
+   // echo "****".$SpecSite.'****';
+  // Header("Location: ".$SpecSite);
+   
+}   
+ /*
 }
 echo 
    '</div>';
@@ -58,6 +72,6 @@ if ($classTT===NULL)
 {
    Header("Location: http://".$_SERVER['HTTP_HOST'].$SpecSite);
 }
-
+*/
 
 // <!-- --> ************************************************** TestsDiv.php ***

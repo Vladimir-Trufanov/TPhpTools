@@ -168,5 +168,5 @@
    padding: 5px;
    height: 80%;
    width: 50%;
-	background: teal;
+	background: transparent; /*teal;*/
 }

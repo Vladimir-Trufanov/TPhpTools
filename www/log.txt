@@ -161,3 +161,9 @@ Stack trace:
 [30-Dec-2020 11:55:22 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*', expecting end of file in C:\TPhpTools\TPhpToolsTests\TBaseMaker_test.php on line 30
 [30-Dec-2020 17:26:18 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '<' in C:\TPhpTools\www\Proba.php on line 77
 [30-Dec-2020 17:26:21 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '<' in C:\TPhpTools\www\Proba.php on line 77
+[01-Jan-2021 09:24:09 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*' in C:\TPhpTools\www\TestsDiv.php on line 61
+[01-Jan-2021 11:09:51 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting function (T_FUNCTION) or const (T_CONST) in C:\TPhpTools\www\Proba.php on line 19
+[01-Jan-2021 15:32:54 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting function (T_FUNCTION) or const (T_CONST) in C:\TPhpTools\www\Proba.php on line 19
+[01-Jan-2021 15:34:34 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO), expecting function (T_FUNCTION) or const (T_CONST) in C:\TPhpTools\www\Proba.php on line 49
+[01-Jan-2021 15:53:19 Asia/Kuwait] PHP Fatal error:  Cannot declare class test_Findes, because the name is already in use in C:\TPhpTools\www\Proba.php on line 52
+[01-Jan-2021 20:56:24 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'catch' (T_CATCH) in C:\TPhpTools\TPhpToolsTests\TBaseMaker_test.php on line 26

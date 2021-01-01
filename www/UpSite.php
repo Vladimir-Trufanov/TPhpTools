@@ -7,7 +7,7 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  13.01.2019
-// Copyright © 2019 tve                              Посл.изменение: 28.12.2020
+// Copyright © 2019 tve                              Посл.изменение: 01.01.2021
 
 // ****************************************************************************
 // *              Формируем общие начальные теги разметки страницы,           *
@@ -57,25 +57,15 @@ echo '<link rel="stylesheet" type="text/css"
 // Начинаем html-страницу
 echo '</head>'; 
 echo '<body>'; 
-echo '===body===<br>'; 
-
-// Выбираем страницу ---для отправки сообщения автору
+// Если в запросе тест, то левую часть экрана оставляем прежней
 if (prown\getComRequest('test')<>NULL)
 {
-   //echo 'Отправить сообщение автору'.'<br>';
-   //$page='/Proba.php';
-   //echo  "Location: http://".$_SERVER['HTTP_HOST'].$page;
-   //exit;
-   //Header("Location: http://".$_SERVER['HTTP_HOST'].$page);
-   
-   
    ?>
    <style>
       #InfoLeft {display: none;}
       #InfoRight {display: block;}
    </style>
    <?php
-   
 }
 // Выбираем ----страницу для изменения настроек
 else 
