@@ -259,7 +259,7 @@ TPhpTools
 9=www\css\Styles.css
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker_test.php
+Selected=TPhpTools\TBaseMaker\BaseMakerClass.php
 [www\Main.php]
 TopLine=11
 Caret=1,20
@@ -267,16 +267,16 @@ Caret=1,20
 TopLine=87
 Caret=1,1
 [www\Proba.php]
-TopLine=13
+TopLine=20
 Caret=7,49
 Mark1=1,51
 Mark2=1,21
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=1
-Caret=1,206
+TopLine=89
+Caret=10,92
 [TPhpToolsTests\TBaseMaker_test.php]
-TopLine=107
-Caret=1,122
+TopLine=138
+Caret=9,134
 [www\UpSite.php]
 TopLine=63
 Caret=1,69
@@ -287,8 +287,8 @@ Caret=1,1
 TopLine=17
 Caret=1,28
 [www\TestsDiv.php]
-TopLine=31
-Caret=4,33
+TopLine=17
+Caret=1,29
 [www\css\Styles.css]
 TopLine=147
 Caret=36,171

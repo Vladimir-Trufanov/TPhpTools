@@ -127,11 +127,23 @@ function MakeBaseTest()
       echo '<div id="TestsDiv">';
       MakeTitle("TBaseMaker",'');
       
-      MakeBaseTest() ;
+      //MakeBaseTest() ;
 
       //$i=0;
       //$j=5/$i;
       //echo '$j';
+      
+      
+      $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
+      $pathBase='sqlite:'.$filename; 
+      $username='tve';
+      $password='23ety17';                                         
+
+      $pdo = new PDO($pathBase, $username, $password);
+      $db = new BaseMaker($pdo);
+      
+      // Выборка одного значения
+      $count = $db->queryValue('SELECT COUNT(*) FROM users');
 
 
       echo '</div>';

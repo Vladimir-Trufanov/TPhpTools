@@ -24,21 +24,10 @@ if ($classTT===NULL)
 }
 else 
 {
-
-   echo '+++'.$classTT.'+++';
-
-
-//echo '<div id="TestsDiv">';
    require_once($SiteHost.'/TSimpleTest/autorun.php');
    require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_test.php";
-
    //require_once "Proba.php";
    //probatest($classTT);
-//echo '</div>';
-
-
-
-
 
    // Выводим меню для возврата в контрольное меню тестов
    echo $classTT.'<br>';

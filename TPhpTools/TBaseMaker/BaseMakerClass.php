@@ -5,22 +5,20 @@
 // ****************************************************************************
 // * TPhpTools                     Обслуживатель баз данных SQLite3 через PDO *
 // *                                                                          *
-// * v1.0, 30.12.2020                              Автор:       Труфанов В.Е. *
+// * v1.0, 02.01.2021                              Автор:       Труфанов В.Е. *
 // * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
 // ****************************************************************************
 
 /**
- * Класс TBaseMaker -----обеспечивает расчет и регистрацию текущего, среднего,
- * наибольшего и наименьшего времени загрузки страницы сайта. По умолчанию 
- * определенные данные записываются в памяти браузера LocalStorage. 
- * Если браузером LocalStorage не поддерживается, то расчитанные значения 
- * записываются в кукисы. 
+ * Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание
+ * таблиц, внесение данных, индексирование и выборку значений.
 **/
 
+class BaseMaker 
 
+// http://labaka.ru/tools/obyortka-dlya-raboty-s-pdo
+// http://codeharmony.ru/materials/137
 
-
-class Db 
 {
    private $db;
    public function __construct($db) 
@@ -90,35 +88,34 @@ class Db
     }
   }
 
-  public function queryValue($query, $params = null) {
-    try {
-      $result = null;
-      $stmt = $this->db->prepare($query);
-      if ($stmt->execute($params)) {
-        $result = $stmt->fetchColumn();
-        $stmt->closeCursor();
-      }
-      return $result;
-    } catch(Exception $e) {
-      $this->report($e);
-    }
-  }
 
-  public function queryValues($query, $params = null) {
-    try {
+   // ---
+   public function queryValue($query, $params = null)
+   {
       $result = null;
       $stmt = $this->db->prepare($query);
-      if ($stmt->execute($params)) {
-        $result = array();
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-          $result[] = $row[0];
-        }
+      if ($stmt->execute($params)) 
+      {
+         $result = $stmt->fetchColumn();
+         $stmt->closeCursor();
       }
       return $result;
-    } catch(Exception $e) {
-      $this->report($e);
-    }
-  }
+   }
+   // ---
+   public function queryValues($query, $params = null) 
+   {
+      $result = null;
+      $stmt = $this->db->prepare($query);
+      if ($stmt->execute($params)) 
+      {
+         $result = array();
+         while ($row = $stmt->fetch(PDO::FETCH_NUM)) 
+         {
+            $result[] = $row[0];
+         }
+      }
+      return $result;
+   }
 
   public function queryRow($query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
     $rows = $this->queryRowOrRows(true, $query, $params, $fetchStyle, $classname);

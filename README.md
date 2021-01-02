@@ -3,6 +3,8 @@
 
 ###### spisok-klassov
 ### 1. Алфавитный список классов библиотеки:
+###### obsluzhivatel-baz-dannyh-sqlite3
+#### [TBaseMaker](#tbasemaker) - обслуживатель баз данных SQLite3 через PDO. 
 ###### kontroller-katalogov-i-fajlov
 #### [TCtrlDir](#tctrldir) - контроллер каталогов и файлов. 
 ###### registrator-vremeni-zagruzki-stranicy
@@ -15,6 +17,12 @@
 
 ### 2. Описания классов библиотеки: 
 
+***
+#### TBaseMaker
+####  Обслуживатель баз данных SQLite3 через PDO. 
+##### Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание таблиц, внесение данных, индексирование и выборку значений.
+##### v1.0, 18.12.2020-02.01.2021
+###### [в список](#obsluzhivatel-baz-dannyh-sqlite3)
 ***
 #### TCtrlDir
 ####  Контроллер каталогов и файлов. 
