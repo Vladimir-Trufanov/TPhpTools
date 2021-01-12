@@ -47,8 +47,8 @@ TPhpTools
 				TPhpTools\TPageStarter\PageStarterClass.php
 			+TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
-		-TPhpToolsTests
-			TPhpToolsTests\TBaseMaker_test.php
+		+TPhpToolsTests
+			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TCtrlDir_test.php
 			TPhpToolsTests\TDownloadFromServer_test.php
 			TPhpToolsTests\TFixLoadTimer_test.php
@@ -251,15 +251,16 @@ TPhpTools
 1=www\MainOld.php
 2=www\Proba.php
 3=TPhpTools\TBaseMaker\BaseMakerClass.php
-4=TPhpToolsTests\TBaseMaker_test.php
-5=www\UpSite.php
-6=www\ControlDiv.php
-7=www\index.php
-8=www\TestsDiv.php
-9=www\css\Styles.css
+4=www\UpSite.php
+5=www\ControlDiv.php
+6=www\index.php
+7=www\TestsDiv.php
+8=www\css\Styles.css
+9=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+10=TPhpToolsTests\TBaseMaker__test.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TBaseMaker\BaseMakerClass.php
+Selected=TPhpToolsTests\TBaseMaker__test.php
 [www\Main.php]
 TopLine=11
 Caret=1,20
@@ -267,21 +268,18 @@ Caret=1,20
 TopLine=87
 Caret=1,1
 [www\Proba.php]
-TopLine=20
+TopLine=33
 Caret=7,49
 Mark1=1,51
 Mark2=1,21
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=89
+TopLine=1
 Caret=10,92
-[TPhpToolsTests\TBaseMaker_test.php]
-TopLine=138
-Caret=9,134
 [www\UpSite.php]
 TopLine=63
 Caret=1,69
 [www\ControlDiv.php]
-TopLine=59
+TopLine=49
 Caret=1,1
 [www\index.php]
 TopLine=17
@@ -290,5 +288,11 @@ Caret=1,28
 TopLine=17
 Caret=1,29
 [www\css\Styles.css]
-TopLine=147
+TopLine=155
 Caret=36,171
+[TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
+TopLine=1
+Caret=32,6
+[TPhpToolsTests\TBaseMaker__test.php]
+TopLine=135
+Caret=13,141

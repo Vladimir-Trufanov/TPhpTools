@@ -10,31 +10,42 @@
 // * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
 // ****************************************************************************
 
+require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_CreateBaseTest.php";
+
+
+function echoi()
+{
+echo 'ttttt';
+}
 class test_TBaseMaker extends UnitTestCase 
 {
    // Здесь все должно хорошо найтись в своих позициях
    function test_TBaseMaker_Simple()
    {
    
-            
-  // ****************************************************************************
-// *                      Создать тестовую базу данных                        *
-// ****************************************************************************
-function MakeBaseTest()
-{
-   $Result=true;
-   // Проверяем, есть ли тестовая база данных, для того 
-   // чтобы ее удалить и начать строить ее и заполнять заново
-   $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
-   echo $filename.'<br>';
-   if (file_exists($filename)) 
-   {
-      echo "The file $filename exists<br>";
-   } 
-   else 
-   {
-      echo "The file $filename does not exist<br>";
-   }
+   /*                                                                 
+      // **********************************************************************
+      // *                    Создать тестовую базу данных                    *
+      // **********************************************************************
+      function CreateBaseTest()
+      {
+         $Result=true;
+         echoi();
+         // Проверяем, есть ли тестовая база данных, для того 
+         // чтобы ее удалить и начать строить ее и заполнять заново
+         $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
+         if (file_exists($filename)) 
+         {
+            if (!unlink($filename))
+            {
+               throw new Exception("Не удалось удалить тестовую базу данных $filename!");
+            } 
+            else echo "УThe file $filename exists<br>";
+         } 
+   //else 
+   //{
+   //   echo "The file $filename does not exist<br>";
+   //}
 
    $pathBase='sqlite:'.$filename; 
    $username='tve';
@@ -119,7 +130,7 @@ function MakeBaseTest()
    echo 'есть наши контакты<br>';
    
 }
-
+*/
    
    
    
@@ -127,7 +138,7 @@ function MakeBaseTest()
       echo '<div id="TestsDiv">';
       MakeTitle("TBaseMaker",'');
       
-      //MakeBaseTest() ;
+      CreateBaseTest() ;
 
       //$i=0;
       //$j=5/$i;

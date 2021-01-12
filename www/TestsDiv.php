@@ -25,7 +25,7 @@ if ($classTT===NULL)
 else 
 {
    require_once($SiteHost.'/TSimpleTest/autorun.php');
-   require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_test.php";
+   require_once $TPhpTools."/TPhpToolsTests/T".$classTT."__test.php";
    //require_once "Proba.php";
    //probatest($classTT);
 
