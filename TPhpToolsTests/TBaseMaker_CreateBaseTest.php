@@ -1,28 +1,27 @@
 <?php
+// PHP7/HTML5, EDGE/CHROME                *** TBaseMaker_CreateBaseTest.php ***
 
-      // **********************************************************************
-      // *                    Создать тестовую базу данных                    *
-      // **********************************************************************
-      function CreateBaseTest()
+// ****************************************************************************
+// * TPhpTools                                   Создать тестовую базу данных *
+// *                                                                          *
+// * v1.0, 13.01.2021                              Автор:       Труфанов В.Е. *
+// * Copyright © 2021 tve                          Дата создания:  13.01.2021 *
+// ****************************************************************************
+function CreateBaseTest()
+{
+   $Result=true;
+   // Проверяем, есть ли тестовая база данных.
+   // Если база существует, то удаляем ее. 
+   $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
+   if (file_exists($filename)) 
+   {
+      if (!unlink($filename))
       {
-         $Result=true;
-         echoi();
-         // Проверяем, есть ли тестовая база данных, для того 
-         // чтобы ее удалить и начать строить ее и заполнять заново
-         $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
-         if (file_exists($filename)) 
-         {
-            if (!unlink($filename))
-            {
-               throw new Exception("Не удалось удалить тестовую базу данных $filename!");
-            } 
-            else echo "УThe file $filename exists<br>";
-         } 
-   //else 
-   //{
-   //   echo "The file $filename does not exist<br>";
-   //}
-
+         throw new Exception("Не удалось удалить тестовую базу данных $filename!");
+      } 
+      //else echo "Тестовая база данных $filename существует<br>";
+   } 
+   // Начинаем строить тестовую базу и заполнять заново
    $pathBase='sqlite:'.$filename; 
    $username='tve';
    $password='23ety17';                                         
@@ -101,9 +100,6 @@
       throw $e;
       //echo $e->getMessage();
    }
-
-   
-   echo 'есть наши контакты<br>';
-   
 }
-?>
+// ****************************************** TBaseMaker_CreateBaseTest.php ***
+

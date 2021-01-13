@@ -1,4 +1,4 @@
-<?php /*namespace ttools;*/ 
+<?php /* namespace ttools; */
                                          
 // PHP7/HTML5, EDGE/CHROME                           *** BaseMakerClass.php ***
 
@@ -25,6 +25,7 @@ class BaseMaker
    {
       $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $this->db = $db;
+      //echo 'ρωςϋεκγρε<br>';
    }
    
    public function insert($table, $fields, $insertParams = null) 

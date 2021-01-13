@@ -30,8 +30,8 @@ TPhpTools
 				Favicon\favicon_package_v0.16\safari-pinned-tab.svg
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
-		+TPhpTools
-			+TBaseMaker
+		-TPhpTools
+			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDirClass.php
@@ -45,18 +45,20 @@ TPhpTools
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			+TUploadToServer
+			-TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 		+TPhpToolsTests
+			TPhpToolsTests\iniErrMessage.php
 			TPhpToolsTests\TBaseMaker__test.php
-			TPhpToolsTests\TCtrlDir_test.php
-			TPhpToolsTests\TDownloadFromServer_test.php
-			TPhpToolsTests\TFixLoadTimer_test.php
-			TPhpToolsTests\TPageStarter_test.php
+			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+			TPhpToolsTests\TCtrlDir__test.php
+			TPhpToolsTests\TDownloadFromServer__test.php
+			TPhpToolsTests\TFixLoadTimer__test.php
+			TPhpToolsTests\TPageStarter__test.php
+			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_proba.php
-			TPhpToolsTests\TUploadToServer_test.php
-		+www
-			+css
+		-www
+			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
 				www\css\Styles 2.css
@@ -74,6 +76,7 @@ TPhpTools
 				www\favicon260x260\safari-pinned-tab.svg
 			-Gallery
 			www\89.gif
+			www\basemaker.db3
 			www\check.png
 			www\Common.php
 			www\ControlDiv.php
@@ -241,6 +244,7 @@ TPhpTools
 			Материалы\Исключения PHP часть 1.doc
 			Материалы\Как в PHP вывести текст на Русском языке на изображении.doc
 			Материалы\Опыты с чекбоксом.doc
+		debug.log
 		Developer_Black.png
 		LICENSE
 		README.md
@@ -251,19 +255,16 @@ TPhpTools
 1=www\MainOld.php
 2=www\Proba.php
 3=TPhpTools\TBaseMaker\BaseMakerClass.php
-4=www\UpSite.php
-5=www\ControlDiv.php
-6=www\index.php
-7=www\TestsDiv.php
-8=www\css\Styles.css
-9=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
-10=TPhpToolsTests\TBaseMaker__test.php
+4=www\ControlDiv.php
+5=www\TestsDiv.php
+6=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+7=TPhpToolsTests\TBaseMaker__test.php
 [Selected Project Files]
 Main=
 Selected=TPhpToolsTests\TBaseMaker__test.php
 [www\Main.php]
-TopLine=11
-Caret=1,20
+TopLine=9
+Caret=1,34
 [www\MainOld.php]
 TopLine=87
 Caret=1,1
@@ -273,26 +274,17 @@ Caret=7,49
 Mark1=1,51
 Mark2=1,21
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=1
-Caret=10,92
-[www\UpSite.php]
-TopLine=63
-Caret=1,69
+TopLine=5
+Caret=9,28
 [www\ControlDiv.php]
 TopLine=49
 Caret=1,1
-[www\index.php]
-TopLine=17
-Caret=1,28
 [www\TestsDiv.php]
-TopLine=17
+TopLine=25
 Caret=1,29
-[www\css\Styles.css]
-TopLine=155
-Caret=36,171
 [TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=1
-Caret=32,6
+TopLine=39
+Caret=1,105
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=135
-Caret=13,141
+TopLine=23
+Caret=9,47
