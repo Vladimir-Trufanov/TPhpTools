@@ -184,3 +184,120 @@ Stack trace:
 #1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
 #2 {main}
   thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 31
+[14-Jan-2021 18:38:06 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(54): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 18:39:49 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:117
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(54): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 117
+[14-Jan-2021 18:39:52 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:117
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(54): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 117
+[14-Jan-2021 18:39:56 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:117
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(54): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 117
+[14-Jan-2021 19:20:10 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:33 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:35 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:37 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:38 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:39 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:40 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:20:45 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(58): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:24:23 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in C:\TPhpTools\www\Main.php on line 43
+[14-Jan-2021 19:24:50 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(61): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:25:50 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:116
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(61): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 116
+[14-Jan-2021 19:35:51 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'private' (T_PRIVATE), expecting end of file in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 21
+[14-Jan-2021 19:39:30 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*', expecting end of file in C:\TPhpTools\www\Main.php on line 65
+[14-Jan-2021 19:40:47 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:128
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(60): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 128
+[14-Jan-2021 19:42:03 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:128
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(60): ttools\BaseMaker->queryValues('SELECT COUNT(*)...')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 128
+[14-Jan-2021 19:51:03 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:42
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(55): ttools\BaseMaker->__construct('sqlite:C:\\TPhpT...', 'tve', '23ety17')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 42
+[14-Jan-2021 19:52:06 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:42
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(55): ttools\BaseMaker->__construct('sqlite:C:\\TPhpT...', 'tve', '23ety17')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 42
+[14-Jan-2021 19:53:04 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:42
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(55): ttools\BaseMaker->__construct('sqlite:C:\\TPhpT...', 'tve', '23ety17')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 42

@@ -25,6 +25,7 @@ class BaseMaker
 
 {
    private $db;
+   
    public function __construct($pathBase,$username,$password) 
    {
       $this->db = new \PDO($pathBase,$username,$password);
@@ -107,18 +108,19 @@ class BaseMaker
    }
    // ---
    public function queryValues($query, $params = null) 
-   {
+   { 
       $result = null;
       $stmt = $this->db->prepare($query);
       if ($stmt->execute($params)) 
       {
          $result = array();
-         while ($row = $stmt->fetch(PDO::FETCH_NUM)) 
+         while ($row = $stmt->fetch(\PDO::FETCH_NUM)) 
          {
             $result[] = $row[0];
          }
       }
-      return $result;
+      filemtime('spoon');
+      return $result;  
    }
 
   public function queryRow($query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
@@ -186,8 +188,6 @@ class BaseMaker
 
 /*
 А вот и пример работы:
-$pdo = new PDO($dsn, $user, $password);
-$db = new Db($pdo);
 
 // Выборка одного значения
 $count = $db->queryValue('SELECT COUNT(*) FROM users');

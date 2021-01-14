@@ -30,7 +30,7 @@ class test_TBaseMaker extends UnitTestCase
       //$j=5/$i;
       //echo '$j';
       
-       
+      ///* 
       ttools\ee('<br>123');
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       $pathBase='sqlite:'.$filename; 
@@ -38,13 +38,14 @@ class test_TBaseMaker extends UnitTestCase
       $password='23ety17';                                         
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       ttools\ee('45<br>');
-
-            
       // Выборка одного значения
-      //$count = $db->queryValue('SELECT COUNT(*) FROM users');
       $count = $db->queryValue('SELECT COUNT(*) FROM vids');
       echo "*** $count ***<br>";
-
+      $this->assertEqual($count,2);
+      $count = $db->queryValues('SELECT COUNT(*) FROM vids');
+      print_r($count);
+      //*/
+      
       echo '</div>';
 
       

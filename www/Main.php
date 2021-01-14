@@ -37,6 +37,15 @@ require_once "Common.php";     // Всегда 1-ый корневой моду�
 require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
 require_once "UpSite.php";
 
+/*
+function merr($errno,$msg,$file,$ins)
+{
+echo 'ошибка <br>';
+}
+set_error_handler("merr",E_ALL);
+filemtime('spoon');
+*/
+
       /*
       ttools\ee('<br>123');
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
@@ -45,6 +54,11 @@ require_once "UpSite.php";
       $password='23ety17';                                         
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       ttools\ee('45<br>');
+      // Выборка одного значения
+      $count = $db->queryValue('SELECT COUNT(*) FROM vids');
+      echo "*** $count ***<br>";
+      $count = $db->queryValues('SELECT COUNT(*) FROM vids');
+      print_r($count);
       */
 
    
