@@ -10,7 +10,6 @@
 // * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
 // ****************************************************************************
 
-require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";
 require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_CreateBaseTest.php";
 
 class test_TBaseMaker extends UnitTestCase 
@@ -25,27 +24,26 @@ class test_TBaseMaker extends UnitTestCase
    
       echo '<div id="TestsDiv">';
       MakeTitle("TBaseMaker",'');
-      
       CreateBaseTest();
 
       //$i=0;
       //$j=5/$i;
       //echo '$j';
       
-      
+       
+      ttools\ee('<br>123');
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';                                         
+      $db = new ttools\BaseMaker($pathBase,$username,$password);
+      ttools\ee('45<br>');
 
-      echo '1';
-      $pdo = new PDO($pathBase, $username, $password);
-      //$db = new ВaseMaker($pdo);
-      echo '2';
-      
+            
       // Выборка одного значения
       //$count = $db->queryValue('SELECT COUNT(*) FROM users');
-
+      $count = $db->queryValue('SELECT COUNT(*) FROM vids');
+      echo "*** $count ***<br>";
 
       echo '</div>';
 

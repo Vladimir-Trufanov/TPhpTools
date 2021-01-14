@@ -30,12 +30,22 @@ require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
 $TPhpTools=$SiteHost.'/TPhpTools';
 require_once $TPhpTools."/TPhpTools/TDownloadFromServer/DownloadFromServerClass.php";
 require_once $TPhpTools."/TPhpTools/TUploadToServer/UploadToServerClass.php";
-//require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";
+require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";
 
 // Выполняем начальную инициализацию
 require_once "Common.php";     // Всегда 1-ый корневой модуль в списке
 require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
 require_once "UpSite.php";
+
+      /*
+      ttools\ee('<br>123');
+      $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
+      $pathBase='sqlite:'.$filename; 
+      $username='tve';
+      $password='23ety17';                                         
+      $db = new ttools\BaseMaker($pathBase,$username,$password);
+      ttools\ee('45<br>');
+      */
 
    
 // При необходимости выводим дополнительную информацию

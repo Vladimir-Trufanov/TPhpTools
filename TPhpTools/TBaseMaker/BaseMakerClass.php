@@ -1,18 +1,22 @@
-<?php /* namespace ttools; */
+<?php namespace ttools; 
                                          
 // PHP7/HTML5, EDGE/CHROME                           *** BaseMakerClass.php ***
 
 // ****************************************************************************
-// * TPhpTools                     Обслуживатель баз данных SQLite3 через PDO *
+// * TPhpTools                     РћР±СЃР»СѓР¶РёРІР°С‚РµР»СЊ Р±Р°Р· РґР°РЅРЅС‹С… SQLite3 С‡РµСЂРµР· PDO *
 // *                                                                          *
-// * v1.0, 02.01.2021                              Автор:       Труфанов В.Е. *
-// * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
+// * v1.0, 02.01.2021                              РђРІС‚РѕСЂ:       РўСЂСѓС„Р°РЅРѕРІ Р’.Р•. *
+// * Copyright В© 2020 tve                          Р”Р°С‚Р° СЃРѕР·РґР°РЅРёСЏ:  18.12.2020 *
 // ****************************************************************************
 
 /**
- * Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание
- * таблиц, внесение данных, индексирование и выборку значений.
+ * РљР»Р°СЃСЃ TBaseMaker РѕР±РµСЃРїРµС‡РёРІР°РµС‚ РІРµРґРµРЅРёРµ Р±Р°Р· РґР°РЅРЅС‹С… SQlite3 PDO: СЃРѕР·РґР°РЅРёРµ
+ * С‚Р°Р±Р»РёС†, РІРЅРµСЃРµРЅРёРµ РґР°РЅРЅС‹С…, РёРЅРґРµРєСЃРёСЂРѕРІР°РЅРёРµ Рё РІС‹Р±РѕСЂРєСѓ Р·РЅР°С‡РµРЅРёР№.
 **/
+function ee($c)
+{
+   echo $c;
+}
 
 class BaseMaker 
 
@@ -21,11 +25,10 @@ class BaseMaker
 
 {
    private $db;
-   public function __construct($db) 
+   public function __construct($pathBase,$username,$password) 
    {
-      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $this->db = $db;
-      //echo 'сщтыекгсе<br>';
+      $this->db = new \PDO($pathBase,$username,$password);
+      $this->db->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
    }
    
    public function insert($table, $fields, $insertParams = null) 
@@ -182,23 +185,23 @@ class BaseMaker
 
 
 /*
-А вот и пример работы:
+Рђ РІРѕС‚ Рё РїСЂРёРјРµСЂ СЂР°Р±РѕС‚С‹:
 $pdo = new PDO($dsn, $user, $password);
 $db = new Db($pdo);
 
-// Выборка одного значения
+// Р’С‹Р±РѕСЂРєР° РѕРґРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
 $count = $db->queryValue('SELECT COUNT(*) FROM users');
 
-// Выборка набора записей
+// Р’С‹Р±РѕСЂРєР° РЅР°Р±РѕСЂР° Р·Р°РїРёСЃРµР№
 $users = $db->queryRows('SELECT * FROM users WHERE name LIKE ?', array('%username%'));
 
-// Выборка одной записи
+// Р’С‹Р±РѕСЂРєР° РѕРґРЅРѕР№ Р·Р°РїРёСЃРё
 $user = $db->queryRow('SELECT * FROM users WHERE id=:id', array(':id' => 123));
 
-// Добавление записи (INSERT) и получение значения поля AUTO_INCREMENT
+// Р”РѕР±Р°РІР»РµРЅРёРµ Р·Р°РїРёСЃРё (INSERT) Рё РїРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СЏ AUTO_INCREMENT
 $newUserId = $db->insert('users', array('name' => 'NewUserName', 'password' => 'zzxxcc'));
 
-// Изменение записи (UPDATE)
+// РР·РјРµРЅРµРЅРёРµ Р·Р°РїРёСЃРё (UPDATE)
 $db->update('users', array('name' => 'UpdatedName'), 'id=:id', array(':id' => $newUserId));
 */
 

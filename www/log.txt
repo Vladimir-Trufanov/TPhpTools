@@ -172,3 +172,15 @@ Stack trace:
 [13-Jan-2021 14:46:22 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'new' (T_NEW), expecting identifier (T_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 149
 [13-Jan-2021 15:01:05 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'use' (T_USE) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 148
 [13-Jan-2021 15:24:30 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/TBaseMaker/ttools/BaseMakerClass.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 33
+[14-Jan-2021 14:53:55 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:30
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(46): ttools\BaseMaker->__construct(Object(PDO))
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 30
+[14-Jan-2021 15:16:56 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Class 'ttools\PDO' not found in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:31
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(45): ttools\BaseMaker->__construct('sqlite:C:\\TPhpT...', 'tve', '23ety17')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 31
