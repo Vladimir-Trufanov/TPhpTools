@@ -14,40 +14,35 @@ require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_CreateBaseTest.php";
 
 class test_TBaseMaker extends UnitTestCase 
 {
-   // Здесь все должно хорошо найтись в своих позициях
    function test_TBaseMaker_Simple()
    {
-   
-   
-   
-   
-   
       echo '<div id="TestsDiv">';
       MakeTitle("TBaseMaker",'');
-      // Создаем тестовую базу данных: "Каллорийность некоторых ягод и фруктов"
-      CreateBaseTest();
       // Тестовое исключение: деление на ноль
       // $i=0; $j=5/$i; echo '$j';
       // Начинаем протоколировать тесты
       SimpleMessage();
 
-      ///* 
+      PointMessage('Создается база данных: "Калорийность некоторых продуктов"');
+      CreateBaseTest();
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';                                         
       $db = new ttools\BaseMaker($pathBase,$username,$password);
-      // Выборка одного значения
+      OkMessage();
+      
+      PointMessage('Определяется количество видов продуктов');
       $count = $db->queryValue('SELECT COUNT(*) FROM vids');
       $this->assertEqual($count,2);
-      SimpleMessage('$Name2= ');
       
+      // $arr=array('BaseMaker' => 'notest'); - ассоциативный массив
+      // $arr=array(1,2,3);                   - простой список значений
+      $sign=array(2);
       $count = $db->queryValues('SELECT COUNT(*) FROM vids');
-      print_r($count);
-      
-      SimpleMessage('$Name1222= ');
-      
-      //*/
+      $this->assertEqual($count,$sign);
+      //print_r($count);
+      OkMessage();
       
       echo '</div>';
 

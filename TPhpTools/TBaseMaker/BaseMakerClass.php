@@ -5,7 +5,7 @@
 // ****************************************************************************
 // * TPhpTools                     Обслуживатель баз данных SQLite3 через PDO *
 // *                                                                          *
-// * v1.0, 02.01.2021                              Автор:       Труфанов В.Е. *
+// * v1.0, 15.01.2021                              Автор:       Труфанов В.Е. *
 // * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
 // ****************************************************************************
 
@@ -27,6 +27,44 @@ class BaseMaker
       $this->db->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
       //\prown\MakeUserError('SendCookieFailed','TPhpTools',rvsTriggerError);
    }
+   
+   // ----------------------------------------------------------- методы класса
+
+   // *************************************************************************
+   // *    Выполнить запрос и вывести результат, как единственное значение    *
+   // *************************************************************************
+   public function queryValue($query, $params = null)
+   {
+      $result = null;
+      $stmt = $this->db->prepare($query);
+      if ($stmt->execute($params)) 
+      {
+         $result = $stmt->fetchColumn();
+         $stmt->closeCursor();
+      }
+      return $result;
+   }
+   // *************************************************************************
+   // *        Выполнить запрос и вывести результат, как простой список       *
+   // *                        (не ассоциативный массив)                      *
+   // *************************************************************************
+   public function queryValues($query, $params = null) 
+   { 
+      //filemtime('spoon');
+      $result = null;
+      $stmt = $this->db->prepare($query);
+      if ($stmt->execute($params)) 
+      {
+         $result = array();
+         while ($row = $stmt->fetch(\PDO::FETCH_NUM)) 
+         {
+            $result[] = $row[0];
+         }
+      }
+      return $result;  
+   }
+
+   // ----------------------------------------------- приватные функции класса
    
    public function insert($table, $fields, $insertParams = null) 
    {
@@ -90,34 +128,7 @@ class BaseMaker
   }
 
 
-   // ---
-   public function queryValue($query, $params = null)
-   {
-      $result = null;
-      $stmt = $this->db->prepare($query);
-      if ($stmt->execute($params)) 
-      {
-         $result = $stmt->fetchColumn();
-         $stmt->closeCursor();
-      }
-      return $result;
-   }
-   // ---
-   public function queryValues($query, $params = null) 
-   { 
-      filemtime('spoon');
-      $result = null;
-      $stmt = $this->db->prepare($query);
-      if ($stmt->execute($params)) 
-      {
-         $result = array();
-         while ($row = $stmt->fetch(\PDO::FETCH_NUM)) 
-         {
-            $result[] = $row[0];
-         }
-      }
-      return $result;  
-   }
+
 
   public function queryRow($query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
     $rows = $this->queryRowOrRows(true, $query, $params, $fetchStyle, $classname);
