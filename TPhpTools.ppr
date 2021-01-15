@@ -47,8 +47,10 @@ TPhpTools
 				TPhpTools\TPageStarter\PageStarterClass.php
 			-TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
+			TPhpTools\iniConstMem.php
+			TPhpTools\iniErrMessage.php
 		+TPhpToolsTests
-			TPhpToolsTests\iniErrMessage.php
+			TPhpToolsTests\FunctionsTools.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
 			TPhpToolsTests\TCtrlDir__test.php
@@ -57,7 +59,7 @@ TPhpTools
 			TPhpToolsTests\TPageStarter__test.php
 			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_proba.php
-		+www
+		-www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -252,47 +254,33 @@ TPhpTools
 		Пример формы класса.php
 [Open project files]
 0=www\Main.php
-1=www\MainOld.php
-2=www\Proba.php
-3=TPhpTools\TBaseMaker\BaseMakerClass.php
-4=www\ControlDiv.php
-5=www\TestsDiv.php
-6=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
-7=TPhpToolsTests\TBaseMaker__test.php
-8=www\index.php
-9=www\UpSite.php
+1=TPhpTools\TBaseMaker\BaseMakerClass.php
+2=www\ControlDiv.php
+3=www\TestsDiv.php
+4=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+5=TPhpToolsTests\TBaseMaker__test.php
+6=www\UpSite.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TBaseMaker\BaseMakerClass.php
+Selected=TPhpToolsTests\TBaseMaker__test.php
 [www\Main.php]
-TopLine=34
-Caret=7,49
-[www\MainOld.php]
-TopLine=87
-Caret=1,1
-[www\Proba.php]
-TopLine=33
-Caret=7,49
-Mark1=1,51
-Mark2=1,21
+TopLine=41
+Caret=1,59
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=103
-Caret=7,122
+TopLine=85
+Caret=7,108
 [www\ControlDiv.php]
-TopLine=27
-Caret=1,1
+TopLine=45
+Caret=1,69
 [www\TestsDiv.php]
-TopLine=11
-Caret=1,29
+TopLine=1
+Caret=1,37
 [TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=77
+TopLine=16
 Caret=16,100
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=29
-Caret=7,46
-[www\index.php]
-TopLine=15
-Caret=1,42
+TopLine=39
+Caret=34,48
 [www\UpSite.php]
-TopLine=61
+TopLine=65
 Caret=1,1

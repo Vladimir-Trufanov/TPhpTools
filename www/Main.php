@@ -12,12 +12,16 @@
 
 // Подключаем файлы библиотеки прикладных модулей:
 $TPhpPrown=$SiteHost.'/TPhpPrown';
-require_once $TPhpPrown."/TPhpPrown/DebugInfo.php";
-require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
-require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
 require_once $TPhpPrown."/TPhpPrown/MakeCookie.php";
 require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
+/*
+require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
+require_once $TPhpPrown."/TPhpPrown/DebugInfo.php";
 require_once $TPhpPrown."/TPhpPrown/Findes.php";
+require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
+require_once $TPhpPrown."/TPhpPrown/iniConstMem.php";
+*/
+//require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
 /*
 require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
 require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
@@ -47,13 +51,11 @@ filemtime('spoon');
 */
 
       /*
-      ttools\ee('<br>123');
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';                                         
       $db = new ttools\BaseMaker($pathBase,$username,$password);
-      ttools\ee('45<br>');
       // Выборка одного значения
       $count = $db->queryValue('SELECT COUNT(*) FROM vids');
       echo "*** $count ***<br>";

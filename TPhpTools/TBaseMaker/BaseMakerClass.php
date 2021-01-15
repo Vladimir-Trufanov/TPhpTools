@@ -13,11 +13,6 @@
  * Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание
  * таблиц, внесение данных, индексирование и выборку значений.
 **/
-function ee($c)
-{
-   echo $c;
-}
-
 class BaseMaker 
 
 // http://labaka.ru/tools/obyortka-dlya-raboty-s-pdo
@@ -30,6 +25,7 @@ class BaseMaker
    {
       $this->db = new \PDO($pathBase,$username,$password);
       $this->db->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
+      //\prown\MakeUserError('SendCookieFailed','TPhpTools',rvsTriggerError);
    }
    
    public function insert($table, $fields, $insertParams = null) 
@@ -109,6 +105,7 @@ class BaseMaker
    // ---
    public function queryValues($query, $params = null) 
    { 
+      filemtime('spoon');
       $result = null;
       $stmt = $this->db->prepare($query);
       if ($stmt->execute($params)) 
@@ -119,7 +116,6 @@ class BaseMaker
             $result[] = $row[0];
          }
       }
-      filemtime('spoon');
       return $result;  
    }
 

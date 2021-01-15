@@ -24,26 +24,29 @@ class test_TBaseMaker extends UnitTestCase
    
       echo '<div id="TestsDiv">';
       MakeTitle("TBaseMaker",'');
+      // Создаем тестовую базу данных: "Каллорийность некоторых ягод и фруктов"
       CreateBaseTest();
+      // Тестовое исключение: деление на ноль
+      // $i=0; $j=5/$i; echo '$j';
+      // Начинаем протоколировать тесты
+      SimpleMessage();
 
-      //$i=0;
-      //$j=5/$i;
-      //echo '$j';
-      
       ///* 
-      ttools\ee('<br>123');
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';                                         
       $db = new ttools\BaseMaker($pathBase,$username,$password);
-      ttools\ee('45<br>');
       // Выборка одного значения
       $count = $db->queryValue('SELECT COUNT(*) FROM vids');
-      echo "*** $count ***<br>";
       $this->assertEqual($count,2);
+      SimpleMessage('$Name2= ');
+      
       $count = $db->queryValues('SELECT COUNT(*) FROM vids');
       print_r($count);
+      
+      SimpleMessage('$Name1222= ');
+      
       //*/
       
       echo '</div>';

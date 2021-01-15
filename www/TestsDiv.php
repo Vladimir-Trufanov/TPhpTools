@@ -10,17 +10,13 @@
 //                                                   Дата создания:  13.01.2019
 // Copyright © 2019 tve                              Посл.изменение: 30.12.2020
 
-$classTT=prown\getComRequest('test');
-
-
-
 // Принимаем команду на запуск тестов
-//$classTT=prown\getComRequest('test');
+$classTT=prown\getComRequest('test');
+echo '<div class="container">';
 if ($classTT===NULL)
 {
    $classTT='NULL';
    echo 'Класс для тестирования не выбран!<br>';
-   echo $SpecSite;
 }
 else 
 {
@@ -30,19 +26,14 @@ else
    //probatest($classTT);
 
    // Выводим меню для возврата в контрольное меню тестов
-   echo $classTT.'<br>';
-
-   echo '<div class="container">';
    echo '<ul>';
-   
    echo 
       '<li id=li'.$classTT.' class="dropdown">'.
       '<input type="checkbox" name="test" value="'.$classTT.'">'.
       '<a href="'.$SpecSite.'/?control='.$classTT.'" data-toggle="dropdown">T'.$classTT.'</a>'.
       '</li>';
-   echo 
-      '</ul>'.
-      '</div>';
+   echo '</ul>';
+
    //echo
    //   '<div id="InfoRight">'.
    //   $SiteDevice." ".$c_PersName." ".$_SESSION['Counter'].".".$c_PersEntry."[".$c_BrowEntry."]". 
@@ -52,6 +43,10 @@ else
   // Header("Location: ".$SpecSite);
    
 }   
+echo '</div>';
+
+
+
  /*
 }
 echo 

@@ -301,3 +301,39 @@ Stack trace:
 #1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
 #2 {main}
   thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 42
+[15-Jan-2021 14:17:23 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\MakeUserError() in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:35
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(57): ttools\BaseMaker->__construct('sqlite:C:\\TPhpT...', 'tve', '23ety17')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 35
+[15-Jan-2021 14:18:19 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\prown\MakeUserError() in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php:35
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(57): ttools\BaseMaker->__construct('sqlite:C:\\TPhpT...', 'tve', '23ety17')
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 35
+[15-Jan-2021 15:02:17 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\MakeCookie() in C:\TPhpTools\www\iniMem.php:30
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(41): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\www\iniMem.php on line 30
+[15-Jan-2021 15:02:56 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function prown\MakeSession() in C:\TPhpTools\www\iniMem.php:38
+Stack trace:
+#0 C:\TPhpTools\www\Main.php(41): require_once()
+#1 C:\TPhpTools\www\index.php(35): require_once('C:\\TPhpTools\\ww...')
+#2 {main}
+  thrown in C:\TPhpTools\www\iniMem.php on line 38
+[15-Jan-2021 16:37:39 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:37:40 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:37:41 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:37:56 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:37:57 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:37:58 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:37:59 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:38:01 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:38:02 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:38:03 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:38:04 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
+[15-Jan-2021 16:38:16 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
