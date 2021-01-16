@@ -338,3 +338,6 @@ Stack trace:
 [15-Jan-2021 16:38:04 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
 [15-Jan-2021 16:38:16 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 31
 [15-Jan-2021 20:13:11 Asia/Kuwait] PHP Fatal error:  Illegal offset type in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 40
+[16-Jan-2021 16:36:31 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '$sql' (T_VARIABLE) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 36
+[16-Jan-2021 21:50:59 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ')' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 52
+[16-Jan-2021 21:51:35 Asia/Kuwait] PHP Fatal error:  Illegal offset type in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 52

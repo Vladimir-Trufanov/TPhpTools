@@ -263,13 +263,13 @@ TPhpTools
 7=..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TBaseMaker\BaseMakerClass.php
+Selected=TPhpToolsTests\TBaseMaker__test.php
 [www\Main.php]
 TopLine=43
 Caret=1,59
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=38
-Caret=31,64
+TopLine=76
+Caret=83,56
 [www\ControlDiv.php]
 TopLine=16
 Caret=39,32
@@ -277,11 +277,11 @@ Caret=39,32
 TopLine=21
 Caret=1,37
 [TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=69
-Caret=33,58
+TopLine=72
+Caret=18,80
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=75
-Caret=13,90
+TopLine=97
+Caret=34,110
 [www\UpSite.php]
 TopLine=65
 Caret=1,1

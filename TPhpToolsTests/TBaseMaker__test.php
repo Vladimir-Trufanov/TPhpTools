@@ -23,7 +23,7 @@ class test_TBaseMaker extends UnitTestCase
       // Начинаем протоколировать тесты
       SimpleMessage();
 
-      PointMessage('Создается база данных: "Калорийность некоторых продуктов"');
+      PointMessage('Создается тестовая база данных');  // "Калорийность некоторых продуктов"
       CreateBaseTest();
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       $pathBase='sqlite:'.$filename; 
@@ -32,7 +32,7 @@ class test_TBaseMaker extends UnitTestCase
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       OkMessage();
       
-      PointMessage('Определяется количество видов продуктов');
+      PointMessage('Проверяются методы queryValue(s) по запросам без параметров');
       $sql='SELECT COUNT(*) FROM vids';
 
       $sign=2;
@@ -44,11 +44,16 @@ class test_TBaseMaker extends UnitTestCase
       $sign=array(2);
       $count = $db->queryValues($sql);
       $this->assertEqual($count,$sign);
+
+      $sql='SELECT vid FROM vids';
+      $sign=array('фрукты','ягоды');
+      $list = $db->queryValues($sql);
+      $this->assertEqual($list,$sign);
       OkMessage();
 
-      PointMessage('Определяется количество видов продуктов в диапазоне калорий');
-      // Выполнение подготовленного запроса с передачей 
-      // именованных переменных в массиве входных значений
+      // Выполняем методы queryValue(s) с подготовленными запросами и с 
+      // передачей именованных переменных в массиве входных значений
+      PointMessage('Проверяются queryValue(s) по запросам с именованными параметрами');
       $calories = 81;
       $sql='SELECT COUNT(*) FROM produkts WHERE calories<:calories';
       $parm=array(':calories' => $calories);
@@ -71,30 +76,41 @@ class test_TBaseMaker extends UnitTestCase
       $sign=array(3);
       $count=$db->queryValues($sql,$parm);
       $this->assertEqual($count,$sign);
-      // Выполнение подготовленного запроса с передачей 
+      OkMessage();
+
+      // Выполняем методы queryValue(s) с подготовленными запросами и передачей 
       // безымянных (неименованных) переменных в массиве входных значений
-      $calories = 81;
+      PointMessage('Проверяются queryValue(s) по запросам с безымянными параметрами');
       $sql='SELECT COUNT(*) FROM produkts WHERE calories < ?';
+      $calories = 81;
       $parm=array($calories);
 
       $sign=5;
       $count=$db->queryValue($sql,$parm);
       $this->assertEqual($count,$sign);
+
       $sign=array(5);
       $count=$db->queryValues($sql,$parm);
       $this->assertEqual($count,$sign);
 
-      $calories = 41;
-      $idvid=2;
       $sql='SELECT COUNT(*) FROM produkts WHERE calories>=? AND [id-vid] = ?';
+      $calories = 41; $idvid=2;
       $parm=array($calories, $idvid);
 
       $sign=3;
       $count=$db->queryValue($sql,$parm);
       $this->assertEqual($count,$sign);
+
       $sign=array(3);
       $count=$db->queryValues($sql,$parm);
       $this->assertEqual($count,$sign);
+
+      $sql='SELECT name FROM produkts WHERE calories>=? AND [id-vid] = ?';
+      $calories = 41; $idvid=2;
+      $parm=[$calories, $idvid];
+      $sign=['голубика','брусника','рябина'];
+      $list = $db->queryValues($sql,$parm);
+      $this->assertEqual($list,$sign);
       OkMessage();
 
       //echo '***'.$count.'***';

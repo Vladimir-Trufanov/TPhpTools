@@ -45,25 +45,35 @@ class BaseMaker
     * 
     * $query  - текст sql-запроса: 'SELECT COUNT(*) FROM produkts WHERE calories>=? AND [id-vid] = ?'
     * $params - массив входных значений: array($calories, $idvid)
-    * 
    **/
    {
       $result = null;
       $stmt = $this->db->prepare($query);
       if ($stmt->execute($params)) 
       {
+         // Выбираем нулевой элемент выбранного столбца по запросу
          $result = $stmt->fetchColumn();
+         // Разрешаем запустить новый запрос, если не все данные выбраны из набора
          $stmt->closeCursor();
       }
       return $result;
    }
    // *************************************************************************
    // *        Выполнить запрос и вывести результат, как простой список       *
-   // *                        (не ассоциативный массив)                      *
+   // *              (не ассоциативный массив) выбранных значений             *
+   // *                                                                       *
+   // * Замечание:             метод выбирает в список нулевые элементы строк *
+   // *                                из выбранного по запросу набора данных *
    // *************************************************************************
    public function queryValues($query, $params = null) 
+   /**
+    * $query  - текст sql-запроса: 'SELECT vid FROM vids'
+    * $params - массив входных значений: null
+    * 
+    * $query  - текст sql-запроса: 'SELECT name FROM produkts WHERE calories>=? AND [id-vid] = ?'
+    * $params - массив входных значений: [$calories, $idvid]
+   **/
    { 
-      //filemtime('spoon');
       $result = null;
       $stmt = $this->db->prepare($query);
       if ($stmt->execute($params)) 
@@ -155,6 +165,7 @@ class BaseMaker
  
   private function queryRowOrRows($singleRow, $query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
     try {
+      //filemtime('spoon');
       $result = null;
       $stmt = $this->db->prepare($query);
       if($classname) {
