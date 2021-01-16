@@ -34,6 +34,19 @@ class BaseMaker
    // *    Выполнить запрос и вывести результат, как единственное значение    *
    // *************************************************************************
    public function queryValue($query, $params = null)
+   /**
+    * Примеры:
+    * 
+    * $query  - текст sql-запроса: 'SELECT COUNT(*) FROM vids'
+    * $params - массив входных значений: null
+    * 
+    * $query  - текст sql-запроса: 'SELECT COUNT(*) FROM produkts WHERE calories<:calories'
+    * $params - массив входных значений: array(':calories' => $calories)
+    * 
+    * $query  - текст sql-запроса: 'SELECT COUNT(*) FROM produkts WHERE calories>=? AND [id-vid] = ?'
+    * $params - массив входных значений: array($calories, $idvid)
+    * 
+   **/
    {
       $result = null;
       $stmt = $this->db->prepare($query);
