@@ -38,7 +38,7 @@ class test_TBaseMaker extends UnitTestCase
       $sign=2;
       $count=$db->queryValue($sql);
       $this->assertEqual($count,2);
-
+      
       // $arr=array('BaseMaker'=>'notest'); - ассоциативный массив
       // $arr=array(1,2,3);                 - простой список значений
       $sign=array(2);
@@ -50,7 +50,7 @@ class test_TBaseMaker extends UnitTestCase
       $list = $db->queryValues($sql);
       $this->assertEqual($list,$sign);
       OkMessage();
-
+   
       // Выполняем методы queryValue(s) с подготовленными запросами и с 
       // передачей именованных переменных в массиве входных значений
       PointMessage('Проверяются queryValue(s) по запросам с именованными параметрами');
@@ -61,6 +61,7 @@ class test_TBaseMaker extends UnitTestCase
       $sign=5;
       $count=$db->queryValue($sql,$parm);
       $this->assertEqual($count,$sign);
+      
       $sign=array(5);
       $count=$db->queryValues($sql,$parm);
       $this->assertEqual($count,$sign);

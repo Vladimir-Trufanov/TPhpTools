@@ -32,6 +32,7 @@ require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
 
 // Подключаем файлы библиотеки прикладных классов:
 $TPhpTools=$SiteHost.'/TPhpTools';
+require_once $TPhpTools."/TPhpTools/iniErrMessage.php";
 require_once $TPhpTools."/TPhpTools/TDownloadFromServer/DownloadFromServerClass.php";
 require_once $TPhpTools."/TPhpTools/TUploadToServer/UploadToServerClass.php";
 require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";

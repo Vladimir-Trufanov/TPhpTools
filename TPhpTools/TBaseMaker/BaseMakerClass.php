@@ -9,6 +9,24 @@
 // * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
 // ****************************************************************************
 
+// *************************************************************************
+// *                 Вывести сообщение об ошибке исполнения запроса        *
+// *************************************************************************
+function sqlMessage($query,$params,$mode=rvsTriggerError)
+{
+   $mess='[TPhpTools] '.RequestExecutionError.$query; echo '<br>';
+   trigger_error($mess);
+   if (!$params==null)
+   {
+      //$mess=RequestExecutionError.$query.WithParameters; //.string($params);
+      echo 
+         "<span style=\"color:#993300; font-weight:bold; ".
+         "font-family:'Anonymous Pro', monospace; font-size:0.9em\">";
+      echo WithParameters;
+      print_r($params);
+      echo "</span><br>";
+   }
+}
 /**
  * Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание
  * таблиц, внесение данных, индексирование и выборку значений.
@@ -33,7 +51,7 @@ class BaseMaker
    // *************************************************************************
    // *    Выполнить запрос и вывести результат, как единственное значение    *
    // *************************************************************************
-   public function queryValue($query, $params = null)
+   public function queryValue($query,$params=null)
    /**
     * Примеры:
     * 
@@ -56,6 +74,7 @@ class BaseMaker
          // Разрешаем запустить новый запрос, если не все данные выбраны из набора
          $stmt->closeCursor();
       }
+      else sqlMessage($query,$params);
       return $result;
    }
    // *************************************************************************
@@ -65,7 +84,7 @@ class BaseMaker
    // * Замечание:             метод выбирает в список нулевые элементы строк *
    // *                                из выбранного по запросу набора данных *
    // *************************************************************************
-   public function queryValues($query, $params = null) 
+   public function queryValues($query,$params=null) 
    /**
     * $query  - текст sql-запроса: 'SELECT vid FROM vids'
     * $params - массив входных значений: null
@@ -84,6 +103,7 @@ class BaseMaker
             $result[] = $row[0];
          }
       }
+      else sqlMessage($query,$params);
       return $result;  
    }
 

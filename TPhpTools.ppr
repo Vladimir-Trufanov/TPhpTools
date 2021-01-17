@@ -49,7 +49,7 @@ TPhpTools
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 			TPhpTools\iniConstMem.php
 			TPhpTools\iniErrMessage.php
-		+TPhpToolsTests
+		-TPhpToolsTests
 			TPhpToolsTests\FunctionsTools.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
@@ -261,15 +261,16 @@ TPhpTools
 5=TPhpToolsTests\TBaseMaker__test.php
 6=www\UpSite.php
 7=..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php
+8=TPhpTools\iniErrMessage.php
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker__test.php
+Selected=TPhpTools\TBaseMaker\BaseMakerClass.php
 [www\Main.php]
-TopLine=43
-Caret=1,59
+TopLine=19
+Caret=50,35
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=76
-Caret=83,56
+TopLine=1
+Caret=20,13
 [www\ControlDiv.php]
 TopLine=16
 Caret=39,32
@@ -280,11 +281,14 @@ Caret=1,37
 TopLine=72
 Caret=18,80
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=97
-Caret=34,110
+TopLine=95
+Caret=7,115
 [www\UpSite.php]
 TopLine=65
 Caret=1,1
 [..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php]
-TopLine=264
-Caret=23,280
+TopLine=268
+Caret=49,275
+[TPhpTools\iniErrMessage.php]
+TopLine=1
+Caret=51,18
