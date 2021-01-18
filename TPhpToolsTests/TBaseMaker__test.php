@@ -114,26 +114,45 @@ class test_TBaseMaker extends UnitTestCase
       $this->assertEqual($list,$sign);
       OkMessage();
 
+      // Делаем выборку по одной записи метода queryRow
+      PointMessage('Выполняются проверки метода queryRow выборками записей');
+      // Делаем запрос на всю базу, метод возвращает первую запись
+      $sql='SELECT * FROM produkts';
+      $prod1=$db->queryRow($sql);
+      $sign=['name'=>'голубика','id-colour'=>2,'calories'=>41,'id-vid'=>2];
+      $this->assertEqual($prod1,$sign);
+      // Делаем запрос по именованному ключу
+      $sql='SELECT * FROM produkts WHERE name=:name';
+      $prod1=$db->queryRow($sql, array(':name' => 'рябина'));
+      $prod2=$db->queryRow($sql, [':name' => 'рябина']);
+      $this->assertEqual($prod1,$prod2);
+      // Делаем запрос по не именованному ключу
+      $sql='SELECT * FROM produkts WHERE name=?';
+      $prod2=$db->queryRow($sql, array('виноград'));
+      $sign=array('name'=>'виноград','id-colour'=>5,'calories'=>70,'id-vid'=>1);
+      $this->assertEqual($prod2,$sign);
+      // Делаем поименный запрос
+      $sql='SELECT name,[id-colour],calories,[id-vid] FROM produkts WHERE name=?';
+      $prod1=$db->queryRow($sql,['виноград']);
+      $this->assertEqual($prod2,$prod1);
+      // Делаем реляционный однострочный набор данных по запросу из трех таблиц
+      $sql='SELECT COUNT(*) FROM produkts,vids,colours '.
+           'WHERE name=? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
+      $prod1=$db->queryRow($sql,['земляника']);
+      $this->assertEqual($prod1,['COUNT(*)' => 1]);
+
+      $sql='SELECT name,colours.colour,calories,vid FROM produkts,vids,colours '.
+           'WHERE name=? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
+      $prod1=$db->queryRow($sql,['груши']);
+      $this->assertEqual($prod1,['name'=>'груши','colour'=>'жёлтые','calories'=>42,'vid'=>'фрукты']);
+
+      print_r($prod1);
+      OkMessage();
+
       //echo '***'.$count.'***';
       //print_r($count);
 
-// $sql='SELECT COUNT(*) FROM produkts WHERE  calories < :calories AND id-colour = :id-colour');
-
-//
-//'SELECT name, colour, calories FROM fruit WHERE calories < ? AND colour = ?'
-      
       echo '</div>';
-
-      
-      
-      
-      
-
-      
   }
-
-  
 }
-
-
 // *************************************************** TBaseMaker__test.php ***

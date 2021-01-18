@@ -9,9 +9,14 @@
 // * Copyright © 2020 tve                          Дата создания:  18.12.2020 *
 // ****************************************************************************
 
-// *************************************************************************
-// *                 Вывести сообщение об ошибке исполнения запроса        *
-// *************************************************************************
+/**
+ * Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание
+ * таблиц, внесение данных, индексирование и выборку значений.
+**/
+
+// ****************************************************************************
+// *                  Вывести сообщение об ошибке исполнения запроса          *
+// ****************************************************************************
 function sqlMessage($query,$params,$mode=rvsTriggerError)
 {
    $mess='[TPhpTools] '.RequestExecutionError.$query; echo '<br>';
@@ -27,10 +32,10 @@ function sqlMessage($query,$params,$mode=rvsTriggerError)
       echo "</span><br>";
    }
 }
-/**
- * Класс TBaseMaker обеспечивает ведение баз данных SQlite3 PDO: создание
- * таблиц, внесение данных, индексирование и выборку значений.
-**/
+// ****************************************************************************
+// *      TBaseMaker: Обеспечить ведение баз данных SQlite3 PDO: создание     *
+// *         таблиц, внесение данных, индексирование и выборку значений       *
+// ****************************************************************************
 class BaseMaker 
 
 // http://labaka.ru/tools/obyortka-dlya-raboty-s-pdo
@@ -48,6 +53,22 @@ class BaseMaker
    
    // ----------------------------------------------------------- методы класса
 
+   // *************************************************************************
+   // *   Выполнить запрос для выборки значений в виде массива одной записи   *
+   // *************************************************************************
+   public function queryRow($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC,$classname=null) 
+   {
+      $rows=$this->queryRowOrRows(true,$query,$params,$fetchStyle,$classname);
+      return $rows;
+   }
+   // *************************************************************************
+   // * Выполнить запрос для выборки значений в виде массива нескольких записей
+   // *************************************************************************
+   public function queryRows($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC,$classname=null) 
+   {
+      $rows=$this->queryRowOrRows(false,$query,$params,$fetchStyle,$classname);
+      return $rows;
+   }
    // *************************************************************************
    // *    Выполнить запрос и вывести результат, как единственное значение    *
    // *************************************************************************
@@ -169,41 +190,36 @@ class BaseMaker
       $this->report($e);
     }
   }
-
-
-
-
-  public function queryRow($query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
-    $rows = $this->queryRowOrRows(true, $query, $params, $fetchStyle, $classname);
-    return $rows;
-  }
-
-  public function queryRows($query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
-    $rows = $this->queryRowOrRows(false, $query, $params, $fetchStyle, $classname);
-    return $rows;
-  }
- 
-  private function queryRowOrRows($singleRow, $query, $params = null, $fetchStyle = PDO::FETCH_ASSOC, $classname = null) {
-    try {
-      //filemtime('spoon');
+   // *************************************************************************
+   // *      Выполнить запрос и сформировать набор данных в виде массива      *
+   // *     одной или нескольких записей d стиле PDO::FETCH_ASSOC, то есть    *
+   // *        индексированный именами столбцов результирующего набора        *
+   // *************************************************************************
+   private function queryRowOrRows($singleRow,$query,$params,$fetchStyle,$classname)
+   {
       $result = null;
       $stmt = $this->db->prepare($query);
-      if($classname) {
-        $stmt->setFetchMode($fetchStyle, $classname);
-      } else {
-        $stmt->setFetchMode($fetchStyle);
+      // 18.01.2021 До лучших времен исключаем метод выборки набора данных
+      // по классу(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE), генерируя пользовательское сообщение !!!
+      //if($classname) 
+      //{
+      //   $stmt->setFetchMode($fetchStyle, $classname);
+      //} 
+      //else 
+      //{
+         $stmt->setFetchMode($fetchStyle);
+      //}
+      if ($stmt->execute($params)) 
+      {
+         $result = $singleRow? $stmt->fetch(): $stmt->fetchAll();
+         $stmt->closeCursor();
       }
-      if ($stmt->execute($params)) {
-        $result = $singleRow? $stmt->fetch(): $stmt->fetchAll();
-        $stmt->closeCursor();
-      }
+      else sqlMessage($query,$params);
       return $result;
-    } catch(Exception $e) {
-      $this->report($e);
-    }
-  }
+   }
  
   public function quote($str) {
+      filemtime('spoon');
     return $this->db->quote($str);
   }
  
@@ -239,9 +255,6 @@ class BaseMaker
 
 /*
 А вот и пример работы:
-
-// Выборка одного значения
-$count = $db->queryValue('SELECT COUNT(*) FROM users');
 
 // Выборка набора записей
 $users = $db->queryRows('SELECT * FROM users WHERE name LIKE ?', array('%username%'));
