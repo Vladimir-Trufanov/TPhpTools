@@ -145,8 +145,36 @@ class test_TBaseMaker extends UnitTestCase
            'WHERE name=? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
       $prod1=$db->queryRow($sql,['груши']);
       $this->assertEqual($prod1,['name'=>'груши','colour'=>'жёлтые','calories'=>42,'vid'=>'фрукты']);
+      OkMessage();
 
-      print_r($prod1);
+      // Делаем выборку по одной записи метода queryRow
+      PointMessage('Проверяется queryRows различными стилями выборки в набор данных');
+      // По умолчанию: $fetchStyle=PDO::FETCH_ASSOC
+      $sql='SELECT name,colours.colour,calories,vid FROM produkts,vids,colours '.
+           'WHERE calories>? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
+      $prod=$db->queryRows($sql,[40]);
+      $sign=array( 
+         0=>array('name'=>'голубика','colour'=>'голубые',  'calories'=>41,'vid'=>'ягоды'), 
+         1=>array('name'=>'брусника','colour'=>'красные',  'calories'=>41,'vid'=>'ягоды'), 
+         2=>array('name'=>'груши',   'colour'=>'жёлтые',   'calories'=>42,'vid'=>'фрукты'),
+         3=>array('name'=>'рябина',  'colour'=>'оранжевые','calories'=>81,'vid'=>'ягоды'),
+         4=>array('name'=>'виноград','colour'=>'зелёные',  'calories'=>70,'vid'=>'фрукты')
+      );
+      $this->assertEqual($prod,$sign);
+      // $fetchStyle=PDO::FETCH_BOTH - массив, индексированный именами столбцов 
+      // результирующего набора, а также их номерами (начиная с 0)
+      $sql='SELECT name,colours.colour,calories,vid FROM produkts,vids,colours '.
+           'WHERE calories>? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
+      $prod=$db->queryRows($sql,[40],PDO::FETCH_BOUND);
+      $sign=array( 
+         0=>array('name'=>'голубика','colour'=>'голубые',  'calories'=>41,'vid'=>'ягоды'), 
+         1=>array('name'=>'брусника','colour'=>'красные',  'calories'=>41,'vid'=>'ягоды'), 
+         2=>array('name'=>'груши',   'colour'=>'жёлтые',   'calories'=>42,'vid'=>'фрукты'),
+         3=>array('name'=>'рябина',  'colour'=>'оранжевые','calories'=>81,'vid'=>'ягоды'),
+         4=>array('name'=>'виноград','colour'=>'зелёные',  'calories'=>70,'vid'=>'фрукты')
+      );
+      //$this->assertEqual($prod,$sign);
+      print_r($prod);
       OkMessage();
 
       //echo '***'.$count.'***';
