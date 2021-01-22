@@ -343,3 +343,4 @@ Stack trace:
 [16-Jan-2021 21:51:35 Asia/Kuwait] PHP Fatal error:  Illegal offset type in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 52
 [18-Jan-2021 22:33:37 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 145
 [19-Jan-2021 20:39:38 Asia/Kuwait] PHP Fatal error:  Illegal offset type in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 158
+[22-Jan-2021 21:31:15 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'name' (T_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 245

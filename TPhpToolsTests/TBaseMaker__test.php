@@ -147,11 +147,13 @@ class test_TBaseMaker extends UnitTestCase
       $this->assertEqual($prod1,['name'=>'груши','colour'=>'жёлтые','calories'=>42,'vid'=>'фрукты']);
       OkMessage();
 
-      // Делаем выборку по одной записи метода queryRow
+      // Делаем выборки нескольких записей метода queryRows и различными стилями
       PointMessage('Проверяется queryRows различными стилями выборки в набор данных');
-      // По умолчанию: $fetchStyle=PDO::FETCH_ASSOC
       $sql='SELECT name,colours.colour,calories,vid FROM produkts,vids,colours '.
            'WHERE calories>? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
+      
+      // $fetchStyle=PDO::FETCH_ASSOC (по умолчанию) - массив, индексированный 
+      // именами столбцов результирующего набора
       $prod=$db->queryRows($sql,[40]);
       $sign=array( 
          0=>array('name'=>'голубика','colour'=>'голубые',  'calories'=>41,'vid'=>'ягоды'), 
@@ -161,11 +163,56 @@ class test_TBaseMaker extends UnitTestCase
          4=>array('name'=>'виноград','colour'=>'зелёные',  'calories'=>70,'vid'=>'фрукты')
       );
       $this->assertEqual($prod,$sign);
+      
       // $fetchStyle=PDO::FETCH_BOTH - массив, индексированный именами столбцов 
       // результирующего набора, а также их номерами (начиная с 0)
-      $sql='SELECT name,colours.colour,calories,vid FROM produkts,vids,colours '.
-           'WHERE calories>? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';
+      $prod=$db->queryRows($sql,[40],PDO::FETCH_BOTH);
+      $sign=array(
+         0=>array('name'=>'голубика',0=>'голубика','colour'=>'голубые',  1=>'голубые',  'calories'=>41,2=>41,'vid'=>'ягоды', 3=>'ягоды'),
+         1=>array('name'=>'брусника',0=>'брусника','colour'=>'красные',  1=>'красные',  'calories'=>41,2=>41,'vid'=>'ягоды', 3=>'ягоды'),
+         2=>array('name'=>'груши',   0=>'груши',   'colour'=>'жёлтые',   1=>'жёлтые',   'calories'=>42,2=>42,'vid'=>'фрукты',3=>'фрукты'),
+         3=>array('name'=>'рябина',  0=>'рябина',  'colour'=>'оранжевые',1=>'оранжевые','calories'=>81,2=>81,'vid'=>'ягоды', 3=>'ягоды'),
+         4=>array('name'=>'виноград',0=>'виноград','colour'=>'зелёные',  1=>'зелёные',  'calories'=>70,2=>70,'vid'=>'фрукты',3=>'фрукты'),
+      );
+      $this->assertEqual($prod,$sign);
+      
+      // $fetchStyle=PDO::FETCH_BOUND: возвращает true и присваивает значения 
+      // столбцов результирующего набора переменным PHP, которые были привязаны
+      // к этим столбцам методом PDOStatement::bindColumn()
       $prod=$db->queryRows($sql,[40],PDO::FETCH_BOUND);
+      $sign=array(0=>1,1=>1,2=>1,3=>1,4=>1);
+      $this->assertEqual($prod,$sign);
+      
+      // $fetchStyle=PDO::FETCH_CLASS: создаёт и возвращает объект запрошенного
+      // класса, присваивая значения столбцов результирующего набора именованным
+      // свойствам класса, и следом вызывает конструктор, если не задан 
+      // PDO::FETCH_PROPS_LATE. Если fetch_style включает в себя атрибут 
+      // PDO::FETCH_CLASSTYPE (например, PDO::FETCH_CLASS | PDO::FETCH_CLASSTYPE),
+      // то имя класса, от которого нужно создать объект, будет взято из первого столбца
+      // 
+      // здесь без указания класса выводится сообщение:
+      // message [SQLSTATE[HY000]: General error: fetch mode requires the classname argument]
+      
+      // $fetchStyle=PDO::FETCH_INTO: обновляет существующий объект запрошенного
+      // класса, присваивая значения столбцов результирующего набора именованным 
+      // свойствам объекта
+      // 
+      // здесь выводится сообщение:
+      // message [SQLSTATE[HY000]: General error: fetch mode requires the object parameter]
+      
+      // $fetchStyle=PDO::FETCH_LAZY: комбинирует PDO::FETCH_BOTH и PDO::FETCH_OBJ,
+      // создавая новый объект со свойствами, соответствующими именам столбцов 
+      //результирующего набора
+      // 
+      // здесь выводится сообщение:
+      // message [SQLSTATE[HY000]: General error: PDO::FETCH_LAZY can't be used 
+      // with PDOStatement::fetchAll()]
+      
+      // $fetchStyle=PDO::FETCH_NAMED: возвращает массив такого же вида, как и 
+      // PDO::FETCH_ASSOC, но, если есть несколько полей с одинаковым именем, 
+      // то значением с этим ключом будет массив со всеми значениями из рядов, 
+      // в которых это поле указано.
+      $prod=$db->queryRows($sql,[40],PDO::FETCH_NAMED);
       $sign=array( 
          0=>array('name'=>'голубика','colour'=>'голубые',  'calories'=>41,'vid'=>'ягоды'), 
          1=>array('name'=>'брусника','colour'=>'красные',  'calories'=>41,'vid'=>'ягоды'), 
@@ -173,8 +220,33 @@ class test_TBaseMaker extends UnitTestCase
          3=>array('name'=>'рябина',  'colour'=>'оранжевые','calories'=>81,'vid'=>'ягоды'),
          4=>array('name'=>'виноград','colour'=>'зелёные',  'calories'=>70,'vid'=>'фрукты')
       );
-      //$this->assertEqual($prod,$sign);
+      $this->assertEqual($prod,$sign);
+      
+      // $fetchStyle=PDO::FETCH_NUM: возвращает массив, индексированный номерами
+      // столбцов (начиная с 0).
+      $prod=$db->queryRows($sql,[40],PDO::FETCH_NUM);
+      $sign=array(
+         0=>array(0=>'голубика',1=>'голубые',  2=>41,3=>'ягоды'),
+         1=>array(0=>'брусника',1=>'красные',  2=>41,3=>'ягоды'),
+         2=>array(0=>'груши',   1=>'жёлтые',   2=>42,3=>'фрукты'),
+         3=>array(0=>'рябина',  1=>'оранжевые',2=>81,3=>'ягоды'),
+         4=>array(0=>'виноград',1=>'зелёные',  2=>70,3=>'фрукты')
+      );
+      $this->assertEqual($prod,$sign);
+      
+      // тест с LIKE ?
+      $sql='SELECT name,colours.colour,calories,vid FROM produkts,vids,colours '.
+           'WHERE calories>? '.
+           'and produkts.[id-vid]=vids.[id-vid] '.
+           'and produkts.[id-colour]=colours.[id-colour] '.
+           'and name LIKE ?';
+      $prod=$db->queryRows($sql,[40,'%ру%']);
+      $sign=array( 
+         0=>array('name'=>'брусника','colour'=>'красные',  'calories'=>41,'vid'=>'ягоды'), 
+         1=>array('name'=>'груши',   'colour'=>'жёлтые',   'calories'=>42,'vid'=>'фрукты')
+      );
       print_r($prod);
+      $this->assertEqual($prod,$sign);
       OkMessage();
 
       //echo '***'.$count.'***';

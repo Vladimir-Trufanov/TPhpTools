@@ -192,7 +192,7 @@ class BaseMaker
   }
    // *************************************************************************
    // *      Выполнить запрос и сформировать набор данных в виде массива      *
-   // *     одной или нескольких записей d стиле PDO::FETCH_ASSOC, то есть    *
+   // *     одной или нескольких записей в стиле PDO::FETCH_ASSOC, то есть    *
    // *        индексированный именами столбцов результирующего набора        *
    // *************************************************************************
    private function queryRowOrRows($singleRow,$query,$params,$fetchStyle,$classname)
@@ -255,12 +255,6 @@ class BaseMaker
 
 /*
 А вот и пример работы:
-
-// Выборка набора записей
-$users = $db->queryRows('SELECT * FROM users WHERE name LIKE ?', array('%username%'));
-
-// Выборка одной записи
-$user = $db->queryRow('SELECT * FROM users WHERE id=:id', array(':id' => 123));
 
 // Добавление записи (INSERT) и получение значения поля AUTO_INCREMENT
 $newUserId = $db->insert('users', array('name' => 'NewUserName', 'password' => 'zzxxcc'));
