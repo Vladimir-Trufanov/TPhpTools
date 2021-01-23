@@ -245,8 +245,41 @@ class test_TBaseMaker extends UnitTestCase
          0=>array('name'=>'брусника','colour'=>'красные',  'calories'=>41,'vid'=>'ягоды'), 
          1=>array('name'=>'груши',   'colour'=>'жёлтые',   'calories'=>42,'vid'=>'фрукты')
       );
-      print_r($prod);
       $this->assertEqual($prod,$sign);
+      OkMessage();
+      // Экранируем элементы массива и сливаем в строки
+      PointMessage('Экранируются элементы массива и сливаются в строки');
+      $prod1=
+      [
+         // 'regAaLatin',   '/(?=.*[a-z])(?=.*[A-Z])/',
+            "regAaLatin",   '/(?=.*[a-z])(?=.*[A-Z])/',  
+         // 'regFamioUtf8', '/^[А-Яа-яЁё\s\.-]{1,17}$/u',
+            'regFamioUtf8', "/^[А-Яа-яЁё\s\.-]{1,17}$/u", 
+         // 'regInteger',   '/[0-9]{1,}/'
+            "regInteger",   '/[0-9]{1,}"/'                 
+      ];              
+      $prod2=$db->quoteImplodeArray($prod1); 
+      $sign=
+         "'regAaLatin','/(?=.*[a-z])(?=.*[A-Z])/','regFamioUtf8',".
+         "'/^[А-Яа-яЁё\s\.-]{1,17}$/u','regInteger','/[0-9]{1,}".'"'."/'";
+      $this->assertEqual($prod2,$sign);
+
+      $prod1='Nice_Хорошо';
+      $prod2=$db->quote($prod1); 
+      $sign="'Nice_Хорошо'";
+      $this->assertEqual($prod2,$sign);
+
+      $prod1='Naughty \' string';
+      $prod2=$db->quote($prod1); 
+      $sign="'Naughty '' string'";
+      $this->assertEqual($prod2,$sign);
+
+      $prod1="Co'mpl''ex \"st'\"ring";
+      $prod2=$db->quote($prod1); 
+      //PointMessage("Неэкранированная строка: ".$prod1."<br>");
+      //PointMessage("- Экранированная строка: ".$prod2."<br>");
+      $sign="'Co''mpl''''ex ".'"'."st''".'"'."ring'";
+      $this->assertEqual($prod2,$sign);
       OkMessage();
 
       //echo '***'.$count.'***';

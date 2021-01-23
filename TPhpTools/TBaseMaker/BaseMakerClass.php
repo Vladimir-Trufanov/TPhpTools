@@ -127,7 +127,36 @@ class BaseMaker
       else sqlMessage($query,$params);
       return $result;  
    }
-
+   // *************************************************************************
+   // *       Заключить строку в кавычки (если требуется) и экранировать      *
+   // *   специальные символы внутри строки подходящим для драйвера способом  *
+   // *************************************************************************
+   public function quote($str) 
+   {
+      return $this->db->quote($str);
+   }
+   // *************************************************************************
+   // *        Заключить все строки из списка в кавычки и экранировать        *
+   // *   специальные символы внутри строк подходящим для драйвера способом   *
+   // *************************************************************************
+   public function quoteArray($arr) 
+   {
+      $result = array();
+      foreach ($arr as $val) 
+      {
+         $result[] = $this->db->quote($val);
+      }
+      return $result;
+   }
+   // *************************************************************************
+   // *  Заключить все строки из списка в кавычки и экранировать специлаьные  *
+   // *     символы внутри строк подходящим для драйвера способом, а затем    *
+   // *     объединить элементы массива в строку через заданный разделитель   *
+   // *************************************************************************
+   public function quoteImplodeArray($arr) 
+   {
+      return implode(',', $this->quoteArray($arr));
+   }
    // ----------------------------------------------- приватные функции класса
    
    public function insert($table, $fields, $insertParams = null) 
@@ -218,25 +247,10 @@ class BaseMaker
       return $result;
    }
  
-  public function quote($str) {
-      filemtime('spoon');
-    return $this->db->quote($str);
-  }
- 
-  public function quoteArray($arr) {
-    $result = array();
-    foreach ($arr as $val) {
-        $result[] = $this->db->quote($val);
-    }
-    return $result;
-  }
-
-  public function quoteImplodeArray($arr) {
-    return implode(',', $this->quoteArray($arr));
-  }
 
   // returns true/false
   public function sql($query, $params = null) {
+      filemtime('spoon');
     try {
       $result = null;
       $stmt = $this->db->prepare($query);

@@ -344,3 +344,8 @@ Stack trace:
 [18-Jan-2021 22:33:37 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 145
 [19-Jan-2021 20:39:38 Asia/Kuwait] PHP Fatal error:  Illegal offset type in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 158
 [22-Jan-2021 21:31:15 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'name' (T_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 245
+[23-Jan-2021 16:32:18 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ',' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 269
+[23-Jan-2021 16:38:31 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ',' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 270
+[23-Jan-2021 16:56:47 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 276
+[23-Jan-2021 16:57:36 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '';' (T_CONSTANT_ENCAPSED_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 276
+[23-Jan-2021 17:07:25 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ''"ring'' (T_CONSTANT_ENCAPSED_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 281

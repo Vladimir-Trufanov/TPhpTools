@@ -267,8 +267,8 @@ Selected=TPhpToolsTests\TBaseMaker__test.php
 TopLine=19
 Caret=50,35
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=251
-Caret=1,259
+TopLine=130
+Caret=25,134
 [www\ControlDiv.php]
 TopLine=16
 Caret=39,32
@@ -276,11 +276,11 @@ Caret=39,32
 TopLine=21
 Caret=1,37
 [TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=90
+TopLine=78
 Caret=1,78
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=141
-Caret=10,150
+TopLine=261
+Caret=1,284
 [www\UpSite.php]
 TopLine=65
 Caret=1,1
