@@ -4,27 +4,13 @@
 // ****************************************************************************
 // * TPhpTools                                   Создать тестовую базу данных *
 // *                                                                          *
-// * v1.0, 13.01.2021                              Автор:       Труфанов В.Е. *
+// * v1.0, 14.02.2021                              Автор:       Труфанов В.Е. *
 // * Copyright © 2021 tve                          Дата создания:  13.01.2021 *
 // ****************************************************************************
-function CreateBaseTest()
+function CreateBaseTest($pathBase,$username,$password)
 {
    $Result=true;
-   // Проверяем, есть ли тестовая база данных.
-   // Если база существует, то удаляем ее. 
-   $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
-   if (file_exists($filename)) 
-   {
-      if (!unlink($filename))
-      {
-         throw new Exception("Не удалось удалить тестовую базу данных $filename!");
-      } 
-      //else echo "Тестовая база данных $filename существует<br>";
-   } 
-   // Начинаем строить тестовую базу и заполнять заново
-   $pathBase='sqlite:'.$filename; 
-   $username='tve';
-   $password='23ety17';                                         
+   // Подключаем PDO к базе
    //$pdo = new PDO($pathBase);
    $pdo = new PDO(
       $pathBase, 
@@ -32,6 +18,7 @@ function CreateBaseTest()
       $password,
       array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
    );
+   // Начинаем строить тестовую базу и заполнять заново
    try 
    {
       $pdo->beginTransaction();

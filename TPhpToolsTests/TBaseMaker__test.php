@@ -11,7 +11,24 @@
 // ****************************************************************************
 
 require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_CreateBaseTest.php";
+require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_ValueRow.php";
 
+// ****************************************************************************
+// *            Проверить существование и удалить файл базы данных            *
+// ****************************************************************************
+function UnlinkFileBase($filename)
+{
+   if (file_exists($filename)) 
+   {
+      if (!unlink($filename))
+      {
+         throw new Exception("Не удалось удалить тестовую базу данных $filename!");
+      } 
+   } 
+}
+// ****************************************************************************
+// *                         Выполнить тесты TBaseMaker                       *
+// ****************************************************************************
 class test_TBaseMaker extends UnitTestCase 
 {
    function test_TBaseMaker_Simple()
@@ -22,35 +39,22 @@ class test_TBaseMaker extends UnitTestCase
       // $i=0; $j=5/$i; echo '$j';
       // Начинаем протоколировать тесты
       SimpleMessage();
-
-      PointMessage('Создается тестовая база данных');  // "Калорийность некоторых продуктов"
-      CreateBaseTest();
+      // Проверяем существование и удаляем файл базы данных 
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
+      UnlinkFileBase($filename);
+
+      // Заново создаем базу данных и подключаем к ней TBaseMaker
+      PointMessage('Создается тестовая база данных');  // "Калорийность некоторых продуктов"
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';                                         
+      CreateBaseTest($pathBase,$username,$password);
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       OkMessage();
-      
-      PointMessage('Проверяются методы queryValue(s) по запросам без параметров');
-      $sql='SELECT COUNT(*) FROM vids';
-
-      $sign=2;
-      $count=$db->queryValue($sql);
-      $this->assertEqual($count,2);
-      
-      // $arr=array('BaseMaker'=>'notest'); - ассоциативный массив
-      // $arr=array(1,2,3);                 - простой список значений
-      $sign=array(2);
-      $count = $db->queryValues($sql);
-      $this->assertEqual($count,$sign);
-
-      $sql='SELECT vid FROM vids';
-      $sign=array('фрукты','ягоды');
-      $list = $db->queryValues($sql);
-      $this->assertEqual($list,$sign);
-      OkMessage();
+    
+      test_ValueRow($db,$this);
    
+      /*
       // Выполняем методы queryValue(s) с подготовленными запросами и с 
       // передачей именованных переменных в массиве входных значений
       PointMessage('Проверяются queryValue(s) по запросам с именованными параметрами');
@@ -284,8 +288,9 @@ class test_TBaseMaker extends UnitTestCase
 
       //echo '***'.$count.'***';
       //print_r($count);
-
+     */
       echo '</div>';
   }
 }
+
 // *************************************************** TBaseMaker__test.php ***
