@@ -360,3 +360,5 @@ Stack trace:
 #5 {main}
   thrown in C:\TPhpTools\TPhpToolsTests\TBaseMaker_ValueRow.php on line 19
 [14-Feb-2021 09:07:13 Asia/Kuwait] PHP Fatal error:  Cannot use $this as parameter in C:\TPhpTools\TPhpToolsTests\TBaseMaker_ValueRow.php on line 13
+[14-Feb-2021 12:58:31 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 58
+[14-Feb-2021 17:48:48 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}' in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 74

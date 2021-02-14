@@ -16,7 +16,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 TPhpTools
-	+TPhpTools
+	-TPhpTools
 		-Favicon
 			-favicon_package_v0.16
 				Favicon\favicon_package_v0.16\android-chrome-192x192.png
@@ -49,11 +49,13 @@ TPhpTools
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 			TPhpTools\iniConstMem.php
 			TPhpTools\iniErrMessage.php
-		+TPhpToolsTests
+		-TPhpToolsTests
 			TPhpToolsTests\FunctionsTools.php
 			TPhpToolsTests\TBaseMaker__test.php
-			TPhpToolsTests\TBaseMaker_ValueRow.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+			TPhpToolsTests\TBaseMaker_Query.php
+			TPhpToolsTests\TBaseMaker_UpdateInsert.php
+			TPhpToolsTests\TBaseMaker_ValueRow.php
 			TPhpToolsTests\TCtrlDir__test.php
 			TPhpToolsTests\TDownloadFromServer__test.php
 			TPhpToolsTests\TFixLoadTimer__test.php
@@ -259,18 +261,20 @@ TPhpTools
 2=www\ControlDiv.php
 3=www\TestsDiv.php
 4=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
-5=TPhpToolsTests\TBaseMaker_ValueRow.php
+5=TPhpToolsTests\TBaseMaker_Query.php
 6=www\UpSite.php
 7=TPhpToolsTests\TBaseMaker__test.php
+8=TPhpToolsTests\TBaseMaker_ValueRow.php
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker__test.php
+Selected=TPhpToolsTests\TBaseMaker_Query.php
 [www\Main.php]
 TopLine=19
 Caret=50,35
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=1
-Caret=1,156
+TopLine=147
+Caret=1,78
+Mark1=1,162
 [www\ControlDiv.php]
 TopLine=16
 Caret=39,32
@@ -278,14 +282,18 @@ Caret=39,32
 TopLine=21
 Caret=1,37
 [TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=1
-Caret=17,7
-[TPhpToolsTests\TBaseMaker_ValueRow.php]
-TopLine=97
-Caret=10,259
+TopLine=17
+Caret=44,23
+[TPhpToolsTests\TBaseMaker_Query.php]
+TopLine=21
+Caret=1,34
 [www\UpSite.php]
 TopLine=65
 Caret=1,1
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=35
-Caret=20,55
+TopLine=47
+Caret=17,67
+Mark1=1,17
+[TPhpToolsTests\TBaseMaker_ValueRow.php]
+TopLine=179
+Caret=1,201

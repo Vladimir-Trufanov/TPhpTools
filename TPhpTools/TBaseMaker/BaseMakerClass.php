@@ -54,6 +54,47 @@ class BaseMaker
    // ----------------------------------------------------------- методы класса
 
    // *************************************************************************
+   // *                     Унаследовать родительские методы                  *
+   // *************************************************************************
+   public function beginTransaction() {return $this->db->beginTransaction();}
+   public function commit() {return $this->db->commit();}
+   public function inTransaction() {return $this->db->inTransaction();}
+   public function rollback() {return $this->db->rollback();}
+   //public function exec($query) {return $this->db->exec($query);}
+
+   // *************************************************************************
+   // *   ---------------------Выполнить запрос для выборки значений в виде массива одной записи   *
+   // *************************************************************************
+   private function exec($query) 
+   {
+      try 
+      {
+         return $this->db->exec($query);
+      }
+      catch(Exception $e) 
+      {
+         $result=false;
+      }
+   }
+
+
+
+
+   public function isTable($tablename) 
+   {
+      $result=true;
+      try 
+      {
+         $this->exec("SELECT count(*) FROM $tablename");
+      } 
+      catch(Exception $e) 
+      {
+         $result=false;
+      }
+      return $result;
+   }
+
+   // *************************************************************************
    // *   Выполнить запрос для выборки значений в виде массива одной записи   *
    // *************************************************************************
    public function queryRow($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC,$classname=null) 
@@ -157,6 +198,21 @@ class BaseMaker
    {
       return implode(',', $this->quoteArray($arr));
    }
+   // *************************************************************************
+   // *             Подготовить и выполнить запрос к базе данных              *
+   // *************************************************************************
+   public function query($query,$params=null) 
+   {
+      //filemtime('spoon');
+      $result=null;
+      $stmt=$this->db->prepare($query);
+      $result=$stmt->execute($params);
+      if (!$result) {sqlMessage($query,$params);}
+      return $result;
+   }
+
+   
+   
    // ----------------------------------------------- приватные функции класса
    
    public function insert($table, $fields, $insertParams = null) 
@@ -247,18 +303,6 @@ class BaseMaker
       return $result;
    }
  
-
-  // returns true/false
-  public function sql($query, $params = null) {
-      filemtime('spoon');
-    try {
-      $result = null;
-      $stmt = $this->db->prepare($query);
-      return $stmt->execute($params);
-    } catch(Exception $e) {
-      $this->report($e);
-    }
-  }
  
   private function report($e) {
     throw $e;
