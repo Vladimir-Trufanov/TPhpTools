@@ -60,15 +60,13 @@ class test_TBaseMaker extends UnitTestCase
     
       // Тестируем Values, Rows методы
       test_ValueRow($db,$this);
-      // Тестируем метод sql
+      // Тестируем метод query
       unset($db); // удалили объект класса
       UnlinkFileBase($filename);
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       test_Query($db,$this);
-      
       // Тестируем Update, Insert методы
-      //test_UpdateInsert($db,$this);
-   
+      test_UpdateInsert($db,$this);
       echo '</div>';
   }
 }

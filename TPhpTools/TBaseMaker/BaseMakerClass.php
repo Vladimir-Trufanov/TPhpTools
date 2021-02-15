@@ -37,22 +37,18 @@ function sqlMessage($query,$params,$mode=rvsTriggerError)
 // *         таблиц, внесение данных, индексирование и выборку значений       *
 // ****************************************************************************
 class BaseMaker 
-
+// https://oracleplsql.ru/system-tables-sqlite.html
 // http://labaka.ru/tools/obyortka-dlya-raboty-s-pdo
 // http://codeharmony.ru/materials/137
-
 {
    private $db;
-   
    public function __construct($pathBase,$username,$password) 
    {
       $this->db = new \PDO($pathBase,$username,$password);
       $this->db->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
       //\prown\MakeUserError('SendCookieFailed','TPhpTools',rvsTriggerError);
    }
-   
    // ----------------------------------------------------------- методы класса
-
    // *************************************************************************
    // *                     Унаследовать родительские методы                  *
    // *************************************************************************
@@ -60,40 +56,25 @@ class BaseMaker
    public function commit() {return $this->db->commit();}
    public function inTransaction() {return $this->db->inTransaction();}
    public function rollback() {return $this->db->rollback();}
-   //public function exec($query) {return $this->db->exec($query);}
-
+   // public function exec($query) {return $this->db->exec($query);} --> query($query);
    // *************************************************************************
-   // *   ---------------------Выполнить запрос для выборки значений в виде массива одной записи   *
+   // *              Проверить, есть ли заданная таблица в базе               *
    // *************************************************************************
-   private function exec($query) 
-   {
-      try 
-      {
-         return $this->db->exec($query);
-      }
-      catch(Exception $e) 
-      {
-         $result=false;
-      }
-   }
-
-
-
-
    public function isTable($tablename) 
    {
-      $result=true;
-      try 
+      $result=false;
+      $sql='SELECT name FROM sqlite_master';      
+      $prod=$this->queryRows($sql);
+      foreach ($prod as $nomrow => $arr) 
       {
-         $this->exec("SELECT count(*) FROM $tablename");
-      } 
-      catch(Exception $e) 
-      {
-         $result=false;
+         if ($arr['name']==$tablename) 
+         {
+            $result=true;
+            break;
+         }  
       }
       return $result;
    }
-
    // *************************************************************************
    // *   Выполнить запрос для выборки значений в виде массива одной записи   *
    // *************************************************************************

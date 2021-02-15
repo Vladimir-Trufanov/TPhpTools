@@ -12,9 +12,8 @@ function test_UpdateInsert($db,$thiss)
 {
    PointMessage('Проверяются методы queryValue(s) по запросам без параметров');
    $sql='SELECT COUNT(*) FROM vids';
-   $sign=2;
    $count=$db->queryValue($sql);
-   $thiss->assertEqual($count,2);
+   $thiss->assertEqual($count,0);
    OkMessage();
 }
 // ******************************************** TBaseMaker_UpdateInsert.php ***

@@ -16,7 +16,7 @@ HTServer=localhost
 Extensions=*.*
 [Project tree]
 TPhpTools
-	-TPhpTools
+	+TPhpTools
 		-Favicon
 			-favicon_package_v0.16
 				Favicon\favicon_package_v0.16\android-chrome-192x192.png
@@ -49,7 +49,7 @@ TPhpTools
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 			TPhpTools\iniConstMem.php
 			TPhpTools\iniErrMessage.php
-		-TPhpToolsTests
+		+TPhpToolsTests
 			TPhpToolsTests\FunctionsTools.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
@@ -258,42 +258,30 @@ TPhpTools
 [Open project files]
 0=www\Main.php
 1=TPhpTools\TBaseMaker\BaseMakerClass.php
-2=www\ControlDiv.php
-3=www\TestsDiv.php
-4=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
-5=TPhpToolsTests\TBaseMaker_Query.php
-6=www\UpSite.php
-7=TPhpToolsTests\TBaseMaker__test.php
-8=TPhpToolsTests\TBaseMaker_ValueRow.php
+2=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+3=TPhpToolsTests\TBaseMaker_Query.php
+4=TPhpToolsTests\TBaseMaker__test.php
+5=TPhpToolsTests\TBaseMaker_UpdateInsert.php
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker_Query.php
+Selected=TPhpToolsTests\TBaseMaker_UpdateInsert.php
 [www\Main.php]
 TopLine=19
 Caret=50,35
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=147
-Caret=1,78
-Mark1=1,162
-[www\ControlDiv.php]
-TopLine=16
-Caret=39,32
-[www\TestsDiv.php]
-TopLine=21
-Caret=1,37
+TopLine=39
+Caret=72,59
+Mark1=1,143
 [TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=17
+TopLine=15
 Caret=44,23
 [TPhpToolsTests\TBaseMaker_Query.php]
-TopLine=21
-Caret=1,34
-[www\UpSite.php]
-TopLine=65
-Caret=1,1
+TopLine=27
+Caret=22,7
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=47
-Caret=17,67
+TopLine=57
+Caret=1,70
 Mark1=1,17
-[TPhpToolsTests\TBaseMaker_ValueRow.php]
-TopLine=179
-Caret=1,201
+[TPhpToolsTests\TBaseMaker_UpdateInsert.php]
+TopLine=1
+Caret=32,16
