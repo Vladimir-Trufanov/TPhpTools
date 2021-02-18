@@ -57,6 +57,8 @@ class BaseMaker
    public function inTransaction() {return $this->db->inTransaction();}
    public function rollback() {return $this->db->rollback();}
    // public function exec($query) {return $this->db->exec($query);} --> query($query);
+   // public function prepare($query) {return $this->db->prepare($query);} // --> query($query);
+   // public function execute($query) {return $this->db->execute($query);} // --> query($query);
    // *************************************************************************
    // *              Проверить, есть ли заданная таблица в базе               *
    // *************************************************************************
@@ -184,51 +186,50 @@ class BaseMaker
    // *************************************************************************
    public function query($query,$params=null) 
    {
-      //filemtime('spoon');
       $result=null;
       $stmt=$this->db->prepare($query);
       $result=$stmt->execute($params);
       if (!$result) {sqlMessage($query,$params);}
       return $result;
    }
-
-   
-   
-   // ----------------------------------------------- приватные функции класса
-   
-   public function insert($table, $fields, $insertParams = null) 
+   // *************************************************************************
+   // *             Вставить новую запись в таблицу базы данных               *
+   // *************************************************************************
+   public function insert($table,$fields) 
    {
+      //filemtime('spoon');
+      // Формируем текст запроса по типу
+      // "INSERT INTO [vids] ([id-vid],[vid]) VALUES (:id-vid, :vid)",
+      // но с фактическими значениями типа "строка" ???
+      $names = '';
+      $vals = '';
+      foreach ($fields as $name => $val) 
+      {
+         if (isset($names[0])) 
+         {
+            $names.=',';
+            $vals.= ',';
+         }
+         $names.='['.$name.']';
+         $vals.="'".$val."'";
+      }
+      $sql="INSERT INTO ".'['.$table.']'.' ('.$names.') VALUES ('.$vals.')';
+    
+      //echo '---<br>';
+      //echo $sql.'<br>';
+      //echo '---<br>';
       try 
       {
-         $result = null;
-         $names = '';
-         $vals = '';
-         foreach ($fields as $name => $val) 
-         {
-            if (isset($names[0])) 
-            {
-               $names .= ', ';
-               $vals .= ', ';
-            }
-            $names .= $name;
-            $vals .= ':' . $name;
-         }
-         $ignore = isset($insertParams['ignore']) && $insertParams['ignore']? 'IGNORE': '';
-         $sql = "INSERT $ignore INTO " . $table . ' (' . $names . ') VALUES (' . $vals . ')';
-         $rs = $this->db->prepare($sql);
-         foreach ($fields as $name => $val) 
-         {
-            $rs->bindValue(':' . $name, $val);
-         }
-      if ($rs->execute()) {
-        $result = $this->db->lastInsertId(null);
+         $result=$this->db->query($sql);
+      }
+      catch(Exception $e) 
+      {
+         //$this->report($e);
       }
       return $result;
-    } catch(Exception $e) {
-      $this->report($e);
-    }
-  }
+   }
 
+ 
   // Returns true/false
   public function update($table, $fields, $where, $params = null) {
     try {
@@ -256,6 +257,8 @@ class BaseMaker
       $this->report($e);
     }
   }
+   // ----------------------------------------------- приватные функции класса
+
    // *************************************************************************
    // *      Выполнить запрос и сформировать набор данных в виде массива      *
    // *     одной или нескольких записей в стиле PDO::FETCH_ASSOC, то есть    *
@@ -285,8 +288,10 @@ class BaseMaker
    }
  
  
-  private function report($e) {
-    throw $e;
+  public function report($e) 
+  {
+    echo 'Привет!';
+    //throw $e;
   }
 
 }

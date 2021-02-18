@@ -23,10 +23,10 @@ function CreateBaseTest($pathBase,$username,$password)
    {
       $pdo->beginTransaction();
       
-      $sql='CREATE TABLE vids ([id-vid] INTEGER PRIMARY KEY AUTOINCREMENT, vid TEXT)';
+      $sql='CREATE TABLE vids ([id-vid] INTEGER PRIMARY KEY, vid TEXT)';
       $st = $pdo->query($sql);
       $sql='CREATE TABLE colours (
-         [id-colour] INTEGER PRIMARY KEY AUTOINCREMENT,
+         [id-colour] INTEGER PRIMARY KEY,
          colour      TEXT
       )';
       $st = $pdo->query($sql);
@@ -42,9 +42,9 @@ function CreateBaseTest($pathBase,$username,$password)
       // https://sostavproduktov.ru/produkty/yagody
       // https://sostavproduktov.ru/potrebitelyu/vidy-produktov/frukty
 
-      $sql="INSERT INTO [vids] ([id-vid], [vid]) VALUES (1, 'фрукты');";
+      $sql="INSERT INTO [vids] ([id-vid], [vid]) VALUES ('1', 'фрукты');";
       $st = $pdo->query($sql);
-      $sql="INSERT INTO [vids] ([id-vid], [vid]) VALUES (2, 'ягоды');";
+      $sql="INSERT INTO [vids] ([id-vid], [vid]) VALUES ('2', 'ягоды');";
       $st = $pdo->query($sql);
 
       $sql="INSERT INTO [colours] ([id-colour], [colour]) VALUES (1, 'красные');";

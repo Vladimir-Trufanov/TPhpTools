@@ -22,17 +22,17 @@ function test_Query($db,$thiss)
    try 
    {
       $db->beginTransaction();
-      $sql='CREATE TABLE vids ([id-vid] INTEGER PRIMARY KEY AUTOINCREMENT, vid TEXT)';
+      $sql='CREATE TABLE vids ([id-vid] INTEGER PRIMARY KEY, [vid] TEXT)';
       $st = $db->query($sql);
       $sql='CREATE TABLE colours (
-         [id-colour] INTEGER PRIMARY KEY AUTOINCREMENT,
-         colour      TEXT
+         [id-colour] INTEGER PRIMARY KEY,
+         [colour]      TEXT
       )';
       $st = $db->query($sql);
       $sql='CREATE TABLE produkts (
          name        TEXT PRIMARY KEY,
          [id-colour] INTEGER,
-         calories    NUMERIC( 5, 1 ),
+         [calories]    NUMERIC( 5, 1 ),
          [id-vid]    INTEGER
       )';
       $st = $db->query($sql);

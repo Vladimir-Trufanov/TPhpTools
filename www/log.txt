@@ -362,3 +362,5 @@ Stack trace:
 [14-Feb-2021 09:07:13 Asia/Kuwait] PHP Fatal error:  Cannot use $this as parameter in C:\TPhpTools\TPhpToolsTests\TBaseMaker_ValueRow.php on line 13
 [14-Feb-2021 12:58:31 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 58
 [14-Feb-2021 17:48:48 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}' in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 74
+[16-Feb-2021 19:12:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '--' (T_DEC), expecting function (T_FUNCTION) or const (T_CONST) in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 60
+[17-Feb-2021 19:58:45 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 264
