@@ -58,6 +58,7 @@ class test_TBaseMaker extends UnitTestCase
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       OkMessage();
     
+    /*
       // Тестируем Values, Rows методы
       test_ValueRow($db,$this);
       // Тестируем метод query
@@ -68,6 +69,7 @@ class test_TBaseMaker extends UnitTestCase
       // Тестируем Update, Insert методы
       test_UpdateInsert($db,$this);
       echo '</div>';
+      */
   }
 }
 

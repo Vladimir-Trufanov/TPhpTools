@@ -218,14 +218,15 @@ class BaseMaker
       //echo '---<br>';
       //echo $sql.'<br>';
       //echo '---<br>';
-      try 
-      {
+      //try 
+      //{
          $result=$this->db->query($sql);
-      }
-      catch(Exception $e) 
-      {
+      //}
+      //catch(PDOException $e) 
+      //{
          //$this->report($e);
-      }
+         //   echo 'Подключение не удалось: ';// . $e->getMessage();
+      //}
       return $result;
    }
 

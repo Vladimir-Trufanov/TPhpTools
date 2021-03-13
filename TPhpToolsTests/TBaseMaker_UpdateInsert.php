@@ -46,9 +46,9 @@ function test_UpdateInsert($db,$thiss)
          ['брусника',  1, 41, 2],
          ['груши',     3, 42, 5],   //  1
          ['земляника', 1, 34, 5],   //  2
-         ['рябина',    4, 81, 2],
-         ['рябина',    4, 81, 2],
-         ['виноград',  5, 70, 1]
+         ['рябина',    4, 81, 2] ,
+        /* ['рябина',    4, 81, 2] , */
+         ['виноград',  5, 70, 1]    
       ];
       
       foreach ($aProducts as [$name,$idcolor,$calories,$idvid])
@@ -78,14 +78,65 @@ function test_UpdateInsert($db,$thiss)
       $statement->execute(["name"=>$name, "idcolour"=>$idcolor, "calories"=>$calories, "idvid"=>$idvid]);
       */
       
+      $sql='
+      CREATE TABLE artist(
+      artistid    INTEGER PRIMARY KEY, 
+      artistname  TEXT);
+      ';
+      $st = $db->query($sql);
+     
+      $sql='
+      CREATE TABLE track(
+      trackid     INTEGER,
+      trackname   TEXT, 
+      trackartist INTEGER,
+      FOREIGN KEY(trackartist) REFERENCES artist(artistid)     
+      );
+      ';
+      $st = $db->query($sql);
+     
+      $sql="
+      INSERT INTO artist VALUES(1, 'Dean Martin');
+      ";
+      $st = $db->query($sql);
+    
+      $sql="
+      INSERT INTO artist VALUES(2, 'Frank Sinatra');
+      ";
+      $st = $db->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(11, 'Thats Amore', 1);
+      ";
+      $st = $db->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(12, 'Christmas Blues', 1);
+      ";
+      $st = $db->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(13, 'My Way ', 2);
+      ";
+      $st = $db->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(14, 'Mr. Bojangles', 3);
+      ";
+      $st = $db->query($sql);
+          
+            
+      
+      
       $db->commit();
    } 
-   catch (Exception $e) 
+   catch (Exception  $e) 
    {
       if ($db->inTransaction()) 
       {
          $db->rollback();
       }
+      //echo 'Подключение не удалось: ';
       throw $e;
    }
   
@@ -97,5 +148,10 @@ function test_UpdateInsert($db,$thiss)
    
    
    OkMessage();
+   
+        
+ 
+   
+   
 }
 // ******************************************** TBaseMaker_UpdateInsert.php ***

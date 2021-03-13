@@ -29,10 +29,12 @@ function CreateBaseTest($pathBase,$username,$password)
          [id-colour] INTEGER PRIMARY KEY,
          colour      TEXT
       )';
+      // NOT NULL REFERENCES colours ( [id-colour] ),
+      
       $st = $pdo->query($sql);
       $sql='CREATE TABLE produkts (
          name        TEXT PRIMARY KEY,
-         [id-colour] INTEGER,
+         [id-colour] INTEGER NOT NULL REFERENCES colours ([id-colour]),
          calories    NUMERIC( 5, 1 ),
          [id-vid]    INTEGER
       )';
@@ -73,6 +75,59 @@ function CreateBaseTest($pathBase,$username,$password)
       $i=0;
       foreach ($aProducts as [$name,$idcolor,$calories,$idvid])
       $statement->execute(["name"=>$name, "idcolour"=>$idcolor, "calories"=>$calories, "idvid"=>$idvid]);
+      
+      
+      
+       
+      $sql='
+      CREATE TABLE artist(
+      artistid    INTEGER PRIMARY KEY, 
+      artistname  TEXT);
+      ';
+      $st = $pdo->query($sql);
+     
+      $sql='
+      CREATE TABLE track(
+      trackid     INTEGER,
+      trackname   TEXT, 
+      trackartist INTEGER,
+      FOREIGN KEY(trackartist) REFERENCES artist(artistid)     
+      );
+      ';
+      $st = $pdo->query($sql);
+     
+      $sql="
+      INSERT INTO artist VALUES(1, 'Dean Martin');
+      ";
+      $st = $pdo->query($sql);
+    
+      $sql="
+      INSERT INTO artist VALUES(2, 'Frank Sinatra');
+      ";
+      $st = $pdo->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(11, 'Thats Amore', 1);
+      ";
+      $st = $pdo->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(12, 'Christmas Blues', 1);
+      ";
+      $st = $pdo->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(13, 'My Way ', 2);
+      ";
+      $st = $pdo->query($sql);
+    
+      $sql="
+      INSERT INTO track VALUES(14, 'Mr. Bojangles', 3);
+      ";
+      $st = $pdo->query($sql);
+
+      
+      
       
       $pdo->commit();
    } 
