@@ -31,6 +31,7 @@ $PhpVersion  = $_WORKSPACE[wsPhpVersion];   // Версия PHP
 require_once $SiteHost."/TDoorTryer/DoorTryerPage.php";
 try 
 {
+   //phpinfo();
    // Запускаем сценарий сайта
    require_once $SiteRoot."/Main.php";
 }

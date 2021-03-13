@@ -11,6 +11,7 @@
 // ****************************************************************************
 
 require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_CreateBaseTest.php";
+require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_PragmaTest.php";
 require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_ValueRow.php";
 require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_Query.php";
 require_once $TPhpTools."/TPhpToolsTests/T".$classTT."_UpdateInsert.php";
@@ -54,8 +55,9 @@ class test_TBaseMaker extends UnitTestCase
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';                                         
-      CreateBaseTest($pathBase,$username,$password);
-      $db = new ttools\BaseMaker($pathBase,$username,$password);
+      //CreateBaseTest($pathBase,$username,$password);
+      PragmaBaseTest($pathBase,$username,$password);
+      //$db = new ttools\BaseMaker($pathBase,$username,$password);
       OkMessage();
     
     /*

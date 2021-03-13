@@ -53,6 +53,7 @@ TPhpTools
 			TPhpToolsTests\FunctionsTools.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+			TPhpToolsTests\TBaseMaker_PragmaTest.php
 			TPhpToolsTests\TBaseMaker_Query.php
 			TPhpToolsTests\TBaseMaker_UpdateInsert.php
 			TPhpToolsTests\TBaseMaker_ValueRow.php
@@ -62,7 +63,7 @@ TPhpTools
 			TPhpToolsTests\TPageStarter__test.php
 			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_proba.php
-		-www
+		+www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -258,37 +259,41 @@ TPhpTools
 [Open project files]
 0=www\Main.php
 1=TPhpTools\TBaseMaker\BaseMakerClass.php
-2=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
+2=TPhpToolsTests\TBaseMaker_PragmaTest.php
 3=TPhpToolsTests\TBaseMaker_Query.php
 4=TPhpToolsTests\TBaseMaker__test.php
 5=TPhpToolsTests\TBaseMaker_UpdateInsert.php
-6=TPhpToolsTests\TBaseMaker_ValueRow.php
+6=www\index.php
+7=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker__test.php
+Selected=TPhpToolsTests\TBaseMaker_PragmaTest.php
 [www\Main.php]
-TopLine=19
+TopLine=35
 Caret=50,35
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=205
+TopLine=213
 Caret=9,229
 Mark1=1,145
 Mark2=1,233
 Mark3=1,190
 Mark4=1,234
-[TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=102
-Caret=17,127
+[TPhpToolsTests\TBaseMaker_PragmaTest.php]
+TopLine=87
+Caret=7,98
 [TPhpToolsTests\TBaseMaker_Query.php]
-TopLine=21
+TopLine=26
 Caret=1,42
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=49
-Caret=9,72
-Mark1=1,17
+TopLine=36
+Caret=7,59
+Mark1=1,36
 [TPhpToolsTests\TBaseMaker_UpdateInsert.php]
-TopLine=107
+TopLine=1
 Caret=1,127
-[TPhpToolsTests\TBaseMaker_ValueRow.php]
-TopLine=57
+[www\index.php]
+TopLine=17
+Caret=4,36
+[TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
+TopLine=15
 Caret=1,1

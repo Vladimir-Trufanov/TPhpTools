@@ -23,6 +23,13 @@ function CreateBaseTest($pathBase,$username,$password)
    {
       $pdo->beginTransaction();
       
+      /*   
+      $sql='
+      PRAGMA foreign_keys=on;
+      ';
+      $st = $pdo->query($sql);
+      */
+      
       $sql='CREATE TABLE vids ([id-vid] INTEGER PRIMARY KEY, vid TEXT)';
       $st = $pdo->query($sql);
       $sql='CREATE TABLE colours (
@@ -30,8 +37,9 @@ function CreateBaseTest($pathBase,$username,$password)
          colour      TEXT
       )';
       // NOT NULL REFERENCES colours ( [id-colour] ),
-      
       $st = $pdo->query($sql);
+      
+      /*
       $sql='CREATE TABLE produkts (
          name        TEXT PRIMARY KEY,
          [id-colour] INTEGER NOT NULL REFERENCES colours ([id-colour]),
@@ -91,7 +99,7 @@ function CreateBaseTest($pathBase,$username,$password)
       trackid     INTEGER,
       trackname   TEXT, 
       trackartist INTEGER,
-      FOREIGN KEY(trackartist) REFERENCES artist(artistid)     
+      FOREIGN KEY(trackartist) REFERENCES artist(artistid) ON UPDATE CASCADE    
       );
       ';
       $st = $pdo->query($sql);
@@ -121,12 +129,18 @@ function CreateBaseTest($pathBase,$username,$password)
       ";
       $st = $pdo->query($sql);
     
+      // д.быть исключение
       $sql="
       INSERT INTO track VALUES(14, 'Mr. Bojangles', 3);
       ";
       $st = $pdo->query($sql);
 
-      
+      //$sql="
+      //SELECT * FROM track;
+      //";
+      //$st = $pdo->query($sql);
+
+      */
       
       
       $pdo->commit();
