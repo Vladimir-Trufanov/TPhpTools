@@ -46,32 +46,51 @@ class test_TBaseMaker extends UnitTestCase
       // $i=0; $j=5/$i; echo '$j';
       // Начинаем протоколировать тесты
       SimpleMessage();
+      
+      PointMessage('Проверяется существование и удаляется старый файл базы данных');  
       // Проверяем существование и удаляем файл базы данных 
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
       UnlinkFileBase($filename);
+      OkMessage();
 
-      // Заново создаем базу данных и подключаем к ней TBaseMaker
-      PointMessage('Создается тестовая база данных');  // "Калорийность некоторых продуктов"
+      PointMessage('Подключением создается тестовая база данных');  // "Калорийность некоторых продуктов"
       $pathBase='sqlite:'.$filename; 
       $username='tve';
-      $password='23ety17';                                         
-      //CreateBaseTest($pathBase,$username,$password);
-      PragmaBaseTest($pathBase,$username,$password);
-      //$db = new ttools\BaseMaker($pathBase,$username,$password);
+      $password='23ety17';     
+      // Подключаем PDO к базе
+      $pdo = new PDO(
+      $pathBase, 
+      $username,
+      $password,
+      array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+      );
       OkMessage();
-    
-    /*
+      
+      PointMessage('Проверяются настройки целостности по внешним ключам:'); // (по запросу PRAGMA:foreign_keys)                                    
+      PragmaBaseTest($pdo);
+      OkMessage();
+      
+      CreateBaseTest($pdo);
+      unset($pdo); // удалили объект класса
+      OkMessage();
+
+      // Заново создаем базу данных и подключаем к ней TBaseMaker
+      $db = new ttools\BaseMaker($pathBase,$username,$password);
       // Тестируем Values, Rows методы
       test_ValueRow($db,$this);
       // Тестируем метод query
       unset($db); // удалили объект класса
+            
       UnlinkFileBase($filename);
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       test_Query($db,$this);
       // Тестируем Update, Insert методы
+      
       test_UpdateInsert($db,$this);
       echo '</div>';
-      */
+      unset($db); // удалили объект класса
+      
+      
   }
 }
 
