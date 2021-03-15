@@ -71,13 +71,14 @@ function MakeRecExcept($pdo)
 // ----------------------------------------------------------------------------
 // Выполнить тесты с PRAGMA foreign_keys 
 // ----------------------------------------------------------------------------
-function PragmaBaseTest($pdo)
+function PragmaBaseTest($pdo,$thiss)
 {
-   $Result=true;
-   $Except=false;
    // Начинаем новую строку сообщений
-   //SimpleMessage();
-   //PointMessage('Строится внешняя ссылочная таблица');
+   SimpleMessage();
+   // Отмечаем, что "исключения не было!"
+   $Except=false;
+   // ВЫКЛЮЧАЕМ действие внешних ключей
+   PointMessage('--- Выключается действие внешних ключей "PRAGMA foreign_keys=off"');
    $sql='
       PRAGMA foreign_keys=off;
    ';
@@ -96,52 +97,40 @@ function PragmaBaseTest($pdo)
       {
          $pdo->rollback();
       }
-      // Продолжаем исключение
-      throw $e;
-      //$Except=true;
-
+      // Отмечаем, что "исключение произошло!"
+      $Except=true;
    }
+   $thiss->assertFalse($Except);
    OkMessage();
 
-   /*
+   // Отмечаем, что "исключения не было!"
+   $Except=false;
    // Включаем действие внешних ключей
+   PointMessage('--- Возвращается действие внешних ключей "PRAGMA foreign_keys=on"');
    $sql='
-   PRAGMA foreign_keys=on;
+      PRAGMA foreign_keys=on;
    ';
    $st = $pdo->query($sql);
-   */
-   /*
-   // Строим таблицу дорожек с внешним ключем
    try 
    {
       $pdo->beginTransaction();
-      
-    
-      
-      
-      
-      //$sql="
-      //SELECT * FROM track;
-      //";
-      //$st = $pdo->query($sql);
-  
+      MakeTables($pdo);
+      MakeRecExcept($pdo);
       $pdo->commit();
    } 
-   catch (Exception $e) 
+   catch (PDOException $e) 
    {
       // Если в транзакции, то делаем откат изменений
-      if ($pdo->inTransaction()) 
-      {
-         $pdo->rollback();
-      }
-      // Продолжаем исключение
-      //throw $e;
-      SimpleMessage();
-      PointMessage('Foreinkey база данных');
-      //echo $e->getMessage();
-      //trigger_error('Привет!');
+      // Замечание 2021-03-15. Реально на локальном хосте [IIS] отката изменений 
+      // не происходит без присутсвия фрагмента "throw $e;". Для текущего теста
+      // этот фрагмент комментируем. Как следствие, записи сохраняются; в том 
+      // числе созраняется и запись с неверным внешним ключем
+      if ($pdo->inTransaction()) $pdo->rollback();
+      //throw $e; 
+      // Отмечаем, что "исключение произошло!"
+      $Except=true;
    }
-   */
+   $thiss->assertTrue($Except);
 }
 // ********************************************** TBaseMaker_PragmaTest.php ***
 

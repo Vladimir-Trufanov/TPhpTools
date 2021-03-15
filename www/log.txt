@@ -365,3 +365,4 @@ Stack trace:
 [16-Feb-2021 19:12:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '--' (T_DEC), expecting function (T_FUNCTION) or const (T_CONST) in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 60
 [17-Feb-2021 19:58:45 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 264
 [13-Mar-2021 04:32:57 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'Dean' (T_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 99
+[15-Mar-2021 11:43:40 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ',' or ')' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_PragmaTest.php on line 102

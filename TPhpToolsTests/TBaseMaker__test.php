@@ -53,7 +53,7 @@ class test_TBaseMaker extends UnitTestCase
       UnlinkFileBase($filename);
       OkMessage();
 
-      PointMessage('Подключением создается тестовая база данных');  // "Калорийность некоторых продуктов"
+      PointMessage('Создается объект PDO и файл тестовой базы данных');  // "Калорийность некоторых продуктов"
       $pathBase='sqlite:'.$filename; 
       $username='tve';
       $password='23ety17';     
@@ -66,10 +66,12 @@ class test_TBaseMaker extends UnitTestCase
       );
       OkMessage();
       
-      PointMessage('Проверяются настройки целостности по внешним ключам:'); // (по запросу PRAGMA:foreign_keys)                                    
-      PragmaBaseTest($pdo);
+      PointMessage('Проверяются настройки целостности по внешним ключам:'); 
+      // (по запросу PRAGMA:foreign_keys)                                    
+      PragmaBaseTest($pdo,$this);
       OkMessage();
       
+      PointMessage('Через PDO строятся таблицы и объект PDO уничтожается');                                    
       CreateBaseTest($pdo);
       unset($pdo); // удалили объект класса
       OkMessage();
