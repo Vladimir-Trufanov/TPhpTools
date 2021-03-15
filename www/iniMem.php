@@ -26,12 +26,16 @@ define ("fimWhiteGround", 1);    // обычный белый фон
 define ("fimColorGround", 2);    // фон с помощью цветной картинки
 define ("fimAnimation",   3);    // анимационный фон
 
+/*
 // Инициализируем переменные-кукисы
 $c_UserName=prown\MakeCookie('UserName',"Гость",tStr,true);            // логин авторизованного посетителя
 $c_PersName=prown\MakeCookie('PersName',"Гость",tStr,true);            // логин посетителя
 $c_BrowEntry=prown\MakeCookie('BrowEntry',0,tInt,true);                // число запросов сайта из браузера
 $c_PersEntry=prown\MakeCookie('PersEntry',0,tInt,true);                // счетчик посещений текущим посетителем
+*/
 
+
+/*
 // Инициализируем сессионные переменные (сессионные переменные инициируются после
 // переменных-кукисов, так как некоторые переменные-кукисы переопределяются появившимися
 // сессионными переменными. Например: $s_ModeImg --> $c_ModeImg)
@@ -51,7 +55,7 @@ $c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
 // Изменяем счетчик посещений за сессию                 
 $s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);   
 
-
+*/
 
 
 /*

@@ -30,7 +30,7 @@ TPhpTools
 				Favicon\favicon_package_v0.16\safari-pinned-tab.svg
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
-		-TPhpTools
+		+TPhpTools
 			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
@@ -50,7 +50,6 @@ TPhpTools
 			TPhpTools\iniConstMem.php
 			TPhpTools\iniErrMessage.php
 		+TPhpToolsTests
-			TPhpToolsTests\FunctionsTools.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
 			TPhpToolsTests\TBaseMaker_PragmaTest.php
@@ -99,6 +98,8 @@ TPhpTools
 			www\TPhpToolsTests.js
 			www\UpSite.php
 		-Материалы
+			-BaseMaker
+				Материалы\BaseMaker\PRAGMA Statements.doc
 			-DownUpLoad
 				-Proba
 					-images
@@ -258,42 +259,29 @@ TPhpTools
 		Пример формы класса.php
 [Open project files]
 0=www\Main.php
-1=TPhpTools\TBaseMaker\BaseMakerClass.php
-2=TPhpToolsTests\TBaseMaker__test.php
-3=TPhpToolsTests\TBaseMaker_ValueRow.php
-4=TPhpToolsTests\TBaseMaker_CreateBaseTest.php
-5=..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php
-6=TPhpToolsTests\TBaseMaker_Query.php
-7=TPhpToolsTests\TBaseMaker_PragmaTest.php
+1=..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php
+2=www\index.php
+3=www\iniMem.php
+4=..\TPhpPrown\TPhpPrown\MakeCookie.php
+5=www\iniWorkSpace.php
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker__test.php
+Selected=www\Main.php
 [www\Main.php]
-TopLine=29
-Caret=50,35
-[TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=1
-Caret=17,8
-Mark1=1,144
-Mark2=1,232
-Mark3=1,189
-Mark4=1,233
-[TPhpToolsTests\TBaseMaker__test.php]
-TopLine=58
-Caret=77,74
-Mark1=1,36
-[TPhpToolsTests\TBaseMaker_ValueRow.php]
-TopLine=2
-Caret=1,1
-[TPhpToolsTests\TBaseMaker_CreateBaseTest.php]
-TopLine=53
-Caret=75,69
+TopLine=24
+Caret=4,36
 [..\TPhpPrown\TPhpPrownTests\FunctionsBlock.php]
-TopLine=267
+TopLine=1
+Caret=124,14
+[www\index.php]
+TopLine=7
+Caret=1,12
+[www\iniMem.php]
+TopLine=29
+Caret=1,57
+[..\TPhpPrown\TPhpPrown\MakeCookie.php]
+TopLine=125
 Caret=1,1
-[TPhpToolsTests\TBaseMaker_Query.php]
-TopLine=5
-Caret=1,21
-[TPhpToolsTests\TBaseMaker_PragmaTest.php]
-TopLine=106
-Caret=1,131
+[www\iniWorkSpace.php]
+TopLine=1
+Caret=1,1

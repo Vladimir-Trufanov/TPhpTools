@@ -9,9 +9,6 @@
 //                                                   Дата создания:  03.06.2019
 // Copyright © 2019 tve                              Посл.изменение: 27.12.2020
 
-// Инициализируем рабочее пространство: корневой каталог сайта и т.д.
-session_start();
- 
 // Извлекаем переменные рабочего пространства
 require_once $_SERVER['DOCUMENT_ROOT'].'/iniWorkSpace.php';
 $_WORKSPACE=iniWorkSpace();
