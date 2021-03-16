@@ -14,19 +14,6 @@
 $TPhpPrown=$SiteHost.'/TPhpPrown';
 require_once $TPhpPrown."/TPhpPrown/MakeCookie.php";
 require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
-/*
-require_once $TPhpPrown."/TPhpPrown/CommonPrown.php";
-require_once $TPhpPrown."/TPhpPrown/DebugInfo.php";
-require_once $TPhpPrown."/TPhpPrown/Findes.php";
-require_once $TPhpPrown."/TPhpPrown/getTranslit.php";
-require_once $TPhpPrown."/TPhpPrown/iniConstMem.php";
-*/
-//require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
-/*
-require_once $TPhpPrown."/TPhpPrown/MakeUserError.php";
-require_once $TPhpPrown."/TPhpPrown/ViewGlobal.php";
-require_once $TPhpPrown."/TPhpPrown/ViewSimpleArray.php";
-*/
 
 session_start();
 
@@ -42,11 +29,6 @@ $c_PersEntry=prown\MakeCookie('PersEntry',0,tInt,true);                // сче
 $s_Counter=prown\MakeSession('Counter',0,tInt,true);              // посещения за сессию
 //$s_isJScript=prown\MakeSession('isJScript','no',tInt,false);    // JavaScript не включен
 
-// Инициализируем параметры страницы сайта 
-//$p_ittveLife="ittve01-001-20130201-Особенности-устройства-винтиков-в-моей-голове.html";
-//$p_ittveNews="ittve01-001-20130201-Особенности-устройства-винтиков-в-моей-голове.html";
-
-
 // Изменяем счетчик запросов сайта из браузера и, таким образом,       
 // регистрируем новую загрузку страницы
 $c_BrowEntry=prown\MakeCookie('BrowEntry',$c_BrowEntry+1,tInt);  
@@ -54,10 +36,6 @@ $c_BrowEntry=prown\MakeCookie('BrowEntry',$c_BrowEntry+1,tInt);
 $c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
 // Изменяем счетчик посещений за сессию                 
 $s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);   
-
-
-
-
 
 // Подключаем модуль обеспечения тестов
 require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
@@ -74,29 +52,6 @@ require_once "Common.php";     // Всегда 1-ый корневой моду�
 require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
 require_once "UpSite.php";
 
-/*
-function merr($errno,$msg,$file,$ins)
-{
-echo 'ошибка <br>';
-}
-set_error_handler("merr",E_ALL);
-filemtime('spoon');
-*/
-
-      /*
-      $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
-      $pathBase='sqlite:'.$filename; 
-      $username='tve';
-      $password='23ety17';                                         
-      $db = new ttools\BaseMaker($pathBase,$username,$password);
-      // Выборка одного значения
-      $count = $db->queryValue('SELECT COUNT(*) FROM vids');
-      echo "*** $count ***<br>";
-      $count = $db->queryValues('SELECT COUNT(*) FROM vids');
-      print_r($count);
-      */
-
-   
 // При необходимости выводим дополнительную информацию
 // Header("Content-type: text/plain");
 // $headers = getallheaders();

@@ -78,56 +78,6 @@ function test_UpdateInsert($db,$thiss)
       $statement->execute(["name"=>$name, "idcolour"=>$idcolor, "calories"=>$calories, "idvid"=>$idvid]);
       */
       
-      $sql='
-      CREATE TABLE artist(
-      artistid    INTEGER PRIMARY KEY, 
-      artistname  TEXT);
-      ';
-      $st = $db->query($sql);
-     
-      $sql='
-      CREATE TABLE track(
-      trackid     INTEGER,
-      trackname   TEXT, 
-      trackartist INTEGER,
-      FOREIGN KEY(trackartist) REFERENCES artist(artistid)     
-      );
-      ';
-      $st = $db->query($sql);
-     
-      $sql="
-      INSERT INTO artist VALUES(1, 'Dean Martin');
-      ";
-      $st = $db->query($sql);
-    
-      $sql="
-      INSERT INTO artist VALUES(2, 'Frank Sinatra');
-      ";
-      $st = $db->query($sql);
-    
-      $sql="
-      INSERT INTO track VALUES(11, 'Thats Amore', 1);
-      ";
-      $st = $db->query($sql);
-    
-      $sql="
-      INSERT INTO track VALUES(12, 'Christmas Blues', 1);
-      ";
-      $st = $db->query($sql);
-    
-      $sql="
-      INSERT INTO track VALUES(13, 'My Way ', 2);
-      ";
-      $st = $db->query($sql);
-    
-      $sql="
-      INSERT INTO track VALUES(14, 'Mr. Bojangles', 3);
-      ";
-      $st = $db->query($sql);
-          
-            
-      
-      
       $db->commit();
    } 
    catch (Exception  $e) 

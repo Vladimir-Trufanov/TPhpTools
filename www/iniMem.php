@@ -26,53 +26,6 @@ define ("fimWhiteGround", 1);    // обычный белый фон
 define ("fimColorGround", 2);    // фон с помощью цветной картинки
 define ("fimAnimation",   3);    // анимационный фон
 
-/*
-// Инициализируем переменные-кукисы
-$c_UserName=prown\MakeCookie('UserName',"Гость",tStr,true);            // логин авторизованного посетителя
-$c_PersName=prown\MakeCookie('PersName',"Гость",tStr,true);            // логин посетителя
-$c_BrowEntry=prown\MakeCookie('BrowEntry',0,tInt,true);                // число запросов сайта из браузера
-$c_PersEntry=prown\MakeCookie('PersEntry',0,tInt,true);                // счетчик посещений текущим посетителем
-*/
-
-
-/*
-// Инициализируем сессионные переменные (сессионные переменные инициируются после
-// переменных-кукисов, так как некоторые переменные-кукисы переопределяются появившимися
-// сессионными переменными. Например: $s_ModeImg --> $c_ModeImg)
-$s_Counter=prown\MakeSession('Counter',0,tInt,true);              // посещения за сессию
-//$s_isJScript=prown\MakeSession('isJScript','no',tInt,false);    // JavaScript не включен
-
-// Инициализируем параметры страницы сайта 
-//$p_ittveLife="ittve01-001-20130201-Особенности-устройства-винтиков-в-моей-голове.html";
-//$p_ittveNews="ittve01-001-20130201-Особенности-устройства-винтиков-в-моей-голове.html";
-
-
-// Изменяем счетчик запросов сайта из браузера и, таким образом,       
-// регистрируем новую загрузку страницы
-$c_BrowEntry=prown\MakeCookie('BrowEntry',$c_BrowEntry+1,tInt);  
-// Изменяем счетчик посещений текущим посетителем      
-$c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
-// Изменяем счетчик посещений за сессию                 
-$s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);   
-
-*/
-
-
-/*
-if ($SiteDevice==Mobile) 
-{   
-   $p_NewsForm=prown\MakeParm('NewsForm',frnWithImg);            // форма представления новостей
-}
-else
-{
-   $p_NewsForm=prown\MakeParm('NewsForm',frnSimple);             // форма представления новостей
-}
-$p_NewsAmt=prown\MakeParm('NewsAmt',8);                          // количество новостей в форме
-$p_NewsView=prown\MakeParm('NewsView',true,tBool,true);          // true - разворачивать новости при загрузке
-*/
-
-
-
 
 // Инициализируем общесайтовые переменные
 

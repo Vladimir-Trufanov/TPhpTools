@@ -75,18 +75,45 @@ function PragmaBaseTest($pdo,$thiss)
 {
    // Начинаем новую строку сообщений
    SimpleMessage();
-   // Отмечаем, что "исключения не было!"
+   // Создаем и заполняем родительскую и дочернюю таблицы
+   MakeTables($pdo);
+   
+   // Включаем действие внешних ключей и отмечаем, что "исключения не было!"
+   PointMessage('--- Возвращается действие внешних ключей "PRAGMA foreign_keys=on"');
+   $sql='
+      PRAGMA foreign_keys=on;
+   ';
+   $st = $pdo->query($sql);
    $Except=false;
-   // ВЫКЛЮЧАЕМ действие внешних ключей
+   // Добавляем запись с отсутствующим внешним ключём
+   try 
+   {
+      $pdo->beginTransaction();
+      MakeRecExcept($pdo);
+      $pdo->commit();
+   } 
+   catch (PDOException $e) 
+   {
+      // Если в транзакции, то делаем откат изменений
+      if ($pdo->inTransaction()) $pdo->rollback();
+      // throw $e;  // трассировка исключения при отладке
+      // Отмечаем, что "исключение произошло!"
+      $Except=true;
+   }
+   $thiss->assertTrue($Except);
+   OkMessage();
+   
+   // ВЫКЛЮЧАЕМ действие внешних ключей и отмечаем, что "исключения не было!"
    PointMessage('--- Выключается действие внешних ключей "PRAGMA foreign_keys=off"');
    $sql='
       PRAGMA foreign_keys=off;
    ';
    $st = $pdo->query($sql);
+   $Except=false;
+   // Добавляем запись с отсутствующим внешним ключём
    try 
    {
       $pdo->beginTransaction();
-      MakeTables($pdo);
       MakeRecExcept($pdo);
       $pdo->commit();
    } 
@@ -101,36 +128,6 @@ function PragmaBaseTest($pdo,$thiss)
       $Except=true;
    }
    $thiss->assertFalse($Except);
-   OkMessage();
-
-   // Отмечаем, что "исключения не было!"
-   $Except=false;
-   // Включаем действие внешних ключей
-   PointMessage('--- Возвращается действие внешних ключей "PRAGMA foreign_keys=on"');
-   $sql='
-      PRAGMA foreign_keys=on;
-   ';
-   $st = $pdo->query($sql);
-   try 
-   {
-      $pdo->beginTransaction();
-      MakeTables($pdo);
-      MakeRecExcept($pdo);
-      $pdo->commit();
-   } 
-   catch (PDOException $e) 
-   {
-      // Если в транзакции, то делаем откат изменений
-      // Замечание 2021-03-15. Реально на локальном хосте [IIS] отката изменений 
-      // не происходит без присутсвия фрагмента "throw $e;". Для текущего теста
-      // этот фрагмент комментируем. Как следствие, записи сохраняются; в том 
-      // числе созраняется и запись с неверным внешним ключем
-      if ($pdo->inTransaction()) $pdo->rollback();
-      //throw $e; 
-      // Отмечаем, что "исключение произошло!"
-      $Except=true;
-   }
-   $thiss->assertTrue($Except);
 }
 // ********************************************** TBaseMaker_PragmaTest.php ***
 

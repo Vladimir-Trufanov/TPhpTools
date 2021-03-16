@@ -47,9 +47,10 @@ class test_TBaseMaker extends UnitTestCase
       // Начинаем протоколировать тесты
       SimpleMessage();
       
-      PointMessage('Проверяется существование и удаляется старый файл базы данных');  
       // Проверяем существование и удаляем файл базы данных 
       $filename=$_SERVER['DOCUMENT_ROOT'].'/basemaker.db3';
+      PointMessage('Проверяется существование и удаляется старый файл базы данных:');  
+      SimpleMessage(); PointMessage('--- '.$filename);  
       UnlinkFileBase($filename);
       OkMessage();
 
@@ -80,19 +81,20 @@ class test_TBaseMaker extends UnitTestCase
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       // Тестируем Values, Rows методы
       test_ValueRow($db,$this);
+
       // Тестируем метод query
       unset($db); // удалили объект класса
-            
       UnlinkFileBase($filename);
       $db = new ttools\BaseMaker($pathBase,$username,$password);
       test_Query($db,$this);
+
       // Тестируем Update, Insert методы
-      
       test_UpdateInsert($db,$this);
       echo '</div>';
-      unset($db); // удалили объект класса
-      
-      
+
+
+      // Удаляем объект класса
+      unset($db); 
   }
 }
 
