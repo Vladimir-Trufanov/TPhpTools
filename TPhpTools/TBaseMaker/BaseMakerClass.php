@@ -185,21 +185,30 @@ class BaseMaker
    // *************************************************************************
    public function query($query,$params=null) 
    {
+      /*
       $result=null;
       $stmt=$this->db->prepare($query);
       $result=$stmt->execute($params);
       if (!$result) {sqlMessage($query,$params);}
+      */
+      try
+      {
+      $result=null;
+      $stmt=$this->db->prepare($query);
+      $result=$stmt->execute($params);
+      }
+      catch (PDOException $e) 
+      {
+      echo('Привет!');
+      }
       return $result;
    }
    // *************************************************************************
-   // *             Вставить новую запись в таблицу базы данных               *
+   // *  Вставить новую запись в таблицу базы данных:  $newUserId=$db->insert *
+   // *      ('users',array('name' =>'NewUserName','password'=>'zzxxcc'));    *
    // *************************************************************************
-   public function insert($table,$fields) 
+   public function insert($table,$fields)
    {
-      //filemtime('spoon');
-      // Формируем текст запроса по типу
-      // "INSERT INTO [vids] ([id-vid],[vid]) VALUES (:id-vid, :vid)",
-      // но с фактическими значениями типа "строка" ???
       $names = '';
       $vals = '';
       foreach ($fields as $name => $val) 
@@ -213,49 +222,44 @@ class BaseMaker
          $vals.="'".$val."'";
       }
       $sql="INSERT INTO ".'['.$table.']'.' ('.$names.') VALUES ('.$vals.')';
-    
-      //echo '---<br>';
-      //echo $sql.'<br>';
-      //echo '---<br>';
-      //try 
-      //{
-         $result=$this->db->query($sql);
-      //}
-      //catch(PDOException $e) 
-      //{
-         //$this->report($e);
-         //   echo 'Подключение не удалось: ';// . $e->getMessage();
-      //}
+      $result=$this->db->query($sql);
       return $result;
    }
-
- 
-  // Returns true/false
-  public function update($table, $fields, $where, $params = null) {
-    try {
+   // *************************************************************************
+   // *                        Обновить запись: $db->update                   *
+   // *  ('users',array('name'=>'UpName'),'id=:id',array(':id'=>$newUserId)); *
+   // *************************************************************************
+   public function update($table, $fields, $where, $params = null) 
+   {
+      // filemtime('spoon'); // генерируем отладочное исключение
       $sql = 'UPDATE ' . $table . ' SET ';
       $first = true;
-      foreach (array_keys($fields) as $name) {
-        if (!$first) {
-          $first = false;
-          $sql .= ', ';
-        }
-        $first = false;
-        $sql .= $name . ' = :_' . $name;
+      foreach (array_keys($fields) as $name) 
+      {
+         if (!$first) 
+         {
+            $first = false;
+            $sql .= ', ';
+         }
+         $first = false;
+         $sql .= $name . ' = :_' . $name;
       }
-      if (!is_array($params)) {
-        $params = array();
+      if (!is_array($params)) 
+      {
+         $params = array();
       }
       $sql .= ' WHERE ' . $where;
+      $result=$this->db->query($sql);
+      
+      /*
       $rs = $this->db->prepare($sql);
-      foreach ($fields as $name => $val) {
-        $params[':_' . $name] = $val;
+      foreach ($fields as $name => $val) 
+      {
+         $params[':_' . $name] = $val;
       }
       $result = $rs->execute($params);
+      */
       return $result;
-    } catch(Exception $e) {
-      $this->report($e);
-    }
   }
    // ----------------------------------------------- приватные функции класса
 
@@ -286,25 +290,5 @@ class BaseMaker
       else sqlMessage($query,$params);
       return $result;
    }
- 
- 
-  public function report($e) 
-  {
-    echo 'Привет!';
-    //throw $e;
-  }
-
 }
-
-
-/*
-А вот и пример работы:
-
-// Добавление записи (INSERT) и получение значения поля AUTO_INCREMENT
-$newUserId = $db->insert('users', array('name' => 'NewUserName', 'password' => 'zzxxcc'));
-
-// Изменение записи (UPDATE)
-$db->update('users', array('name' => 'UpdatedName'), 'id=:id', array(':id' => $newUserId));
-*/
-
 // ***************************************************** BaseMakerClass.php ***

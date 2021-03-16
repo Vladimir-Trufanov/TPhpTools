@@ -11,7 +11,7 @@
 function test_ValueRow($db,$thiss)
 {
    PointMessage('Проверяются методы queryValue(s) по запросам без параметров');
-   $sql='SELECT COUNT(*) FROM vids';
+   $sql='SELECT COUNT(*) FROM vidsi';
    $sign=2;
    $count=$db->queryValue($sql);
    $thiss->assertEqual($count,2);

@@ -35,13 +35,6 @@ function test_Query($db,$thiss)
          [calories]    NUMERIC( 5, 1 ),
          [id-vid]    INTEGER
       )';
-/*
-         ,
-         CONSTRAINT PO_COLOUR
-         FOREIGN KEY ([id-colour]) REFERENCES colour
-
-
-         [id-colour] INTEGER NOT NULL REFERENCES colours ([id-colour]), */
       $st = $db->query($sql);
       $db->commit();
    } 
