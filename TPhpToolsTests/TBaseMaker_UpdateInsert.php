@@ -13,7 +13,7 @@ function test_UpdateInsert($db,$thiss)
    PointMessage('Проверяются методы Update и Insert');
    $sql='SELECT COUNT(*) FROM vids';
    $count=$db->queryValue($sql);
-   $thiss->assertEqual($count,0);
+   if ($thiss!==NULL) $thiss->assertEqual($count,0);
    
    // Заполняем таблицы тестовой базы
    try 
@@ -55,7 +55,7 @@ function test_UpdateInsert($db,$thiss)
          
       $sql="update produkts set [id-vid]=2 where name='земляника'";
       $st = $db->query($sql);
-      $db->update('produkts',array('[id-vid]'=>1),"name='земляника'"); 
+      //$db->update('produkts',array('[id-vid]'=>1),"name='земляника'"); 
    
       
      

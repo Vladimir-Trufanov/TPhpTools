@@ -4,7 +4,7 @@
 // ****************************************************************************
 // * TPhpTools                                   Создать тестовую базу данных *
 // *                                                                          *
-// * v1.0, 14.02.2021                              Автор:       Труфанов В.Е. *
+// * v1.0, 17.03.2021                              Автор:       Труфанов В.Е. *
 // * Copyright © 2021 tve                          Дата создания:  13.01.2021 *
 // ****************************************************************************
 function CreateBaseTest($pdo)
@@ -15,22 +15,13 @@ function CreateBaseTest($pdo)
    {
       $pdo->beginTransaction();
       
-      /*   
-      $sql='
-      PRAGMA foreign_keys=on;
-      ';
-      $st = $pdo->query($sql);
-      */
-      
       $sql='CREATE TABLE vids ([id-vid] INTEGER PRIMARY KEY, vid TEXT)';
       $st = $pdo->query($sql);
       $sql='CREATE TABLE colours (
          [id-colour] INTEGER PRIMARY KEY,
          colour      TEXT
       )';
-      // NOT NULL REFERENCES colours ( [id-colour] ),
       $st = $pdo->query($sql);
-      
       
       $sql='CREATE TABLE produkts (
          name        TEXT PRIMARY KEY,
@@ -60,7 +51,6 @@ function CreateBaseTest($pdo)
       $sql="INSERT INTO [colours] ([id-colour], [colour]) VALUES (5, 'зелёные');";
       $st = $pdo->query($sql);
 
-
       $aProducts=[
          ['голубика',  2, 41, 2],
          ['брусника',  1, 41, 2],
@@ -76,10 +66,6 @@ function CreateBaseTest($pdo)
       foreach ($aProducts as [$name,$idcolor,$calories,$idvid])
       $statement->execute(["name"=>$name, "idcolour"=>$idcolor, "calories"=>$calories, "idvid"=>$idvid]);
       
-      
-       
-      
-      
       $pdo->commit();
    } 
    catch (Exception $e) 
@@ -91,7 +77,6 @@ function CreateBaseTest($pdo)
       }
       // Продолжаем исключение
       throw $e;
-      //echo $e->getMessage();
    }
 }
 // ****************************************** TBaseMaker_CreateBaseTest.php ***

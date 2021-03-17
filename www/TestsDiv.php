@@ -8,11 +8,11 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  13.01.2019
-// Copyright © 2019 tve                              Посл.изменение: 30.12.2020
+// Copyright © 2019 tve                              Посл.изменение: 17.03.2021
 
+echo '<div class="container">';
 // Принимаем команду на запуск тестов
 $classTT=prown\getComRequest('test');
-echo '<div class="container">';
 if ($classTT===NULL)
 {
    $classTT='NULL';
@@ -20,11 +20,28 @@ if ($classTT===NULL)
 }
 else 
 {
+   require_once $TPhpTools."/TPhpToolsTests/T_ToolsTestCommon.php";
+   // Определяем главный модуль тестирования класса и подключаем вспомогательные
+   define ("ScenName",$TPhpTools."/TPhpToolsTests/T".$classTT."__test.php");
+   if ($classTT=='BaseMaker')
+   {
+      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_CreateBaseTest.php";
+      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_PragmaTest.php";
+      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_ValueRow.php";
+      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_Query.php";
+      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_UpdateInsert.php";
+   }
+   // Подключаем и вызываем тестовую оболочку
    require_once($SiteHost.'/TSimpleTest/autorun.php');
-   require_once $TPhpTools."/TPhpToolsTests/T".$classTT."__test.php";
-   //require_once "Proba.php";
-   //probatest($classTT);
-
+   class test_TBaseMaker extends UnitTestCase
+   {
+      function test_TPhpTools()
+      {
+         echo '<div id="TestsDiv">';
+         $shellTest=$this; require_once (ScenName); // запустили главный модуль тестов класса
+         echo '</div>';
+      }
+   }
    // Выводим меню для возврата в контрольное меню тестов
    echo '<ul>';
    echo 
@@ -33,29 +50,6 @@ else
       '<a href="'.$SpecSite.'/?control='.$classTT.'" data-toggle="dropdown">T'.$classTT.'</a>'.
       '</li>';
    echo '</ul>';
-
-   //echo
-   //   '<div id="InfoRight">'.
-   //   $SiteDevice." ".$c_PersName." ".$_SESSION['Counter'].".".$c_PersEntry."[".$c_BrowEntry."]". 
-   //   '</div>';
-   // Возвращаемся в меню выбора тестов
-   // echo "****".$SpecSite.'****';
-  // Header("Location: ".$SpecSite);
-   
 }   
 echo '</div>';
-
-
-
- /*
-}
-echo 
-   '</div>';
-// Если тест не выбран, возвращаемся в контрольное меню   
-if ($classTT===NULL)
-{
-   Header("Location: http://".$_SERVER['HTTP_HOST'].$SpecSite);
-}
-*/
-
 // <!-- --> ************************************************** TestsDiv.php ***

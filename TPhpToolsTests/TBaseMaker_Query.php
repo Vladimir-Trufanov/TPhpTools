@@ -13,11 +13,11 @@ function test_Query($db,$thiss)
    PointMessage('Тестируется метод Query');
    // Проверяем отсутствие таблиц в базе
    $x=$db->isTable('vids');
-   $thiss->assertFalse($x);
+   if ($thiss!==NULL) $thiss->assertFalse($x);
    $x=$db->isTable('colours');
-   $thiss->assertFalse($x);
+   if ($thiss!==NULL) $thiss->assertFalse($x);
    $x=$db->isTable('produkts');
-   $thiss->assertFalse($x);
+   if ($thiss!==NULL) $thiss->assertFalse($x);
    // Создаем таблицы тестовой базы методом query
    try 
    {
@@ -48,15 +48,15 @@ function test_Query($db,$thiss)
    }
    // Проверяем присутствие таблиц в базе
    $x=$db->isTable('vids');
-   $thiss->assertTrue($x);
+   if ($thiss!==NULL) $thiss->assertTrue($x);
    $x=$db->isTable('colours');
-   $thiss->assertTrue($x);
+   if ($thiss!==NULL) $thiss->assertTrue($x);
    $x=$db->isTable('produkts');
-   $thiss->assertTrue($x);
+   if ($thiss!==NULL) $thiss->assertTrue($x);
    // Проверяем отсутствие записей в таблице
    $sql='SELECT COUNT(*) FROM vids';
    $count=$db->queryValue($sql);
-   $thiss->assertEqual($count,0);
+   if ($thiss!==NULL) $thiss->assertEqual($count,0);
    OkMessage();
 }
 // *************************************************** TBaseMaker_Query.php ***

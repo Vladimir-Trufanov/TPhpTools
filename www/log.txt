@@ -366,3 +366,18 @@ Stack trace:
 [17-Feb-2021 19:58:45 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in C:\TPhpTools\TPhpTools\TBaseMaker\BaseMakerClass.php on line 264
 [13-Mar-2021 04:32:57 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'Dean' (T_STRING) in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 99
 [15-Mar-2021 11:43:40 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ',' or ')' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_PragmaTest.php on line 102
+[17-Mar-2021 15:09:54 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Using $this when not in object context in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php:59
+Stack trace:
+#0 C:\TPhpTools\www\TestsDiv.php(23): require_once()
+#1 C:\TPhpTools\www\UpSite.php(82): require_once('C:\\TPhpTools\\ww...')
+#2 C:\TPhpTools\www\Main.php(53): require_once('C:\\TPhpTools\\ww...')
+#3 C:\TPhpTools\www\index.php(33): require_once('C:\\TPhpTools\\ww...')
+#4 {main}
+  thrown in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 59
+[17-Mar-2021 15:11:05 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'MakeTitle' (T_STRING), expecting '{' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 32
+[17-Mar-2021 15:15:30 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'MakeTitle' (T_STRING), expecting '{' in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 32
+[17-Mar-2021 15:26:47 Asia/Kuwait] PHP Fatal error:  Cannot use $this as parameter in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 31
+[17-Mar-2021 15:27:09 Asia/Kuwait] PHP Fatal error:  Cannot use $this as parameter in C:\TPhpTools\TPhpToolsTests\TBaseMaker__test.php on line 31
+[17-Mar-2021 16:38:47 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/T_CreateBaseTest.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\TestsDiv.php on line 20
+[17-Mar-2021 16:39:44 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/T_CreateBaseTest.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\TestsDiv.php on line 20
+[17-Mar-2021 18:40:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '!', expecting '(' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_PragmaTest.php on line 103

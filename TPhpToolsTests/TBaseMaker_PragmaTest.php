@@ -71,7 +71,7 @@ function MakeRecExcept($pdo)
 // ----------------------------------------------------------------------------
 // Выполнить тесты с PRAGMA foreign_keys 
 // ----------------------------------------------------------------------------
-function PragmaBaseTest($pdo,$thiss=NULL)
+function PragmaBaseTest($pdo,$thiss)
 {
    // Начинаем новую строку сообщений
    SimpleMessage();
@@ -100,7 +100,7 @@ function PragmaBaseTest($pdo,$thiss=NULL)
       // Отмечаем, что "исключение произошло!"
       $Except=true;
    }
-   //$thiss->assertTrue($Except);
+   if ($thiss!==NULL) $thiss->assertTrue($Except);
    OkMessage();
    
    // ВЫКЛЮЧАЕМ действие внешних ключей и отмечаем, что "исключения не было!"
@@ -127,7 +127,7 @@ function PragmaBaseTest($pdo,$thiss=NULL)
       // Отмечаем, что "исключение произошло!"
       $Except=true;
    }
-   //$thiss->assertFalse($Except);
+   if ($thiss!==NULL) $thiss->assertFalse($Except);
 }
 // ********************************************** TBaseMaker_PragmaTest.php ***
 
