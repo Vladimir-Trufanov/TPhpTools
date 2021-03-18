@@ -15,7 +15,7 @@
 // BaseMakerClass:                   Обслуживатель баз данных SQLite3 через PDO 
 //                     
 define ("RequestExecutionError", "Ошибка исполнения запроса: ");
-define ("WithParameters",        " с параметрами: ");
+define ("WithParameters",        "с параметрами: ");
 
 /*
 // MakeCookie:       Установить новое значение COOKIE в браузере, заменить этим 

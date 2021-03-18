@@ -15,7 +15,7 @@ function test_ValueRow($db,$thiss)
    $sign=2;
    $count=$db->queryValue($sql);
    if ($thiss!==NULL) $thiss->assertEqual($count,2);
-      
+   
    // $arr=array('BaseMaker'=>'notest'); - ассоциативный массив
    // $arr=array(1,2,3);                 - простой список значений
    $sign=array(2);
@@ -27,22 +27,21 @@ function test_ValueRow($db,$thiss)
    $list = $db->queryValues($sql);
    if ($thiss!==NULL) $thiss->assertEqual($list,$sign);
    OkMessage();
-   
    // Выполняем методы queryValue(s) с подготовленными запросами и с 
    // передачей именованных переменных в массиве входных значений
    PointMessage('Проверяются queryValue(s) по запросам с именованными параметрами');
    $calories = 81;
    $sql='SELECT COUNT(*) FROM produkts WHERE calories<:calories';
    $parm=array(':calories' => $calories);
-
+   
    $sign=5;
    $count=$db->queryValue($sql,$parm);
    if ($thiss!==NULL) $thiss->assertEqual($count,$sign);
-      
+   
    $sign=array(5);
    $count=$db->queryValues($sql,$parm);
    if ($thiss!==NULL) $thiss->assertEqual($count,$sign);
-
+   
    $calories = 41;
    $idvid=2;
    $sql='SELECT COUNT(*) FROM produkts WHERE calories>=:calories AND [id-vid] = :idvid';
@@ -70,7 +69,7 @@ function test_ValueRow($db,$thiss)
    $sign=array(5);
    $count=$db->queryValues($sql,$parm);
    if ($thiss!==NULL) $thiss->assertEqual($count,$sign);
-
+   
    $sql='SELECT COUNT(*) FROM produkts WHERE calories>=? AND [id-vid] = ?';
    $calories = 41; $idvid=2;
    $parm=array($calories, $idvid);
@@ -78,7 +77,7 @@ function test_ValueRow($db,$thiss)
    $sign=3;
    $count=$db->queryValue($sql,$parm);
    if ($thiss!==NULL) $thiss->assertEqual($count,$sign);
-
+   
    $sign=array(3);
    $count=$db->queryValues($sql,$parm);
    if ($thiss!==NULL) $thiss->assertEqual($count,$sign);
@@ -98,20 +97,24 @@ function test_ValueRow($db,$thiss)
    $prod1=$db->queryRow($sql);
    $sign=['name'=>'голубика','id-colour'=>2,'calories'=>41,'id-vid'=>2];
    if ($thiss!==NULL) $thiss->assertEqual($prod1,$sign);
+   
    // Делаем запрос по именованному ключу
    $sql='SELECT * FROM produkts WHERE name=:name';
    $prod1=$db->queryRow($sql, array(':name' => 'рябина'));
    $prod2=$db->queryRow($sql, [':name' => 'рябина']);
    if ($thiss!==NULL) $thiss->assertEqual($prod1,$prod2);
+
    // Делаем запрос по не именованному ключу
    $sql='SELECT * FROM produkts WHERE name=?';
    $prod2=$db->queryRow($sql, array('виноград'));
    $sign=array('name'=>'виноград','id-colour'=>5,'calories'=>70,'id-vid'=>1);
    if ($thiss!==NULL) $thiss->assertEqual($prod2,$sign);
+
    // Делаем поименный запрос
    $sql='SELECT name,[id-colour],calories,[id-vid] FROM produkts WHERE name=?';
    $prod1=$db->queryRow($sql,['виноград']);
    if ($thiss!==NULL) $thiss->assertEqual($prod2,$prod1);
+
    // Делаем реляционный однострочный набор данных по запросу из трех таблиц
    $sql='SELECT COUNT(*) FROM produkts,vids,colours '.
         'WHERE name=? and produkts.[id-vid]=vids.[id-vid] and produkts.[id-colour]=colours.[id-colour]';

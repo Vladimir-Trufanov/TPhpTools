@@ -59,7 +59,7 @@ test_Query($db,$shellTest);
 
 // Тестируем Update, Insert методы
 test_UpdateInsert($db,$shellTest);
-   
+
 // Удаляем объект класса
 unset($db); 
 // *************************************************** TBaseMaker__test.php ***

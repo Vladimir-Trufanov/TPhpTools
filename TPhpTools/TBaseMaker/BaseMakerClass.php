@@ -17,20 +17,21 @@
 // ****************************************************************************
 // *                  Вывести сообщение об ошибке исполнения запроса          *
 // ****************************************************************************
-function sqlMessage($query,$params,$mode=rvsTriggerError)
+function sqlMessage($query,$params)
 {
-   $mess='[TPhpTools] '.RequestExecutionError.$query; echo '<br>';
-   trigger_error($mess);
-   if (!$params==null)
+   $mess='[TPhpTools] '.RequestExecutionError.$query;
+   if ($params!==null)
    {
-      //$mess=RequestExecutionError.$query.WithParameters; //.string($params);
-      echo 
-         "<span style=\"color:#993300; font-weight:bold; ".
-         "font-family:'Anonymous Pro', monospace; font-size:0.9em\">";
       echo WithParameters;
-      print_r($params);
-      echo "</span><br>";
+      $parm='<br>          '.WithParameters.'[';
+      foreach ($params as $name => $value) 
+      {
+         $parm=$parm.' '.$name.'=>'.$value;
+      }
+      $parm=$parm.' ]';
+      $mess=$mess.$parm;
    }
+   trigger_error($mess);
 }
 // ****************************************************************************
 // *      TBaseMaker: Обеспечить ведение баз данных SQlite3 PDO: создание     *
