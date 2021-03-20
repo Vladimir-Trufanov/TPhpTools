@@ -381,3 +381,6 @@ Stack trace:
 [17-Mar-2021 16:38:47 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/T_CreateBaseTest.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\TestsDiv.php on line 20
 [17-Mar-2021 16:39:44 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/T_CreateBaseTest.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\TestsDiv.php on line 20
 [17-Mar-2021 18:40:14 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '!', expecting '(' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_PragmaTest.php on line 103
+[20-Mar-2021 08:07:32 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ']' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 64
+[20-Mar-2021 08:18:29 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ')' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 76
+[20-Mar-2021 08:39:12 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 62

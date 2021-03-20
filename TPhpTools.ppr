@@ -30,8 +30,8 @@ TPhpTools
 				Favicon\favicon_package_v0.16\safari-pinned-tab.svg
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
-		+TPhpTools
-			+TBaseMaker
+		-TPhpTools
+			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDirClass.php
@@ -61,7 +61,6 @@ TPhpTools
 			TPhpToolsTests\TDownloadFromServer__test.php
 			TPhpToolsTests\TFixLoadTimer__test.php
 			TPhpToolsTests\TPageStarter__test.php
-			TPhpToolsTests\TToolsCommon.php
 			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_proba.php
 		-www
@@ -267,7 +266,9 @@ TPhpTools
 4=www\TestsDiv.php
 5=TPhpToolsTests\TBaseMaker__test.php
 6=TPhpTools\TBaseMaker\BaseMakerClass.php
-7=TPhpToolsTests\TBaseMaker_ValueRow.php
+7=TPhpToolsTests\TBaseMaker_UpdateInsert.php
+8=TPhpToolsTests\TBaseMaker_Query.php
+9=TPhpToolsTests\TBaseMaker_ValueRow.php
 [Selected Project Files]
 Main=
 Selected=TPhpToolsTests\TBaseMaker__test.php
@@ -287,11 +288,17 @@ Caret=1,1
 TopLine=25
 Caret=86,33
 [TPhpToolsTests\TBaseMaker__test.php]
-TopLine=47
-Caret=1,63
+TopLine=45
+Caret=1,52
 [TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=271
-Caret=12,291
+TopLine=216
+Caret=1,227
+[TPhpToolsTests\TBaseMaker_UpdateInsert.php]
+TopLine=61
+Caret=63,85
+[TPhpToolsTests\TBaseMaker_Query.php]
+TopLine=45
+Caret=1,60
 [TPhpToolsTests\TBaseMaker_ValueRow.php]
-TopLine=243
-Caret=1,263
+TopLine=161
+Caret=2,1

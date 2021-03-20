@@ -80,17 +80,17 @@ class BaseMaker
    // *************************************************************************
    // *   Выполнить запрос для выборки значений в виде массива одной записи   *
    // *************************************************************************
-   public function queryRow($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC,$classname=null) 
+   public function queryRow($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC) 
    {
-      $rows=$this->queryRowOrRows(true,$query,$params,$fetchStyle,$classname);
+      $rows=$this->queryRowOrRows(true,$query,$params,$fetchStyle);
       return $rows;
    }
    // *************************************************************************
    // * Выполнить запрос для выборки значений в виде массива нескольких записей
    // *************************************************************************
-   public function queryRows($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC,$classname=null) 
+   public function queryRows($query,$params = null,$fetchStyle=\PDO::FETCH_ASSOC) 
    {
-      $rows=$this->queryRowOrRows(false,$query,$params,$fetchStyle,$classname);
+      $rows=$this->queryRowOrRows(false,$query,$params,$fetchStyle);
       return $rows;
    }
    // *************************************************************************
@@ -185,23 +185,20 @@ class BaseMaker
    // *             Подготовить и выполнить запрос к базе данных              *
    // *************************************************************************
    public function query($query,$params=null) 
+   // Выполняется обычный PDO-запрос, но набор данных всегда возвращается в
+   // виде массива требуемых записей в стиле PDO::FETCH_ASSOC
+   /*
+   $sign=array( 
+      0=>array('name'=>'голубика','colour'=>'голубые',  'calories'=>41,'vid'=>'ягоды'), 
+      1=>array('name'=>'брусника','colour'=>'красные',  'calories'=>41,'vid'=>'ягоды'), 
+      2=>array('name'=>'груши',   'colour'=>'жёлтые',   'calories'=>42,'vid'=>'фрукты'),
+      3=>array('name'=>'рябина',  'colour'=>'оранжевые','calories'=>81,'vid'=>'ягоды'),
+      4=>array('name'=>'виноград','colour'=>'зелёные',  'calories'=>70,'vid'=>'фрукты')
+   );
+   */
    {
-      /*
-      $result=null;
-      $stmt=$this->db->prepare($query);
-      $result=$stmt->execute($params);
-      if (!$result) {sqlMessage($query,$params);}
-      */
-      try
-      {
-      $result=null;
-      $stmt=$this->db->prepare($query);
-      $result=$stmt->execute($params);
-      }
-      catch (PDOException $e) 
-      {
-      echo('Привет!');
-      }
+      $fetchStyle=\PDO::FETCH_ASSOC;
+      $result=$this->queryRowOrRows(false,$query,$params,$fetchStyle);
       return $result;
    }
    // *************************************************************************
@@ -226,66 +223,25 @@ class BaseMaker
       $result=$this->db->query($sql);
       return $result;
    }
-   // *************************************************************************
-   // *                        Обновить запись: $db->update                   *
-   // *  ('users',array('name'=>'UpName'),'id=:id',array(':id'=>$newUserId)); *
-   // *************************************************************************
-   public function update($table, $fields, $where, $params = null) 
-   {
-      // filemtime('spoon'); // генерируем отладочное исключение
-      $sql = 'UPDATE ' . $table . ' SET ';
-      $first = true;
-      foreach (array_keys($fields) as $name) 
-      {
-         if (!$first) 
-         {
-            $first = false;
-            $sql .= ', ';
-         }
-         $first = false;
-         $sql .= $name . ' = :_' . $name;
-      }
-      if (!is_array($params)) 
-      {
-         $params = array();
-      }
-      $sql .= ' WHERE ' . $where;
-      $result=$this->db->query($sql);
-      
-      /*
-      $rs = $this->db->prepare($sql);
-      foreach ($fields as $name => $val) 
-      {
-         $params[':_' . $name] = $val;
-      }
-      $result = $rs->execute($params);
-      */
-      return $result;
-  }
    // ----------------------------------------------- приватные функции класса
-
    // *************************************************************************
    // *      Выполнить запрос и сформировать набор данных в виде массива      *
    // *     одной или нескольких записей в стиле PDO::FETCH_ASSOC, то есть    *
    // *        индексированный именами столбцов результирующего набора        *
    // *************************************************************************
-   private function queryRowOrRows($singleRow,$query,$params,$fetchStyle,$classname)
+   private function queryRowOrRows($singleRow,$query,$params,$fetchStyle)
    {
       $result = null;
       $stmt = $this->db->prepare($query);
-      // 18.01.2021 До лучших времен исключаем метод выборки набора данных
-      // по классу(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE), генерируя пользовательское сообщение !!!
-      //if($classname) 
-      //{
-      //   $stmt->setFetchMode($fetchStyle, $classname);
-      //} 
-      //else 
-      //{
-         $stmt->setFetchMode($fetchStyle);
-      //}
+      $stmt->setFetchMode($fetchStyle);
       if ($stmt->execute($params)) 
       {
+         // Возвращаем либо только одну строку результирующего набора,
+         // либо весь набор
          $result = $singleRow? $stmt->fetch(): $stmt->fetchAll();
+         // Освобождаем соединение с сервером, давая возможность запускать 
+         // другие SQL-запросы, но текущий запрос оставляем в состоянии 
+         // готовности к повторному запуску
          $stmt->closeCursor();
       }
       else sqlMessage($query,$params);
