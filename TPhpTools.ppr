@@ -5,6 +5,7 @@ Compilator.CompileOnBackground=0
 Compilator.ProgSaveAll=0
 Compilator.ProgRunSelection=0
 Compilator.LogType=0
+Compilator.LogEncoding=0
 DefaultDir=C:\TPhpTools
 DefaultCP=0
 LogtoEnd=1
@@ -30,7 +31,7 @@ TPhpTools
 				Favicon\favicon_package_v0.16\safari-pinned-tab.svg
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
-		-TPhpTools
+		+TPhpTools
 			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
@@ -45,7 +46,7 @@ TPhpTools
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			-TUploadToServer
+			+TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 			TPhpTools\iniConstMem.php
 			TPhpTools\iniErrMessage.php
@@ -62,8 +63,9 @@ TPhpTools
 			TPhpToolsTests\TFixLoadTimer__test.php
 			TPhpToolsTests\TPageStarter__test.php
 			TPhpToolsTests\TUploadToServer__test.php
+			TPhpToolsTests\TUploadToServer_Construct.php
 			TPhpToolsTests\TUploadToServer_proba.php
-		-www
+		+www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -263,42 +265,38 @@ TPhpTools
 1=www\index.php
 2=www\iniMem.php
 3=www\UpSite.php
-4=www\TestsDiv.php
-5=TPhpToolsTests\TBaseMaker__test.php
-6=TPhpTools\TBaseMaker\BaseMakerClass.php
-7=TPhpToolsTests\TBaseMaker_UpdateInsert.php
-8=TPhpToolsTests\TBaseMaker_Query.php
-9=TPhpToolsTests\TBaseMaker_ValueRow.php
+4=TPhpToolsTests\TUploadToServer_proba.php
+5=TPhpToolsTests\TUploadToServer__test.php
+6=TPhpToolsTests\TUploadToServer_Construct.php
+7=www\TestsDiv.php
+8=TPhpTools\TUploadToServer\UploadToServerClass.php
 [Selected Project Files]
 Main=
-Selected=TPhpToolsTests\TBaseMaker__test.php
+Selected=TPhpToolsTests\TUploadToServer__test.php
 [www\Main.php]
-TopLine=41
-Caret=1,55
+TopLine=45
+Caret=1,53
 [www\index.php]
-TopLine=8
+TopLine=12
 Caret=1,12
 [www\iniMem.php]
-TopLine=9
+TopLine=1
 Caret=80,17
 [www\UpSite.php]
-TopLine=47
+TopLine=59
 Caret=1,1
+[TPhpToolsTests\TUploadToServer_proba.php]
+TopLine=13
+Caret=1,14
+[TPhpToolsTests\TUploadToServer__test.php]
+TopLine=21
+Caret=64,43
+[TPhpToolsTests\TUploadToServer_Construct.php]
+TopLine=5
+Caret=1,18
 [www\TestsDiv.php]
-TopLine=25
-Caret=86,33
-[TPhpToolsTests\TBaseMaker__test.php]
-TopLine=45
-Caret=1,52
-[TPhpTools\TBaseMaker\BaseMakerClass.php]
-TopLine=216
-Caret=1,227
-[TPhpToolsTests\TBaseMaker_UpdateInsert.php]
-TopLine=61
-Caret=63,85
-[TPhpToolsTests\TBaseMaker_Query.php]
-TopLine=45
-Caret=1,60
-[TPhpToolsTests\TBaseMaker_ValueRow.php]
-TopLine=161
-Caret=2,1
+TopLine=23
+Caret=50,36
+[TPhpTools\TUploadToServer\UploadToServerClass.php]
+TopLine=75
+Caret=24,71

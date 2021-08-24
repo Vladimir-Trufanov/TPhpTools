@@ -31,9 +31,22 @@ else
       require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_Query.php";
       require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_UpdateInsert.php";
    }
+   else if ($classTT=='UploadToServer')
+   {
+      // Создаем каталог для хранения изображений, если его нет.
+      // И отдельно (чтобы сработало на старых Windows) задаем права
+      $imgDir="Gallery";
+      if (!is_dir($imgDir))
+      {
+         mkdir($imgDir);      
+         chmod($imgDir,0777);
+      }
+      require_once $TPhpTools."/TPhpToolsTests/TUploadToServer_Construct.php";
+   }
    // Подключаем и вызываем тестовую оболочку
    require_once($SiteHost.'/TSimpleTest/autorun.php');
-   class test_TBaseMaker extends UnitTestCase
+   // class test_TBaseMaker extends UnitTestCase
+   class test_TTools extends UnitTestCase
    {
       function test_TPhpTools()
       {

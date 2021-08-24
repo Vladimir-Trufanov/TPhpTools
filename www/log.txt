@@ -384,3 +384,8 @@ Stack trace:
 [20-Mar-2021 08:07:32 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ']' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 64
 [20-Mar-2021 08:18:29 Asia/Kuwait] PHP Parse error:  syntax error, unexpected ';', expecting ')' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 76
 [20-Mar-2021 08:39:12 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW), expecting ']' in C:\TPhpTools\TPhpToolsTests\TBaseMaker_UpdateInsert.php on line 62
+[24-Aug-2021 16:47:08 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 54
+[24-Aug-2021 16:47:38 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '!', expecting '(' in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 52
+[24-Aug-2021 16:48:03 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'public' (T_PUBLIC) in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 68
+[24-Aug-2021 17:29:39 Asia/Kuwait] E_NOTICE: Undefined offset: 0 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 26
+[24-Aug-2021 17:32:22 Asia/Kuwait] E_NOTICE: Undefined index: file1 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 26

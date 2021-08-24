@@ -49,14 +49,41 @@ class UploadToServer
 
    public function __construct($path) 
    {
-	   if (!is_dir($path) || !is_writable($path)) 
+      //echo getcwd() . "\n";
+ 	   if (!is_dir($path))
       {
-         throw new Exception("$path must be a valid, writable directory.");
+         echo 'Ошибка !is_dir ='.$path;
+      }
+      else
+      {
+         echo 'Ошибки нет! = '.$path;
+      }
+      
+ 	   if (!is_writable($path)) 
+      {
+         echo 'Не для записи ='.$path;
+      }
+      else
+      {
+         echo 'Запись разрешена!';
       }
 	   $this->_destination = $path;
 	   $this->_uploaded = $_FILES;
-   }
-   
+      echo '<br>Размерность массива '.count($this->_uploaded).'<br>';
+      
+      
+      
+   /*
+ 	   if (!is_dir($path) || !is_writable($path)) 
+      {
+         echo 'Ошибка!';
+         //throw new Exception("$path must be a valid, writable directory.");
+      }
+	   $this->_destination = $path;
+	   $this->_uploaded = $_FILES;
+   */
+  }
+    
    // Переместить временный файл в заданный каталог
    public function move($overwrite = false) 
    {
