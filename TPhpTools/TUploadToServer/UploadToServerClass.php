@@ -35,8 +35,7 @@ define ("fltAll",          3); // записываются в консоль, о
 
 // Подключаем модули библиотек прикладных функций и классов
 require_once $TPhpTools."/iniErrMessage.php";
-//require_once $TPhpTools."/MakeUserError.php";
-//require_once $TPhpPrown."/MakeUserError.php";
+require_once $TPhpPrown."/MakeUserError.php";
 
 class UploadToServer
 {
@@ -55,8 +54,11 @@ class UploadToServer
    public function __construct($path) 
    {
       //echo getcwd() . "\n";
-      echoo();
-      //prown\MakeUserError('Пробное сообщение','TPhpTools');
+      //echoo();
+      //\prown\echooi(); 
+      echo '***<br>'; 
+      \prown\MakeUserError('Пробное сообщение','TPhpTools',rvsCurrentPos);
+      echo '<br>***<br>'; 
 
  	   if (!is_dir($path))
       {
