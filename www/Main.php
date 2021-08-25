@@ -10,10 +10,18 @@
 //                                                   Дата создания:  13.01.2019
 // Copyright © 2019 tve                              Посл.изменение: 28.12.2020
 
-// Подключаем файлы библиотеки прикладных модулей:
-$TPhpPrown=$SiteHost.'/TPhpPrown';
-require_once $TPhpPrown."/TPhpPrown/MakeCookie.php";
-require_once $TPhpPrown."/TPhpPrown/MakeSession.php";
+// Подключаем файлы библиотеки прикладных модулей 
+$TPhpPrown=$SiteHost.'/TPhpPrown/TPhpPrown';
+require_once $TPhpPrown."/MakeCookie.php";
+require_once $TPhpPrown."/MakeSession.php";
+// Подключаем модуль обеспечения тестов
+$TPhpPrownTests=$SiteHost.'/TPhpPrown/TPhpPrownTests';
+require_once $TPhpPrownTests."/FunctionsBlock.php";
+// Подключаем файлы библиотеки прикладных классов:
+$TPhpTools=$SiteHost.'/TPhpTools/TPhpTools';
+require_once $TPhpTools."/TDownloadFromServer/DownloadFromServerClass.php";
+require_once $TPhpTools."/TUploadToServer/UploadToServerClass.php";
+require_once $TPhpTools."/TBaseMaker/BaseMakerClass.php";
 
 session_start();
 
@@ -37,15 +45,6 @@ $c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
 // Изменяем счетчик посещений за сессию                 
 $s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);   
 
-// Подключаем модуль обеспечения тестов
-require_once $TPhpPrown."/TPhpPrownTests/FunctionsBlock.php";
-
-// Подключаем файлы библиотеки прикладных классов:
-$TPhpTools=$SiteHost.'/TPhpTools';
-require_once $TPhpTools."/TPhpTools/iniErrMessage.php";
-require_once $TPhpTools."/TPhpTools/TDownloadFromServer/DownloadFromServerClass.php";
-require_once $TPhpTools."/TPhpTools/TUploadToServer/UploadToServerClass.php";
-require_once $TPhpTools."/TPhpTools/TBaseMaker/BaseMakerClass.php";
 
 // Выполняем начальную инициализацию
 require_once "Common.php";     // Всегда 1-ый корневой модуль в списке

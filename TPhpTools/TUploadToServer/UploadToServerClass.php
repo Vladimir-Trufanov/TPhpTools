@@ -3,9 +3,9 @@
 // PHP7/HTML5, EDGE/CHROME                      *** UploadToServerClass.php ***
 
 // ****************************************************************************
-// * TPhpTools                                     Загрузчик файлов на сервер *
+// * TPhpTools             Загрузчик файлов на сервер из временного хранилища *
 // *                                                                          *
-// * v1.0, 04.12.2020                              Автор:       Труфанов В.Е. *
+// * v2.0, 25.08.2021                              Автор:       Труфанов В.Е. *
 // * Copyright © 2020 tve                          Дата создания:  03.12.2020 *
 // ****************************************************************************
 
@@ -33,6 +33,11 @@ define ("fltWriteConsole", 1); // записываются в консоль
 define ("fltSendCookies",  2); // отправляются в кукисы
 define ("fltAll",          3); // записываются в консоль, отправляются в кукисы  
 
+// Подключаем модули библиотек прикладных функций и классов
+require_once $TPhpTools."/iniErrMessage.php";
+//require_once $TPhpTools."/MakeUserError.php";
+//require_once $TPhpPrown."/MakeUserError.php";
+
 class UploadToServer
 {
 
@@ -50,6 +55,9 @@ class UploadToServer
    public function __construct($path) 
    {
       //echo getcwd() . "\n";
+      echoo();
+      //prown\MakeUserError('Пробное сообщение','TPhpTools');
+
  	   if (!is_dir($path))
       {
          echo 'Ошибка !is_dir ='.$path;
@@ -128,6 +136,35 @@ class UploadToServer
    }
    // Сформировать сообщение по коду ошибки
    protected function checkError($filename, $error) 
+   /* 
+   * https://www.php.net/manual/ru/features.file-upload.errors.php
+   * PHP возвращает код ошибки наряду с другими атрибутами принятого файла. 
+   * Он расположен в массиве, создаваемом PHP при загрузке файла, и может быть
+   * получен при обращении по ключу error. Другими словами, код ошибки можно 
+   * найти в $_FILES['userfile']['error'].
+   * 
+   * UPLOAD_ERR_OK
+   * Значение: 0; Ошибок не возникло, файл был успешно загружен на сервер.
+   * UPLOAD_ERR_INI_SIZE
+   * Значение: 1; Размер принятого файла превысил максимально допустимый размер,
+   * который задан директивой upload_max_filesize конфигурационного файла 
+   * php.ini.
+   * UPLOAD_ERR_FORM_SIZE
+   * Значение: 2; Размер загружаемого файла превысил значение MAX_FILE_SIZE,
+   * указанное в HTML-форме.
+   * UPLOAD_ERR_PARTIAL
+   * Значение: 3; Загружаемый файл был получен только частично.
+   * UPLOAD_ERR_NO_FILE
+   * Значение: 4; Файл не был загружен.
+   * UPLOAD_ERR_NO_TMP_DIR
+   * Значение: 6; Отсутствует временная папка.
+   * UPLOAD_ERR_CANT_WRITE
+   * Значение: 7; Не удалось записать файл на диск.
+   * UPLOAD_ERR_EXTENSION
+   * Значение: 8; Модуль PHP остановил загрузку файла. PHP не предоставляет 
+   * способа определить, какой модуль остановил загрузку файла; в этом может 
+   * помочь просмотр списка загруженных модулей спомощью phpinfo().
+   */
    {
       switch ($error) 
       {

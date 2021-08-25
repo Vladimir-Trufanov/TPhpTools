@@ -8,8 +8,11 @@
 
 //                                                   Автор:       Труфанов В.Е.
 //                                                   Дата создания:  13.01.2019
-// Copyright © 2019 tve                              Посл.изменение: 17.03.2021
+// Copyright © 2019 tve                              Посл.изменение: 25.08.2021
 
+// Определяем каталог тестов библиотеки прикладных классов
+$TPhpToolsTests=$SiteHost.'/TPhpTools/TPhpToolsTests';
+// Строим разметку для проведения тестов
 echo '<div class="container">';
 // Принимаем команду на запуск тестов
 $classTT=prown\getComRequest('test');
@@ -20,28 +23,20 @@ if ($classTT===NULL)
 }
 else 
 {
-   require_once $TPhpTools."/TPhpToolsTests/T_ToolsTestCommon.php";
+   require_once $TPhpToolsTests."/T_ToolsTestCommon.php";
    // Определяем главный модуль тестирования класса и подключаем вспомогательные
-   define ("ScenName",$TPhpTools."/TPhpToolsTests/T".$classTT."__test.php");
+   define ("ScenName",$TPhpToolsTests."/T".$classTT."__test.php");
    if ($classTT=='BaseMaker')
    {
-      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_CreateBaseTest.php";
-      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_PragmaTest.php";
-      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_ValueRow.php";
-      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_Query.php";
-      require_once $TPhpTools."/TPhpToolsTests/TBaseMaker_UpdateInsert.php";
+      require_once $TPhpToolsTests."/TBaseMaker_CreateBaseTest.php";
+      require_once $TPhpToolsTests."/TBaseMaker_PragmaTest.php";
+      require_once $TPhpToolsTests."/TBaseMaker_ValueRow.php";
+      require_once $TPhpToolsTests."/TBaseMaker_Query.php";
+      require_once $TPhpToolsTests."/TBaseMaker_UpdateInsert.php";
    }
    else if ($classTT=='UploadToServer')
    {
-      // Создаем каталог для хранения изображений, если его нет.
-      // И отдельно (чтобы сработало на старых Windows) задаем права
-      $imgDir="Gallery";
-      if (!is_dir($imgDir))
-      {
-         mkdir($imgDir);      
-         chmod($imgDir,0777);
-      }
-      require_once $TPhpTools."/TPhpToolsTests/TUploadToServer_Construct.php";
+      require_once $TPhpToolsTests."/TUploadToServer_Construct.php";
    }
    // Подключаем и вызываем тестовую оболочку
    require_once($SiteHost.'/TSimpleTest/autorun.php');

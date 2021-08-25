@@ -11,25 +11,69 @@
 // ****************************************************************************
 
 // echo 'Тестируется TUploadToServer_test.php'.'<br>';
-
 MakeTitle("TUploadToServer",'');
 
-$CurrDir='c:\TPhpTools\www';
-//chdir($CurrDir);
-// Указываем каталог для хранения изображений
-$imgDir=$CurrDir.'/'."Gallery";
-$destination = $imgDir.'/';
-$upload = new ttools\UploadToServer($destination);
-
-if (count($_FILES)>0)
+// На первом этапе готовим загрузку файла
+if (!(count($_FILES)>0))
 {
-   echo $_FILES['image']['name'];
-   //print_r($_FILES);
+   $max = 157200;
+   ?>
+   <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
+   <p>
+   <label for="image">Выберите изображение:</label>
+   <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
+   <input type="file" name="image" id="image">
+   </p>
+   <p>
+   <input type="submit" name="upload" id="upload" value="Загрузите">
+   </p>
+   </form>
+   <?php
+}
+// На втором этапе проводим тестирование
+else
+{
+   // Выводим доступные параметры загруженного файла
+   // print_r($_FILES);
+   echo 'Загруженный файл:   '.$_FILES['image']['name'].    '<br>';
+   echo 'Тип файла:          '.$_FILES['image']['type'].    '<br>';
+   if (isset($_FILES['image']['tmp_name']))
+   echo 'Временный файл:     '.$_FILES['image']['tmp_name'].'<br>';
+   echo 'Состояние загрузки: '.$_FILES['image']['error'].   '<br>';
+   echo 'Размер в байтах:    '.$_FILES['image']['size'].    '<br>';
+   // Настраиваем текущий каталог
+   $CurrDir=$_SERVER['DOCUMENT_ROOT'];  //'c:\TPhpTools\www';
+   chdir($CurrDir);
+   // Создаем каталог для хранения изображений, если его нет.
+   // И отдельно (чтобы сработало на старых Windows) задаем права
+   $imgDir="Gallery";
+   if (!is_dir($imgDir))
+   {
+      mkdir($imgDir);      
+      chmod($imgDir,0777);
+   }
+   // Создаем объект для переброски файла на сервер
+   $upload = new ttools\UploadToServer($_SERVER['DOCUMENT_ROOT'].'/'.$imgDir.'/');
 }
 
 
 
 
+
+
+
+
+
+/*
+// Указываем каталог для хранения изображений
+$imgDir=$CurrDir.'/'."Gallery";
+$destination = $imgDir.'/';
+$upload = new ttools\UploadToServer($destination);
+
+*/
+
+
+/*
 $max = 57200;
 
 ?>
@@ -44,7 +88,7 @@ $max = 57200;
 </p>
 </form>
 <?php
-
+*/
 
 
 

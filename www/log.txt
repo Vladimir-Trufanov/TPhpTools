@@ -389,3 +389,95 @@ Stack trace:
 [24-Aug-2021 16:48:03 Asia/Kuwait] PHP Parse error:  syntax error, unexpected 'public' (T_PUBLIC) in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 68
 [24-Aug-2021 17:29:39 Asia/Kuwait] E_NOTICE: Undefined offset: 0 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 26
 [24-Aug-2021 17:32:22 Asia/Kuwait] E_NOTICE: Undefined index: file1 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 26
+[25-Aug-2021 17:07:57 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function echoo() in C:\TPhpTools\www\TestsDiv.php:38
+Stack trace:
+#0 C:\TPhpTools\www\UpSite.php(82): require_once()
+#1 C:\TPhpTools\www\Main.php(53): require_once('C:\\TPhpTools\\ww...')
+#2 C:\TPhpTools\www\index.php(33): require_once('C:\\TPhpTools\\ww...')
+#3 {main}
+  thrown in C:\TPhpTools\www\TestsDiv.php on line 38
+[25-Aug-2021 17:10:44 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function echoo() in C:\TPhpTools\www\Main.php:50
+Stack trace:
+#0 C:\TPhpTools\www\index.php(33): require_once()
+#1 {main}
+  thrown in C:\TPhpTools\www\Main.php on line 50
+[25-Aug-2021 17:10:50 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function echoo() in C:\TPhpTools\www\Main.php:50
+Stack trace:
+#0 C:\TPhpTools\www\index.php(33): require_once()
+#1 {main}
+  thrown in C:\TPhpTools\www\Main.php on line 50
+[25-Aug-2021 17:15:09 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\ttools\echoo() in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php:53
+Stack trace:
+#0 C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php(56): ttools\UploadToServer->__construct('C:\\TPhpTools\\ww...')
+#1 C:\TPhpTools\www\TestsDiv.php(46): require_once('C:\\TPhpTools\\TP...')
+#2 C:\TSimpleTest\invoker.php(68): test_TTools->test_TPhpTools()
+#3 C:\TSimpleTest\invoker.php(126): SimpleInvoker->invoke('test_TPhpTools')
+#4 C:\TSimpleTest\exceptions.php(43): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#5 C:\TSimpleTest\invoker.php(126): SimpleExceptionTrappingInvoker->invoke('test_TPhpTools')
+#6 C:\TSimpleTest\errors.php(42): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#7 C:\TSimpleTest\test_case.php(144): SimpleErrorTrappingInvoker->invoke('test_TPhpTools')
+#8 C:\TSimpleTest\test_case.php(559): SimpleTestCase->run(Object(DefaultReporter))
+#9 C:\TSimpleTest\autorun.php(52): TestSuite->run(Object(DefaultReporter))
+#10 C:\TSimpleTest\autorun.p in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 53
+[25-Aug-2021 17:20:29 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\ttools\echoo() in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php:57
+Stack trace:
+#0 C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php(56): ttools\UploadToServer->__construct('C:\\TPhpTools\\ww...')
+#1 C:\TPhpTools\www\TestsDiv.php(46): require_once('C:\\TPhpTools\\TP...')
+#2 C:\TSimpleTest\invoker.php(68): test_TTools->test_TPhpTools()
+#3 C:\TSimpleTest\invoker.php(126): SimpleInvoker->invoke('test_TPhpTools')
+#4 C:\TSimpleTest\exceptions.php(43): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#5 C:\TSimpleTest\invoker.php(126): SimpleExceptionTrappingInvoker->invoke('test_TPhpTools')
+#6 C:\TSimpleTest\errors.php(42): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#7 C:\TSimpleTest\test_case.php(144): SimpleErrorTrappingInvoker->invoke('test_TPhpTools')
+#8 C:\TSimpleTest\test_case.php(559): SimpleTestCase->run(Object(DefaultReporter))
+#9 C:\TSimpleTest\autorun.php(52): TestSuite->run(Object(DefaultReporter))
+#10 C:\TSimpleTest\autorun.p in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 57
+[25-Aug-2021 17:25:35 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'iniErrMessage.php' (include_path='.;C:\php\pear') in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 37
+[25-Aug-2021 17:25:49 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'iniErrMessage.php' (include_path='.;C:\php\pear') in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 37
+[25-Aug-2021 17:26:23 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required '../iniErrMessage.php' (include_path='.;C:\php\pear') in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 37
+[25-Aug-2021 17:41:19 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpPrown/TPhpPrown/TPhpPrownTests/FunctionsBlock.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\Main.php on line 18
+[25-Aug-2021 17:43:44 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/TPhpToolsTests/T_ToolsTestCommon.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\TestsDiv.php on line 23
+[25-Aug-2021 17:52:08 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpToolsTests/TPhpToolsTests/TUploadToServer_Construct.php' (include_path='.;C:\php\pear') in C:\TPhpTools\www\TestsDiv.php on line 39
+[25-Aug-2021 18:03:00 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\MakeUserError() in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php:56
+Stack trace:
+#0 C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php(56): ttools\UploadToServer->__construct('C:\\TPhpTools\\ww...')
+#1 C:\TPhpTools\www\TestsDiv.php(49): require_once('C:\\TPhpTools\\TP...')
+#2 C:\TSimpleTest\invoker.php(68): test_TTools->test_TPhpTools()
+#3 C:\TSimpleTest\invoker.php(126): SimpleInvoker->invoke('test_TPhpTools')
+#4 C:\TSimpleTest\exceptions.php(43): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#5 C:\TSimpleTest\invoker.php(126): SimpleExceptionTrappingInvoker->invoke('test_TPhpTools')
+#6 C:\TSimpleTest\errors.php(42): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#7 C:\TSimpleTest\test_case.php(144): SimpleErrorTrappingInvoker->invoke('test_TPhpTools')
+#8 C:\TSimpleTest\test_case.php(559): SimpleTestCase->run(Object(DefaultReporter))
+#9 C:\TSimpleTest\autorun.php(52): TestSuite->run(Object(DefaultReporter))
+#10 C:\TSimpleTest\autorun. in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 56
+[25-Aug-2021 18:05:33 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\MakeUserError() in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php:58
+Stack trace:
+#0 C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php(56): ttools\UploadToServer->__construct('C:\\TPhpTools\\ww...')
+#1 C:\TPhpTools\www\TestsDiv.php(49): require_once('C:\\TPhpTools\\TP...')
+#2 C:\TSimpleTest\invoker.php(68): test_TTools->test_TPhpTools()
+#3 C:\TSimpleTest\invoker.php(126): SimpleInvoker->invoke('test_TPhpTools')
+#4 C:\TSimpleTest\exceptions.php(43): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#5 C:\TSimpleTest\invoker.php(126): SimpleExceptionTrappingInvoker->invoke('test_TPhpTools')
+#6 C:\TSimpleTest\errors.php(42): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#7 C:\TSimpleTest\test_case.php(144): SimpleErrorTrappingInvoker->invoke('test_TPhpTools')
+#8 C:\TSimpleTest\test_case.php(559): SimpleTestCase->run(Object(DefaultReporter))
+#9 C:\TSimpleTest\autorun.php(52): TestSuite->run(Object(DefaultReporter))
+#10 C:\TSimpleTest\autorun. in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 58
+[25-Aug-2021 18:06:37 Asia/Kuwait] PHP Fatal error:  Uncaught Error: Call to undefined function ttools\prown\MakeUserError() in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php:58
+Stack trace:
+#0 C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php(56): ttools\UploadToServer->__construct('C:\\TPhpTools\\ww...')
+#1 C:\TPhpTools\www\TestsDiv.php(49): require_once('C:\\TPhpTools\\TP...')
+#2 C:\TSimpleTest\invoker.php(68): test_TTools->test_TPhpTools()
+#3 C:\TSimpleTest\invoker.php(126): SimpleInvoker->invoke('test_TPhpTools')
+#4 C:\TSimpleTest\exceptions.php(43): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#5 C:\TSimpleTest\invoker.php(126): SimpleExceptionTrappingInvoker->invoke('test_TPhpTools')
+#6 C:\TSimpleTest\errors.php(42): SimpleInvokerDecorator->invoke('test_TPhpTools')
+#7 C:\TSimpleTest\test_case.php(144): SimpleErrorTrappingInvoker->invoke('test_TPhpTools')
+#8 C:\TSimpleTest\test_case.php(559): SimpleTestCase->run(Object(DefaultReporter))
+#9 C:\TSimpleTest\autorun.php(52): TestSuite->run(Object(DefaultReporter))
+#10 C:\TSimpleTest\au in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 58
+[25-Aug-2021 18:10:31 Asia/Kuwait] PHP Fatal error:  require_once(): Failed opening required 'C:/TPhpTools/TPhpTools/MakeUserError.php' (include_path='.;C:\php\pear') in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 38
+[25-Aug-2021 18:11:06 Asia/Kuwait] PHP Fatal error:  Cannot redeclare prown\MakeMode2() (previously declared in C:\TPhpPrown\TPhpPrown\MakeUserError.php:85) in C:\TPhpTools\TPhpTools\MakeUserError.php on line 104
+[25-Aug-2021 18:11:25 Asia/Kuwait] PHP Fatal error:  Cannot redeclare prown\MakeMode2() (previously declared in C:\TPhpPrown\TPhpPrown\MakeUserError.php:85) in C:\TPhpTools\TPhpTools\MakeUserError.php on line 104
+[25-Aug-2021 18:12:41 Asia/Kuwait] PHP Fatal error:  Cannot redeclare prown\MakeMode2() (previously declared in C:\TPhpPrown\TPhpPrown\MakeUserError.php:85) in C:\TPhpTools\TPhpTools\MakeUserError.php on line 104
