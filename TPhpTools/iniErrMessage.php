@@ -22,6 +22,10 @@ function echoo()
 define ("RequestExecutionError", "Ошибка исполнения запроса: ");
 define ("WithParameters",        "с параметрами: ");
 
+// UploadToServerClass:      Загрузчик файлов на сервер из временного хранилища
+//define ("RequestExecutionError", "Ошибка исполнения запроса: ");
+//define ("WithParameters",        "с параметрами: ");
+
 /*
 // MakeCookie:       Установить новое значение COOKIE в браузере, заменить этим 
 //              значением соответствующее данное во внутреннем массиве $_COOKIE

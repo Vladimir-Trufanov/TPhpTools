@@ -514,3 +514,4 @@ Stack trace:
 [25-Aug-2021 21:21:21 Asia/Kuwait] E_NOTICE: Undefined variable: TPhpPrown in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 59
 [25-Aug-2021 21:26:15 Asia/Kuwait] E_USER_ERROR: [TPhpTools] Пробное сообщение in C:\TPhpPrown\TPhpPrown\MakeUserError.php on line 136
 [25-Aug-2021 21:35:26 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '\' (T_NS_SEPARATOR), expecting ',' or ';' in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 60
+[27-Aug-2021 22:17:43 Asia/Kuwait] E_NOTICE: Use of undefined constant Ok - assumed 'Ok' in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 99

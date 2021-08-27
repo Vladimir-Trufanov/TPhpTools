@@ -56,9 +56,6 @@ class UploadToServer
       //echo getcwd() . "\n";
       //echoo();
       //\prown\echooi(); 
-      echo '***<br>'; 
-      \prown\MakeUserError('Пробное сообщение','TPhpTools',rvsCurrentPos);
-      echo '<br>***<br>'; 
 
  	   if (!is_dir($path))
       {
@@ -93,10 +90,19 @@ class UploadToServer
 	   $this->_uploaded = $_FILES;
    */
   }
-    
+   public function ech() 
+   {
+      echo 'Привет из Upload';
+      return Ok;
+   }
+   
    // Переместить временный файл в заданный каталог
    public function move($overwrite = false) 
    {
+      //echo '***<br>'; 
+      $Result=\prown\MakeUserError('Пробное сообщение','TPhpTools',rvsReturn);
+      //echo '<br>***<br>'; 
+      /*
       // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
       // массив для простого доступа к параметрам этого файла
 	   $field = current($this->_uploaded);
@@ -124,6 +130,8 @@ class UploadToServer
             }
          }
       }
+      */
+      return $Result;
    }
    
    // Вывести массив сообщений о загрузке файла

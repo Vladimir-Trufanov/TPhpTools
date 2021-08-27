@@ -32,7 +32,7 @@ TPhpTools
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
 		+TPhpTools
-			-TBaseMaker
+			+TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDirClass.php
@@ -46,11 +46,11 @@ TPhpTools
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			+TUploadToServer
+			-TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
-			TPhpTools\iniConstMem.php
+			TPhpTools\iniConstMemi.php
 			TPhpTools\iniErrMessage.php
-		+TPhpToolsTests
+		-TPhpToolsTests
 			TPhpToolsTests\T_ToolsTestCommon.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
@@ -64,8 +64,7 @@ TPhpTools
 			TPhpToolsTests\TPageStarter__test.php
 			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_Construct.php
-			TPhpToolsTests\TUploadToServer_proba.php
-		+www
+		-www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -265,19 +264,18 @@ TPhpTools
 1=www\index.php
 2=www\iniMem.php
 3=www\UpSite.php
-4=TPhpToolsTests\TUploadToServer_proba.php
-5=TPhpToolsTests\TUploadToServer__test.php
-6=TPhpToolsTests\TUploadToServer_Construct.php
-7=www\TestsDiv.php
-8=TPhpTools\TUploadToServer\UploadToServerClass.php
+4=TPhpToolsTests\TUploadToServer__test.php
+5=www\TestsDiv.php
+6=TPhpTools\TUploadToServer\UploadToServerClass.php
+7=TPhpTools\iniErrMessage.php
 [Selected Project Files]
 Main=
 Selected=TPhpTools\TUploadToServer\UploadToServerClass.php
 [www\Main.php]
-TopLine=31
-Caret=13,29
+TopLine=15
+Caret=88,41
 [www\index.php]
-TopLine=12
+TopLine=10
 Caret=4,33
 [www\iniMem.php]
 TopLine=1
@@ -285,18 +283,15 @@ Caret=80,17
 [www\UpSite.php]
 TopLine=71
 Caret=1,1
-[TPhpToolsTests\TUploadToServer_proba.php]
-TopLine=13
-Caret=1,14
 [TPhpToolsTests\TUploadToServer__test.php]
-TopLine=31
-Caret=1,15
-[TPhpToolsTests\TUploadToServer_Construct.php]
-TopLine=5
-Caret=1,18
+TopLine=35
+Caret=22,57
 [www\TestsDiv.php]
 TopLine=23
 Caret=41,28
 [TPhpTools\TUploadToServer\UploadToServerClass.php]
-TopLine=33
-Caret=75,60
+TopLine=99
+Caret=77,103
+[TPhpTools\iniErrMessage.php]
+TopLine=11
+Caret=3,27

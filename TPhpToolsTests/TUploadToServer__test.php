@@ -54,6 +54,7 @@ else
    }
    // Создаем объект для переброски файла на сервер
    $upload = new ttools\UploadToServer($_SERVER['DOCUMENT_ROOT'].'/'.$imgDir.'/');
+   echo $upload->move(); 
 }
 
 
