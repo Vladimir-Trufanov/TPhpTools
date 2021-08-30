@@ -46,11 +46,11 @@ TPhpTools
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			-TUploadToServer
+			+TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 			TPhpTools\iniConstMemi.php
 			TPhpTools\iniErrMessage.php
-		-TPhpToolsTests
+		+TPhpToolsTests
 			TPhpToolsTests\T_ToolsTestCommon.php
 			TPhpToolsTests\TBaseMaker__test.php
 			TPhpToolsTests\TBaseMaker_CreateBaseTest.php
@@ -64,7 +64,7 @@ TPhpTools
 			TPhpToolsTests\TPageStarter__test.php
 			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_Construct.php
-		-www
+		+www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -268,9 +268,10 @@ TPhpTools
 5=www\TestsDiv.php
 6=TPhpTools\TUploadToServer\UploadToServerClass.php
 7=TPhpTools\iniErrMessage.php
+8=TPhpToolsTests\TUploadToServer_Construct.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TUploadToServer\UploadToServerClass.php
+Selected=TPhpToolsTests\TUploadToServer_Construct.php
 [www\Main.php]
 TopLine=15
 Caret=88,41
@@ -284,14 +285,17 @@ Caret=80,17
 TopLine=71
 Caret=1,1
 [TPhpToolsTests\TUploadToServer__test.php]
-TopLine=35
-Caret=22,57
+TopLine=48
+Caret=63,75
 [www\TestsDiv.php]
-TopLine=23
-Caret=41,28
+TopLine=27
+Caret=1,43
 [TPhpTools\TUploadToServer\UploadToServerClass.php]
-TopLine=99
-Caret=77,103
+TopLine=57
+Caret=28,68
 [TPhpTools\iniErrMessage.php]
-TopLine=11
-Caret=3,27
+TopLine=3
+Caret=29,21
+[TPhpToolsTests\TUploadToServer_Construct.php]
+TopLine=13
+Caret=78,40

@@ -44,74 +44,48 @@ else
    // Настраиваем текущий каталог
    $CurrDir=$_SERVER['DOCUMENT_ROOT'];  //'c:\TPhpTools\www';
    chdir($CurrDir);
-   // Создаем каталог для хранения изображений, если его нет.
-   // И отдельно (чтобы сработало на старых Windows) задаем права
-   $imgDir="Gallery";
-   if (!is_dir($imgDir))
-   {
-      mkdir($imgDir);      
-      chmod($imgDir,0777);
-   }
-   // Создаем объект для переброски файла на сервер
-   $upload = new ttools\UploadToServer($_SERVER['DOCUMENT_ROOT'].'/'.$imgDir.'/');
-   echo $upload->move(); 
+   // 
+   $is=test_Construct($shellTest);
+   if ($is<>Ok) PointMessage('=== '.$is.' ===<br>');
 }
 
-
-
-
-
-
-
-
-
-/*
-// Указываем каталог для хранения изображений
-$imgDir=$CurrDir.'/'."Gallery";
-$destination = $imgDir.'/';
-$upload = new ttools\UploadToServer($destination);
-
-*/
-
-
-/*
-$max = 57200;
-
-?>
-<form action="" method="post" enctype="multipart/form-data" id="uploadImage">
-<p>
-<label for="image">Выберите изображение:</label>
-<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
-<input type="file" name="image" id="image">
-</p>
-<p>
-<input type="submit" name="upload" id="upload" value="Загрузите">
-</p>
-</form>
-<?php
-*/
-
-
-
-//filemtime('генерируем отладочное исключение'); 
-// Начинаем протоколировать тесты
-//SimpleMessage();
-
-
-/*
-
-PointMessage('Проверяется существование и удаляется старый файл базы данных:');  
-SimpleMessage(); PointMessage('--- '.'$filename');  
-OkMessage();
-      
-PointMessage('Проверяются настройки целостности по внешним ключам:'); 
-
-// Заново создаем базу данных и подключаем к ней TBaseMaker
-$db = new ttools\BaseMaker($pathBase,$username,$password);
-// Тестируем Values, Rows методы
-test_ValueRow($db,$shellTest);
-
-// PragmaBaseTest($pdo,$shellTest);
-OkMessage();
-*/
+// ****************************************************************************
+// *                   Пересоздать каталог и задать его режим                 *
+// ****************************************************************************
+function ReCreateDir($imgDir,$modeDir,$str)
+{
+   // Если каталог существует, то удаляем его
+   if (is_dir($imgDir))
+   {
+      if (!rmdir($imgDir))
+      {
+         return 'Ошибка удаления каталога в тесте '.$str;
+      }
+   }
+   // Создаем каталог
+   if (!mkdir($imgDir,$modeDir))
+   {
+      return 'Ошибка создания каталога в тесте '.$str;
+   }
+   // И отдельно (чтобы сработало на старых Windows) задаем права
+   else
+   {
+      if (!chmod($imgDir,$modeDir))
+      {
+         return 'Ошибка изменения прав каталога в тесте '.$str;
+      }
+      // Параметр режима состоит из четырех цифр:
+      //
+      // Первое число всегда равно нулю
+      // Второе число указывает разрешения для владельца
+      // Третье число указывает разрешения для группы пользователей владельца.
+      // Четвертое число указывает разрешения для всех остальных.
+      // Возможные значения (чтобы установить несколько разрешений, сложите следующие числа):
+      //
+      // 1 = выполнение
+      // 2 = права на запись
+      // 4 = разрешения на чтение
+      return Ok;
+   }
+}
 // *********************************************** TUploadToServer_test.php ***

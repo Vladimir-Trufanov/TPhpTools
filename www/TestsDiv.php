@@ -40,7 +40,6 @@ else
    }
    // Подключаем и вызываем тестовую оболочку
    require_once($SiteHost.'/TSimpleTest/autorun.php');
-   // class test_TBaseMaker extends UnitTestCase
    class test_TTools extends UnitTestCase
    {
       function test_TPhpTools()

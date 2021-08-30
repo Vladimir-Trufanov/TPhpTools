@@ -35,72 +35,47 @@ define ("fltAll",          3); // записываются в консоль, о
 
 // Подключаем модули библиотек прикладных функций и классов
 require_once $TPhpTools."/iniErrMessage.php";
+require_once $TPhpPrown."/iniConstMem.php";
 require_once $TPhpPrown."/MakeUserError.php";
 
 class UploadToServer
 {
-
-   protected $_uploaded = array();
+   // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $_destination;         // каталог для размещения изображения
-   protected $_max = 57200;         // максимальный размер файла
-   protected $_messages = array();  // массив сообщений по загрузке файла
-   protected $_renamed = false;     // "имя загруженного файла изменилось"
-   protected $_permitted = array(   // разрешенные MIME-типы (здесь для изображений)
-                                 'image/gif',    
-	          							'image/jpeg',
-								         'image/pjpeg',
-								         'image/png');
-
+   protected $_max=57200;           // максимальный размер файла
+   protected $_message=Ok;          // сообщение по загрузке файла
+   protected $_modemess=rvsReturn;  // массив сообщений по загрузке файла
+   protected $_permitted=array(     // разрешенные MIME-типы (здесь для изображений)
+      'image/gif','image/jpeg','image/jpg','image/png');
+   protected $_renamed=false;       // "имя загруженного файла изменилось"
+   protected $_uploaded=array();    // $_FILES - данные о загруженном файле
+   // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($path) 
    {
-      //echo getcwd() . "\n";
-      //echoo();
-      //\prown\echooi(); 
-
- 	   if (!is_dir($path))
-      {
-         echo 'Ошибка !is_dir ='.$path;
-      }
-      else
-      {
-         echo 'Ошибки нет! = '.$path;
-      }
-      
- 	   if (!is_writable($path)) 
-      {
-         echo 'Не для записи ='.$path;
-      }
-      else
-      {
-         echo 'Запись разрешена!';
-      }
-	   $this->_destination = $path;
+      $this->_destination = $path;
 	   $this->_uploaded = $_FILES;
-      echo '<br>Размерность массива '.count($this->_uploaded).'<br>';
-      
-      
-      
-   /*
- 	   if (!is_dir($path) || !is_writable($path)) 
-      {
-         echo 'Ошибка!';
-         //throw new Exception("$path must be a valid, writable directory.");
-      }
-	   $this->_destination = $path;
-	   $this->_uploaded = $_FILES;
-   */
-  }
-   public function ech() 
-   {
-      echo 'Привет из Upload';
-      return Ok;
    }
-   
    // Переместить временный файл в заданный каталог
    public function move($overwrite = false) 
    {
-      //echo '***<br>'; 
-      $Result=\prown\MakeUserError('Пробное сообщение','TPhpTools',rvsReturn);
+      $this->message=Ok;
+      // "Каталог для загрузки файла отсутствует"
+ 	   if (!is_dir($this->_destination ))
+      {
+         $this->message=\prown\MakeUserError(DirDownloadMissing,'TPhpTools',rvsReturn);
+      }
+      // "Не разрешена запись в каталог для загрузки файла"
+      else if (!is_writable($this->_destination)) 
+      {
+         $this->message=\prown\MakeUserError(NotWriteToDirectory,'TPhpTools',rvsReturn);
+      }
+      else
+      {
+         //echo 'Запись разрешена!';
+      }
+      
+      
+      
       //echo '<br>***<br>'; 
       /*
       // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
@@ -131,7 +106,7 @@ class UploadToServer
          }
       }
       */
-      return $Result;
+      return $this->message;
    }
    
    // Вывести массив сообщений о загрузке файла
