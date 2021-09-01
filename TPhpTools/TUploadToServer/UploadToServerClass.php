@@ -47,13 +47,19 @@ class UploadToServer
    protected $_modemess=rvsReturn;  // массив сообщений по загрузке файла
    protected $_permitted=array(     // разрешенные MIME-типы (здесь для изображений)
       'image/gif','image/jpeg','image/jpg','image/png');
+   protected $_prefix;              // префикс сообщений об ошибках
    protected $_renamed=false;       // "имя загруженного файла изменилось"
    protected $_uploaded=array();    // $_FILES - данные о загруженном файле
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($path) 
    {
+      $this->_prefix = 'TUploadToServer';
       $this->_destination = $path;
 	   $this->_uploaded = $_FILES;
+   }
+   public function __destruct() 
+   {
+      // echo 'dest'.$this->_destination.'<br>';
    }
    // Переместить временный файл в заданный каталог
    public function move($overwrite = false) 
@@ -62,50 +68,54 @@ class UploadToServer
       // "Каталог для загрузки файла отсутствует"
  	   if (!is_dir($this->_destination ))
       {
-         $this->message=\prown\MakeUserError(DirDownloadMissing,'TPhpTools',rvsReturn);
+         $this->message=\prown\MakeUserError(DirDownloadMissing,$this->_prefix,rvsReturn);
       }
       // "Не разрешена запись в каталог для загрузки файла"
       else if (!is_writable($this->_destination)) 
       {
-         $this->message=\prown\MakeUserError(NotWriteToDirectory,'TPhpTools',rvsReturn);
+         $this->message=\prown\MakeUserError(NotWriteToDirectory,$this->_prefix,rvsReturn);
       }
       else
       {
-         //echo 'Запись разрешена!';
-      }
-      
-      
-      
-      //echo '<br>***<br>'; 
-      /*
-      // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
-      // массив для простого доступа к параметрам этого файла
-	   $field = current($this->_uploaded);
-      $OK = $this->checkError($field['name'], $field['error']);
-      if ($OK) 
-      {
-         $sizeOK = $this->checkSize($field['name'], $field['size']);
-         $typeOK = $this->checkType($field['name'], $field['type']);
-         if ($sizeOK && $typeOK) 
+         // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
+         // массив для простого доступа к параметрам этого файла
+	      $field = current($this->_uploaded);
+         // Выполняем предварительный контроль параметров временного файла
+         $OK = $this->checkError($field['name'], $field['error']);
+         echo '---'.$OK.'---<br>';
+         if ($OK<>Ok)
          {
-         	$name = $this->checkName($field['name'], $overwrite);
-            $success = move_uploaded_file($field['tmp_name'],$this->_destination.$name);
-            if ($success)
+            $this->message=\prown\MakeUserError(ExceedOnМAX_FILE_SIZE,$this->_prefix,rvsReturn);
+         }
+         else
+         {
+            echo 'ПРОШЛИ $OK<br>';
+            /*
+            $sizeOK = $this->checkSize($field['name'], $field['size']);
+            $typeOK = $this->checkType($field['name'], $field['type']);
+            if ($sizeOK && $typeOK) 
             {
-               $message=$field['name'].' uploaded successfully';
-               if ($this->_renamed) 
+         	   $name = $this->checkName($field['name'], $overwrite);
+               $success = move_uploaded_file($field['tmp_name'],$this->_destination.$name);
+               if ($success)
                {
-                  $message.=" and renamed $name";
+                  $message=$field['name'].' uploaded successfully';
+                  if ($this->_renamed) 
+                  {
+                     $message.=" and renamed $name";
+                  }
+                  $this->_messages[]=$message;
+                  echo 'Загрузили<br>';
+               } 
+               else 
+               {
+                  $this->_messages[] = 'Could not upload ' . $field['name'];
+                  echo 'НЕЕЕЕЕЗагрузили<br>';
                }
-               $this->_messages[]=$message;
-            } 
-            else 
-            {
-               $this->_messages[] = 'Could not upload ' . $field['name'];
             }
+            */
          }
       }
-      */
       return $this->message;
    }
    
@@ -155,37 +165,32 @@ class UploadToServer
       {
       case 0:
          // Загрузка файла успешна, просто возвращаем true
-         return true;
+         return Ok;
       case 1:
          // Размер файла превышает максимальный, указанный в php.ini
-         $this->_messages[] = "$filename exceeds maximum size on PHP.INI: " . $this->getMaxSize();
+         return "$filename exceeds maximum size on PHP.INI: " . $this->getMaxSize();
       case 2:
          // Размер файла превышает максимальный, указанный в скрытом поле MAX_FILE_SIZE
-         $this->_messages[] = "$filename exceeds maximum size on MAX_FILE_SIZE: " . $this->getMaxSize();
-         return true;
+         // return "$filename exceeds maximum size on MAX_FILE_SIZE: " . $this->getMaxSize();
+         return "Размер файла превышает максимальный из МAX_FILE_SIZE";
       case 3:
          // Файл загружен частично
-         $this->_messages[] = "Party uploading $filename. Please try again.";
-         return false;
+         //$this->_messages[] = "Party uploading $filename. Please try again.";
+         return "Party uploading $filename. Please try again.";
       case 4:
          // Данные формы загружены, но файл не был указан
-         $this->_messages[] = 'No file selected.';
-         return false;
+         return 'No file selected.';
       case 6:
          // Временная папка отсутствует
-         $this->_messages[] = 'Временная папка отсутствует.';
-         return false;
+         return 'Временная папка отсутствует.';
       case 7:
          // Файл невозможно записать на диск
-         $this->_messages[] = 'Файл невозможно записать на диск.';
-         return false;
+         return 'Файл невозможно записать на диск.';
       case 8:
          // Загрузка остановлена неопределенным PHP-расширением
-         $this->_messages[] = 'Загрузка остановлена неопределенным PHP-расширением.';
-         return false;
+         return 'Загрузка остановлена неопределенным PHP-расширением.';
       default:
-         $this->_messages[] = 'System error['.$error.'] uploading $filename. Contact webmaster.';
-		return false;
+         return 'System error['.$error.'] uploading $filename. Contact webmaster.';
       }
    }
    // Проверить размер файла

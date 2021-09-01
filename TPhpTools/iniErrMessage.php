@@ -18,6 +18,7 @@ define ("WithParameters",        "с параметрами: ");
 
 // UploadToServerClass:      Загрузчик файлов на сервер из временного хранилища
 define ("DirDownloadMissing",    "Каталог для загрузки файла отсутствует");
+define ("ExceedOnМAX_FILE_SIZE", "Размер файла превышает максимальный по МAX_FILE_SIZE");
 define ("NotWriteToDirectory",   "Не разрешена запись в каталог для загрузки файла");
 
 // ****************************************************** iniErrMessage.php *** 

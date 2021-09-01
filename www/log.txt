@@ -538,3 +538,8 @@ Stack trace:
 [30-Aug-2021 20:35:58 Asia/Kuwait] E_WARNING: rmdir(Gallery): Permission denied in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 60
 [30-Aug-2021 20:40:41 Asia/Kuwait] E_WARNING: rmdir(Gallery): Permission denied in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 60
 [30-Aug-2021 20:41:56 Asia/Kuwait] E_WARNING: rmdir(Gallery): Permission denied in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 60
+[01-Sep-2021 14:54:40 Asia/Kuwait] E_WARNING: rmdir(Gallery): Permission denied in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 60
+[01-Sep-2021 15:29:18 Asia/Kuwait] PHP Parse error:  syntax error, unexpected '*' in C:\TPhpTools\TPhpToolsTests\TUploadToServer_Construct.php on line 60
+[01-Sep-2021 15:34:54 Asia/Kuwait] PHP Fatal error:  Destructor ttools\UploadToServer::__destruct() cannot take arguments in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 60
+[01-Sep-2021 18:15:22 Asia/Kuwait] E_NOTICE: Undefined variable: c_c1 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 16
+[01-Sep-2021 18:15:22 Asia/Kuwait] E_NOTICE: Undefined variable: c_c1 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 17
