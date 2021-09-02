@@ -25,6 +25,10 @@ require_once $TPhpTools."/TBaseMaker/BaseMakerClass.php";
 
 session_start();
 
+// Выполняем начальную инициализацию
+require_once "Common.php";     // Всегда 1-ый корневой модуль в списке
+require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
+
 // Инициализируем переменные-кукисы
 $c_UserName=prown\MakeCookie('UserName',"Гость",tStr,true);            // логин авторизованного посетителя
 $c_PersName=prown\MakeCookie('PersName',"Гость",tStr,true);            // логин посетителя
@@ -43,12 +47,10 @@ $c_BrowEntry=prown\MakeCookie('BrowEntry',$c_BrowEntry+1,tInt);
 // Изменяем счетчик посещений текущим посетителем      
 $c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
 // Изменяем счетчик посещений за сессию                 
-$s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);   
+$s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);  
+// Готовим загрузку файла для первой группы тестов TUploadToServer  
+//$c_UploadToServer=prown\MakeCookie('UploadToServer',upl1etap,tStr);           
 
-
-// Выполняем начальную инициализацию
-require_once "Common.php";     // Всегда 1-ый корневой модуль в списке
-require_once "iniMem.php";     // Всегда 2-ой корневой модуль в списке
 require_once "UpSite.php";
 
 // При необходимости выводим дополнительную информацию

@@ -11,19 +11,19 @@
 // ****************************************************************************
 
 // echo 'Тестируется TUploadToServer_test.php'.'<br>';
-MakeTitle("TUploadToServer",'');
-$c_c1=prown\MakeCookie('c1');
-echo $c_c1.' 888<br>'; 
-$c_c1=prown\MakeCookie('c1',$c_c1+1,tInt);
-
-// На первом этапе готовим загрузку файла
 if (!(count($_FILES)>0))
 {
-   $max = 57200;
+   // Отмечаем начало 1 этапа "Загрузка файла для первой группы тестов"
+   $c_UploadToServer=upl1etap;           
+   MakeTitle("TUploadToServer [".$c_UploadToServer."]",'');
+   // Готовим выполнение первой группы тестов TUploadToServer  
+   $c_UploadToServer=prown\MakeCookie('UploadToServer',upl2etap,tStr); 
+
+   $max = 2300000;
    ?>
    <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
    <p>
-   <label for="image">Выберите изображение:<br></label>
+   <label for="image">Выберите изображение, размером не более 2 300 000 байт:<br></label>
    <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
    <input type="file" name="image" id="image">
    </p>
@@ -33,9 +33,19 @@ if (!(count($_FILES)>0))
    </form>
    <?php
 }
-// На втором этапе проводим тестирование
+// На следующих этапах проводим тестирование
 else
 {
+   $c_UploadToServer=prown\MakeCookie('UploadToServer');           
+   // Готовим загрузку файла для первой группы тестов TUploadToServer  
+   MakeTitle("TUploadToServer [".$c_UploadToServer."]",'');
+   
+   
+   
+   
+   
+   $c_UploadToServer=prown\MakeCookie('UploadToServer',upl1etap,tStr);           
+
    // Выводим доступные параметры загруженного файла
    // print_r($_FILES);
    echo 'Загруженный файл:   '.$_FILES['image']['name'].    '<br>';
@@ -50,6 +60,23 @@ else
    // 
    $is=test_Construct($shellTest);
    if ($is<>Ok) PointMessage('=== '.$is.' ===<br>');
+
+   
+   /*
+   $max = 2300000;
+   ?>
+   <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
+   <p>
+   <label for="image">Выберите изображение, размером не более 2 300 000 байт:<br></label>
+   <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
+   <input type="file" name="image" id="image">
+   </p>
+   <p>
+   <input type="submit" name="upload" id="upload" value="Загрузите">
+   </p>
+   </form>
+   <?php
+   */
 }
 // ****************************************************************************
 // *                  Создать новый каталог и задать его режим                *

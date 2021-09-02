@@ -543,3 +543,5 @@ Stack trace:
 [01-Sep-2021 15:34:54 Asia/Kuwait] PHP Fatal error:  Destructor ttools\UploadToServer::__destruct() cannot take arguments in C:\TPhpTools\TPhpTools\TUploadToServer\UploadToServerClass.php on line 60
 [01-Sep-2021 18:15:22 Asia/Kuwait] E_NOTICE: Undefined variable: c_c1 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 16
 [01-Sep-2021 18:15:22 Asia/Kuwait] E_NOTICE: Undefined variable: c_c1 in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 17
+[02-Sep-2021 22:58:28 Asia/Kuwait] E_NOTICE: Undefined variable: c_UploadToServer in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 21
+[02-Sep-2021 22:58:44 Asia/Kuwait] E_NOTICE: Undefined variable: c_UploadToServer in C:\TPhpTools\TPhpToolsTests\TUploadToServer__test.php on line 21
