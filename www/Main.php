@@ -48,8 +48,6 @@ $c_BrowEntry=prown\MakeCookie('BrowEntry',$c_BrowEntry+1,tInt);
 $c_PersEntry=prown\MakeCookie('PersEntry',$c_PersEntry+1,tInt);
 // Изменяем счетчик посещений за сессию                 
 $s_Counter=prown\MakeSession('Counter',$s_Counter+1,tInt);  
-// Готовим загрузку файла для первой группы тестов TUploadToServer  
-//$c_UploadToServer=prown\MakeCookie('UploadToServer',upl1etap,tStr);           
 
 require_once "UpSite.php";
 

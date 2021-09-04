@@ -80,14 +80,11 @@ class UploadToServer
          // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
          // массив для простого доступа к параметрам этого файла
 	      $field = current($this->_uploaded);
-         // Выполняем предварительный контроль параметров временного файла
-         $OK = $this->checkError($field['name'], $field['error']);
-         echo '---'.$OK.'---<br>';
-         if ($OK<>Ok)
-         {
-            $this->message=\prown\MakeUserError(ExceedOnМAX_FILE_SIZE,$this->_prefix,rvsReturn);
-         }
-         else
+         // Выполняем предварительный контроль параметров временного файла и
+         // выводим сообщение при ошибке во время контроля
+         $this->message = $this->checkError($field['name'], $field['error']);
+         // Если контроль успешен, то проводим обработку дальше
+         if ($this->message==Ok)
          {
             echo 'ПРОШЛИ $OK<br>';
             /*
@@ -129,7 +126,7 @@ class UploadToServer
    {
       return number_format($this->_max/1024, 1).'kB';
    }
-   // Сформировать сообщение по коду ошибки
+   // Проверить код ошибки по принятому файлу во временное хранилище
    protected function checkError($filename, $error) 
    /* 
    * https://www.php.net/manual/ru/features.file-upload.errors.php
@@ -161,28 +158,31 @@ class UploadToServer
    * помочь просмотр списка загруженных модулей спомощью phpinfo().
    */
    {
+      echo 'upload_tmp_dir='.ini_get('upload_tmp_dir');
       switch ($error) 
       {
       case 0:
-         // Загрузка файла успешна, просто возвращаем true
+         // Загрузка файла успешна, просто возвращаем Ok
          return Ok;
       case 1:
-         // Размер файла превышает максимальный, указанный в php.ini
-         return "$filename exceeds maximum size on PHP.INI: " . $this->getMaxSize();
+         // Размер файла превышает максимальный, указанный upload_max_filesize в php.ini
+         return \prown\MakeUserError(ExceedUploadMaxPHPINI.': '.
+            ini_get('upload_max_filesize'),$this->_prefix,rvsReturn);
       case 2:
          // Размер файла превышает максимальный, указанный в скрытом поле MAX_FILE_SIZE
-         // return "$filename exceeds maximum size on MAX_FILE_SIZE: " . $this->getMaxSize();
-         return "Размер файла превышает максимальный из МAX_FILE_SIZE";
+         return \prown\MakeUserError(ExceedOnМAX_FILE_SIZE.': '.
+            \prown\getComRequest($Com='MAX_FILE_SIZE'),$this->_prefix,rvsReturn);
       case 3:
          // Файл загружен частично
-         //$this->_messages[] = "Party uploading $filename. Please try again.";
-         return "Party uploading $filename. Please try again.";
+         return \prown\MakeUserError(FilePartiallyUploaded.': '.$filename,
+            $this->_prefix,rvsReturn);
       case 4:
          // Данные формы загружены, но файл не был указан
-         return 'No file selected.';
+         return \prown\MakeUserError(FormLoadFileNotSpecif,$this->_prefix,rvsReturn);
       case 6:
-         // Временная папка отсутствует
-         return 'Временная папка отсутствует.';
+         // Временный каталог отсутствует
+         return \prown\MakeUserError(TempoDirIsMissing.': '.
+            ini_get('upload_tmp_dir'),$this->_prefix,rvsReturn);
       case 7:
          // Файл невозможно записать на диск
          return 'Файл невозможно записать на диск.';

@@ -53,13 +53,11 @@ function test_Construct($thiss)
       if ($thiss!==NULL) $thiss->assertTrue(strpos($MessUpload,DirDownloadMissing)); 
       OkMessage();
       
-      /*
       // Выполняем "успешную" переброску файла на сервер с верным каталогом
       $upload = new ttools\UploadToServer($_SERVER['DOCUMENT_ROOT'].'/'.$imgDir.'/');
       $MessUpload=$upload->move(); echo $MessUpload;
       //if ($thiss!==NULL) $thiss->assertEqual($MessUpload,Ok);
       OkMessage();
-      */
    }
 }
 

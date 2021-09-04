@@ -19,7 +19,12 @@ define ("WithParameters",        "с параметрами: ");
 // UploadToServerClass:      Загрузчик файлов на сервер из временного хранилища
 define ("DirDownloadMissing",    "Каталог для загрузки файла отсутствует");
 define ("ExceedOnМAX_FILE_SIZE", "Размер файла превышает максимальный по МAX_FILE_SIZE");
+define ("ExceedUploadMaxPHPINI", "Размер файла превышает upload_max_filesize из PHP.INI");
+define ("FilePartiallyUploaded", "Файл загружен частично");
+define ("FormLoadFileNotSpecif", "Данные формы загружены, но файл не был указано");
+define ("TempoDirIsMissing",     "Временный каталог отсутствует");
 define ("NotWriteToDirectory",   "Не разрешена запись в каталог для загрузки файла");
+define ("NotErrorOfCheckError",  "Не учтеная ошибка метода CheckError");
 
 // ****************************************************** iniErrMessage.php *** 
 

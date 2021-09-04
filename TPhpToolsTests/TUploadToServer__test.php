@@ -66,13 +66,14 @@ else
       if ($is<>Ok) PointMessage('=== '.$is.' ===<br>');
 
       // Отмечаем начало 3 этапа "Загрузка файла для второй группы тестов"
+      SimpleMessage();
       MakeTitle("TUploadToServer [".upl3etap."]",'');
       //
       $max = 2300000;
       ?>
       <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
       <p>
-      <label for="image">Выберите изображение, размером не более 2 300 000 байт:<br></label>
+      <label for="image">Выберите это же изображение для загрузки с измененным PHP.INI:<br></label>
       <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
       <input type="file" name="image" id="image">
       </p>
