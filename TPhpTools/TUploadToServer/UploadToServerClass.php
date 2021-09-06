@@ -19,7 +19,7 @@
 
 // Свойства:
 //
-// $FltLead - команда управления передачей данных. По умолчанию fltNotTransmit,
+// --- $FltLead - команда управления передачей данных. По умолчанию fltNotTransmit,
 //            то есть данные о загрузке не передаются для контроля ни в кукисы, 
 // ни в консоль, а только записываются в LocalStorage. Если LocalStorage,
 // браузером не поддерживается, то данные будут записываться в кукисы при 
@@ -28,10 +28,10 @@
 // $Uagent - браузер пользователя;
 
 // ----------------------- Константы управления передачей данных о загрузке ---
-define ("fltNotTransmit",  0); // данные не передаются  
-define ("fltWriteConsole", 1); // записываются в консоль
-define ("fltSendCookies",  2); // отправляются в кукисы
-define ("fltAll",          3); // записываются в консоль, отправляются в кукисы  
+define ("---fltNotTransmit",  0); // данные не передаются  
+define ("---fltWriteConsole", 1); // записываются в консоль
+define ("---fltSendCookies",  2); // отправляются в кукисы
+define ("---fltAll",          3); // записываются в консоль, отправляются в кукисы  
 
 // Подключаем модули библиотек прикладных функций и классов
 require_once $TPhpTools."/iniErrMessage.php";
@@ -53,15 +53,19 @@ class UploadToServer
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($path) 
    {
-      $this->_prefix = 'TUploadToServer';
       $this->_destination = $path;
+      $this->_max = (int) \prown\getComRequest($Com='MAX_FILE_SIZE');
+      // echo '555 '.$this->_max.' 555<br>';
+      $this->_prefix = 'TUploadToServer';
 	   $this->_uploaded = $_FILES;
    }
    public function __destruct() 
    {
       // echo 'dest'.$this->_destination.'<br>';
    }
-   // Переместить временный файл в заданный каталог
+   // *************************************************************************
+   // *              Переместить временный файл в заданный каталог            *
+   // *************************************************************************
    public function move($overwrite = false) 
    {
       $this->message=Ok;
@@ -115,6 +119,7 @@ class UploadToServer
       }
       return $this->message;
    }
+   // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
    
    // Вывести массив сообщений о загрузке файла
    public function getMessages() 
@@ -126,7 +131,9 @@ class UploadToServer
    {
       return number_format($this->_max/1024, 1).'kB';
    }
-   // Проверить код ошибки по принятому файлу во временное хранилище
+   // *************************************************************************
+   // *     Проверить код ошибки по принятому файлу во временное хранилище    *
+   // *************************************************************************
    protected function checkError($filename, $error) 
    /* 
    * https://www.php.net/manual/ru/features.file-upload.errors.php
@@ -158,7 +165,7 @@ class UploadToServer
    * помочь просмотр списка загруженных модулей спомощью phpinfo().
    */
    {
-      echo 'upload_tmp_dir='.ini_get('upload_tmp_dir');
+      //echo 'upload_tmp_dir='.ini_get('upload_tmp_dir');
       switch ($error) 
       {
       case 0:
@@ -185,16 +192,19 @@ class UploadToServer
             ini_get('upload_tmp_dir'),$this->_prefix,rvsReturn);
       case 7:
          // Файл невозможно записать на диск
-         return 'Файл невозможно записать на диск.';
+         return \prown\MakeUserError(FileCannotBeWritten,$this->_prefix,rvsReturn);
       case 8:
          // Загрузка остановлена неопределенным PHP-расширением
-         return 'Загрузка остановлена неопределенным PHP-расширением.';
+         return \prown\MakeUserError(LoadStoppedUndefPhp,$this->_prefix,rvsReturn);
       default:
-         return 'System error['.$error.'] uploading $filename. Contact webmaster.';
+         // Не учтеная ошибка при проверке загрузки
+         return \prown\MakeUserError(NotErrorOfCheckError.': '.$error,$this->_prefix,rvsReturn);
       }
    }
-   // Проверить размер файла
-   protected function checkSize($filename, $size) 
+   // *************************************************************************
+   // *                           Проверить размер файла                      *
+   // *************************************************************************
+   protected function checkSize($filename,$size) 
    {
       if ($size == 0)
       {

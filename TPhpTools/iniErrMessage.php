@@ -20,11 +20,13 @@ define ("WithParameters",        "с параметрами: ");
 define ("DirDownloadMissing",    "Каталог для загрузки файла отсутствует");
 define ("ExceedOnМAX_FILE_SIZE", "Размер файла превышает максимальный по МAX_FILE_SIZE");
 define ("ExceedUploadMaxPHPINI", "Размер файла превышает upload_max_filesize из PHP.INI");
+define ("FileCannotBeWritten",   "Файл невозможно записать на диск");
 define ("FilePartiallyUploaded", "Файл загружен частично");
 define ("FormLoadFileNotSpecif", "Данные формы загружены, но файл не был указано");
-define ("TempoDirIsMissing",     "Временный каталог отсутствует");
+define ("LoadStoppedUndefPhp",   "Загрузка остановлена неопределенным PHP-расширением");
 define ("NotWriteToDirectory",   "Не разрешена запись в каталог для загрузки файла");
-define ("NotErrorOfCheckError",  "Не учтеная ошибка метода CheckError");
+define ("NotErrorOfCheckError",  "Не учтеная ошибка при проверке загрузки");
+define ("TempoDirIsMissing",     "Временный каталог отсутствует");
 
 // ****************************************************** iniErrMessage.php *** 
 

@@ -10,6 +10,43 @@
 // * Copyright © 2020 tve                          Дата создания:  03.12.2020 *
 // ****************************************************************************
 
+function byteconvert($input)
+{
+    preg_match('/(\d+)(\w+)/',$input,$matches);
+    $type = strtolower($matches[2]);
+    switch ($type) {
+    case "b":
+        $output = $matches[1];
+        break;
+    case "kb":
+        $output = $matches[1]*1024;
+        break;
+    case "mb":
+        $output = $matches[1]*1024*1024;
+        break;
+    case "m":
+        $output = $matches[1]*1024*1024;
+        break;
+    case "gb":
+        $output = $matches[1]*1024*1024*1024;
+        break;
+    case "tb":
+        $output = $matches[1]*1024*1024*1024;
+        break;
+    }
+    return $output;
+}
+
+/*
+$foo = "10mb";
+echo "$foo = ".byteconvert($foo)." byte<br>";
+$foo = "10 M";
+echo "$foo = ".byteconvert($foo)." byte<br>";
+$foo = "10M";
+echo "$foo = ".byteconvert($foo)." byte<br>";
+*/
+
+
 // echo 'Тестируется TUploadToServer_test.php'.'<br>';
 if (!(count($_FILES)>0))
 {
@@ -24,7 +61,7 @@ if (!(count($_FILES)>0))
    <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
    <p>
    <label for="image">Выберите изображение, размером не более 3M байт:<br></label>
-   <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
+   <!-- <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>"> -->
    <input type="file" name="image" id="image">
    </p>
    <p>
@@ -57,7 +94,11 @@ else
       if (isset($_FILES['image']['tmp_name']))
       echo 'Временный файл:     '.$_FILES['image']['tmp_name'].'<br>';
       echo 'Состояние загрузки: '.$_FILES['image']['error'].   '<br>';
-      echo 'Размер в байтах:    '.$_FILES['image']['size'].    '<br>';
+      echo 'Размер в байтах:    '.$_FILES['image']['size'].
+         '<style>.sphpini{color:red;}.maxfilesize{color:magenta;}</style>'. 
+         ' [php.ini<='.     '<span class="sphpini">'    .ini_get("upload_max_filesize").                 '</span>'.','.
+         ' max_file_size<='.'<span class="maxfilesize">'.(int)\prown\getComRequest($Com='MAX_FILE_SIZE').'</span>]'.
+         '<br>';
       // Настраиваем текущий каталог
       $CurrDir=$_SERVER['DOCUMENT_ROOT'];  //'c:\TPhpTools\www';
       chdir($CurrDir);
@@ -74,7 +115,7 @@ else
       <form action="" method="post" enctype="multipart/form-data" id="uploadImage">
       <p>
       <label for="image">Выберите это же изображение для загрузки с измененным PHP.INI:<br></label>
-      <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>">
+      <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $max; ?>"> 
       <input type="file" name="image" id="image">
       </p>
       <p>
@@ -126,4 +167,4 @@ function CreateDir($imgDir,$modeDir)
    }
    return Ok;
 }
-// *********************************************** TUploadToServer_test.php ***
+// *** <!-- --> ********************************** TUploadToServer_test.php ***
