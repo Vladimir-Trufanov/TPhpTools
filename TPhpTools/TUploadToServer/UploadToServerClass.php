@@ -5,16 +5,30 @@
 // ****************************************************************************
 // * TPhpTools             Загрузчик файлов на сервер из временного хранилища *
 // *                                                                          *
-// * v2.0, 25.08.2021                              Автор:       Труфанов В.Е. *
+// * v2.1, 02.01.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2020 tve                          Дата создания:  03.12.2020 *
 // ****************************************************************************
 
 /**
- * Класс FixLoadTimer обеспечивает расчет и регистрацию текущего, среднего,
- * наибольшего и наименьшего времени загрузки страницы сайта. По умолчанию 
- * определенные данные записываются в памяти браузера LocalStorage. 
- * Если браузером LocalStorage не поддерживается, то расчитанные значения 
- * записываются в кукисы. 
+ * Класс UploadToServer обеспечивает контроль параметров файла, загруженного
+ * во временное хранилище и переброску его на сервер.
+ * 
+ * Для взаимодействия с объектами класса должны быть определены две константы:
+ * 
+ * pathPhpTools - указывающая путь к каталогу с файлами библиотеки прикладных классов;
+ * pathPhpPrown - указывающая путь к каталогу с файлами библиотеки прикладных функции,
+ *    которые требуются для работы методов класса 
+ *    
+ * Пример создания объекта класса:
+ * 
+ * // Указываем место размещения библиотеки прикладных функций TPhpPrown
+ * define ("pathPhpPrown",$_SERVER['DOCUMENT_ROOT'].'/TPhpPrown');
+ * // Указываем место размещения библиотеки прикладных классов TPhpTools
+ * define ("pathPhpTools",$_SERVER['DOCUMENT_ROOT'].'/TPhpTools');
+ * // Определяем каталог для загрузки изображений и создаем объект
+ * $imgDir=$_SERVER['DOCUMENT_ROOT'].'/Gallery';
+ * $upload = new ttools\UploadToServer($imgDir);
+ * 
 **/
 
 // Свойства:
@@ -33,44 +47,57 @@ define ("---fltWriteConsole", 1); // записываются в консоль
 define ("---fltSendCookies",  2); // отправляются в кукисы
 define ("---fltAll",          3); // записываются в консоль, отправляются в кукисы  
 
-// Подключаем модули библиотек прикладных функций и классов
-require_once $TPhpTools."/iniErrMessage.php";
-require_once $TPhpPrown."/iniConstMem.php";
-require_once $TPhpPrown."/MakeUserError.php";
+// Подгружаем нужные модули библиотеки прикладных функций
+require_once(pathPhpPrown."/CommonPrown.php");
+require_once(pathPhpPrown."/iniRegExp.php");
+require_once(pathPhpPrown."/MakeUserError.php");
+// Подгружаем нужные модули библиотеки прикладных классов
+require_once(pathPhpTools."/iniToolsMessage.php");
 
 class UploadToServer
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $_destination;         // каталог для размещения изображения
-   protected $_max=57200;           // максимальный размер файла
+   protected $_max=57200;           // максимальный размер файла объекта класса
+   protected $_maxphp=0;            // максимальный размер файла по php.ini
    protected $_message=Ok;          // сообщение по загрузке файла
    protected $_modemess=rvsReturn;  // массив сообщений по загрузке файла
    protected $_permitted=array(     // разрешенные MIME-типы (здесь для изображений)
       'image/gif','image/jpeg','image/jpg','image/png');
    protected $_prefix;              // префикс сообщений об ошибках
    protected $_renamed=false;       // "имя загруженного файла изменилось"
+   protected $_tmpdir='';           // каталог временного хранения файлов на сервере
    protected $_uploaded=array();    // $_FILES - данные о загруженном файле
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($path) 
    {
+      // Инициализируем свойства класса
       $this->_destination = $path;
       $this->_max = (int) \prown\getComRequest($Com='MAX_FILE_SIZE');
-      // echo '555 '.$this->_max.' 555<br>';
+      $this->_maxphp = ini_get('upload_max_filesize');
       $this->_prefix = 'TUploadToServer';
-	   $this->_uploaded = $_FILES;
+      $this->_tmpdir = ini_get('upload_tmp_dir');
+      $this->_uploaded = $_FILES;
+      // Трассируем установленные свойства
+      \prown\ConsoleLog('$this->_destination='.$this->_destination); 
+      \prown\ConsoleLog('$this->_max='.$this->_max); 
+      \prown\ConsoleLog('$this->_maxphp='.$this->_maxphp); 
+      \prown\ConsoleLog('$this->_prefix='.$this->_prefix); 
+      \prown\ConsoleLog('$this->_tmpdir='.$this->_tmpdir); 
+      \prown\ConsoleLog('count($this->_uploaded)='.count($this->_uploaded));
    }
    public function __destruct() 
    {
-      // echo 'dest'.$this->_destination.'<br>';
    }
    // *************************************************************************
    // *              Переместить временный файл в заданный каталог            *
    // *************************************************************************
    public function move($overwrite = false) 
    {
-      $this->message=Ok;
+      // По умолчанию "Неопределенная ошибка загрузки файла на сервер"
+      $this->message=UnspecErrorUpload;
       // "Каталог для загрузки файла отсутствует"
- 	   if (!is_dir($this->_destination ))
+ 	  if (!is_dir($this->_destination ))
       {
          $this->message=\prown\MakeUserError(DirDownloadMissing,$this->_prefix,rvsReturn);
       }
@@ -79,20 +106,22 @@ class UploadToServer
       {
          $this->message=\prown\MakeUserError(NotWriteToDirectory,$this->_prefix,rvsReturn);
       }
+      // "Файл не выбран и не загружен во временный каталог"
+      else if (count($this->_uploaded)==0) 
+      {
+         $this->message=\prown\MakeUserError(FileNotSelectLoad,$this->_prefix,rvsReturn);
+      }
+      // Выполняем контроль прочих ошибок
       else
       {
-         // Перекидываем запись об одном загруженном файле из $_FILES в одномерный
-         // массив для простого доступа к параметрам этого файла
-	      $field = current($this->_uploaded);
-         // Выполняем предварительный контроль параметров временного файла и
-         // выводим сообщение при ошибке во время контроля
-         $this->message = $this->checkError($field['name'], $field['error']);
+	     $field=current($this->_uploaded);
+         // Выполняем предварительный контроль параметров временного файла 
+         $this->message=$this->checkError($field['name'],$field['error']);
          // Если контроль успешен, то проводим обработку дальше
-         if ($this->message==Ok)
+         if ($this->message==imok)
          {
-            echo 'ПРОШЛИ $OK<br>';
+            $this->message=$this->checkSize($field['name'],$field['size']);
             /*
-            $sizeOK = $this->checkSize($field['name'], $field['size']);
             $typeOK = $this->checkType($field['name'], $field['type']);
             if ($sizeOK && $typeOK) 
             {
@@ -134,7 +163,7 @@ class UploadToServer
    // *************************************************************************
    // *     Проверить код ошибки по принятому файлу во временное хранилище    *
    // *************************************************************************
-   protected function checkError($filename, $error) 
+   protected function checkError($filename,$error) 
    /* 
    * https://www.php.net/manual/ru/features.file-upload.errors.php
    * PHP возвращает код ошибки наряду с другими атрибутами принятого файла. 
@@ -165,12 +194,11 @@ class UploadToServer
    * помочь просмотр списка загруженных модулей спомощью phpinfo().
    */
    {
-      //echo 'upload_tmp_dir='.ini_get('upload_tmp_dir');
       switch ($error) 
       {
       case 0:
          // Загрузка файла успешна, просто возвращаем Ok
-         return Ok;
+         return imok;
       case 1:
          // Размер файла превышает максимальный, указанный upload_max_filesize в php.ini
          return \prown\MakeUserError(ExceedUploadMaxPHPINI.': '.
@@ -206,6 +234,12 @@ class UploadToServer
    // *************************************************************************
    protected function checkSize($filename,$size) 
    {
+      $Result=imok;
+      // Проверяем формат указания размера файла в php.ini, где он должен быть
+      // указан в мбайтах числом и символом "M" в конце
+      $point=-1;
+      $subs=Findes(regIntMbyte,$this->_maxphp,$point);
+      /*
       if ($size == 0)
       {
          // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
@@ -223,6 +257,8 @@ class UploadToServer
       {
          return true;
       }
+      */
+      return $Result;
    }
    // Проверить MIME-тип
    protected function checkType($filename, $type) 
@@ -337,58 +373,6 @@ class UploadToServer
       }
       return $nospaces;
    }
-   // *************************************************************************
-   // *  Проинициализировать параметры php.ini для управления выводом ошибок  *
-   // *************************************************************************
-   private function InisetErrors()
-   {
-   // Определяем режим вывода ошибок:
-   //   если display_errors = on, то в случае ошибки браузер получит html 
-   // c текстом ошибки и кодом 200
-   //   если же display_errors = off, то для фатальных ошибок код ответа будет 500
-   // и результат не будет возвращён пользователю, для остальных ошибок – 
-   // код будет работать неправильно, но никому об этом не расскажет
-   ini_set('display_errors','Off');
-   // Определяем режим вывода ошибок при запуске PHP:
-   //   если = on, то даже при включённом display_errors возникающие ошибки во 
-   // время запуска PHP, не будут отображаться. 
-   ini_set('display_startup_errors','Off');
-   // Определяем ведение журнала, в котором будут сохраняться сообщения об ошибках.
-   // Это может быть журнал сервера или error_log. Применимость этой настройки 
-   // зависит от конкретного сервера.
-   //   При работе на готовых работающих web сайтах следует протоколировать 
-   // ошибки там, где они отображаются. Настойчиво рекомендуем включать директиву 
-   // display_startup_errors только для отладки.
-   ini_set('log_errors','On');
-   ini_set('error_log','log.txt');
-   // Определяем типы выводимых ошибок
-   // (здесь указываем все, кроме устаревающих)
-   error_reporting(E_ALL & ~E_DEPRECATED);
-   }
-   
-   // .HTACCESS
-   // ## Устанавливаем кодировку сайта по умолчанию
-   // AddDefaultCharset utf-8
-   // ## Определяем, что будет использоваться кукис для хранения идентификатора 
-   // ## сессии на стороне клиента. on[boolean] = "включено".
-   // php_flag session.use_cookies on
-   // php_flag session.use_cookies on
-   // php_value session.cookie_lifetime 10800
-   // 
-   // .USER.INI
-   // ; Определяем, что будет использоваться кукис для хранения идентификатора 
-   // ; сессии на стороне клиента. 1[boolean] = "включено".
-   // session.use_cookies = 1
-   // session.cookie_lifetime = 10803
-   // ; Определяем, что сессию автоматически при старте не запускать.
-   // session.auto_start = 0
-
-
-
-   
-   
-   
-   
 } 
 
 // ************************************************ UploadToServerClass.php ***
