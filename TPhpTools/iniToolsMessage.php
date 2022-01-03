@@ -24,6 +24,7 @@ define ("FileCannotBeWritten",   "Файл невозможно записать
 define ("FileNotSelectLoad",     "Файл не выбран и не загружен во временный каталог");
 define ("FilePartiallyUploaded", "Файл загружен частично");
 define ("FormLoadFileNotSpecif", "Данные формы загружены, но файл не был указано");
+define ("InvalidUploadSize",     "Неверно определен размер файла загрузки в Мбайт");
 define ("LoadStoppedUndefPhp",   "Загрузка остановлена неопределенным PHP-расширением");
 define ("NotWriteToDirectory",   "Не разрешена запись в каталог для загрузки файла");
 define ("NotErrorOfCheckError",  "Не учтеная ошибка при проверке загрузки");

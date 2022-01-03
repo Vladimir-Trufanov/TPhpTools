@@ -51,6 +51,7 @@ define ("---fltAll",          3); // записываются в консоль,
 require_once(pathPhpPrown."/CommonPrown.php");
 require_once(pathPhpPrown."/iniRegExp.php");
 require_once(pathPhpPrown."/MakeUserError.php");
+require_once(pathPhpPrown."/RecalcSizeInfo.php");
 // Подгружаем нужные модули библиотеки прикладных классов
 require_once(pathPhpTools."/iniToolsMessage.php");
 
@@ -236,28 +237,50 @@ class UploadToServer
    {
       $Result=imok;
       // Проверяем формат указания размера файла в php.ini, где он должен быть
-      // указан в мбайтах числом и символом "M" в конце
+      // указан в мбайтах целым числом и символом "M" в конце
       $point=-1;
       $subs=Findes(regIntMbyte,$this->_maxphp,$point);
-      /*
-      if ($size == 0)
+      if ($subs=='')
       {
-         // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
-         $this->_messages[] = "$filename ".'слишком большой или не выбран.';
-         return false;
-      } 
-      elseif ($size > $this->_max) 
-      {
-         // Проверяем возможный обход скрытого задания максимального размера 
-         // файла через MAX_FILE_SIZE. 
-         $this->_messages[] = "$filename exceeds maximum size: " . $this->getMaxSize();
-         return false;
-      } 
-      else 
-      {
-         return true;
+         // "Неверно определен размер файла загрузки в Мбайт" для php.ini
+         $Result=\prown\MakeUserError(InvalidUploadSize,$this->_prefix,rvsReturn);
       }
-      */
+      // Продолжаем анализ размера файла
+      else
+      {
+         \prown\ConsoleLog('$subs='.$subs); 
+         // Переводим мбайты в байты
+         $numb=substr($subs,0,strlen($subs)-1);
+         \prown\ConsoleLog('$numb='.$numb); 
+         $Unit="MB"; $point=\prown\RecalcToBytes($Unit,(int)$numb,0,rvsReturn);
+         // Если пересчет с ошибкой, то возвращаем сообщение
+         if (gettype($point)=="string") $Result=$point;
+         // Далее продолжаем анализ
+         else
+         {
+            \prown\ConsoleLog('$point='.$point); 
+            $Result=$subs;
+            /*
+            if ($size == 0)
+            {
+               // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
+               $this->_messages[] = "$filename ".'слишком большой или не выбран.';
+               return false;
+            } 
+            elseif ($size > $this->_max) 
+            {
+               // Проверяем возможный обход скрытого задания максимального размера 
+               // файла через MAX_FILE_SIZE. 
+               $this->_messages[] = "$filename exceeds maximum size: " . $this->getMaxSize();
+               return false;
+            } 
+            else 
+            {
+               return true;
+            }  
+            */
+         }
+      }
       return $Result;
    }
    // Проверить MIME-тип
