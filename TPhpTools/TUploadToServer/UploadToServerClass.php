@@ -118,49 +118,36 @@ class UploadToServer
 	     $field=current($this->_uploaded);
          // Выполняем предварительный контроль параметров временного файла 
          $this->message=$this->checkError($field['name'],$field['error']);
-         // Если контроль успешен, то проводим обработку дальше
+         // Если контроль успешен, то проверяем размер
          if ($this->message==imok)
          {
             $this->message=$this->checkSize($field['name'],$field['size']);
-            /*
-            $typeOK = $this->checkType($field['name'], $field['type']);
-            if ($sizeOK && $typeOK) 
+            // Размер подтвержден, анализируем тип файла
+            if ($this->message==imok)
             {
-         	   $name = $this->checkName($field['name'], $overwrite);
-               $success = move_uploaded_file($field['tmp_name'],$this->_destination.$name);
-               if ($success)
+               $this->message=$this->checkType($field['name'], $field['type']);
+               // Тип подтвержден, выполняем перемещение файла на сервер
+               if ($this->message==imok)
                {
-                  $message=$field['name'].' uploaded successfully';
-                  if ($this->_renamed) 
+                  $name=$field['name'];
+                  $success=move_uploaded_file($field['tmp_name'],$this->_destination.'/'.$name);
+                  if ($success)
                   {
-                     $message.=" and renamed $name";
+                     \prown\ConsoleLog($field['name'].' uploaded successfully'); 
+                  } 
+                  else 
+                  {
+                     // "Не удалось загрузить файл на сервер"
+                     $this->message=\prown\MakeUserError(CouldNotUploadTo.': '.$field['name'],$this->_prefix,rvsReturn);
                   }
-                  $this->_messages[]=$message;
-                  echo 'Загрузили<br>';
-               } 
-               else 
-               {
-                  $this->_messages[] = 'Could not upload ' . $field['name'];
-                  echo 'НЕЕЕЕЕЗагрузили<br>';
-               }
+              }
             }
-            */
          }
       }
       return $this->message;
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
    
-   // Вывести массив сообщений о загрузке файла
-   public function getMessages() 
-   {
-      return $this->_messages;
-   }
-   // Перевести размер файла в байтах в КБайты
-   public function getMaxSize() 
-   {
-      return number_format($this->_max/1024, 1).'kB';
-   }
    // *************************************************************************
    // *     Проверить код ошибки по принятому файлу во временное хранилище    *
    // *************************************************************************
@@ -248,61 +235,50 @@ class UploadToServer
       // Продолжаем анализ размера файла
       else
       {
-         \prown\ConsoleLog('$subs='.$subs); 
          // Переводим мбайты в байты
          $numb=substr($subs,0,strlen($subs)-1);
-         \prown\ConsoleLog('$numb='.$numb); 
          $Unit="MB"; $point=\prown\RecalcToBytes($Unit,(int)$numb,0,rvsReturn);
-         // Если пересчет с ошибкой, то возвращаем сообщение
+         // Если пересчет с ошибкой, то возвращаем сообщение с ошибкой пересчета
          if (gettype($point)=="string") $Result=$point;
-         // Далее продолжаем анализ
+         // Переопределяем максимальный размер файла
          else
          {
-            \prown\ConsoleLog('$point='.$point); 
-            $Result=$subs;
-            /*
+            if ($point<$this->_max) $this->_max=$point; 
+            // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
             if ($size == 0)
             {
-               // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
-               $this->_messages[] = "$filename ".'слишком большой или не выбран.';
-               return false;
+               $Result=\prown\MakeUserError(ZeroFileSize,$this->_prefix,rvsReturn);
             } 
-            elseif ($size > $this->_max) 
+            // Отмечаем обход скрытого задания максимального размера файла
+            elseif ($size>$this->_max) 
             {
-               // Проверяем возможный обход скрытого задания максимального размера 
-               // файла через MAX_FILE_SIZE. 
-               $this->_messages[] = "$filename exceeds maximum size: " . $this->getMaxSize();
-               return false;
+               $Result=\prown\MakeUserError
+               (ExceedOnМaxSize.': '.$size.'>'.$this->_max,$this->_prefix,rvsReturn);
             } 
-            else 
-            {
-               return true;
-            }  
-            */
          }
       }
       return $Result;
    }
-   // Проверить MIME-тип
-   protected function checkType($filename, $type) 
+   // *************************************************************************
+   // *                          Проверить MIME-тип файла                     *
+   // *************************************************************************
+   protected function checkType($filename,$type) 
    {
+      $Result=imok;
+      // Сюда приходим, когда срабатывает проверка в HTML на MAX_FILE_SIZE
+      // и загрузки не происходит, говорим про это
       if (empty($type)) 
       {
-         // Некрасиво! Сюда приходим, когда срабатывает проверка в HTML на MAX_FILE_SIZE
-         // и загрузки не происходит, говорим про это
-         $this->_messages[] = "Не произошло загрузки файла из-за превышения размера по MAX_FILE_SIZE.";
-         return false;
-      } 
-      elseif (!in_array($type, $this->_permitted)) 
-      {
-         $this->_messages[] = "$filename is not a permitted type of file.";
-         return false;
-      } 
-      else 
-      {
-         return true;
+         $Result=\prown\MakeUserError(ZeroFileSize,$this->_prefix,rvsReturn);
       }
+      // "Недопустимый тип файла" 
+      elseif (!in_array($type,$this->_permitted)) 
+      {
+         $Result=\prown\MakeUserError(IsNotPermitTypeFile.': '.$filename,$this->_prefix,rvsReturn);
+      } 
+      return $Result;
    }
+   
    // Добавить новые разрешенные типы файлов
    public function addPermittedTypes($types) 
    {
