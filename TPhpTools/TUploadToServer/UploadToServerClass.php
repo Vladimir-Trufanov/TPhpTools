@@ -50,6 +50,7 @@ define ("---fltAll",          3); // записываются в консоль,
 // Подгружаем нужные модули библиотеки прикладных функций
 require_once(pathPhpPrown."/CommonPrown.php");
 require_once(pathPhpPrown."/iniRegExp.php");
+require_once(pathPhpPrown."/MakeRID.php");
 require_once(pathPhpPrown."/MakeUserError.php");
 require_once(pathPhpPrown."/RecalcSizeInfo.php");
 // Подгружаем нужные модули библиотеки прикладных классов
@@ -63,11 +64,13 @@ class UploadToServer
    protected $_maxphp=0;            // максимальный размер файла по php.ini
    protected $_message=Ok;          // сообщение по загрузке файла
    protected $_modemess=rvsReturn;  // массив сообщений по загрузке файла
+   protected $_name='xName';        // имя, присваиваемое загруженному файлу
    protected $_permitted=array(     // разрешенные MIME-типы (здесь для изображений)
       'image/gif','image/jpeg','image/jpg','image/png');
    protected $_prefix;              // префикс сообщений об ошибках
    protected $_renamed=false;       // "имя загруженного файла изменилось"
    protected $_tmpdir='';           // каталог временного хранения файлов на сервере
+   protected $_type='xType';        // тип загруженного файла
    protected $_uploaded=array();    // $_FILES - данные о загруженном файле
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($path) 
@@ -125,15 +128,20 @@ class UploadToServer
             // Размер подтвержден, анализируем тип файла
             if ($this->message==imok)
             {
-               $this->message=$this->checkType($field['name'], $field['type']);
+               $this->message=$this->checkType($field['name'],$field['type']);
                // Тип подтвержден, выполняем перемещение файла на сервер
                if ($this->message==imok)
                {
                   $name=$field['name'];
+                  // Назначаем имя загруженного файла и его тип
+                  $this->_name=\prown\MakeRID();
+                  $this->_type=substr($field['type'],strpos($field['type'],'/')+1);
+                  $name=$this->_name.'.'.$this->_type;
+                  // Перемещаем файл и присваиваем назначенное имя
                   $success=move_uploaded_file($field['tmp_name'],$this->_destination.'/'.$name);
                   if ($success)
                   {
-                     \prown\ConsoleLog($field['name'].' uploaded successfully'); 
+                     \prown\ConsoleLog($name.' uploaded successfully'); 
                   } 
                   else 
                   {
@@ -264,7 +272,6 @@ class UploadToServer
    // *************************************************************************
    protected function checkType($filename,$type) 
    {
-      $Result=imok;
       // Сюда приходим, когда срабатывает проверка в HTML на MAX_FILE_SIZE
       // и загрузки не происходит, говорим про это
       if (empty($type)) 
@@ -275,7 +282,10 @@ class UploadToServer
       elseif (!in_array($type,$this->_permitted)) 
       {
          $Result=\prown\MakeUserError(IsNotPermitTypeFile.': '.$filename,$this->_prefix,rvsReturn);
-      } 
+      }
+      // Отмечаем, что тип файла верный
+      else $Result=imok;
+      // Возвращаем результат
       return $Result;
    }
    
