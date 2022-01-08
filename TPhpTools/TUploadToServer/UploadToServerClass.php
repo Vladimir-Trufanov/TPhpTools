@@ -64,7 +64,7 @@ class UploadToServer
    protected $_maxphp=0;            // максимальный размер файла по php.ini
    protected $_message=Ok;          // сообщение по загрузке файла
    protected $_modemess=rvsReturn;  // массив сообщений по загрузке файла
-   protected $_name='xName';        // имя, присваиваемое загруженному файлу
+   protected $_name='xName';        // имя, присваиваемое загруженному файлу (без расширения)
    protected $_permitted=array(     // разрешенные MIME-типы (здесь для изображений)
       'image/gif','image/jpeg','image/jpg','image/png');
    protected $_prefix;              // префикс сообщений об ошибках
@@ -73,10 +73,11 @@ class UploadToServer
    protected $_type='xType';        // тип загруженного файла
    protected $_uploaded=array();    // $_FILES - данные о загруженном файле
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct($path) 
+   public function __construct($path,$name='') 
    {
       // Инициализируем свойства класса
       $this->_destination = $path;
+      $this->_name = $name;
       $this->_max = (int) \prown\getComRequest($Com='MAX_FILE_SIZE');
       $this->_maxphp = ini_get('upload_max_filesize');
       $this->_prefix = 'TUploadToServer';
@@ -93,8 +94,8 @@ class UploadToServer
       // Здесь сделать контроль на загрузку только одного файла и сообщение      !!!
       // ----
       // Определяем имя подмассива по INPUT для $_FILES, когда загружен 1 файл   !!! 
-      $one=serialize($_FILES);
-      \prown\ConsoleLog('$one:'.$one);
+      // $one=serialize($_FILES);
+      // \prown\ConsoleLog('$one:'.$one);
       
    }
    public function __destruct() 
@@ -139,11 +140,13 @@ class UploadToServer
                // Тип подтвержден, выполняем перемещение файла на сервер
                if ($this->message==imok)
                {
-                  $name=$field['name'];
                   // Назначаем имя загруженного файла и его тип
-                  $this->_name=\prown\MakeRID();
-                  $this->_type=substr($field['type'],strpos($field['type'],'/')+1);
-                  $name=$this->_name.'.'.$this->_type;
+                  if ($this->_name=='') $name=$field['name'];
+                  else
+                  {
+                     $this->_type=substr($field['type'],strpos($field['type'],'/')+1);
+                     $name=$this->_name.'.'.$this->_type;
+                  }
                   // Перемещаем файл и присваиваем назначенное имя
                   $success=move_uploaded_file($field['tmp_name'],$this->_destination.'/'.$name);
                   if ($success)
