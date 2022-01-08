@@ -89,6 +89,13 @@ class UploadToServer
       \prown\ConsoleLog('$this->_prefix='.$this->_prefix); 
       \prown\ConsoleLog('$this->_tmpdir='.$this->_tmpdir); 
       \prown\ConsoleLog('count($this->_uploaded)='.count($this->_uploaded));
+      
+      // Здесь сделать контроль на загрузку только одного файла и сообщение      !!!
+      // ----
+      // Определяем имя подмассива по INPUT для $_FILES, когда загружен 1 файл   !!! 
+      $one=serialize($_FILES);
+      \prown\ConsoleLog('$one:'.$one);
+      
    }
    public function __destruct() 
    {
