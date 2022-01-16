@@ -35,14 +35,14 @@
 **/
 
 // Определения констант для PHP
-define ("oriLandscape",    0);  // Ландшафтное расположение устройства
-define ("oriPortrait",     1);  // Портретное расположение устройства
+define ("oriLandscape", 'landscape');  // Ландшафтное расположение устройства
+define ("oriPortrait",  'portrait');   // Портретное расположение устройства
 
 class DeviceOrientater
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $_iidestination;         // каталог для размещения изображения
-   protected $_iimax=57200;           // максимальный размер файла объекта класса
+   protected $_SignaUrl;         // uri вызова страницы в ландшафтной ориентации
+   protected $_SignaPortraitUrl; // uri вызова страницы в портретной ориентации
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct() 
    {
@@ -52,12 +52,12 @@ class DeviceOrientater
       'oriLandscape="'  .oriLandscape. '";'.
       'oriPortrait="'   .oriPortrait.  '";'.
       '</script>';
-      // Инициализируем свойства класса
-      $this->_iidestination = '$path';
-      $this->_iimax = (int) \prown\getComRequest($Com='MAX_FILE_SIZE');
+      // Определяем uri вызова страниц с различной ориентацией
+      $this->_SignaUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriLandscape;
+      $this->_SignaPortraitUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriPortrait;
       // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->_destination='.$this->_iidestination); 
-      \prown\ConsoleLog('$this->_max='.$this->_iimax);
+      \prown\ConsoleLog('$this->_SignaUrl='.$this->_SignaUrl); 
+      \prown\ConsoleLog('$this->_SignaPortraitUrl='.$this->_SignaPortraitUrl);
       // Подключаем обработчик изменения положения смартфона
       $this->OnOrientationChange();  
       // Определяем ориентацию устройства
@@ -107,12 +107,13 @@ class DeviceOrientater
    protected function OnOrientationChange() 
    {
       ?> <script>
-
-      SignaPortraitUrl="/_Signaphoto/SignaPhoto.php?orient=portrait";
-      SignaUrl="/_Signaphoto/SignaPhoto.php?orient=landscape";
-
+      // Назначаем uri вызова страниц с различной ориентацией
+      SignaUrl="<?php echo $this->_SignaUrl;?>";
+      SignaPortraitUrl="<?php echo $this->_SignaPortraitUrl;?>";
+      console.log('SignaUrl='+SignaUrl);
+      console.log('SignaPortraitUrl='+SignaPortraitUrl);
+      // Готовим обработку события при изменении положения устройства
       window.addEventListener('orientationchange',doOnOrientationChange);
-
       function doOnOrientationChange() 
       {
       if ((window.orientation==0)||(window.orientation==180))
