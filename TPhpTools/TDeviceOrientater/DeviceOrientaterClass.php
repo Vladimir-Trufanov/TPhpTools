@@ -5,7 +5,7 @@
 // ****************************************************************************
 // * TPhpTools        Регистратор ориентации и изменения положения устройства *
 // *                                                                          *
-// * v2.1, 16.01.2022                              Автор:       Труфанов В.Е. *
+// * v2.1, 17.01.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2020 tve                          Дата создания:  16.01.2022 *
 // ****************************************************************************
 
@@ -15,7 +15,11 @@
  * а) предоставляет информацию серверу о ландшафтном или портретном 
  *    расположении устройства через кукис Orient по ajax-запросу;
  *    
- * б) вызывает перезапуск страницы при изменении положения.
+ * б) вызывает перезапуск страницы при изменении положения;
+ * 
+ * в) файл DeviceOrientaterClass.php по аякс-запросу вызывается на сервере, как 
+ *    PHP-сценарий. В этом случае он формирует кукис для сайта и возвращает 
+ *    значение для контроля обратно в браузер.
  * 
  * Для взаимодействия с объектами класса должны быть определены две константы:
  * 
@@ -37,6 +41,16 @@
 // Определения констант для PHP
 define ("oriLandscape", 'landscape');  // Ландшафтное расположение устройства
 define ("oriPortrait",  'portrait');   // Портретное расположение устройства
+define ("urlPhpTools",'https://kwinflat.ru/Extve/TPhpTools/TPhpTools');
+
+// По аякс-запросу формируем кукис для сайта и возвращаем значение для 
+// контроля обратно в браузер
+if (IsSet($_POST['orient']))
+{
+   $orient=$_POST['orient'];
+   setcookie('Orient',$orient);
+   echo $orient;
+}
 
 class DeviceOrientater
 {
@@ -51,17 +65,49 @@ class DeviceOrientater
       '<script>'.
       'oriLandscape="'  .oriLandscape. '";'.
       'oriPortrait="'   .oriPortrait.  '";'.
+      'urlPhpTools="'   .urlPhpTools.  '";'.
       '</script>';
       // Определяем uri вызова страниц с различной ориентацией
       $this->_SignaUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriLandscape;
       $this->_SignaPortraitUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriPortrait;
       // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->_SignaUrl='.$this->_SignaUrl); 
-      \prown\ConsoleLog('$this->_SignaPortraitUrl='.$this->_SignaPortraitUrl);
+      //\prown\ConsoleLog('$this->_SignaUrl='.$this->_SignaUrl); 
+      //\prown\ConsoleLog('$this->_SignaPortraitUrl='.$this->_SignaPortraitUrl);
       // Подключаем обработчик изменения положения смартфона
       $this->OnOrientationChange();  
       // Определяем ориентацию устройства
       $this->MakeOrient();  
+   }
+   // *************************************************************************
+   // *               Передать признак ориентации смартфона в кукис           *
+   // *************************************************************************
+   public function MakeCookieOrient() 
+   {
+      // Передаем признак положения смартфона в кукис
+      //\prown\ConsoleLog(pathPhpTools."/TDeviceOrientater/DeviceOrientaterClass.php");
+      //\prown\ConsoleLog(urlPhpTools."/TDeviceOrientater/DeviceOrientaterClass.php");
+      // http://localhost:82/_Signaphoto/DeviceOrientaterClass.php
+      ?> <script>
+      $.ajax({
+      type:'POST',           
+      //url:urlPhpTools+'/TDeviceOrientater/DeviceOrientaterClass.php',  
+      url: 'DeviceOrientaterClass.php',  
+      async: false,          
+      data: {'orient' : DeviceOrientater_Orient},  // передаваемый обработчику признак ориентации
+      cache: false,           
+      // Отмечаем результат выполнения скрипта по аякс-запросу (успешный или нет)
+      success:function(data)
+      {
+         console.log("DeviceOrientaterClass: success");
+         console.log("data: "+data);
+      },
+      // Отмечаем  неуспешное выполнение аякс-запроса по причине:
+      error:function(data)
+      {
+         alert("DeviceOrientaterClass: error");
+      }
+      });
+      </script> <?php
    }
 
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
@@ -80,8 +126,8 @@ class DeviceOrientater
       ?> <script>
       // Определяем текущую ориентацию устройства 
       if ((window.orientation==0)||(window.orientation==180)) 
-         Orient=oriPortrait 
-      else Orient=oriLandscape 
+         DeviceOrientater_Orient=oriPortrait 
+      else DeviceOrientater_Orient=oriLandscape 
       </script> <?php
    }
    // *************************************************************************
@@ -110,8 +156,8 @@ class DeviceOrientater
       // Назначаем uri вызова страниц с различной ориентацией
       SignaUrl="<?php echo $this->_SignaUrl;?>";
       SignaPortraitUrl="<?php echo $this->_SignaPortraitUrl;?>";
-      console.log('SignaUrl='+SignaUrl);
-      console.log('SignaPortraitUrl='+SignaPortraitUrl);
+      //console.log('SignaUrl='+SignaUrl);
+      //console.log('SignaPortraitUrl='+SignaPortraitUrl);
       // Готовим обработку события при изменении положения устройства
       window.addEventListener('orientationchange',doOnOrientationChange);
       function doOnOrientationChange() 
