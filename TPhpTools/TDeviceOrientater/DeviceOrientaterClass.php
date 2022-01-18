@@ -5,21 +5,26 @@
 // ****************************************************************************
 // * TPhpTools        Регистратор ориентации и изменения положения устройства *
 // *                                                                          *
-// * v2.1, 17.01.2022                              Автор:       Труфанов В.Е. *
+// * v2.1, 18.01.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2020 tve                          Дата создания:  16.01.2022 *
 // ****************************************************************************
 
 /**
  * Класс DeviceOrientater обеспечивает контроль положения устройства:
  * 
- * а) предоставляет информацию серверу о ландшафтном или портретном 
- *    расположении устройства через кукис Orient по ajax-запросу;
- *    
- * б) вызывает перезапуск страницы при изменении положения;
+ * а) вызывает перезапуск страницы при изменении положения устройства с 
+ * передачей в url-запросе страницы параметра "orient", указывающего 
+ * положение устройства, в которое оно переводится ("landscape" или "portrait"):
+ *    $_SERVER['SCRIPT_NAME'].'?orient=landscape' или
+ *    $_SERVER['SCRIPT_NAME'].'?orient=portrait'; 
+ * б) для настольных компьютеров класс считает, что устройство всегда находится
+ * в положении "landscape" и смену ориентации не выполняет;
  * 
- * в) файл DeviceOrientaterClass.php по аякс-запросу вызывается на сервере, как 
- *    PHP-сценарий. В этом случае он формирует кукис для сайта и возвращает 
- *    значение для контроля обратно в браузер.
+ * в) для смартфонов класс предполагает, что первый запуск страницы выполняется
+ * из положения "landscape". Если обнаруживается, что первый запуск производится 
+ * из положения "portrait", то класс принудительно перезапускает страницу с
+ * явным указанием через параметр "orient" этого положения:
+ *     $_SERVER['SCRIPT_NAME'].'?orient=portrait';
  * 
  * Для взаимодействия с объектами класса должны быть определены две константы:
  * 
@@ -41,16 +46,9 @@
 // Определения констант для PHP
 define ("oriLandscape", 'landscape');  // Ландшафтное расположение устройства
 define ("oriPortrait",  'portrait');   // Портретное расположение устройства
-define ("urlPhpTools",'https://kwinflat.ru/Extve/TPhpTools/TPhpTools');
-
-// По аякс-запросу формируем кукис для сайта и возвращаем значение для 
-// контроля обратно в браузер
-if (IsSet($_POST['orient']))
-{
-   $orient=$_POST['orient'];
-   setcookie('Orient',$orient);
-   echo $orient;
-}
+define ("oriComputer",  'Computer');   // Настольный компьютер, ноутбук, моноблок
+define ("oriMobile",    'Mobile');     // Смартфон
+define ("oriTablet",    'Tablet');     // Планшет
 
 class DeviceOrientater
 {
@@ -58,14 +56,16 @@ class DeviceOrientater
    protected $_SignaUrl;         // uri вызова страницы в ландшафтной ориентации
    protected $_SignaPortraitUrl; // uri вызова страницы в портретной ориентации
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct() 
+   public function __construct($SiteDevice=oriComputer) 
    {
       // Подключаем межязыковые (PHP-JScript) определения внутри HTML
       echo 
       '<script>'.
       'oriLandscape="'  .oriLandscape. '";'.
       'oriPortrait="'   .oriPortrait.  '";'.
-      'urlPhpTools="'   .urlPhpTools.  '";'.
+      'oriComputer="'   .oriComputer.  '";'.
+      'oriMobile="'     .oriMobile.    '";'.
+      'oriTablet="'     .oriTablet.    '";'.
       '</script>';
       // Определяем uri вызова страниц с различной ориентацией
       $this->_SignaUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriLandscape;
@@ -73,45 +73,45 @@ class DeviceOrientater
       // Трассируем установленные свойства
       //\prown\ConsoleLog('$this->_SignaUrl='.$this->_SignaUrl); 
       //\prown\ConsoleLog('$this->_SignaPortraitUrl='.$this->_SignaPortraitUrl);
+      // При первом запуске перегружаем портретную страницу
+      $this->ReloadPortrait($SiteDevice);  
       // Подключаем обработчик изменения положения смартфона
       $this->OnOrientationChange();  
       // Определяем ориентацию устройства
       $this->MakeOrient();  
    }
-   // *************************************************************************
-   // *               Передать признак ориентации смартфона в кукис           *
-   // *************************************************************************
-   public function MakeCookieOrient() 
-   {
-      // Передаем признак положения смартфона в кукис
-      //\prown\ConsoleLog(pathPhpTools."/TDeviceOrientater/DeviceOrientaterClass.php");
-      //\prown\ConsoleLog(urlPhpTools."/TDeviceOrientater/DeviceOrientaterClass.php");
-      // http://localhost:82/_Signaphoto/DeviceOrientaterClass.php
-      ?> <script>
-      $.ajax({
-      type:'POST',           
-      //url:urlPhpTools+'/TDeviceOrientater/DeviceOrientaterClass.php',  
-      url: 'DeviceOrientaterClass.php',  
-      async: false,          
-      data: {'orient' : DeviceOrientater_Orient},  // передаваемый обработчику признак ориентации
-      cache: false,           
-      // Отмечаем результат выполнения скрипта по аякс-запросу (успешный или нет)
-      success:function(data)
-      {
-         console.log("DeviceOrientaterClass: success");
-         console.log("data: "+data);
-      },
-      // Отмечаем  неуспешное выполнение аякс-запроса по причине:
-      error:function(data)
-      {
-         alert("DeviceOrientaterClass: error");
-      }
-      });
-      </script> <?php
-   }
 
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 
+   // *************************************************************************
+   // *            Перегрузить при первом запуске портретную страницу         *
+   // *************************************************************************
+   protected function ReloadPortrait($SiteDevice) 
+   {
+      // Если устройство смартфон и портретная ориентация, 
+      // то перегружаем страницу
+      \prown\Alert('$SiteDevice='.$SiteDevice.'['.oriMobile.']');
+      if ($SiteDevice==oriMobile)
+      {
+         ?> <script>
+         // По сессионной переменной определяем первый запуск в сессии
+         orientStatus=sessionStorage.getItem('orientStatus'); 
+         if (orientStatus==null)
+         {
+            console.log('Первый запуск в сессии!');
+            alert('Первый запуск в сессии!');
+            // Снимаем признак первого запуска в сессии
+            sessionStorage.setItem('orientStatus',1);
+            // Если портретная ориентация, то перегружаем страницу
+            SignaPortraitUrl="<?php echo $this->_SignaPortraitUrl;?>";
+            if ((window.orientation==0)||(window.orientation==180))
+            {
+               window.location = SignaPortraitUrl;
+            } 
+         }
+         </script> <?php
+      }
+   }
    // *************************************************************************
    // *                       Определить ориентацию устройства                *
    // *************************************************************************
@@ -126,8 +126,16 @@ class DeviceOrientater
       ?> <script>
       // Определяем текущую ориентацию устройства 
       if ((window.orientation==0)||(window.orientation==180)) 
-         DeviceOrientater_Orient=oriPortrait 
-      else DeviceOrientater_Orient=oriLandscape 
+      {
+         DeviceOrientater_Orient=oriPortrait;
+         console.log('DeviceOrientater_Orient='+DeviceOrientater_Orient);
+         alert('DeviceOrientater_Orient='+DeviceOrientater_Orient);
+      } 
+      else
+      {
+         DeviceOrientater_Orient=oriLandscape 
+         alert('DeviceOrientater_Orient='+DeviceOrientater_Orient);
+      } 
       </script> <?php
    }
    // *************************************************************************
