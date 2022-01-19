@@ -12,11 +12,12 @@
 /**
  * Класс DeviceOrientater обеспечивает контроль положения устройства:
  * 
- * а) вызывает перезапуск страницы при изменении положения устройства с 
- * передачей в url-запросе страницы параметра "orient", указывающего 
+ * а) вызывает перезапуск страницы при изменении положения смартфона или 
+ * планшета с передачей в url-запросе страницы параметра "orient", указывающего 
  * положение устройства, в которое оно переводится ("landscape" или "portrait"):
  *    $_SERVER['SCRIPT_NAME'].'?orient=landscape' или
  *    $_SERVER['SCRIPT_NAME'].'?orient=portrait'; 
+ * 
  * б) для настольных компьютеров класс считает, что устройство всегда находится
  * в положении "landscape" и смену ориентации не выполняет;
  * 
@@ -39,7 +40,8 @@
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$_SERVER['DOCUMENT_ROOT'].'/TPhpTools');
  * // Создаем объект класса DeviceOrientater
- * $orient = new ttools\DeviceOrientater();
+ * $SiteDevice=oriComputer;
+ * $orient = new ttools\DeviceOrientater($SiteDevice);
  * 
 **/
 
@@ -70,9 +72,6 @@ class DeviceOrientater
       // Определяем uri вызова страниц с различной ориентацией
       $this->_SignaUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriLandscape;
       $this->_SignaPortraitUrl=$_SERVER['SCRIPT_NAME'].'?orient='.oriPortrait;
-      // Трассируем установленные свойства
-      //\prown\ConsoleLog('$this->_SignaUrl='.$this->_SignaUrl); 
-      //\prown\ConsoleLog('$this->_SignaPortraitUrl='.$this->_SignaPortraitUrl);
       // При первом запуске перегружаем портретную страницу
       $this->ReloadPortrait($SiteDevice);  
       // Подключаем обработчик изменения положения смартфона
@@ -90,7 +89,6 @@ class DeviceOrientater
    {
       // Если устройство смартфон и портретная ориентация, 
       // то перегружаем страницу
-      \prown\Alert('$SiteDevice='.$SiteDevice.'['.oriMobile.']');
       if ($SiteDevice==oriMobile)
       {
          ?> <script>
@@ -98,8 +96,6 @@ class DeviceOrientater
          orientStatus=sessionStorage.getItem('orientStatus'); 
          if (orientStatus==null)
          {
-            console.log('Первый запуск в сессии!');
-            alert('Первый запуск в сессии!');
             // Снимаем признак первого запуска в сессии
             sessionStorage.setItem('orientStatus',1);
             // Если портретная ориентация, то перегружаем страницу
@@ -128,13 +124,10 @@ class DeviceOrientater
       if ((window.orientation==0)||(window.orientation==180)) 
       {
          DeviceOrientater_Orient=oriPortrait;
-         console.log('DeviceOrientater_Orient='+DeviceOrientater_Orient);
-         alert('DeviceOrientater_Orient='+DeviceOrientater_Orient);
       } 
       else
       {
          DeviceOrientater_Orient=oriLandscape 
-         alert('DeviceOrientater_Orient='+DeviceOrientater_Orient);
       } 
       </script> <?php
    }
@@ -164,8 +157,6 @@ class DeviceOrientater
       // Назначаем uri вызова страниц с различной ориентацией
       SignaUrl="<?php echo $this->_SignaUrl;?>";
       SignaPortraitUrl="<?php echo $this->_SignaPortraitUrl;?>";
-      //console.log('SignaUrl='+SignaUrl);
-      //console.log('SignaPortraitUrl='+SignaPortraitUrl);
       // Готовим обработку события при изменении положения устройства
       window.addEventListener('orientationchange',doOnOrientationChange);
       function doOnOrientationChange() 
