@@ -84,13 +84,14 @@ class UploadToServer
       $this->_tmpdir = ini_get('upload_tmp_dir');
       $this->_uploaded = $_FILES;
       // Трассируем установленные свойства
+      /*
       \prown\ConsoleLog('$this->_destination='.$this->_destination); 
       \prown\ConsoleLog('$this->_max='.$this->_max); 
       \prown\ConsoleLog('$this->_maxphp='.$this->_maxphp); 
       \prown\ConsoleLog('$this->_prefix='.$this->_prefix); 
       \prown\ConsoleLog('$this->_tmpdir='.$this->_tmpdir); 
       \prown\ConsoleLog('count($this->_uploaded)='.count($this->_uploaded));
-      
+      */
       // Здесь сделать контроль на загрузку только одного файла и сообщение      !!!
       // ----
       // Определяем имя подмассива по INPUT для $_FILES, когда загружен 1 файл   !!! 
@@ -151,7 +152,7 @@ class UploadToServer
                   $success=move_uploaded_file($field['tmp_name'],$this->_destination.'/'.$name);
                   if ($success)
                   {
-                     \prown\ConsoleLog($name.' uploaded successfully'); 
+                     //\prown\ConsoleLog($name.' uploaded successfully'); 
                   } 
                   else 
                   {
