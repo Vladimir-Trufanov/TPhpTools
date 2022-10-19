@@ -269,15 +269,15 @@ TPhpTools
 6=TPhpTools\TUploadToServer\UploadToServerClass.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TUploadToServer\UploadToServerClass.php
+Selected=www\UpSite.php
 [www\Main.php]
-TopLine=31
+TopLine=3
 Caret=1,51
 [www\index.php]
 TopLine=3
 Caret=4,33
 [www\UpSite.php]
-TopLine=50
+TopLine=3
 Caret=1,1
 [www\TestsDiv.php]
 TopLine=24
