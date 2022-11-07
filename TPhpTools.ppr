@@ -37,19 +37,21 @@ TPhpTools
 			-TCtrlDir
 				TPhpTools\TCtrlDir\CtrlDirClass.php
 				TPhpTools\TCtrlDir\ViewDir.php
-			-TDownloadFromServer
+			-TDeviceOrientater
+				TPhpTools\TDeviceOrientater\DeviceOrientaterClass.php
+			+TDownloadFromServer
 				TPhpTools\TDownloadFromServer\download.php
 				TPhpTools\TDownloadFromServer\DownloadFromServerClass.php
 				TPhpTools\TDownloadFromServer\pic.png
-			+TFixLoadTimer
+			-TFixLoadTimer
 				TPhpTools\TFixLoadTimer\FixLoadTimer.js
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
 			+TUploadToServer
-				TPhpTools\TDeviceOrientater\DeviceOrientaterClass.php
-			TPhpTools\iniConstMemi.php
-			TPhpTools\iniErrMessage.php
+				TPhpTools\TUploadToServer\UploadToServerClass.php
+			TPhpTools\iniToolsConst.php
+			TPhpTools\iniToolsMessage.php
 		-TPhpToolsTests
 			TPhpToolsTests\T_ToolsTestCommon.php
 			TPhpToolsTests\TBaseMaker__test.php
@@ -64,7 +66,7 @@ TPhpTools
 			TPhpToolsTests\TPageStarter__test.php
 			TPhpToolsTests\TUploadToServer__test.php
 			TPhpToolsTests\TUploadToServer_Construct.php
-		+www
+		-www
 			-css
 				www\css\iniStyles.css
 				www\css\Styles 1.css
@@ -81,7 +83,8 @@ TPhpTools
 				www\favicon260x260\favicon-32x32.png
 				www\favicon260x260\mstile-150x150.png
 				www\favicon260x260\safari-pinned-tab.svg
-			-Gallery
+			-fil
+			-Gallery777
 			www\89.gif
 			www\basemaker.db3
 			www\check.png
@@ -159,7 +162,6 @@ TPhpTools
 						Материалы\DropZone\dropzone-master\dropzone-master\LICENSE
 						Материалы\DropZone\dropzone-master\dropzone-master\package.json
 						Материалы\DropZone\dropzone-master\dropzone-master\README.md
-				-html5_drag_and_drop
 				-jquery.dropzone-master
 					-jquery.dropzone-master
 						-dist
@@ -174,7 +176,6 @@ TPhpTools
 						Материалы\DropZone\jquery.dropzone-master\jquery.dropzone-master\README.md
 				-Upload1
 					-www
-						-upload
 						Материалы\DropZone\Upload1\www\dropzone.css
 						Материалы\DropZone\Upload1\www\dropzone.js
 						Материалы\DropZone\Upload1\www\favicon.ico
@@ -184,7 +185,6 @@ TPhpTools
 						Материалы\DropZone\Upload1\www\upload.php
 				-Upload2
 					-www
-						-uploads
 						Материалы\DropZone\Upload2\www\dropzone.css
 						Материалы\DropZone\Upload2\www\dropzone.js
 						Материалы\DropZone\Upload2\www\favicon.ico
@@ -204,14 +204,12 @@ TPhpTools
 								Материалы\DropZone\Uploadi\www\assets\js\jquery.knob.js
 								Материалы\DropZone\Uploadi\www\assets\js\jquery.ui.widget.js
 								Материалы\DropZone\Uploadi\www\assets\js\script.js
-						-uploads
 						Материалы\DropZone\Uploadi\www\code.rar
 						Материалы\DropZone\Uploadi\www\favicon.ico
 						Материалы\DropZone\Uploadi\www\index.html
 						Материалы\DropZone\Uploadi\www\upload.php
 				-UploadR
 					-www
-						-uploads
 						Материалы\DropZone\UploadR\www\.htaccess
 						Материалы\DropZone\UploadR\www\favicon.ico
 						Материалы\DropZone\UploadR\www\index.html
@@ -231,7 +229,6 @@ TPhpTools
 							Материалы\DropZone\www\assets\js\jquery.knob.js
 							Материалы\DropZone\www\assets\js\jquery.ui.widget.js
 							Материалы\DropZone\www\assets\js\script.js
-					-uploads
 					Материалы\DropZone\www\code.rar
 					Материалы\DropZone\www\favicon.ico
 					Материалы\DropZone\www\index.html
@@ -267,17 +264,18 @@ TPhpTools
 4=TPhpTools\TDeviceOrientater\DeviceOrientaterClass.php
 5=TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 6=TPhpTools\TUploadToServer\UploadToServerClass.php
+7=TPhpTools\TDownloadFromServer\DownloadFromServerClass.php
 [Selected Project Files]
 Main=
-Selected=www\UpSite.php
+Selected=TPhpTools\TUploadToServer\UploadToServerClass.php
 [www\Main.php]
-TopLine=3
+TopLine=13
 Caret=1,51
 [www\index.php]
 TopLine=3
 Caret=4,33
 [www\UpSite.php]
-TopLine=3
+TopLine=5
 Caret=1,1
 [www\TestsDiv.php]
 TopLine=24
@@ -289,5 +287,8 @@ Caret=32,53
 TopLine=7
 Caret=1,1
 [TPhpTools\TUploadToServer\UploadToServerClass.php]
+TopLine=193
+Caret=9,21
+[TPhpTools\TDownloadFromServer\DownloadFromServerClass.php]
 TopLine=1
-Caret=17,8
+Caret=1,1
