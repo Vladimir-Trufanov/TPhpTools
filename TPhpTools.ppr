@@ -32,6 +32,8 @@ TPhpTools
 				Favicon\favicon_package_v0.16\site.webmanifest
 			Favicon\favicon.png
 		+TPhpTools
+			+TArticlesMaker
+				TPhpTools\TArticlesMaker\ArticlesMakerClass.php
 			-TBaseMaker
 				TPhpTools\TBaseMaker\BaseMakerClass.php
 			-TCtrlDir
@@ -39,7 +41,7 @@ TPhpTools
 				TPhpTools\TCtrlDir\ViewDir.php
 			-TDeviceOrientater
 				TPhpTools\TDeviceOrientater\DeviceOrientaterClass.php
-			+TDownloadFromServer
+			-TDownloadFromServer
 				TPhpTools\TDownloadFromServer\download.php
 				TPhpTools\TDownloadFromServer\DownloadFromServerClass.php
 				TPhpTools\TDownloadFromServer\pic.png
@@ -48,7 +50,7 @@ TPhpTools
 				TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
 			-TPageStarter
 				TPhpTools\TPageStarter\PageStarterClass.php
-			+TUploadToServer
+			-TUploadToServer
 				TPhpTools\TUploadToServer\UploadToServerClass.php
 			TPhpTools\iniToolsConst.php
 			TPhpTools\iniToolsMessage.php
@@ -250,6 +252,7 @@ TPhpTools
 			Материалы\Исключения PHP часть 1.doc
 			Материалы\Как в PHP вывести текст на Русском языке на изображении.doc
 			Материалы\Опыты с чекбоксом.doc
+			Материалы\Список MIME типов файлов.doc
 		debug.log
 		Developer_Black.png
 		LICENSE
@@ -259,36 +262,16 @@ TPhpTools
 [Open project files]
 0=www\Main.php
 1=www\index.php
-2=www\UpSite.php
-3=www\TestsDiv.php
-4=TPhpTools\TDeviceOrientater\DeviceOrientaterClass.php
-5=TPhpTools\TFixLoadTimer\FixLoadTimerClass.php
-6=TPhpTools\TUploadToServer\UploadToServerClass.php
-7=TPhpTools\TDownloadFromServer\DownloadFromServerClass.php
+2=TPhpTools\TArticlesMaker\ArticlesMakerClass.php
 [Selected Project Files]
 Main=
-Selected=TPhpTools\TUploadToServer\UploadToServerClass.php
+Selected=TPhpTools\TArticlesMaker\ArticlesMakerClass.php
 [www\Main.php]
 TopLine=13
 Caret=1,51
 [www\index.php]
-TopLine=3
-Caret=4,33
-[www\UpSite.php]
-TopLine=5
-Caret=1,1
-[www\TestsDiv.php]
-TopLine=24
-Caret=1,1
-[TPhpTools\TDeviceOrientater\DeviceOrientaterClass.php]
-TopLine=23
-Caret=32,53
-[TPhpTools\TFixLoadTimer\FixLoadTimerClass.php]
-TopLine=7
-Caret=1,1
-[TPhpTools\TUploadToServer\UploadToServerClass.php]
-TopLine=193
-Caret=9,21
-[TPhpTools\TDownloadFromServer\DownloadFromServerClass.php]
 TopLine=1
-Caret=1,1
+Caret=4,33
+[TPhpTools\TArticlesMaker\ArticlesMakerClass.php]
+TopLine=219
+Caret=5,108
