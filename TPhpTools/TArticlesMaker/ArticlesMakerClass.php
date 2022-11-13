@@ -14,23 +14,21 @@
  * материалов сайтов 'ittve.pw' и 'ittve.me', обеспечивает построение и ведение 
  * меню статей.
  * 
- * Для взаимодействия с объектами класса должны быть определены две константы:
- * 
- * pathPhpTools - указывающая путь к каталогу с файлами библиотеки прикладных классов;
- * pathPhpPrown - указывающая путь к каталогу с файлами библиотеки прикладных функции,
- *    которые требуются для работы методов класса 
+ * Для взаимодействия с объектами класса должны быть определены константы:
+ *
+ * articleSite  - тип базы данных (по сайту)
+ * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
+ * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
  *    
  * Пример создания объекта класса:
  * 
  * // Указываем место размещения библиотеки прикладных функций TPhpPrown
- * define ("pathPhpPrown",$_SERVER['DOCUMENT_ROOT'].'/TPhpPrown');
+ * define ("pathPhpPrown",$SiteHost.'/TPhpPrown/TPhpPrown');
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
- * define ("pathPhpTools",$_SERVER['DOCUMENT_ROOT'].'/TPhpTools');
- * ----
- * // Определяем каталог для загрузки изображений и создаем объект
- * $imgDir=$_SERVER['DOCUMENT_ROOT'].'/Gallery';
- * $upload = new ttools\UploadToServer($imgDir);
- * ----
+ * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
+ * 
+ * // Cоздаем объект для управления материалами сайта в базе данных
+ * $Arti=new ttools\ArticlesMaker($basename,$username,$password);
 **/
 
 // Свойства:
@@ -43,14 +41,18 @@
 // $Page - название страницы сайта;
 // $Uagent - браузер пользователя;
 
-// ----------------------- Константы управления передачей данных о загрузке ---
-define ("---fltNotTransmit",  0); // данные не передаются  
-define ("---fltWriteConsole", 1); // записываются в консоль
-define ("---fltSendCookies",  2); // отправляются в кукисы
-define ("---fltAll",          3); // записываются в консоль, отправляются в кукисы  
+// --------------------- Константы для указания типа базы данных (по сайту) ---
+define ("tbsIttveme", 'IttveMe'); 
+define ("tbsIttvepw", 'IttvePw'); 
+define ("tbsOwn",     'Own'); 
+
+// Подгружаем модули функций класса, связанные с конкретным сайтом
+if (articleSite==tbsIttveme) require_once("CommonIttveMe.php"); 
+elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php"); 
+else require_once("CommonOwn.php"); 
 
 // Подгружаем нужные модули библиотеки прикладных функций
-require_once(pathPhpPrown."/CommonPrown.php");
+//require_once(pathPhpPrown."/CommonPrown.php");
 /*
 require_once(pathPhpPrown."/iniRegExp.php");
 require_once(pathPhpPrown."/MakeRID.php");
@@ -58,55 +60,36 @@ require_once(pathPhpPrown."/MakeUserError.php");
 require_once(pathPhpPrown."/RecalcSizeInfo.php");
 */
 // Подгружаем нужные модули библиотеки прикладных классов
-require_once(pathPhpTools."/iniToolsMessage.php");
+//require_once(pathPhpTools."/iniToolsMessage.php");
 
-class UploadToServer
+class ArticlesMaker
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $_destination;         // каталог для размещения изображения
-   protected $_max=57200;           // максимальный размер файла объекта класса
-   protected $_maxphp=0;            // максимальный размер файла по php.ini
-   protected $_message=Ok;          // сообщение по загрузке файла
-   protected $_modemess=rvsReturn;  // массив сообщений по загрузке файла
-   protected $_name='xName';        // имя, присваиваемое загруженному файлу (без расширения)
-   protected $_permitted=array(     // разрешенные MIME-типы (здесь для изображений)
-      'image/gif','image/jpeg','image/jpg','image/png');
-   protected $_prefix;              // префикс сообщений об ошибках
-   protected $_renamed=false;       // "имя загруженного файла изменилось"
-   protected $_tmpdir='';           // каталог временного хранения файлов на сервере
-   protected $_type='xType';        // расширение - тип загруженного файла
-   protected $_uploaded=array();    // $_FILES - данные о загруженном файле
+   protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw.db3';
+   protected $username;             // логин для доступа к базе данных
+   protected $password;             // пароль
+   //protected $_message=Ok;        // сообщение по загрузке файла
+   //protected $_uploaded=array();  // $_FILES - данные о загруженном файле
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct($path,$name='') 
+   public function __construct($basename,$username,$password) 
    {
       // Инициализируем свойства класса
-      $this->_destination = $path;
-      $this->_name = $name;
-      $this->_max = (int) \prown\getComRequest($Com='MAX_FILE_SIZE');
-      $this->_maxphp = ini_get('upload_max_filesize');
-      $this->_prefix = 'TUploadToServer';
-      $this->_tmpdir = ini_get('upload_tmp_dir');
-      $this->_uploaded = $_FILES;
+      $this->basename = $basename;
+      $this->username = $username;
+      $this->password = $password;
       // Трассируем установленные свойства
-      /*
-      \prown\ConsoleLog('$this->_destination='.$this->_destination); 
-      \prown\ConsoleLog('$this->_max='.$this->_max); 
-      \prown\ConsoleLog('$this->_maxphp='.$this->_maxphp); 
-      \prown\ConsoleLog('$this->_prefix='.$this->_prefix); 
-      \prown\ConsoleLog('$this->_tmpdir='.$this->_tmpdir); 
-      \prown\ConsoleLog('count($this->_uploaded)='.count($this->_uploaded));
-      */
-      // Здесь сделать контроль на загрузку только одного файла и сообщение      !!!
-      // ----
-      // Определяем имя подмассива по INPUT для $_FILES, когда загружен 1 файл   !!! 
-      // $one=serialize($_FILES);
-      // \prown\ConsoleLog('$one:'.$one);
-      
+      \prown\ConsoleLog('$this->basename='.$this->basename); 
+      \prown\ConsoleLog('$this->username='.$this->username); 
+      \prown\ConsoleLog('$this->password='.$this->password); 
    }
    public function __destruct() 
    {
    }
-   
+
+   public function BaseConnect() 
+   {
+      echo 'BaseConnect<br>';
+   }
    /*
    // *************************************************************************
    // *              Переместить временный файл в заданный каталог            *
