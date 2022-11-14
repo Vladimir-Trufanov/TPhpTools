@@ -44,12 +44,12 @@
 // --------------------- Константы для указания типа базы данных (по сайту) ---
 define ("tbsIttveme", 'IttveMe'); 
 define ("tbsIttvepw", 'IttvePw'); 
-define ("tbsOwn",     'Own'); 
 
+// Подгружаем общие функции класса
+require_once("CommonArticlesMaker.php"); 
 // Подгружаем модули функций класса, связанные с конкретным сайтом
 if (articleSite==tbsIttveme) require_once("CommonIttveMe.php"); 
 elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php"); 
-else require_once("CommonOwn.php"); 
 
 // Подгружаем нужные модули библиотеки прикладных функций
 //require_once(pathPhpPrown."/CommonPrown.php");
@@ -65,7 +65,7 @@ require_once(pathPhpPrown."/RecalcSizeInfo.php");
 class ArticlesMaker
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw.db3';
+   protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
    protected $username;             // логин для доступа к базе данных
    protected $password;             // пароль
    //protected $_message=Ok;        // сообщение по загрузке файла
@@ -78,17 +78,43 @@ class ArticlesMaker
       $this->username = $username;
       $this->password = $password;
       // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->basename='.$this->basename); 
-      \prown\ConsoleLog('$this->username='.$this->username); 
-      \prown\ConsoleLog('$this->password='.$this->password); 
+      //\prown\ConsoleLog('$this->basename='.$this->basename); 
+      //\prown\ConsoleLog('$this->username='.$this->username); 
+      //\prown\ConsoleLog('$this->password='.$this->password); 
    }
    public function __destruct() 
    {
    }
-
-   public function BaseConnect() 
+   // *************************************************************************
+   // *                    Открыть соединение с базой данных                  *
+   // *************************************************************************
+   public function BaseConnect($basename,$username,$password,&$pdo)
    {
-      echo 'BaseConnect<br>';
+      // Получаем спецификацию файла базы данных материалов
+      $filename=$basename.'.db3';
+      // Создается объект PDO и файл базы данных
+      $pathBase='sqlite:'.$filename; 
+      // Подключаем PDO к базе
+      $pdo = new \PDO(
+         $pathBase, 
+         $username,
+         $password,
+         array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
+      );
+   }
+   // *************************************************************************
+   // *    Создать резервную копию базы данных, построить новую базу данных   *
+   // *************************************************************************
+   public function BaseFirstCreate() 
+   {
+      _BaseFirstCreate($this->basename,$this->username,$this->password);
+   }
+   // *************************************************************************
+   // *       Показать пример меню (с использованием smartmenu или без)       *
+   // *************************************************************************
+   public function ShowSampleMenu() 
+   {
+      _ShowSampleMenu();
    }
    /*
    // *************************************************************************
