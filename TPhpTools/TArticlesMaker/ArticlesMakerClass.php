@@ -85,23 +85,18 @@ class ArticlesMaker
    public function __destruct() 
    {
    }
-   // *************************************************************************
-   // *                    Открыть соединение с базой данных                  *
-   // *************************************************************************
-   public function BaseConnect($basename,$username,$password,&$pdo)
+   
+   function BaseConnect()
    {
-      // Получаем спецификацию файла базы данных материалов
-      $filename=$basename.'.db3';
-      // Создается объект PDO и файл базы данных
-      $pathBase='sqlite:'.$filename; 
-      // Подключаем PDO к базе
-      $pdo = new \PDO(
-         $pathBase, 
-         $username,
-         $password,
-         array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
-      );
+      return _BaseConnect($this->basename,$this->username,$this->password);
    }
+   // ****************************************************************************
+   // *          Построить html-код меню по базе данных материалов сайта         *
+   // ****************************************************************************
+   public function MakeMenu($FirstUl)
+   {
+      _MakeMenu($this->basename,$this->username,$this->password,$FirstUl);
+   } 
    // *************************************************************************
    // *    Создать резервную копию базы данных, построить новую базу данных   *
    // *************************************************************************

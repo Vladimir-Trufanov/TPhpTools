@@ -145,6 +145,81 @@ function CreateTables($pdo)
 }
 
 // ****************************************************************************
+// *          Построить html-код меню по базе данных материалов сайта         *
+// ****************************************************************************
+function _MakeMenu($basename,$username,$password,$FirstUl) 
+{
+   // Подсоединяемся к базе данных
+   $pdo=_BaseConnect($basename,$username,$password);
+   // Готовим параметры и вырисовываем меню
+   $lvl=-1; $cLast='+++';
+   $nLine=0; $cli=""; 
+   // Параметр $otlada при необходимости используется для просмотра в коде
+   // страницы вложенности тегов и вызова рекурсий 
+   $otlada=false;
+   ShowTree16($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
+}
+function SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)
+{
+   $i=1; $c=''; $c=cUidPid($Uid,$Pid,$cLast); 
+   while ($i<=$lvl)
+   {
+      $c=$c.'...';
+      $i++;
+   }
+   if ($otlada==false) $c='';
+   return $c;
+}
+function cUidPid($Uid,$Pid,$cLast)
+{
+   $c='<!-- '.$cLast.' '.(1000+$Uid).'-'.(1000+$Pid).' --> ';
+   return $c;
+}
+function ShowTree16($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
+{
+   $lvl++; 
+   $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
+   $stmt = $pdo->query($cSQL);
+   $table = $stmt->fetchAll();
+
+   if (count($table)>0) 
+   {
+      // Выводим <ul>. Перед ним </li> не выводим.
+      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada).'<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
+      // 
+      foreach ($table as $row)
+      {
+         $nLine++; $cLine=''; 
+         if ($otlada) $cLine=$cLine.' #'.$nLine.'#';
+         $Uid = $row["uid"]; $Pid = $row["pid"]; $Translit = $row["Translit"];
+         // Перед <li> выводим предыдущее </li>, если не было <ul>.
+         if ($cLast<>'+ul') 
+         {
+             $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
+             echo($cli); $cLast='-li';
+         }
+         //  
+         echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> "); $cLast='+li';
+         
+         if ($Translit=='/')
+         {
+            echo('<a href="'.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         }
+         else
+         {
+            echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         }
+         // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
+         ShowTree16($pdo,$Uid,$Pid,$cLast,$nLine,$cli,'',$lvl,$otlada); 
+         $lvl--; 
+      }
+      // Перед </ul> ставим предыдущее </li>
+      $cli=SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</li>\n";
+      echo($cli); $cLast='-li';
+      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
+   }
+}
+// ****************************************************************************
 // * Создать резервную копию базы данных и заново построить новую базу данных *
 // ****************************************************************************
 function _BaseFirstCreate($basename,$username,$password) 
@@ -153,7 +228,7 @@ function _BaseFirstCreate($basename,$username,$password)
    $filename=$basename.'.db3';
    // Проверяем существование и удаляем файл копии базы данных 
    $filenameOld=$basename.'-copy.db3';
-   UnlinkFile($filename);
+   _UnlinkFile($filename);
    \prown\ConsoleLog('Проверено существование и удалена копия базы данных: '.$filenameOld);  
    // Создаем копию базы данных
    if (file_exists($filename)) 
@@ -172,17 +247,10 @@ function _BaseFirstCreate($basename,$username,$password)
       \prown\ConsoleLog('Прежней версии базы данных '.$filename.' не существует');
    }
    // Проверяем существование и удаляем файл базы данных 
-   UnlinkFile($filename);
+   _UnlinkFile($filename);
    \prown\ConsoleLog('Проверено существование и удалён старый файл базы данных: '.$filename);  
    // Создается объект PDO и файл базы данных
-   $pathBase='sqlite:'.$filename; 
-   // Подключаем PDO к базе
-   $pdo = new \PDO(
-      $pathBase, 
-      $username,
-      $password,
-      array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
-   );
+   $pdo=_BaseConnect($basename,$username,$password);
    \prown\ConsoleLog('Создан объект PDO и файл базы данных');
    // Создаём таблицы базы данных
    CreateTables($pdo);
