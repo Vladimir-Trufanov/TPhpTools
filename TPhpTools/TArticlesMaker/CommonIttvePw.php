@@ -158,6 +158,7 @@ function _MakeMenu($basename,$username,$password,$FirstUl)
    // страницы вложенности тегов и вызова рекурсий 
    $otlada=false;
    ShowTree16($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
+   unset($pdo);          
 }
 function SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)
 {
