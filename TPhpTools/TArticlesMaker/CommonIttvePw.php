@@ -6,7 +6,7 @@
 // * TPhpTools                     Блок функций класса TArticleMaker для базы *
 // *                                      данных материалов сайта "ittve.pw". *
 // *                                                                          *
-// * v1.0, 14.11.2022                              Автор:       Труфанов В.Е. *
+// * v1.0, 17.11.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
 
@@ -145,34 +145,33 @@ function CreateTables($pdo)
 }
 
 // ****************************************************************************
-   // *     Построить html-код ТАБЛИЦЫ меню по базе данных материалов сайта   *
-   // *                      с сортировкой по полям                           *
+// *      Построить html-код ТАБЛИЦЫ меню по базе данных материалов сайта     *
+// *                       с сортировкой по полям                             *
 // ****************************************************************************
-/* Функция вывода ссылок */
+// Включить ссылку в текущую строку таблицы
 function sort_link_th($title,$a,$b,$SignAsc,$SignDesc) 
 {
    $sort = @$_GET['Sort'];
    if ($sort == $a) 
    {
-      return '<a class="active" href="?Sort=' . $b . '">' . $title . ' <i>'.$SignAsc.'</i></a>';
+      return '<a class="ipvSort" href="?Sort=' . $b . '">' . $title . ' <i>'.$SignAsc.'</i></a>';
    } 
    elseif ($sort == $b) 
    {
-      return '<a class="active" href="?Sort=' . $a . '">' . $title . ' <i>'.$SignDesc.'</i></a>'; 
+      return '<a class="ipvSort" href="?Sort=' . $a . '">' . $title . ' <i>'.$SignDesc.'</i></a>'; 
    } 
    else 
    {
-      return '<a href="?Sort=' . $a . '">' . $title . '</a>'; 
+      return '<a class="ipvSort" href="?Sort=' . $a . '">' . $title . '</a>'; 
    }
 }
-
+// Построить html-код в строке ТАБЛИЦЫ меню по базе данных материалов сайта   
 function _MakeTblMenu($basename,$username,$password,
           $ListFields,$SignAsc,$SignDesc) 
 {
    // Подсоединяемся к базе данных
    $pdo=_BaseConnect($basename,$username,$password);
-      
-   // Формируем массив сортировок по выбранным полям в возрастающем и 
+   // Формируем массив для сортировок по выбранным полям в возрастающем и 
    // убывающем порядке по образцу:
    // $sort_list = array(
    //   'uid_asc'      => '"uid"',
@@ -192,8 +191,8 @@ function _MakeTblMenu($basename,$username,$password,
       $sort_list = $sort_list+
       array($key.'_desc' => '"'.$key.'" DESC');
    }
-
-   /* Проверка GET-переменной */
+   // Выбираем из параметра запроса значение GET-переменной и задаем
+   // способ сортировки таблицы
    $sort = @$_GET['Sort'];
    if (array_key_exists($sort, $sort_list)) 
    {
@@ -203,40 +202,36 @@ function _MakeTblMenu($basename,$username,$password,
    {
 	  $sort_sql = reset($sort_list);
    }
-   echo '$sort_sql='.$sort_sql.'<br>';
-
-   /* Запрос в БД */	
-   //$cSQL="SELECT uid,pid,NameArt,IdCue FROM stockpw ORDER BY uid";
-   $cSQL="SELECT uid,pid,NameArt,IdCue FROM stockpw ORDER BY {$sort_sql}";
+   // Формируем список выбранных полей для запроса их значений из базы данных
+   // убывающем порядке по образцу: 'uid,pid,NameArt,IdCue'
+   $fields='';
+   foreach ($ListFields as $key => $value) $fields=$fields.$key.',';
+   $fields=rtrim($fields,',');
+   // Выбираем значения указанных полей из базы данных по образцу:	
+   // $cSQL="SELECT uid,pid,NameArt,IdCue FROM stockpw ORDER BY uid";
+   $cSQL="SELECT ".$fields." FROM stockpw ORDER BY {$sort_sql}";
    $stmt=$pdo->query($cSQL);
    $list=$stmt->fetchAll();
-   
-   echo '$cSQL='.$cSQL.'<br>';
-   //print_r($list);
 
-   ?> <!-- -->
-   <table>
-   <thead>
-   <tr>
-      <th><?php echo sort_link_th('..Пункт меню..',   'uid_asc',    'uid_desc',     $SignAsc,$SignDesc); ?></th>
-      <th><?php echo sort_link_th('..Родитель..',     'pid_asc',    'pid_desc',     $SignAsc,$SignDesc); ?></th>
-      <th><?php echo sort_link_th('..Статья сайта..', 'NameArt_asc','NameArt_desc', $SignAsc,$SignDesc); ?></th>
-      <th><?php echo sort_link_th('..Тип статьи..',   'IdCue_asc',  'IdCue_desc',   $SignAsc,$SignDesc); ?></th>
-   </tr>
-   </thead>
-   <tbody>
-   <?php foreach ($list as $row): ?>
-   <tr>
-   <td><?php echo $row['uid']; ?>             </td>
-   <td><?php echo $row['pid']; ?>             </td>
-   <td><?php echo $row['NameArt']; ?>         </td>
-   <td><?php echo $row['IdCue']; ?> тип статьи</td>
-   </tr>
-   <?php endforeach; ?> 
-   </tbody>
-   </table>
-   <?php
+   // Формируем таблицу
+   echo '<table id="ipvTable"> <thead> <tr>';
+   foreach ($ListFields as $key => $value) 
+   {
+      echo '<th class="ipvHead">'; 
+      echo sort_link_th($value,$key.'_asc',$key.'_desc',$SignAsc,$SignDesc); 
+      echo '</th>'; 
+   }
+   echo '</tr> </thead> <tbody>';
    
+   foreach ($list as $row):
+      echo '<tr class="ipvRow">';
+      foreach ($ListFields as $key => $value) 
+      {
+         echo '<td class="ipvColumn">'; echo $row[$key]; echo '</td>'; 
+      }
+      echo '</tr>';
+   endforeach; 
+   echo '</tbody> </table>';
    unset($pdo);          
 }
 // ****************************************************************************
