@@ -64,11 +64,12 @@ function CreateTables($pdo)
       // Заполняем таблицу материалов в начальном состоянии (на 2022-11-09)
       $aCharters=[                                                          
          [ 1, 0,-1, 'ittve.me',                                            '/',                                              acsAll,0,''],
-         [ 2, 1,-1, 'Моя жизнь',                                           '/',                                              acsAll,0,''],
+         [ 2, 1,-1, 'Моя жизнь',                                           'moya-zhizn',                                     acsAll,0,''],
          [ 3, 2, 0,    'Особенности устройства винтиков в моей голове',    'osobennosti-ustrojstva-vintikov-v-moej-golove',  acsAll,0,''],
-         [ 4, 1,-1, 'Микропутешествия',                                    '/',                                              acsAll,0,''],
+         [ 4, 1,-1, 'Микропутешествия',                                    'mikroputeshestviya',                             acsAll,0,''],
          [ 5, 4, 0,    'Киндасово - земля карельского юмора',              'kindasovo-zemlya-karelskogo-yumora',             acsAll,0,''],
          [ 6, 4, 0,    'Гора Сампо. Озеро, светлый лес, тропинка в небо',  'gora-sampo-ozero-svetlyj-les-tropinka-v-nebo',   acsAll,0,''],
+         /*
          [ 7, 4, 0,    'Падозеро, кладбище заключенных лагеря №517',       'padozero-kladbishche-zaklyuchennyh-lagerya-517', acsAll,0,''],
          [ 8, 4, 0,    'Таёжный зоопарк на озере Сямозеро',                'tayozhnyj-zoopark-na-ozere-syamozero',           acsAll,0,''],
          [ 9, 4, 0,    'Шелтозеро. Так жили вепсы',                        'sheltozero-tak-zhili-vepsy',                     acsAll,0,''],
@@ -82,6 +83,7 @@ function CreateTables($pdo)
          [17,16, 0,    'Охота на медведя',                                 'ohota-na-medvedya',                              acsAll,0,''],
          [18, 1,-1, 'Дополнения к микропутешествиям',                      '/',                                              acsAll,0,''],
          [19, 1,-1, 'Перепечатка',                                         '/',                                              acsAll,0,''],
+         */
          [20, 0,-1, 'ittve.end',                                           '/',                                              acsAll,0,'']
       ];       
 
@@ -348,22 +350,6 @@ function aViewPath($array)
    echo '</table>';
    echo '</pre>';
 }
-// ****************************************************************************
-// *          Построить html-код меню по базе данных материалов сайта         *
-// ****************************************************************************
-function _MakeMenu($basename,$username,$password,$FirstUl) 
-{
-   // Подсоединяемся к базе данных
-   $pdo=_BaseConnect($basename,$username,$password);
-   // Готовим параметры и вырисовываем меню
-   $lvl=-1; $cLast='+++';
-   $nLine=0; $cli=""; 
-   // Параметр $otlada при необходимости используется для просмотра в коде
-   // страницы вложенности тегов и вызова рекурсий 
-   $otlada=false;
-   ShowTree16($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
-   unset($pdo);          
-}
 function SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)
 {
    $i=1; $c=''; $c=cUidPid($Uid,$Pid,$cLast); 
@@ -416,6 +402,55 @@ function ShowTree16($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$
          }
          // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
          ShowTree16($pdo,$Uid,$Pid,$cLast,$nLine,$cli,'',$lvl,$otlada); 
+         $lvl--; 
+      }
+      // Перед </ul> ставим предыдущее </li>
+      $cli=SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</li>\n";
+      echo($cli); $cLast='-li';
+      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
+   }
+}
+function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
+{
+   $lvl++; 
+   $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
+   $stmt = $pdo->query($cSQL);
+   $table = $stmt->fetchAll();
+
+   if (count($table)>0) 
+   {
+      // Выводим <ul>. Перед ним </li> не выводим.
+      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada).'<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
+      // 
+      foreach ($table as $row)
+      {
+         $nLine++; $cLine=''; 
+         if ($otlada) $cLine=$cLine.' #'.$nLine.'#';
+         $Uid = $row["uid"]; $Pid = $row["pid"]; $Translit = $row["Translit"];
+         // Перед <li> выводим предыдущее </li>, если не было <ul>.
+         if ($cLast<>'+ul') 
+         {
+             $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
+             echo($cli); $cLast='-li';
+         }
+         //  
+         echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> "); $cLast='+li';
+
+         echo('<a href="#">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         
+         /*
+         if ($Translit=='/')
+         {
+            //echo('<a href="'.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+            echo('<a>'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         }
+         else
+         {
+            //echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+            echo('<a>'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         }
+         */
+         ShowTreeMe($pdo,$Uid,$Pid,$cLast,$nLine,$cli,' class="sub-menu"',$lvl,$otlada); 
          $lvl--; 
       }
       // Перед </ul> ставим предыдущее </li>
@@ -514,4 +549,65 @@ function _MakeTblMenu($basename,$username,$password,
    echo '</tbody> </table>';
    unset($pdo);          
 }
+function ShowTree17($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
+{
+   $lvl++; 
+   $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
+   $stmt = $pdo->query($cSQL);
+   $table = $stmt->fetchAll();
+
+   if (count($table)>0) 
+   {
+      // Выводим <ul>. Перед ним </li> не выводим.
+      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada).'<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
+      // 
+      foreach ($table as $row)
+      {
+         $nLine++; $cLine=''; 
+         if ($otlada) $cLine=$cLine.' #'.$nLine.'#';
+         $Uid = $row["uid"]; $Pid = $row["pid"]; $Translit = $row["Translit"];
+         // Перед <li> выводим предыдущее </li>, если не было <ul>.
+         if ($cLast<>'+ul') 
+         {
+             $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
+             echo($cli); $cLast='-li';
+         }
+         //  
+         echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> "); $cLast='+li';
+         
+         if ($Translit=='/')
+         {
+            echo('<a href="'.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         }
+         else
+         {
+            echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+         }
+         // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
+         ShowTree17($pdo,$Uid,$Pid,$cLast,$nLine,$cli,'',$lvl,$otlada); 
+         $lvl--; 
+      }
+      // Перед </ul> ставим предыдущее </li>
+      $cli=SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</li>\n";
+      echo($cli); $cLast='-li';
+      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
+   }
+}
+// ****************************************************************************
+// *          Построить html-код меню по базе данных материалов сайта         *
+// ****************************************************************************
+function _MakeMenu($basename,$username,$password,$FirstUl) 
+{
+   // Подсоединяемся к базе данных
+   $pdo=_BaseConnect($basename,$username,$password);
+   // Готовим параметры и вырисовываем меню
+   $lvl=-1; $cLast='+++';
+   $nLine=0; $cli=""; 
+   // Параметр $otlada при необходимости используется для просмотра в коде
+   // страницы вложенности тегов и вызова рекурсий 
+   $otlada=false;
+   ShowTree17($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
+   unset($pdo);          
+}
+
 // ****************************************************** CommonIttveMe.php ***
