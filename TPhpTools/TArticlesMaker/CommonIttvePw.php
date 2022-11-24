@@ -237,7 +237,7 @@ function _MakeTblMenu($basename,$username,$password,
 // ****************************************************************************
 // *          Построить html-код меню по базе данных материалов сайта         *
 // ****************************************************************************
-function _MakeMenu($basename,$username,$password,$FirstUl) 
+function _MakeMenu($basename,$username,$password) 
 {
    // Подсоединяемся к базе данных
    $pdo=_BaseConnect($basename,$username,$password);
@@ -247,7 +247,7 @@ function _MakeMenu($basename,$username,$password,$FirstUl)
    // Параметр $otlada при необходимости используется для просмотра в коде
    // страницы вложенности тегов и вызова рекурсий 
    $otlada=false;
-   ShowTree16($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
+   ShowTreePw($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
    unset($pdo);          
 }
 function SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)
@@ -266,7 +266,7 @@ function cUidPid($Uid,$Pid,$cLast)
    $c='<!-- '.$cLast.' '.(1000+$Uid).'-'.(1000+$Pid).' --> ';
    return $c;
 }
-function ShowTree16($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
+function ShowTreePw($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$FirstUl=' id="main-menu" class="sm sm-mint"')
 {
    $lvl++; 
    $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
@@ -301,7 +301,7 @@ function ShowTree16($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$
             echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
          }
          // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
-         ShowTree16($pdo,$Uid,$Pid,$cLast,$nLine,$cli,'',$lvl,$otlada); 
+         ShowTreePw($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,$otlada,''); 
          $lvl--; 
       }
       // Перед </ul> ставим предыдущее </li>
@@ -529,4 +529,43 @@ function aViewPath($array)
    echo '</table>';
    echo '</pre>';
 }
+// *************************************************************************
+// *       Показать пример меню (с использованием smartmenu или без)       *
+// *************************************************************************
+function _ShowSampleMenu() 
+{
+   $Menu='
+   <li><a href="/">ММС Лада-Нива</a>
+      <ul>
+         <li><a href="?Com=s-chego-vse-nachalos">С чего все началось</a></li>     
+         <li><a href="?Com=a-chto-vnutri">А что внутри?</a></li>
+         <li><a href="?Com=ehksperimenty-so-strokami">Эксперименты со строками</a></li>
+      </ul>
+   </li>
+   <li><a href="/">Стиль</a>
+      <ul>
+         <li><a href="?Com=ehlementy-stilya-programmirovaniya">Элементы стиля программирования</a></li>
+         <li><a href="?Com=pishite-programmy-prosto">Пишите программы просто</a></li>
+      </ul>
+   </li>
+   <li><a href="/">Моделирование</a></li>
+   <li><a href="/">Учебники</a></li>
+   <li><a href="/">Сайт</a>
+      <ul>
+         <li><a href="?Com=avtorizovatsya">Авторизоваться</a></li>
+         <li><a href="?Com=zaregistrirovatsya">Зарегистрироваться</a></li>
+         <li><a href="?Com=o-sajte">О сайте</a></li>
+         <li><a href="?Com=redaktirovat-material">Редактировать материал</a></li>
+         <li><a href="?Com=izmenit-nastrojki">Изменить настройки</a></li>
+         <li><a href="?Com=otklyuchitsya">Отключиться</a></li>
+      </ul>
+   </li>
+   ';
+   echo "\n"; 
+   echo '<ul id="main-menu" class="sm sm-mint">';
+   echo $Menu;
+   echo '</ul>';
+   echo "\n"; 
+}
+
 // ****************************************************** CommonIttvePw.php ***

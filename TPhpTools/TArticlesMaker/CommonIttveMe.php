@@ -69,7 +69,6 @@ function CreateTables($pdo)
          [ 4, 1,-1, 'Микропутешествия',                                    'mikroputeshestviya',                             acsAll,0,''],
          [ 5, 4, 0,    'Киндасово - земля карельского юмора',              'kindasovo-zemlya-karelskogo-yumora',             acsAll,0,''],
          [ 6, 4, 0,    'Гора Сампо. Озеро, светлый лес, тропинка в небо',  'gora-sampo-ozero-svetlyj-les-tropinka-v-nebo',   acsAll,0,''],
-         /*
          [ 7, 4, 0,    'Падозеро, кладбище заключенных лагеря №517',       'padozero-kladbishche-zaklyuchennyh-lagerya-517', acsAll,0,''],
          [ 8, 4, 0,    'Таёжный зоопарк на озере Сямозеро',                'tayozhnyj-zoopark-na-ozere-syamozero',           acsAll,0,''],
          [ 9, 4, 0,    'Шелтозеро. Так жили вепсы',                        'sheltozero-tak-zhili-vepsy',                     acsAll,0,''],
@@ -83,7 +82,6 @@ function CreateTables($pdo)
          [17,16, 0,    'Охота на медведя',                                 'ohota-na-medvedya',                              acsAll,0,''],
          [18, 1,-1, 'Дополнения к микропутешествиям',                      '/',                                              acsAll,0,''],
          [19, 1,-1, 'Перепечатка',                                         '/',                                              acsAll,0,''],
-         */
          [20, 0,-1, 'ittve.end',                                           '/',                                              acsAll,0,'']
       ];       
 
@@ -410,55 +408,6 @@ function ShowTree16($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$
       echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
    }
 }
-function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
-{
-   $lvl++; 
-   $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
-   $stmt = $pdo->query($cSQL);
-   $table = $stmt->fetchAll();
-
-   if (count($table)>0) 
-   {
-      // Выводим <ul>. Перед ним </li> не выводим.
-      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada).'<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
-      // 
-      foreach ($table as $row)
-      {
-         $nLine++; $cLine=''; 
-         if ($otlada) $cLine=$cLine.' #'.$nLine.'#';
-         $Uid = $row["uid"]; $Pid = $row["pid"]; $Translit = $row["Translit"];
-         // Перед <li> выводим предыдущее </li>, если не было <ul>.
-         if ($cLast<>'+ul') 
-         {
-             $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
-             echo($cli); $cLast='-li';
-         }
-         //  
-         echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> "); $cLast='+li';
-
-         echo('<a href="#">'.$row['NameArt'].$cLine.'</a>'."\n"); 
-         
-         /*
-         if ($Translit=='/')
-         {
-            //echo('<a href="'.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
-            echo('<a>'.$row['NameArt'].$cLine.'</a>'."\n"); 
-         }
-         else
-         {
-            //echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
-            echo('<a>'.$row['NameArt'].$cLine.'</a>'."\n"); 
-         }
-         */
-         ShowTreeMe($pdo,$Uid,$Pid,$cLast,$nLine,$cli,' class="sub-menu"',$lvl,$otlada); 
-         $lvl--; 
-      }
-      // Перед </ul> ставим предыдущее </li>
-      $cli=SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</li>\n";
-      echo($cli); $cLast='-li';
-      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
-   }
-}
 // ****************************************************************************
 // *      Построить html-код ТАБЛИЦЫ меню по базе данных материалов сайта     *
 // *                       с сортировкой по полям                             *
@@ -549,10 +498,10 @@ function _MakeTblMenu($basename,$username,$password,
    echo '</tbody> </table>';
    unset($pdo);          
 }
-function ShowTree17($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
+function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$FirstUl=' class="accordion"')
 {
    $lvl++; 
-   $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
+   $cSQL="SELECT uid,NameArt,Translit,pid,IdCue FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
    $stmt = $pdo->query($cSQL);
    $table = $stmt->fetchAll();
 
@@ -564,27 +513,31 @@ function ShowTree17($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$
       foreach ($table as $row)
       {
          $nLine++; $cLine=''; 
-         if ($otlada) $cLine=$cLine.' #'.$nLine.'#';
-         $Uid = $row["uid"]; $Pid = $row["pid"]; $Translit = $row["Translit"];
-         // Перед <li> выводим предыдущее </li>, если не было <ul>.
+         if ($otlada) $cLine=$cLine.' ='.$nLine.'=';
+         $Uid=$row["uid"]; $Pid=$row["pid"]; $Translit=$row["Translit"];
+         $IdCue=$row["IdCue"];
          if ($cLast<>'+ul') 
          {
              $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
              echo($cli); $cLast='-li';
          }
-         //  
-         echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> "); $cLast='+li';
-         
-         if ($Translit=='/')
+         // Выводим li и href для раздела (IdCue=-1)
+         // <li id="moya-zhizn" class="moya-zhizn"><a href="#moya-zhizn">Моя жизнь<span>495</span></a>
+         if ($IdCue==-1)
          {
-            echo('<a href="'.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
-         }
+            echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada).'<li id="'.$Translit.'" class="'.$Translit.'"> '); 
+            echo('<a href="#'.$Translit.'">'.$row['NameArt'].$cLine.'<span>495</span>'.'</a>'."\n"); 
+         } 
+         // Выводим li и href для статьи
+         // <li><a href="#osobennosti-ustrojstva-vintikov-v-moej-golove"><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></a></li>			
          else
          {
-            echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
+            echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> ");
+            echo('<a href="#'.$Translit.'">'.'<em>1</em>'.$row['NameArt'].$cLine.'</a>'."\n"); 
          }
+         $cLast='+li';
          // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
-         ShowTree17($pdo,$Uid,$Pid,$cLast,$nLine,$cli,'',$lvl,$otlada); 
+         ShowTreeMe($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,$otlada,' class="sub-menu"'); 
          $lvl--; 
       }
       // Перед </ul> ставим предыдущее </li>
@@ -596,7 +549,7 @@ function ShowTree17($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$
 // ****************************************************************************
 // *          Построить html-код меню по базе данных материалов сайта         *
 // ****************************************************************************
-function _MakeMenu($basename,$username,$password,$FirstUl) 
+function _MakeMenu($basename,$username,$password) 
 {
    // Подсоединяемся к базе данных
    $pdo=_BaseConnect($basename,$username,$password);
@@ -606,8 +559,66 @@ function _MakeMenu($basename,$username,$password,$FirstUl)
    // Параметр $otlada при необходимости используется для просмотра в коде
    // страницы вложенности тегов и вызова рекурсий 
    $otlada=false;
-   ShowTree17($pdo,1,1,$cLast,$nLine,$cli,$FirstUl,$lvl,$otlada);
+   ShowTreeMe($pdo,1,1,$cLast,$nLine,$cli,$lvl,$otlada);
    unset($pdo);          
+}
+// *************************************************************************
+// *       Показать пример меню (с использованием smartmenu или без)       *
+// *************************************************************************
+function _ShowSampleMenu() 
+{
+   $Menu='
+   <ul class="accordion">
+   <li id="moya-zhizn" class="moya-zhizn"><a href="#moya-zhizn">Моя жизнь<span>495</span></a>
+      <ul class="sub-menu">
+         <li><a href="#osobennosti-ustrojstva-vintikov-v-moej-golove"><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></a></li>			
+      </ul>
+   </li>
+   <li id="mikroputeshestviya" class="mikroputeshestviya"><a href="#mikroputeshestviya">Микропутешествия<span>26</span></a>
+   <ul class="sub-menu">
+      <li><a href="#kindasovo-zemlya-karelskogo-yumora"><em>1</em>Киндасово - земля карельского юмора<span>20.06.2010</span></a></li>	
+      <li><a href="#gora-sampo-ozero-svetlyj-les-tropinka-v-nebo"><em>2</em>Гора Сампо. Озеро, светлый лес, тропинка в небо<span>23.06.2010</span></a></li>
+      <li><a href="#part2"><em>3</em>Падозеро, кладбище заключенных лагеря №517<span>03.07.2010</span></a></li>
+      <li><a href="#part2"><em>4</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></a></li>
+      <li><a href="#part2"><em>5</em>Шелтозер. Так жили вепсы<span>10.07.2010</span></a></li>
+      <li><a href="#part2"><em>6</em>Полоса 2300 - военный аэродром в Гирвасе<span>17.07.2010</span></a></li>
+      <li><a href="#part2"><em>8</em>Чертов стул, кусочек ботанического сада<span>11.09.2010</span></a></li>
+      <li><a href="#part2"><em>10</em>Благовещенский Ионо-Яшезерский мужской монастырь<span>10.10.2010</span></a></li>
+   </ul>                                                                                     
+   </li>
+   <li id="part3" class="vsyakoe-raznoe"><a href="#part3">Всякое-разное<span>58</span></a>
+      <ul class="sub-menu">
+         <li><a href="#part3"><em>1</em>Всякое-разное<span>05.02.1958</span></a></li>
+      </ul>
+   </li>
+   <li id="part4" class="v-kontakte"><a href="#part4">В контакте<span>58</span></a>
+      <ul class="sub-menu">
+         <li><a href="#part4"><em>1</em>В контакте<span>05.02.1958</span></a></li>
+      </ul>
+   </li>
+   <li id="part5" class="moj-mir"><a href="#part5">Мой мир<span>58</span></a>
+      <ul class="sub-menu">
+         <li><a href="#part5"><em>1</em>Мой мир<span>05.02.1958</span></a></li>
+      </ul>
+   </li>
+   <li id="part6" class="progulki"><a href="#part6">Прогулки<span>58</span></a>
+      <ul class="sub-menu">
+         <li><a href="#part6"><em>1</em>Прогулки<span>05.02.1958</span></a></li>
+      </ul>
+   </li>
+   <li id="part22" class="dopolneniya-k-mikroputeshestviyam"><a href="#part22">Дополнения к микропутешествиям<span>58</span></a>
+      <ul class="sub-menu">
+         <li><a href="#part22"><em>1</em>Дополнения к микропутешествиям<span>05.02.1958</span></a></li>
+      </ul>
+   </li>
+   <li id="part99" class="perepechatka"><a href="#part99">Перепечатка<span>58</span></a>
+      <ul class="sub-menu">
+         <li><a href="#part99"><em>1</em>Перепечатка<span>05.02.1958</span></a></li>
+      </ul>
+   </li>
+   </ul>
+   ';
+   echo $Menu;
 }
 
 // ****************************************************** CommonIttveMe.php ***
