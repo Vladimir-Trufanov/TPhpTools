@@ -67,22 +67,23 @@ function CreateTables($pdo)
          [ 2, 1,-1, 'Моя жизнь',                                           'moya-zhizn',                                     acsAll,0,''],
          [ 3, 2, 0,    'Особенности устройства винтиков в моей голове',    'osobennosti-ustrojstva-vintikov-v-moej-golove',  acsAll,0,''],
          [ 4, 1,-1, 'Микропутешествия',                                    'mikroputeshestviya',                             acsAll,0,''],
-         [ 5, 4, 0,    'Киндасово - земля карельского юмора',              'kindasovo-zemlya-karelskogo-yumora',             acsAll,0,''],
-         [ 6, 4, 0,    'Гора Сампо. Озеро, светлый лес, тропинка в небо',  'gora-sampo-ozero-svetlyj-les-tropinka-v-nebo',   acsAll,0,''],
-         [ 7, 4, 0,    'Падозеро, кладбище заключенных лагеря №517',       'padozero-kladbishche-zaklyuchennyh-lagerya-517', acsAll,0,''],
-         [ 8, 4, 0,    'Таёжный зоопарк на озере Сямозеро',                'tayozhnyj-zoopark-na-ozere-syamozero',           acsAll,0,''],
-         [ 9, 4, 0,    'Шелтозеро. Так жили вепсы',                        'sheltozero-tak-zhili-vepsy',                     acsAll,0,''],
-         [10, 4, 0,    'Полоса 2300 - военный аэродром в Гирвасе',         'polosa-2300-voennyj-aehrodrom-v-girvase',        acsAll,0,''],
-         [11, 4, 0,    'Чертов стул, кусочек ботанического сада',          'chertov-stul-kusochek-botanicheskogo-sada',      acsAll,0,''],
-         [12, 4, 0,    'Благовещенский Ионо-Яшезерский мужской монастырь', 'iono-yashezerskij-muzhskoj-monastyr',            acsAll,0,''],
-         [13, 1,-1, 'Всякое-разное',                                       '/',                                              acsAll,0,''],
-         [14, 1,-1, 'В контакте',                                          '/',                                              acsAll,0,''],
-         [15, 1,-1, 'Мой мир',                                             '/',                                              acsAll,0,''],
-         [16, 1,-1, 'Прогулки',                                            '/',                                              acsAll,0,''],
-         [17,16, 0,    'Охота на медведя',                                 'ohota-na-medvedya',                              acsAll,0,''],
-         [18, 1,-1, 'Дополнения к микропутешествиям',                      '/',                                              acsAll,0,''],
-         [19, 1,-1, 'Перепечатка',                                         '/',                                              acsAll,0,''],
-         [20, 0,-1, 'ittve.end',                                           '/',                                              acsAll,0,'']
+         [ 5, 4, 0,    'Киндасово - земля карельского юмора',              'kindasovo-zemlya-karelskogo-yumora',             acsAll,'2010.05.20',''],
+         [ 6, 4, 0,    'Гора Сампо. Озеро, светлый лес, тропинка в небо',  'gora-sampo-ozero-svetlyj-les-tropinka-v-nebo',   acsAll,'2010.06.23',''],
+         [ 7, 4, 0,    'Падозеро, кладбище заключенных лагеря №517',       'padozero-kladbishche-zaklyuchennyh-lagerya-517', acsAll,'2010.07.03',''],
+         [ 8, 4, 0,    'Таёжный зоопарк на озере Сямозеро',                'tayozhnyj-zoopark-na-ozere-syamozero',           acsAll,'2010.07.04',''],
+         [ 9, 4, 0,    'Шелтозеро. Так жили вепсы',                        'sheltozero-tak-zhili-vepsy',                     acsAll,'2010.07.10',''],
+         [10, 4, 0,    'Полоса 2300 - военный аэродром в Гирвасе',         'polosa-2300-voennyj-aehrodrom-v-girvase',        acsAll,'2010.07.17',''],
+         [11, 4, 0,    'Чертов стул, кусочек ботанического сада',          'chertov-stul-kusochek-botanicheskogo-sada',      acsAll,'2010.09.12',''],
+         [12, 4, 0,    'Деревянное чудо на холме',                         'derevyannoe-chudo-na-holme',                     acsAll,'2010.10.07',''],
+         [13, 1,-1, 'Всякое-разное',                                       'vsyakoe-raznoe',                                 acsAll,0,''],
+         [14, 1,-1, 'В контакте',                                          'v-kontakte',                                     acsAll,0,''],
+         [15, 1,-1, 'Мой мир',                                             'moj-mir',                                        acsAll,0,''],
+         [16, 1,-1, 'Прогулки',                                            'progulki',                                       acsAll,0,''],
+         [17,16, 0,    'Охота на медведя',                                 'ohota-na-medvedya',                              acsAll,'2011.05.06',''],
+         [18, 1,-1, 'Дополнения к микропутешествиям',                      'dopolneniya-k-mikroputeshestviyam',              acsAll,0,''],
+         [19, 1,-1, 'Перепечатка',                                         'perepechatka',                                   acsAll,0,''],
+         [20, 4, 0,    'Благовещенский Ионо-Яшезерский мужской монастырь', 'iono-yashezerskij-muzhskoj-monastyr',            acsAll,'2010.10.10',''],
+         [21, 0,-1, 'ittve.end',                                           '/',                                              acsAll,0,'']
       ];       
 
       $statement = $pdo->prepare("INSERT INTO [stockpw] ".
@@ -501,7 +502,7 @@ function _MakeTblMenu($basename,$username,$password,
 function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$FirstUl=' class="accordion"')
 {
    $lvl++; 
-   $cSQL="SELECT uid,NameArt,Translit,pid,IdCue FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
+   $cSQL="SELECT uid,NameArt,Translit,pid,IdCue,DateArt FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
    $stmt = $pdo->query($cSQL);
    $table = $stmt->fetchAll();
 
@@ -515,7 +516,7 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
          $nLine++; $cLine=''; 
          if ($otlada) $cLine=$cLine.' ='.$nLine.'=';
          $Uid=$row["uid"]; $Pid=$row["pid"]; $Translit=$row["Translit"];
-         $IdCue=$row["IdCue"];
+         $IdCue=$row["IdCue"]; $DateArt=$row["DateArt"];
          if ($cLast<>'+ul') 
          {
              $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
@@ -533,7 +534,7 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
          else
          {
             echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> ");
-            echo('<a href="#'.$Translit.'">'.'<em>1</em>'.$row['NameArt'].$cLine.'</a>'."\n"); 
+            echo('<a href="#'.$Translit.'">'.'<em>1</em>'.$row['NameArt'].$cLine.'<span>'.$DateArt.'</span>'.'</a>'."\n"); 
          }
          $cLast='+li';
          // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
