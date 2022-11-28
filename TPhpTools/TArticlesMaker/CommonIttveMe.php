@@ -6,10 +6,9 @@
 // * TPhpTools                     Блок функций класса TArticleMaker для базы *
 // *                                      данных материалов сайта "ittve.me". *
 // *                                                                          *
-// * v1.0, 13.11.2022                              Автор:       Труфанов В.Е. *
+// * v1.0, 28.11.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
-
 
 // ****************************************************************************
 // *      Создать таблицы базы данных и выполнить начальное заполнение        *
@@ -19,17 +18,14 @@ function CreateTables($pdo)
    try 
    {
       $pdo->beginTransaction();
-
       // Включаем действие внешних ключей
       $sql='PRAGMA foreign_keys=on;';
       $st = $pdo->query($sql);
-
       // Создаём таблицу указателей типов статей   
       $sql='CREATE TABLE cue ('.
          'IdCue          INTEGER PRIMARY KEY NOT NULL UNIQUE,'.
          'NameCue        VARCHAR )';
       $st = $pdo->query($sql);
-
       // Заполняем таблицу указателей типов статей
       // (для правильного формирования тегов, введено понятие раздела без материалов. 
       // Добавление нового раздела в базу данных сопровождается пометкой
@@ -48,7 +44,6 @@ function CreateTables($pdo)
          "IdCue"      => $IdCue, 
          "NameCue"    => $NameCue
       ]);
-
       // Создаём таблицу материалов (основу для построения меню)  
       $sql='CREATE TABLE stockpw ('.
          'uid      INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'.  // идентификатор пункта меню (раздел или статья сайта)
@@ -60,12 +55,11 @@ function CreateTables($pdo)
          'DateArt  DATETIME,'.                                    // дата\время статьи сайта
          'Art      TEXT)';                                        // материал = статья сайта
       $st = $pdo->query($sql);
-     
       // Заполняем таблицу материалов в начальном состоянии (на 2022-11-09)
       $aCharters=[                                                          
          [ 1, 0,-1, 'ittve.me',                                            '/',                                              acsAll,0,''],
          [ 2, 1,-1, 'Моя жизнь',                                           'moya-zhizn',                                     acsAll,0,''],
-         [ 3, 2, 0,    'Особенности устройства винтиков в моей голове',    'osobennosti-ustrojstva-vintikov-v-moej-golove',  acsAll,0,''],
+         [ 3, 2, 0,    'Особенности устройства винтиков в моей голове',    'osobennosti-ustrojstva-vintikov-v-moej-golove',  acsAll,'2010.12.30',''],
          [ 4, 1,-1, 'Микропутешествия',                                    'mikroputeshestviya',                             acsAll,0,''],
          [ 5, 4, 0,    'Киндасово - земля карельского юмора',              'kindasovo-zemlya-karelskogo-yumora',             acsAll,'2010.05.20',''],
          [ 6, 4, 0,    'Гора Сампо. Озеро, светлый лес, тропинка в небо',  'gora-sampo-ozero-svetlyj-les-tropinka-v-nebo',   acsAll,'2010.06.23',''],
@@ -85,7 +79,6 @@ function CreateTables($pdo)
          [20, 4, 0,    'Благовещенский Ионо-Яшезерский мужской монастырь', 'iono-yashezerskij-muzhskoj-monastyr',            acsAll,'2010.10.10',''],
          [21, 0,-1, 'ittve.end',                                           '/',                                              acsAll,0,'']
       ];       
-
       $statement = $pdo->prepare("INSERT INTO [stockpw] ".
          "([uid], [pid], [IdCue], [NameArt], [Translit], [access], [DateArt], [Art]) VALUES ".
          "(:uid,  :pid,  :IdCue,  :NameArt,  :Translit,  :access,  :DateArt,  :Art);");
@@ -102,7 +95,6 @@ function CreateTables($pdo)
          "DateArt"  => $DateArt, 
          "Art"      => $Art
       ]);
-
       // Создаём таблицу для списка изображений   
       $sql='CREATE TABLE picturepw ('.
          'uid         INTEGER NOT NULL REFERENCES stockpw(uid),'.  // идентификатор пункта меню (раздел или статья сайта)
@@ -349,6 +341,14 @@ function aViewPath($array)
    echo '</table>';
    echo '</pre>';
 }
+// ****************************************************************************
+// *              Обеспечить смещение строк меню при отладке                  *
+// ****************************************************************************
+function cUidPid($Uid,$Pid,$cLast)
+{
+   $c='<!-- '.$cLast.' '.(1000+$Uid).'-'.(1000+$Pid).' --> ';
+   return $c;
+}
 function SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)
 {
    $i=1; $c=''; $c=cUidPid($Uid,$Pid,$cLast); 
@@ -359,55 +359,6 @@ function SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)
    }
    if ($otlada==false) $c='';
    return $c;
-}
-function cUidPid($Uid,$Pid,$cLast)
-{
-   $c='<!-- '.$cLast.' '.(1000+$Uid).'-'.(1000+$Pid).' --> ';
-   return $c;
-}
-function ShowTree16($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,$FirstUl,&$lvl,$otlada)
-{
-   $lvl++; 
-   $cSQL="SELECT uid,NameArt,Translit,pid FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
-   $stmt = $pdo->query($cSQL);
-   $table = $stmt->fetchAll();
-
-   if (count($table)>0) 
-   {
-      // Выводим <ul>. Перед ним </li> не выводим.
-      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada).'<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
-      // 
-      foreach ($table as $row)
-      {
-         $nLine++; $cLine=''; 
-         if ($otlada) $cLine=$cLine.' #'.$nLine.'#';
-         $Uid = $row["uid"]; $Pid = $row["pid"]; $Translit = $row["Translit"];
-         // Перед <li> выводим предыдущее </li>, если не было <ul>.
-         if ($cLast<>'+ul') 
-         {
-             $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
-             echo($cli); $cLast='-li';
-         }
-         //  
-         echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> "); $cLast='+li';
-         
-         if ($Translit=='/')
-         {
-            echo('<a href="'.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
-         }
-         else
-         {
-            echo('<a href="'.'?Com='.$Translit.'">'.$row['NameArt'].$cLine.'</a>'."\n"); 
-         }
-         // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
-         ShowTree16($pdo,$Uid,$Pid,$cLast,$nLine,$cli,'',$lvl,$otlada); 
-         $lvl--; 
-      }
-      // Перед </ul> ставим предыдущее </li>
-      $cli=SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</li>\n";
-      echo($cli); $cLast='-li';
-      echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
-   }
 }
 // ****************************************************************************
 // *      Построить html-код ТАБЛИЦЫ меню по базе данных материалов сайта     *
@@ -430,7 +381,9 @@ function sort_link_th($title,$a,$b,$SignAsc,$SignDesc)
       return '<a class="ipvSort" href="?Sort=' . $a . '">' . $title . '</a>'; 
    }
 }
-// Построить html-код в строке ТАБЛИЦЫ меню по базе данных материалов сайта   
+// ****************************************************************************
+// * Построить html-код в строке ТАБЛИЦЫ меню по базе данных материалов сайта *
+// ****************************************************************************
 function _MakeTblMenu($basename,$username,$password,
           $ListFields,$SignAsc,$SignDesc) 
 {
@@ -499,9 +452,27 @@ function _MakeTblMenu($basename,$username,$password,
    echo '</tbody> </table>';
    unset($pdo);          
 }
+// ****************************************************************************
+// *                       Выбрать число записей по родителю                  *
+// ****************************************************************************
+function CountPoint($pdo,$ParentID)
+{
+   $cSQL='SELECT uid FROM stockpw WHERE pid='.$ParentID;
+   $stmt = $pdo->query($cSQL);
+   $table = $stmt->fetchAll();
+   $nCount=count($table);
+   if ($nCount==0) $Result='';
+   else $Result='<span>'.$nCount.'</span>';
+   return $Result; 
+}
+// ****************************************************************************
+// *           Сформировать строки меню для записей одного родителя           *
+// ****************************************************************************
 function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$FirstUl=' class="accordion"')
 {
+   // Определяем текущий уровень меню
    $lvl++; 
+   // Выбираем все записи одного родителя
    $cSQL="SELECT uid,NameArt,Translit,pid,IdCue,DateArt FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
    $stmt = $pdo->query($cSQL);
    $table = $stmt->fetchAll();
@@ -510,13 +481,14 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
    {
       // Выводим <ul>. Перед ним </li> не выводим.
       echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada).'<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
-      // 
+      // Перебираем все записи родителя, подсчитываем количество, формируем пункты меню
+      $nPoint=0;
       foreach ($table as $row)
       {
          $nLine++; $cLine=''; 
          if ($otlada) $cLine=$cLine.' ='.$nLine.'=';
          $Uid=$row["uid"]; $Pid=$row["pid"]; $Translit=$row["Translit"];
-         $IdCue=$row["IdCue"]; $DateArt=$row["DateArt"];
+         $IdCue=$row["IdCue"]; $DateArt=$row["DateArt"]; 
          if ($cLast<>'+ul') 
          {
              $cli=SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."</li>\n";
@@ -527,23 +499,22 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
          if ($IdCue==-1)
          {
             echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada).'<li id="'.$Translit.'" class="'.$Translit.'"> '); 
-            echo('<a href="#'.$Translit.'">'.$row['NameArt'].$cLine.'<span>495</span>'.'</a>'."\n"); 
+            echo('<a href="#'.$Translit.'">'.$row['NameArt'].$cLine.CountPoint($pdo,$Uid).'</a>'."\n"); 
          } 
          // Выводим li и href для статьи
          // <li><a href="#osobennosti-ustrojstva-vintikov-v-moej-golove"><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></a></li>			
          else
          {
+            $nPoint++;
             echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> ");
-            echo('<a href="#'.$Translit.'">'.'<em>1</em>'.$row['NameArt'].$cLine.'<span>'.$DateArt.'</span>'.'</a>'."\n"); 
+            echo('<a href="#'.$Translit.'">'.'<em>'.$nPoint.'</em>'.$row['NameArt'].$cLine.'<span>'.$DateArt.'</span>'.'</a>'."\n"); 
          }
          $cLast='+li';
-         // Вместо вывода </li> формируем строку для вывода по условию перед <ul> и <li>
          ShowTreeMe($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,$otlada,' class="sub-menu"'); 
          $lvl--; 
       }
-      // Перед </ul> ставим предыдущее </li>
       $cli=SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</li>\n";
-      echo($cli); $cLast='-li';
+      echo($cli); $cLast='-li'; 
       echo(SpacesOnLevel($lvl,$cLast,0,0,$otlada)."</ul>\n");  $cLast='-ul';
    }
 }
@@ -621,5 +592,4 @@ function _ShowSampleMenu()
    ';
    echo $Menu;
 }
-
 // ****************************************************** CommonIttveMe.php ***
