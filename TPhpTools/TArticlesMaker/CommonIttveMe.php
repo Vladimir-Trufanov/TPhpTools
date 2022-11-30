@@ -499,7 +499,7 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
          if ($IdCue==-1)
          {
             echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada).'<li id="'.$Translit.'" class="'.$Translit.'"> '); 
-            echo('<a href="#'.$Translit.'">'.$row['NameArt'].$cLine.CountPoint($pdo,$Uid).'</a>'."\n"); 
+            echo('<a href="#'.$Translit.'">'.'&#129392;'.$row['NameArt'].$cLine.CountPoint($pdo,$Uid).'</a>'."\n"); 
          } 
          // Выводим li и href для статьи
          // <li><a href="#osobennosti-ustrojstva-vintikov-v-moej-golove"><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></a></li>			
