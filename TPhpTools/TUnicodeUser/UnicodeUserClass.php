@@ -1,18 +1,21 @@
 <?php namespace ttools; 
                                          
-// PHP7/HTML5, EDGE/CHROME                       *** ArticlesMakerClass.php ***
+// PHP7/HTML5, EDGE/CHROME                         *** UnicodeUserClass.php ***
 
 // ****************************************************************************
-// * TPhpTools                                   Построитель материалов сайта *
+// * TPhpTools                             Помощник в выборке и использовании *
+// *                                               избранных символов Юникода *
 // *                                                                          *
-// * v1.1, 12.11.2022                              Автор:       Труфанов В.Е. *
-// * Copyright © 2022 tve                          Дата создания:  03.11.2022 *
+// * v1.0, 02.12.2022                              Автор:       Труфанов В.Е. *
+// * Copyright © 2022 tve                          Дата создания:  27.11.2022 *
 // ****************************************************************************
 
 /**
- * Класс ArticlesMaker организовывает базу данных материалов сайта (на примерах
- * материалов сайтов 'ittve.pw' и 'ittve.me', обеспечивает построение и ведение 
- * меню статей.
+ * Класс UnicodeUser строит интерфейс для выбора некоторых символа Юникода.
+ * Выборка символов осуществляется из одного из подмассивов общего массива 
+ * массива $aUniCues. Подмассивы (наборы) созданы из авторских соображений и 
+ * имеют свои номера и названия, так 0 - 'Знаки всякие-разные', 1 - 'Символы 
+ * валют', 2 - 'Ожидаемые символы' и так далее.
  * 
  * Для взаимодействия с объектами класса должны быть определены константы:
  *
@@ -41,19 +44,12 @@
 // $Page - название страницы сайта;
 // $Uagent - браузер пользователя;
 
-// --------------------- Константы для указания типа базы данных (по сайту) ---
-define ("tbsIttveme", 'IttveMe'); 
-define ("tbsIttvepw", 'IttvePw'); 
-// -------------------------------------------------- Доступ к пунктам меню ---
-define ("acsAll", 1);        // доступ разрешен всем
-define ("acsClose", 2);      // закрыт, статья в разработке
-define ("acsAutor", 4);      // только автору-хозяину сайта
+// Ожидаемые цветности знаков юникода
+define ("signBW",0);       // черно-белый знаки
+define ("signColor",1);    // цветные знаки
 
-// Подгружаем общие функции класса
-require_once("CommonArticlesMaker.php"); 
-// Подгружаем модули функций класса, связанные с конкретным сайтом
-if (articleSite==tbsIttveme) require_once("CommonIttveMe.php"); 
-elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php"); 
+// Подгружаем массив избранных знаков юникода
+require_once("UnicodeArrays.php"); 
 
 // Подгружаем нужные модули библиотеки прикладных функций
 //require_once(pathPhpPrown."/CommonPrown.php");
@@ -66,63 +62,77 @@ require_once(pathPhpPrown."/RecalcSizeInfo.php");
 // Подгружаем нужные модули библиотеки прикладных классов
 //require_once(pathPhpTools."/iniToolsMessage.php");
 
-class ArticlesMaker
+class UnicodeUser
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
-   protected $username;             // логин для доступа к базе данных
-   protected $password;             // пароль
-   //protected $_message=Ok;        // сообщение по загрузке файла
-   //protected $_uploaded=array();  // $_FILES - данные о загруженном файле
+   protected $aUniCues;      // Массив избранных знаков юникода
+
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct($basename,$username,$password) 
+   public function __construct() 
    {
       // Инициализируем свойства класса
-      $this->basename = $basename;
-      $this->username = $username;
-      $this->password = $password;
+      $this->aUniCues=UnicodeMake();
       // Трассируем установленные свойства
-      //\prown\ConsoleLog('$this->basename='.$this->basename); 
-      //\prown\ConsoleLog('$this->username='.$this->username); 
       //\prown\ConsoleLog('$this->password='.$this->password); 
    }
    public function __destruct() 
    {
    }
-   
-   public function BaseConnect()
+   // *************************************************************************
+   // *                 Вывести набор юникодов одним столбцом                 *
+   // *************************************************************************
+   public function ViewCharsetAsColomn($Charpos)
    {
-      return _BaseConnect($this->basename,$this->username,$this->password);
+      $Charset=$this->aUniCues[$Charpos];
+      $SetName=$Charset[1];
+      echo $SetName.'<br>'; 
+      $Charset=$Charset[3];
+      //echo '<pre>';
+      //print_r($Charset);
+      //echo '</pre>';
+      foreach ($Charset as $aArray) 
+      {
+         $hexbeg=$aArray[0];
+         $nbeg=hexdec($hexbeg);
+         $hexsign=dechex($nbeg);
+         if ($hexsign=='50e') $chex='<em>'.'&#x'.$hexbeg.'</em>'; else $chex='&#x'.$hexbeg; 
+         echo $chex.' '.$hexbeg.'-->'.$nbeg.' '.$chex.' '.$aArray[1]."<br>";
+      }
+      echo '<br>'; 
    }
    // *************************************************************************
-   // *     Построить html-код ТАБЛИЦЫ меню по базе данных материалов сайта   *
-   // *                      с сортировкой по полям                           *
+   // *  Вывести набор юникодов через таблицу ($nCol-число столбцов таблицы)  *
    // *************************************************************************
-   public function MakeTblMenu($ListFields,$SignAsc,$SignDesc)
+   public function ViewCharsetAsTable($Charpos,$nCol)
    {
-      _MakeTblMenu($this->basename,$this->username,$this->password,
-          $ListFields,$SignAsc,$SignDesc);
-   } 
-   // *************************************************************************
-   // *        Построить html-код меню по базе данных материалов сайта        *
-   // *************************************************************************
-   public function MakeMenu()
-   {
-      _MakeMenu($this->basename,$this->username,$this->password);
-   } 
-   // *************************************************************************
-   // *    Создать резервную копию базы данных, построить новую базу данных   *
-   // *************************************************************************
-   public function BaseFirstCreate() 
-   {
-      _BaseFirstCreate($this->basename,$this->username,$this->password);
-   }
-   // *************************************************************************
-   // *                Показать пример меню для конкретного сайта             *
-   // *************************************************************************
-   public function ShowSampleMenu() 
-   {
-      _ShowSampleMenu();
+      $Charset=$this->aUniCues[$Charpos];
+      $SetName=$Charset[1];
+      echo '*** '.$SetName.' ***<br>'; 
+      $Charset=$Charset[3];
+      // Формируем таблицу
+      echo '<table id="setTable">';
+      echo '<tbody>';
+      $nPoint=0;
+      $i = 1;
+      while ($nPoint<count($Charset))
+      {
+         $aArray=$Charset[$nPoint];
+      
+         if ($i==1) echo '<tr class="setRow">';
+      
+         $hexsign=$aArray[0];
+         if ($hexsign=='50e') $chex='setCellt'; else $chex='setCell'; 
+         echo '<td class="'.$chex.'" title="'.$aArray[1].'">';
+         echo '&#x'.$hexsign;;
+         echo '</td>'; 
+      
+         if ($i==$nCol) {echo '</tr>'; $i=0;}
+         $i++;
+      
+         $nPoint++;
+      }
+      if ($i<>$nCol) {echo '</tr>';}
+      echo '</tbody> </table>';
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
    /*
@@ -169,5 +179,6 @@ class ArticlesMaker
       return $Result;
    }
    */
-}
-// ************************************************* ArticlesMakerClass.php ***
+} 
+
+// *************************************************** UnicodeUserClass.php ***

@@ -52,15 +52,15 @@ function CreateTables($pdo)
          'NameArt  VARCHAR NOT NULL,'.                            // заголовок материала = статьи сайта
          'Translit VARCHAR NOT NULL,'.                            // транслит заголовка
          'access   INTEGER NOT NULL,'.                            // доступ к пунктам меню (All/Autor)
-         'DateArt  DATETIME,'.                                    // дата\время статьи сайта
+         'DateArt  VARCHAR NOT NULL,'.                            // дата статьи сайта/юникод иконки раздела
          'Art      TEXT)';                                        // материал = статья сайта
       $st = $pdo->query($sql);
       // Заполняем таблицу материалов в начальном состоянии (на 2022-11-09)
       $aCharters=[                                                          
-         [ 1, 0,-1, 'ittve.me',                                            '/',                                              acsAll,0,''],
-         [ 2, 1,-1, 'Моя жизнь',                                           'moya-zhizn',                                     acsAll,0,''],
+         [ 1, 0,-1, 'ittve.me',                                            '/',                                              acsAll,'20',''],
+         [ 2, 1,-1, 'Моя жизнь',                                           'moya-zhizn',                                     acsAll,'20',''],
          [ 3, 2, 0,    'Особенности устройства винтиков в моей голове',    'osobennosti-ustrojstva-vintikov-v-moej-golove',  acsAll,'2010.12.30',''],
-         [ 4, 1,-1, 'Микропутешествия',                                    'mikroputeshestviya',                             acsAll,0,''],
+         [ 4, 1,-1, 'Микропутешествия',                                    'mikroputeshestviya',                             acsAll,'20',''],
          [ 5, 4, 0,    'Киндасово - земля карельского юмора',              'kindasovo-zemlya-karelskogo-yumora',             acsAll,'2010.05.20',''],
          [ 6, 4, 0,    'Гора Сампо. Озеро, светлый лес, тропинка в небо',  'gora-sampo-ozero-svetlyj-les-tropinka-v-nebo',   acsAll,'2010.06.23',''],
          [ 7, 4, 0,    'Падозеро, кладбище заключенных лагеря №517',       'padozero-kladbishche-zaklyuchennyh-lagerya-517', acsAll,'2010.07.03',''],
@@ -69,15 +69,15 @@ function CreateTables($pdo)
          [10, 4, 0,    'Полоса 2300 - военный аэродром в Гирвасе',         'polosa-2300-voennyj-aehrodrom-v-girvase',        acsAll,'2010.07.17',''],
          [11, 4, 0,    'Чертов стул, кусочек ботанического сада',          'chertov-stul-kusochek-botanicheskogo-sada',      acsAll,'2010.09.12',''],
          [12, 4, 0,    'Деревянное чудо на холме',                         'derevyannoe-chudo-na-holme',                     acsAll,'2010.10.07',''],
-         [13, 1,-1, 'Всякое-разное',                                       'vsyakoe-raznoe',                                 acsAll,0,''],
-         [14, 1,-1, 'В контакте',                                          'v-kontakte',                                     acsAll,0,''],
-         [15, 1,-1, 'Мой мир',                                             'moj-mir',                                        acsAll,0,''],
-         [16, 1,-1, 'Прогулки',                                            'progulki',                                       acsAll,0,''],
+         [13, 1,-1, 'Всякое-разное',                                       'vsyakoe-raznoe',                                 acsAll,'20',''],
+         [14, 1,-1, 'В контакте',                                          'v-kontakte',                                     acsAll,'20',''],
+         [15, 1,-1, 'Мой мир',                                             'moj-mir',                                        acsAll,'20',''],
+         [16, 1,-1, 'Прогулки',                                            'progulki',                                       acsAll,'20',''],
          [17,16, 0,    'Охота на медведя',                                 'ohota-na-medvedya',                              acsAll,'2011.05.06',''],
-         [18, 1,-1, 'Дополнения к микропутешествиям',                      'dopolneniya-k-mikroputeshestviyam',              acsAll,0,''],
-         [19, 1,-1, 'Перепечатка',                                         'perepechatka',                                   acsAll,0,''],
+         [18, 1,-1, 'Дополнения к микропутешествиям',                      'dopolneniya-k-mikroputeshestviyam',              acsAll,'20',''],
+         [19, 1,-1, 'Перепечатка',                                         'perepechatka',                                   acsAll,'20',''],
          [20, 4, 0,    'Благовещенский Ионо-Яшезерский мужской монастырь', 'iono-yashezerskij-muzhskoj-monastyr',            acsAll,'2010.10.10',''],
-         [21, 0,-1, 'ittve.end',                                           '/',                                              acsAll,0,'']
+         [21, 0,-1, 'ittve.end',                                           '/',                                              acsAll,'20','']
       ];       
       $statement = $pdo->prepare("INSERT INTO [stockpw] ".
          "([uid], [pid], [IdCue], [NameArt], [Translit], [access], [DateArt], [Art]) VALUES ".
