@@ -107,28 +107,25 @@ class UnicodeUser
    {
       $Charset=$this->aUniCues[$Charpos];
       $SetName=$Charset[1];
-      echo '*** '.$SetName.' ***<br>'; 
       $Charset=$Charset[3];
       // Формируем таблицу
       echo '<table id="setTable">';
-      echo '<tbody>';
+      echo '<tr>
+      <th class="setThead" colspan="'.$nCol.'">'.'*** '.$SetName.' ***'.'</th>
+      </tr>';
+      echo '<tbody class="setTbody">';
       $nPoint=0;
       $i = 1;
       while ($nPoint<count($Charset))
       {
          $aArray=$Charset[$nPoint];
-      
          if ($i==1) echo '<tr class="setRow">';
-      
          $hexsign=$aArray[0];
-         if ($hexsign=='50e') $chex='setCellt'; else $chex='setCell'; 
-         echo '<td class="'.$chex.'" title="'.$aArray[1].'">';
-         echo '&#x'.$hexsign;;
-         echo '</td>'; 
-      
+         if ($hexsign=='050E') $chex='<em>'.'&#x'.$hexsign.'</em>';
+         else $chex='&#x'.$hexsign; 
+         echo '<td title="'.$aArray[1].'">'; echo $chex; echo '</td>';
          if ($i==$nCol) {echo '</tr>'; $i=0;}
          $i++;
-      
          $nPoint++;
       }
       if ($i<>$nCol) {echo '</tr>';}
