@@ -65,15 +65,17 @@ require_once(pathPhpPrown."/RecalcSizeInfo.php");
 class UnicodeUser
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $aUniCues;      // Массив избранных знаков юникода
+   protected $aUniCues;    // Массив избранных знаков юникода
+   protected $FontFamily;  // Семейство фонтов для заголовков наборов юникодов
 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct() 
+   public function __construct($FontFamily='') 
    {
       // Инициализируем свойства класса
       $this->aUniCues=UnicodeMake();
+      $this->FontFamily=UnicodeStyle($FontFamily);
       // Трассируем установленные свойства
-      //\prown\ConsoleLog('$this->password='.$this->password); 
+      \prown\ConsoleLog('$this->FontFamily='.$this->FontFamily); 
    }
    public function __destruct() 
    {

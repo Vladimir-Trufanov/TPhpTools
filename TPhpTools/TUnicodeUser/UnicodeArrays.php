@@ -5,7 +5,7 @@
 // ****************************************************************************
 // * TPhpTools                                Массив избранных знаков юникода *
 // *                                                                          *
-// * v1.0, 02.12.2022                              Автор:       Труфанов В.Е. *
+// * v1.0, 05.12.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  27.11.2022 *
 // ****************************************************************************
 
@@ -140,6 +140,23 @@ function UnicodeMake()
    ]
    ];
    return $aUniCues; 
+}
+// ****************************************************************************
+// *    Выбрать фонт и определить стили таблиц для представления юникодов     *
+// ****************************************************************************
+function UnicodeStyle($FontFamily)
+{
+   // Настраиваем стили таблиц для представления юникодов
+   echo '<style>';
+   echo'  
+      #setTable {border-collapse:separate; border-spacing:4px; width:100%}
+      .setThead {text-align:left; font-size:1.8rem;}
+      .setTbody tr td {width:4rem; height:4rem; font-size:3.6rem; text-align:center;}
+      .setTbody tr td:hover {background:#a2c3dd; transition-duration:0.2s; border-radius:1rem;}
+   ';
+   // Определяем семейство шрифта: src:url(Styles/Lobster.ttf); 
+   if ($FontFamily<>'') echo '.setThead {font-family:Emojitveme;}';
+   echo '</style>';
 }
 // ****************************************************** UnicodeArrays.php ***
 
