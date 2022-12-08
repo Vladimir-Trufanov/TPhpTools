@@ -120,6 +120,110 @@ class UnicodeUser
       echo '<br>'; 
    }
    // *************************************************************************
+   // *        Вывести набор юникодов набора Font Awesome одним столбцом      *
+   // *************************************************************************
+   private function FontAwesome470next($Chari)
+   {
+      $Result=true;
+      if ($Chari=='f00f') $Result=false;
+      if ($Chari=='f01f') $Result=false; 
+      if ($Chari=='f020') $Result=false;
+      if (($Chari>='f0b3')&&($Chari<='f0bf')) $Result=false;
+      $i=3; while ($i<=9)
+      {
+         if ($Chari=='f0'.$i.'f') $Result=false;
+         if ($Chari=='f15'.$i)    $Result=false;
+         if ($Chari=='f22'.$i)    $Result=false;
+         if ($Chari=='f2'.$i.'f') $Result=false;
+         $i++;
+      }
+      if ($Chari=='f0af') $Result=false;
+      if ($Chari=='f0cf') $Result=false;
+      if ($Chari=='f0df') $Result=false;
+      if ($Chari=='f0ef') $Result=false;
+      if ($Chari=='f0ff') $Result=false;
+      if ($Chari=='f116') $Result=false;
+      if ($Chari=='f117') $Result=false;
+      if ($Chari=='f15a') $Result=false;
+      if ($Chari=='f195') $Result=false;
+      $i=0; while ($i<=9)
+      {
+         if ($Chari=='f1'.$i.'f') $Result=false;
+         $i++;
+      }
+      if ($Chari=='f1af') $Result=false;
+      if ($Chari=='f1bf') $Result=false;
+      if ($Chari=='f1cf') $Result=false;
+      if ($Chari=='f1df') $Result=false;
+      if ($Chari=='f1ef') $Result=false;
+      if ($Chari=='f1ff') $Result=false;
+      if ($Chari=='f20f') $Result=false;
+      if ($Chari=='f21f') $Result=false;
+      if ($Chari=='f220') $Result=false;
+      if ($Chari=='f22a') $Result=false;
+      if ($Chari=='f22b') $Result=false;
+      if ($Chari=='f22c') $Result=false;
+      if ($Chari=='f22d') $Result=false;
+      if ($Chari=='f22e') $Result=false;
+      if ($Chari=='f22f') $Result=false;
+      if ($Chari=='f237') $Result=false;
+      if ($Chari=='f2af') $Result=false;
+      if ($Chari=='f2bf') $Result=false;
+      if ($Chari=='f2cf') $Result=false;
+      if ($Chari=='f2df') $Result=false;
+      return $Result;
+   }
+   public function ViewFontAwesome470AsColomn($CharBeg,$CharEnd)
+   {
+      $nbeg=hexdec($CharBeg);
+      $nend=hexdec($CharEnd);
+      $i = $nbeg;
+      while ($i<=$nend)
+      {
+         $hexsign=dechex($i);
+         if ($this->FontAwesome470next($hexsign)==true)
+         {
+            $chex='<span class="setPrevi">'.'&#x'.$hexsign.'</span>';  
+            echo 'D-'.$hexsign.': '.'<span class="setiCol">'.$chex.'</span>'."<br>";
+         }
+         $i++;
+      }
+      echo '<br>'; 
+   }
+   // *************************************************************************
+   // *                  Вывести набор юникодов набора Font Awesome           *
+   // *                 через таблицу ($nCol-число столбцов таблицы)          *
+   // *************************************************************************
+   public function ViewFontAwesome470AsTable($CharBeg,$CharEnd,$nCol)
+   {
+      // Формируем таблицу
+      $SetName='Font Awesome 4.7.0';
+      echo '<table id="setTable">';
+      echo '<tr>
+      <th class="setThead" colspan="'.$nCol.'">'.'*** '.$SetName.' ***'.'</th>
+      </tr>';
+      echo '<tbody class="setTbody">';
+      $nbeg=hexdec($CharBeg);
+      $nend=hexdec($CharEnd);
+      $i = 1;
+      $nPoint = $nbeg;
+      while ($nPoint<=$nend)
+      {
+         $hexsign=dechex($nPoint);
+         if ($this->FontAwesome470next($hexsign)==true)
+         {
+            if ($i==1) echo '<tr class="setRow">';
+            $chex='<span class="setPrevi">'.'&#x'.$hexsign.'</span>';  
+            echo '<td title="">'; echo $chex; echo '</td>';
+            if ($i==$nCol) {echo '</tr>'; $i=0;}
+            $i++;
+         }
+         $nPoint++;
+      }
+      if ($i<>$nCol) {echo '</tr>';}
+      echo '</tbody> </table>';
+   }
+   // *************************************************************************
    // *  Вывести набор юникодов через таблицу ($nCol-число столбцов таблицы)  *
    // *************************************************************************
    public function ViewCharsetAsTable($Charpos,$nCol)
@@ -141,7 +245,7 @@ class UnicodeUser
          if ($i==1) echo '<tr class="setRow">';
          $hexsign=$aArray[0];
          if ($hexsign=='050E') $chex='<em>'.'&#x'.$hexsign.'</em>';
-         else $chex='&#x'.$hexsign; 
+         else $chex='&#x'.$hexsign.';'; 
          echo '<td title="'.$aArray[1].'">'; echo $chex; echo '</td>';
          if ($i==$nCol) {echo '</tr>'; $i=0;}
          $i++;

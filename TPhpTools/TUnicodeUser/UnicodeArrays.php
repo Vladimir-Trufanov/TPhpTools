@@ -278,6 +278,8 @@ function UnicodeStyle($FontFamily)
       .setTbody tr td {width:4rem; height:4rem; font-size:3.6rem; text-align:center;}
       .setTbody tr td:hover {background:#a2c3dd; transition-duration:0.2s; border-radius:1rem;}
       .setiCol  {width:4rem; height:4rem; font-size:3.6rem; text-align:center;}
+      .setPrevi {font-family:fontawesome; font-size:3.6rem; text-align:center;}
+
    ';
    // Определяем семейство шрифта: src:url(Styles/Lobster.ttf); 
    if ($FontFamily<>'') echo '.setThead {font-family:Emojitveme;}';
