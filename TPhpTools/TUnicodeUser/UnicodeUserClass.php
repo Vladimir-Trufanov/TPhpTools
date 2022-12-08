@@ -103,6 +103,23 @@ class UnicodeUser
       echo '<br>'; 
    }
    // *************************************************************************
+   // *                 Вывести набор юникодов одним столбцом                 *
+   // *************************************************************************
+   public function ViewIntervalAsColomn($CharBeg,$CharEnd)
+   {
+      $nbeg=hexdec($CharBeg);
+      $nend=hexdec($CharEnd);
+      $i = $nbeg;
+      while ($i<=$nend)
+      {
+         $hexsign=dechex($i);
+         if ($hexsign=='50e') $chex='<em>'.'&#x'.$hexsign.'</em>'; else $chex='&#x'.$hexsign; 
+         echo 'D-'.$hexsign.': '.'<span class="setiCol">'.$chex.'</span>'."<br>";
+         $i++;
+      }
+      echo '<br>'; 
+   }
+   // *************************************************************************
    // *  Вывести набор юникодов через таблицу ($nCol-число столбцов таблицы)  *
    // *************************************************************************
    public function ViewCharsetAsTable($Charpos,$nCol)
