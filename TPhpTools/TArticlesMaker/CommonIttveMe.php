@@ -499,7 +499,7 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
          if ($IdCue==-1)
          {
             echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada).'<li id="'.$Translit.'" class="'.$Translit.'"> '); 
-            echo('<a href="#'.$Translit.'">'.'&#129392;'.$row['NameArt'].$cLine.CountPoint($pdo,$Uid).'</a>'."\n"); 
+            echo('<a href="#'.$Translit.'">'.$Uid.' &#129392; '.$row['NameArt'].$cLine.CountPoint($pdo,$Uid).'</a>'."\n"); 
          } 
          // Выводим li и href для статьи
          // <li><a href="#osobennosti-ustrojstva-vintikov-v-moej-golove"><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></a></li>			
@@ -507,7 +507,7 @@ function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$F
          {
             $nPoint++;
             echo(SpacesOnLevel($lvl,$cLast,$Uid,$Pid,$otlada)."<li> ");
-            echo('<a href="#'.$Translit.'">'.'<em>'.$nPoint.'</em>'.$row['NameArt'].$cLine.'<span>'.$DateArt.'</span>'.'</a>'."\n"); 
+            echo('<a href="#'.$Translit.'">'.'<em>'.$Uid.'</em>'.$row['NameArt'].$cLine.'<span>'.$DateArt.'</span>'.'</a>'."\n"); 
          }
          $cLast='+li';
          ShowTreeMe($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,$otlada,' class="sub-menu"'); 
