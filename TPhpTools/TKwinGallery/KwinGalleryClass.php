@@ -56,8 +56,8 @@ class KwinGallery
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $gallidir;  // Каталог для размещения файлов галереи и связанных материалов
    protected $nym;       // Префикс имен файлов для фотографий галереи и материалов
-   protected $pid;       // Семейство фонтов для заголовков наборов юникодов
-   protected $uid;       // Семейство фонтов для заголовков наборов юникодов
+   protected $pid;       // Идентификатор группы текущего материала
+   protected $uid;       // Идентификатор текущего материала
 
    protected $editdir='ittveEdit/';
 
@@ -86,19 +86,14 @@ class KwinGallery
       // Выбираем режим работы с изображениями, как режим редактирования материала
       if ($Dir==$this->editdir)
       {
+         // Формируем определяющий массив для базы данных редактируемого материала
+         $aCharters=$this->MakeaCharters();
          // Проверяем существование и создаем базу данных редактируемого материала
          $basename=$_SERVER['DOCUMENT_ROOT'].'/itEdit'; // имя базы без расширения 'db3'
          $username='tve';
          $password='23ety17'; 
          $Arti=new ArticlesMaker($basename,$username,$password);
          // Создаем (или открываем) базу данных для редактируемого материала
-         $aCharters=[                                                          
-            [ 1, 0,-1, 'ittve.me',            '/',                 acsAll,'20',''],
-            [16, 1,-1, 'Прогулки',            'progulki',          acsAll,'20',''],
-            [17,16, 0,    'Охота на медведя', 'ohota-na-medvedya', acsAll,'2011.05.06',''],
-            [21, 0,-1, 'ittve.end',           '/',                 acsAll,'20','']
-         ];       
-
          $Arti->BaseFirstCreate($aCharters);
       }
       else
@@ -106,27 +101,36 @@ class KwinGallery
          \prown\ConsoleLog('НЕ ='.$this->editdir); 
       }
    }
-   // *************************************************************************
-   // *                 Вывести набор юникодов одним столбцом                 *
-   // *************************************************************************
-   public function ViewCharsetAsColomn($Charpos)
+   // Формируем определяющий массив для базы данных редактируемого материала
+   // по образцу (выбирая данные из базы данных материалов):
+   //    $aCharters=[                                                          
+   //      [ 1, 0,-1, 'ittve.me',         '/',                 acsAll,'20',''],
+   //      [16, 1,-1, 'Прогулки',         'progulki',          acsAll,'20',''],
+   //      [17,16, 0, 'Охота на медведя', 'ohota-na-medvedya', acsAll,'2011.05.06',''],
+   //      [21, 0,-1, 'ittve.end',        '/',                 acsAll,'20','']
+   //    ];       
+   protected function MakeaCharters()
    {
-      $Charset=$this->aUniCues[$Charpos];
-      $SetName=$Charset[1];
-      echo $SetName.'<br>'; 
-      $Charset=$Charset[3];
-      //echo '<pre>';
-      //print_r($Charset);
-      //echo '</pre>';
-      foreach ($Charset as $aArray) 
-      {
-         $hexbeg=$aArray[0];
-         $nbeg=hexdec($hexbeg);
-         $hexsign=dechex($nbeg);
-         if ($hexsign=='50e') $chex='<em>'.'&#x'.$hexbeg.'</em>'; else $chex='&#x'.$hexbeg; 
-         echo $chex.' '.$hexbeg.'-->'.$nbeg.' '.$chex.' '.$aArray[1]."<br>";
-      }
-      echo '<br>'; 
+      $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve';
+      $username='tve';
+      $password='23ety17'; 
+      $Arti=new ArticlesMaker($basename,$username,$password);
+
+      $pdo=_BaseConnect($basename,$username,$password);
+      $t1=SelRecord($pdo,$this->pid);
+      $t2=SelRecord($pdo,$this->uid);
+      /*
+      echo '<pre>';
+      print_r($t1);
+      echo '</pre>';
+      */
+      $aCharters=[                                                          
+         [            1,             0,              -1,        'ittve.me',                '/', acsAll,             '20',''],
+         [$t1[0]['uid'], $t1[0]['pid'], $t1[0]['IdCue'], $t1[0]['NameArt'], $t1[0]['Translit'], acsAll,$t1[0]['DateArt'],''],
+         [$t2[0]['uid'], $t2[0]['pid'], $t2[0]['IdCue'], $t2[0]['NameArt'], $t2[0]['Translit'], acsAll,$t2[0]['DateArt'],''],
+         [           21,             0,              -1,       'ittve.end',                '/', acsAll,             '20','']
+      ];       
+      return $aCharters;
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
    /*

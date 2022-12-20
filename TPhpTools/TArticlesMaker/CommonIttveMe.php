@@ -6,7 +6,7 @@
 // * TPhpTools                     Блок функций класса TArticleMaker для базы *
 // *                                      данных материалов сайта "ittve.me". *
 // *                                                                          *
-// * v1.0, 28.11.2022                              Автор:       Труфанов В.Е. *
+// * v1.0, 20.12.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
 
@@ -455,19 +455,6 @@ function _MakeTblMenu($basename,$username,$password,
    unset($pdo);          
 }
 // ****************************************************************************
-// *                       Выбрать число записей по родителю                  *
-// ****************************************************************************
-function CountPoint($pdo,$ParentID)
-{
-   $cSQL='SELECT uid FROM stockpw WHERE pid='.$ParentID;
-   $stmt = $pdo->query($cSQL);
-   $table = $stmt->fetchAll();
-   $nCount=count($table);
-   if ($nCount==0) $Result='';
-   else $Result='<span>'.$nCount.'</span>';
-   return $Result; 
-}
-// ****************************************************************************
 // *           Сформировать строки меню для записей одного родителя           *
 // ****************************************************************************
 function ShowTreeMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$otlada,$FirstUl=' class="accordion"')
@@ -594,4 +581,30 @@ function _ShowSampleMenu()
    ';
    echo $Menu;
 }
+// -------------------------------------------------------- ЗАПРОСЫ ПО БАЗЕ ---
+
+// ****************************************************************************
+// *                       Выбрать число записей по родителю                  *
+// ****************************************************************************
+function CountPoint($pdo,$ParentID)
+{
+   $cSQL='SELECT uid FROM stockpw WHERE pid='.$ParentID;
+   $stmt = $pdo->query($cSQL);
+   $table = $stmt->fetchAll();
+   $nCount=count($table);
+   if ($nCount==0) $Result='';
+   else $Result='<span>'.$nCount.'</span>';
+   return $Result; 
+}
+// ****************************************************************************
+// *                        Выбрать запись по идентификатору                  *
+// ****************************************************************************
+function SelRecord($pdo,$UnID)
+{
+   $cSQL='SELECT * FROM stockpw WHERE uid='.$UnID;
+   $stmt = $pdo->query($cSQL);
+   $table = $stmt->fetchAll();
+   return $table; 
+}
+
 // ****************************************************** CommonIttveMe.php ***
