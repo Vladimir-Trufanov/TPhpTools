@@ -29,7 +29,8 @@
  * define ("pathPhpPrown",$SiteHost.'/TPhpPrown/TPhpPrown');
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
- * 
+ * // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker
+ * define ("articleSite",'IttveMe'); 
  * // Cоздаем объект для управления изображениями в галерее, связанной с 
  * // материалами сайта из базы данных
  * $Galli=new ttools\KwinGallery(gallidir,$nym,$pid,$uid);
@@ -45,23 +46,10 @@
 // $Page - название страницы сайта;
 // $Uagent - браузер пользователя;
 
-// Ожидаемые цветности знаков юникода
-//define ("signBW",0);       // черно-белый знаки
-//define ("signColor",1);    // цветные знаки
-
-// Подгружаем массив избранных знаков юникода
-//require_once("UnicodeArrays.php"); 
-
 // Подгружаем нужные модули библиотеки прикладных функций
-require_once(pathPhpPrown."/CommonPrown.php");
-/*
-require_once(pathPhpPrown."/iniRegExp.php");
-require_once(pathPhpPrown."/MakeRID.php");
-require_once(pathPhpPrown."/MakeUserError.php");
-require_once(pathPhpPrown."/RecalcSizeInfo.php");
-*/
+require_once pathPhpPrown."/CommonPrown.php";
 // Подгружаем нужные модули библиотеки прикладных классов
-//require_once(pathPhpTools."/iniToolsMessage.php");
+require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 
 class KwinGallery
 {
@@ -71,6 +59,8 @@ class KwinGallery
    protected $pid;       // Семейство фонтов для заголовков наборов юникодов
    protected $uid;       // Семейство фонтов для заголовков наборов юникодов
 
+   protected $editdir='ittveEdit/';
+
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($gallidir,$nym,$pid,$uid) 
    {
@@ -78,14 +68,43 @@ class KwinGallery
       $this->gallidir=$gallidir; 
       $this->nym=$nym; $this->pid=$pid; $this->uid=$uid;
       // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->gallidir='.$this->gallidir); 
-      \prown\ConsoleLog('$this->nym='.$this->nym); 
-      \prown\ConsoleLog('$this->pid='.$this->pid); 
-      \prown\ConsoleLog('$this->uid='.$this->uid); 
+      //\prown\ConsoleLog('$this->gallidir='.$this->gallidir); 
+      //\prown\ConsoleLog('$this->nym='.$this->nym); 
+      //\prown\ConsoleLog('$this->pid='.$this->pid); 
+      //\prown\ConsoleLog('$this->uid='.$this->uid); 
    }
    
    public function __destruct() 
    {
+   }
+   // *************************************************************************
+   // *       Развернуть изображения галереи и обеспечить их ведение:         *
+   // *                $Dir - каталог для размещения изображений              *
+   // *************************************************************************
+   public function ViewGallery($Dir)
+   {
+      // Выбираем режим работы с изображениями, как режим редактирования материала
+      if ($Dir==$this->editdir)
+      {
+         // Проверяем существование и создаем базу данных редактируемого материала
+         $basename=$_SERVER['DOCUMENT_ROOT'].'/itEdit'; // имя базы без расширения 'db3'
+         $username='tve';
+         $password='23ety17'; 
+         $Arti=new ArticlesMaker($basename,$username,$password);
+         // Создаем (или открываем) базу данных для редактируемого материала
+         $aCharters=[                                                          
+            [ 1, 0,-1, 'ittve.me',            '/',                 acsAll,'20',''],
+            [16, 1,-1, 'Прогулки',            'progulki',          acsAll,'20',''],
+            [17,16, 0,    'Охота на медведя', 'ohota-na-medvedya', acsAll,'2011.05.06',''],
+            [21, 0,-1, 'ittve.end',           '/',                 acsAll,'20','']
+         ];       
+
+         $Arti->BaseFirstCreate($aCharters);
+      }
+      else
+      {
+         \prown\ConsoleLog('НЕ ='.$this->editdir); 
+      }
    }
    // *************************************************************************
    // *                 Вывести набор юникодов одним столбцом                 *

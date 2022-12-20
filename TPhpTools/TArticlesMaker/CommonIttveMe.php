@@ -13,7 +13,7 @@
 // ****************************************************************************
 // *      Создать таблицы базы данных и выполнить начальное заполнение        *
 // ****************************************************************************
-function CreateTables($pdo)
+function CreateTables($pdo,$aCharters)
 {
    try 
    {
@@ -55,7 +55,8 @@ function CreateTables($pdo)
          'DateArt  VARCHAR NOT NULL,'.                            // дата статьи сайта/юникод иконки раздела
          'Art      TEXT)';                                        // материал = статья сайта
       $st = $pdo->query($sql);
-      // Заполняем таблицу материалов в начальном состоянии (на 2022-11-09)
+      // Заполняем таблицу материалов в начальном состоянии (на 2022-12-20)
+      if ($aCharters=='-'){
       $aCharters=[                                                          
          [ 1, 0,-1, 'ittve.me',                                            '/',                                              acsAll,'20',''],
          [ 2, 1,-1, 'Моя жизнь',                                           'moya-zhizn',                                     acsAll,'20',''],
@@ -78,7 +79,7 @@ function CreateTables($pdo)
          [19, 1,-1, 'Перепечатка',                                         'perepechatka',                                   acsAll,'20',''],
          [20, 4, 0,    'Благовещенский Ионо-Яшезерский мужской монастырь', 'iono-yashezerskij-muzhskoj-monastyr',            acsAll,'2010.10.10',''],
          [21, 0,-1, 'ittve.end',                                           '/',                                              acsAll,'20','']
-      ];       
+      ];}       
       $statement = $pdo->prepare("INSERT INTO [stockpw] ".
          "([uid], [pid], [IdCue], [NameArt], [Translit], [access], [DateArt], [Art]) VALUES ".
          "(:uid,  :pid,  :IdCue,  :NameArt,  :Translit,  :access,  :DateArt,  :Art);");
@@ -101,7 +102,8 @@ function CreateTables($pdo)
          'NamePic     VARCHAR NOT NULL,'.                          // заголовок изображения к статье сайта
          'TranslitPic VARCHAR NOT NULL,'.                          // транслит заголовка изображения
          'DatePic     DATETIME,'.                                  // дата\время изображения
-         'Сomment     TEXT)';                                      // комментарий к изображению
+         'Сomment     TEXT,'.                                      // комментарий к изображению
+         'Pic         BLOB)';                                      // изображение
       $st = $pdo->query($sql);
 
       // Создаём контрольную таблицу базы данных   
@@ -125,7 +127,7 @@ function CreateTables($pdo)
 // ****************************************************************************
 // * Создать резервную копию базы данных и заново построить новую базу данных *
 // ****************************************************************************
-function _BaseFirstCreate($basename,$username,$password) 
+function _BaseFirstCreate($basename,$username,$password,$aCharters) 
 {
    // Получаем спецификацию файла базы данных материалов
    $filename=$basename.'.db3';
@@ -156,7 +158,7 @@ function _BaseFirstCreate($basename,$username,$password)
    $pdo=_BaseConnect($basename,$username,$password);
    \prown\ConsoleLog('Создан объект PDO и файл базы данных');
    // Создаём таблицы базы данных
-   CreateTables($pdo);
+   CreateTables($pdo,$aCharters);
    \prown\ConsoleLog('Созданы таблицы и выполнено начальное заполнение'); 
    
    // Выбираем контрольную таблицу для меню из базы данных и удаляем объект

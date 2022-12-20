@@ -113,8 +113,11 @@ class ArticlesMaker
    // *************************************************************************
    // *    Создать резервную копию базы данных, построить новую базу данных   *
    // *************************************************************************
-   public function BaseFirstCreate() 
+   public function BaseFirstCreate($aCharters='-') 
    {
+      if (articleSite==tbsIttveme) 
+      _BaseFirstCreate($this->basename,$this->username,$this->password,$aCharters);
+      else
       _BaseFirstCreate($this->basename,$this->username,$this->password);
    }
    // *************************************************************************
