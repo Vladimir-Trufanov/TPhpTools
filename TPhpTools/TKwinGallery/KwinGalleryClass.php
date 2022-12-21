@@ -115,7 +115,6 @@ class KwinGallery
       $username='tve';
       $password='23ety17'; 
       $Arti=new ArticlesMaker($basename,$username,$password);
-
       $pdo=_BaseConnect($basename,$username,$password);
       $t1=SelRecord($pdo,$this->pid);
       $t2=SelRecord($pdo,$this->uid);

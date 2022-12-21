@@ -127,6 +127,10 @@ function CreateTables($pdo,$aCharters)
 // ****************************************************************************
 // * Создать резервную копию базы данных и заново построить новую базу данных *
 // ****************************************************************************
+//function bfcConsoleLog($messa,$aCharters)
+//{
+//   if ($aCharters=='-') \prown\ConsoleLog($messa); 
+//}
 function _BaseFirstCreate($basename,$username,$password,$aCharters) 
 {
    // Получаем спецификацию файла базы данных материалов
@@ -161,27 +165,29 @@ function _BaseFirstCreate($basename,$username,$password,$aCharters)
    CreateTables($pdo,$aCharters);
    \prown\ConsoleLog('Созданы таблицы и выполнено начальное заполнение'); 
    
-   // Выбираем контрольную таблицу для меню из базы данных и удаляем объект
-   $stmt = $pdo->query("SELECT * FROM stockpw");
-   $table = $stmt->fetchAll();
-   unset($pdo);          
-   \prown\ConsoleLog('Выбрана таблица материалов из базы данных'); 
-   
-   // Формируем массив для представления таблицы
-   $arrayl = array(); 
-   aRecursLevel($arrayl,$table);
-   echo 'Таблица материалов из базы данных: '.$filename; 
-   aViewLevel($arrayl);
-   \prown\ConsoleLog('Сформирован массив для представления таблицы'); 
-
-   // Формируем массив c указанием путей  
-   $array = array();                         // выходной массив
-   $array_idx_lvl = array();                 // индекс по полю level
-   echo '<br>';  
-   echo 'Таблица материалов c указанием путей и транслита из базы данных: '.$filename;
-   aRecursPath($array,$array_idx_lvl,$table); 
-   aViewPath($array);
-   \prown\ConsoleLog('Сформирован массив c указанием путей и транслита'); 
+   // Отрабатываем действия при отладке создания базы данных
+   if ($aCharters=='-')
+   {
+      // Выбираем контрольную таблицу для меню из базы данных и удаляем объект
+      $stmt = $pdo->query("SELECT * FROM stockpw");
+      $table = $stmt->fetchAll();
+      unset($pdo);          
+      \prown\ConsoleLog('Выбрана таблица материалов из базы данных'); 
+      // Формируем массив для представления таблицы
+      $arrayl = array(); 
+      aRecursLevel($arrayl,$table);
+      echo 'Таблица материалов из базы данных: '.$filename; 
+      aViewLevel($arrayl);
+      \prown\ConsoleLog('Сформирован массив для представления таблицы'); 
+      // Формируем массив c указанием путей  
+      $array = array();                         // выходной массив
+      $array_idx_lvl = array();                 // индекс по полю level
+      echo '<br>';  
+      echo 'Таблица материалов c указанием путей и транслита из базы данных: '.$filename;
+      aRecursPath($array,$array_idx_lvl,$table); 
+      aViewPath($array);
+      \prown\ConsoleLog('Сформирован массив c указанием путей и транслита');
+   } 
 }
 // ****************************************************************************
 // *          Сформировать массив для представления таблицы до уровня         *
