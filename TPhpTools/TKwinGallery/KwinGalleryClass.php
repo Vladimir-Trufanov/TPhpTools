@@ -81,13 +81,13 @@ class KwinGallery
    // *       Развернуть изображения галереи и обеспечить их ведение:         *
    // *                $Dir - каталог для размещения изображений              *
    // *************************************************************************
-   public function ViewGallery($Dir)
+   public function ViewGallery($Dir,$apdo)
    {
       // Выбираем режим работы с изображениями, как режим редактирования материала
       if ($Dir==$this->editdir)
       {
          // Формируем определяющий массив для базы данных редактируемого материала
-         $aCharters=$this->MakeaCharters();
+         $aCharters=$this->MakeaCharters($apdo);
          // Проверяем существование и создаем базу данных редактируемого материала
          $basename=$_SERVER['DOCUMENT_ROOT'].'/itEdit'; // имя базы без расширения 'db3'
          $username='tve';
@@ -109,15 +109,10 @@ class KwinGallery
    //      [17,16, 0, 'Охота на медведя', 'ohota-na-medvedya', acsAll,'2011.05.06',''],
    //      [21, 0,-1, 'ittve.end',        '/',                 acsAll,'20','']
    //    ];       
-   protected function MakeaCharters()
+   protected function MakeaCharters($apdo)
    {
-      $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve';
-      $username='tve';
-      $password='23ety17'; 
-      $Arti=new ArticlesMaker($basename,$username,$password);
-      $pdo=_BaseConnect($basename,$username,$password);
-      $t1=SelRecord($pdo,$this->pid);
-      $t2=SelRecord($pdo,$this->uid);
+      $t1=SelRecord($apdo,$this->pid);
+      $t2=SelRecord($apdo,$this->uid);
       /*
       echo '<pre>';
       print_r($t1);

@@ -72,8 +72,6 @@ class ArticlesMaker
    protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
    protected $username;             // логин для доступа к базе данных
    protected $password;             // пароль
-   //protected $_message=Ok;        // сообщение по загрузке файла
-   //protected $_uploaded=array();  // $_FILES - данные о загруженном файле
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($basename,$username,$password) 
    {
@@ -89,7 +87,9 @@ class ArticlesMaker
    public function __destruct() 
    {
    }
-   
+   // *************************************************************************
+   // *                     Открыть соединение с базой данных                 *
+   // *************************************************************************
    public function BaseConnect()
    {
       return _BaseConnect($this->basename,$this->username,$this->password);
@@ -110,6 +110,15 @@ class ArticlesMaker
    {
       _MakeMenu($this->basename,$this->username,$this->password);
    } 
+   // *************************************************************************
+   // *                Построить html-код меню для выбора материала           *
+   // *************************************************************************
+   public function GetPunktMenu($pdo) 
+   {
+      $lvl=-1; $cLast='+++';
+      $nLine=0; $cli=""; 
+      ShowCaseMe($pdo,1,1,$cLast,$nLine,$cli,$lvl);
+   }
    // *************************************************************************
    // *    Создать резервную копию базы данных, построить новую базу данных   *
    // *************************************************************************
