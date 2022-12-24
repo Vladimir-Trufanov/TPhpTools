@@ -403,7 +403,9 @@ function cUidPid($Uid,$Pid,$cLast)
    return $c;
 }
 // ****************************************************************************
-// *       Сформировать строки меню для выборки записи для редактирования     *
+// *       Сформировать строки меню для выборки записи для редактирования:    *
+// *       $cli - вставка конца пункта меню
+
 // ****************************************************************************
 function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
 {
@@ -438,7 +440,7 @@ function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl='
          {
             $nPoint++;
             echo("<li> ");
-            echo('<a href="#'.$Translit.'">'.'<em>'.$Uid.'</em>'.$row['NameArt'].$cLine.'</a>'."\n"); 
+            echo('<a href="?arti='.$Translit.'">'.'<em>'.$Uid.'</em>'.$row['NameArt'].$cLine.'</a>'."\n"); 
          }
          $cLast='+li';
          ShowCaseMe($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,' class="sub-menu"'); 
