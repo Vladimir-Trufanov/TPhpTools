@@ -5,7 +5,7 @@
 // ****************************************************************************
 // * TPhpTools                                   Построитель материалов сайта *
 // *                                                                          *
-// * v1.1, 12.11.2022                              Автор:       Труфанов В.Е. *
+// * v1.1, 26.12.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  03.11.2022 *
 // ****************************************************************************
 
@@ -45,9 +45,12 @@
 define ("tbsIttveme", 'IttveMe'); 
 define ("tbsIttvepw", 'IttvePw'); 
 // -------------------------------------------------- Доступ к пунктам меню ---
-define ("acsAll", 1);        // доступ разрешен всем
+define ("acsAll",   1);      // доступ разрешен всем
 define ("acsClose", 2);      // закрыт, статья в разработке
 define ("acsAutor", 4);      // только автору-хозяину сайта
+// ----------------------------------- Режимы текущей работы объекта класса ---
+define ("maGetPunktMenu", 1);  // задана выборка материала для редактирования
+define ("maMakeMenu",     2);  // выбран материал для активной страницы
 
 // Подгружаем общие функции класса
 require_once("CommonArticlesMaker.php"); 
@@ -56,7 +59,7 @@ if (articleSite==tbsIttveme) require_once("CommonIttveMe.php");
 elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php"); 
 
 // Подгружаем нужные модули библиотеки прикладных функций
-//require_once(pathPhpPrown."/CommonPrown.php");
+require_once(pathPhpPrown."/MakeCookie.php");
 /*
 require_once(pathPhpPrown."/iniRegExp.php");
 require_once(pathPhpPrown."/MakeRID.php");
@@ -109,15 +112,19 @@ class ArticlesMaker
    public function MakeMenu()
    {
       _MakeMenu($this->basename,$this->username,$this->password);
+      // Отмечаем в кукисе, что перешли в режим просмотра активного материала
+      //prown\MakeCookie('ModeArticle',maMakeMenu,tInt);  
    } 
+   // Отмечаем в кукисе, что перешли в режим выбора материала
+   public function cookieGetPunktMenu() 
+   {
+      \prown\MakeCookie('ModeArticle',maGetPunktMenu,tInt);  
+   }
    // *************************************************************************
    // *          Построить html-код меню и сделать выбор материала            *
    // *************************************************************************
-   public function GetPunktMenu($pdo,&$pid,&$uid) 
+   public function GetPunktMenu($pdo) 
    {
-      // Инициируем выбор материала
-      $pid=16; $uid=17;
-      //
       $lvl=-1; $cLast='+++';
       $nLine=0; 
       $cli=""; // Начальная вставка конца пункта меню
