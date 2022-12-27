@@ -682,7 +682,7 @@ function SelRecord($pdo,$UnID)
 // ****************************************************************************
 // *             Выбрать $pid,$uid,$NameGru,$NameArt по транслиту             *
 // ****************************************************************************
-function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt)
+function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt)
 {
    // Выбираем по транслиту $pid,$uid,$NameArt
    $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
@@ -692,7 +692,8 @@ function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt)
    //echo '<pre>';
    //print_r($table);
    //echo '</pre>'; 
-   $pid=$table[0]['pid']; $uid=$table[0]['uid']; $NameArt=$table[0]['NameArt'];
+   $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
+   $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
    // Добираем $NameGru
    $table=SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
 }

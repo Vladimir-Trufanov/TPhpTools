@@ -152,9 +152,9 @@ class ArticlesMaker
    // *************************************************************************
    // *                      Выбрать $pid,$uid по транслиту                   *
    // *************************************************************************
-   public function SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt)
+   public function SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt)
    {
-      _SelUidPid($pdo,$getArti,$pid,$uid,$NameGru,$NameArt);
+      _SelUidPid($pdo,$getArti,$pid,$uid,$NameGru,$NameArt,$DateArt);
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
    /*
