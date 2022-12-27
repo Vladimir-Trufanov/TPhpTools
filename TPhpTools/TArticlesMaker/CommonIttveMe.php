@@ -632,11 +632,13 @@ function CreateTables($pdo,$aCharters)
          'Сomment     TEXT,'.                                      // комментарий к изображению
          'Pic         BLOB)';                                      // изображение
       $st = $pdo->query($sql);
-
       // Создаём контрольную таблицу базы данных   
       $sql='CREATE TABLE ctrlpw ('.
          'bid         VARCHAR NOT NULL,'.    // наименование базы данных
          'СommBase    TEXT)';                // комментарий по базе данных
+      $st = $pdo->query($sql);
+      // Создаем индекс по транслиту в таблице материалов      
+      $sql='CREATE INDEX IF NOT EXISTS iTranslit ON stockpw (Translit)';
       $st = $pdo->query($sql);
       $pdo->commit();
    } 
@@ -676,6 +678,23 @@ function SelRecord($pdo,$UnID)
    $stmt = $pdo->query($cSQL);
    $table = $stmt->fetchAll();
    return $table; 
+}
+// ****************************************************************************
+// *             Выбрать $pid,$uid,$NameGru,$NameArt по транслиту             *
+// ****************************************************************************
+function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt)
+{
+   // Выбираем по транслиту $pid,$uid,$NameArt
+   $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
+   //\prown\ConsoleLog('$getArti='.$getArti);
+   $stmt=$pdo->query($cSQL);
+   $table=$stmt->fetchAll();
+   //echo '<pre>';
+   //print_r($table);
+   //echo '</pre>'; 
+   $pid=$table[0]['pid']; $uid=$table[0]['uid']; $NameArt=$table[0]['NameArt'];
+   // Добираем $NameGru
+   $table=SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
 }
 
 // ****************************************************** CommonIttveMe.php ***
