@@ -38,7 +38,7 @@ function _BaseFirstCreate($basename,$username,$password,$aCharters)
    $filename=$basename.'.db3';
    // Проверяем существование и удаляем файл копии базы данных 
    $filenameOld=$basename.'-copy.db3';
-   _UnlinkFile($filename);
+   _UnlinkFile($filenameOld);
    \prown\ConsoleLog('Проверено существование и удалена копия базы данных: '.$filenameOld);  
    // Создаем копию базы данных
    if (file_exists($filename)) 
