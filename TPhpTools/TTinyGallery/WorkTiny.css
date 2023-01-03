@@ -1,0 +1,43 @@
+#NameGru
+{
+   float:left;
+   margin-left:.5rem;
+   /*background:Red;*/
+}
+#NameArt
+{
+   float:right;
+   margin-right:.5rem;
+   /*background:magenta;*/
+}
+
+#KwinGallery,#WorkTiny,#FooterTiny
+{
+   margin:0;
+   padding:0;
+   border:0;
+   vertical-align:baseline;
+}
+/* Раскрашиваем дивы */
+#KwinGallery{background:LightCyan;}
+#WorkTiny{background:GhostWhite;}
+#FooterTiny{background:LightYellow;}
+/* Позиционируем секции области редакторования */
+#KwinGallery
+{
+   position:fixed; 
+   top:0;
+   right:0;
+}
+#WorkTiny
+{
+   position:fixed; 
+   left:0;
+   top:0;
+}
+#FooterTiny
+{
+   position:fixed; 
+   left:0;
+   overflow:auto;
+}
