@@ -95,10 +95,12 @@
 
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
-
+define ('mmlSohranitMaterial',    'sohranit-material');
 class TinyGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
+   protected $SiteRoot;         // Корневой каталог сайта
+   protected $urlHome;          // Начальная страница сайта
    protected $editdir;          // Каталог размещения файлов, связанных c материалом
    protected $classdir;         // Каталог файлов класса
    protected $WorkTinyHeight;   // Высота рабочей области Tiny
@@ -115,6 +117,8 @@ class TinyGallery
       $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti) 
    {
       // Инициализируем свойства класса
+      $this->SiteRoot=$SiteRoot; 
+      $this->urlHome=$urlHome; 
       $this->editdir=editdir; 
       // Принимаем путь к каталогу файлов класса
       $this->classdir=pathPhpTools.'/TTinyGallery';
@@ -205,6 +209,13 @@ class TinyGallery
          <script> tinymce.init
          ({
             selector: "#mytextarea",'.
+            //setup: function(editor) 
+            //{
+            //   editor.on("init", function(e) 
+            //   {
+            //      console.log("The Editor has initialized.");
+            //   });
+            //},'.
             //height: 180,'.
             //width:  780,'.
             'content_css: "'.$fileStyle.'",'.
@@ -262,6 +273,12 @@ class TinyGallery
    // Определяем материал для редактирования
    $table=$this->Arti->SelUidPid
       ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt);
+      
+      
+      
+      
+      
+      
    // Включаем в разметку див галереи изображений 
    echo '<div id="KwinGallery">'; 
       // Если указан выбор материала в запросе, то dыводим меню для выбора материала 
@@ -272,8 +289,8 @@ class TinyGallery
       // В обычном режиме
       else
       {
+         //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
          echo 'KwinGallery<br>';
-         echo '$this->Arti->getArti='.$this->Arti->getArti.'<br>';
          /*
          //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
          //$Arti=new ArticlesMaker($basename,$username,$password);
@@ -298,10 +315,10 @@ class TinyGallery
    echo '<div id="WorkTiny">';
       // Выводим заголовок статьи
       $this->MakeTitle($NameGru,$NameArt,$DateArt);
-      // Готовим форму для рабочей области Tiny
+      $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
-         <form id="frmTinyText" method="get" action="/TinyItTve.php">
-         <textarea id="mytextarea" name="dor">
+         <form id="frmTinyText" method="get" action="'.$SaveAction.'">
+         <textarea id="mytextarea" name="mytextarea">
       '; 
       //echo htmlspecialchars($contents);
       echo '
@@ -317,9 +334,10 @@ class TinyGallery
    echo '<div id="FooterTiny">';
       echo '
          <ul class="uli">
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На-главную</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать-статью</a></li>
-         <li class="ili"><a class="ali" href="#">Пункт-меню-3</a></li>
+         <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать статью</a></li>
+         <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
+         <!-- <li class="ili"><a class="ali" href="'.$cPref.mmlSohranitMaterial.   '">Сохранить материал</a></li> -->
          </ul>   
       ';
    echo '</div>';
