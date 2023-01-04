@@ -49,8 +49,8 @@ define ("acsAll",   1);      // доступ разрешен всем
 define ("acsClose", 2);      // закрыт, статья в разработке
 define ("acsAutor", 4);      // только автору-хозяину сайта
 // ----------------------------------- Режимы текущей работы объекта класса ---
-define ("maGetPunktMenu", 1);  // задана выборка материала для редактирования
-define ("maMakeMenu",     2);  // выбран материал для активной страницы
+// define ("maGetPunktMenu", 1);  // задана выборка материала для редактирования
+// define ("maMakeMenu",     2);  // выбран материал для активной страницы
 
 // Подгружаем общие функции класса
 require_once("CommonArticlesMaker.php"); 
@@ -75,6 +75,7 @@ class ArticlesMaker
    protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
    protected $username;             // логин для доступа к базе данных
    protected $password;             // пароль
+   public    $getArti;              // транслит выбранного материала
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($basename,$username,$password) 
    {
@@ -82,6 +83,9 @@ class ArticlesMaker
       $this->basename = $basename;
       $this->username = $username;
       $this->password = $password;
+      if (isset($_COOKIE['PunktMenu'])) 
+      $this->getArti=\prown\MakeCookie('PunktMenu');
+      else $this->getArti=NULL; 
       // Трассируем установленные свойства
       //\prown\ConsoleLog('$this->basename='.$this->basename); 
       //\prown\ConsoleLog('$this->username='.$this->username); 
@@ -112,13 +116,14 @@ class ArticlesMaker
    public function MakeMenu()
    {
       _MakeMenu($this->basename,$this->username,$this->password);
-      // Отмечаем в кукисе, что перешли в режим просмотра активного материала
-      //prown\MakeCookie('ModeArticle',maMakeMenu,tInt);  
    } 
-   // Отмечаем в кукисе, что перешли в режим выбора материала
-   public function cookieGetPunktMenu() 
+   // 
+   // *************************************************************************
+   // *              Отметить в кукисе, что выбран указанный материал         *
+   // *************************************************************************
+   public function cookieGetPunktMenu($getArti) 
    {
-      \prown\MakeCookie('ModeArticle',maGetPunktMenu,tInt);  
+      $this->getArti=\prown\MakeCookie('PunktMenu',$getArti,tStr);  
    }
    // *************************************************************************
    // *          Построить html-код меню и сделать выбор материала            *

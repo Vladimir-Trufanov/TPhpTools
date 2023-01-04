@@ -32,7 +32,25 @@
  * // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker
  * define ("articleSite",'IttveMe'); 
  * // Указываем каталог размещения файлов, связанных c материалом
- * define("editdir",'ittveEdit/');
+ * define("editdir",'ittveEdit');
+ * 
+ * // Подгружаем нужные модули библиотеки прикладных классов
+ * require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
+ * require_once pathPhpTools."/TTinyGallery/TinyGalleryClass.php";
+ * // Подключаем объект для работы с базой данных материалов
+ * // (при необходимости создаем базу данных материалов)
+ * $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17';
+ * $Arti=new ttools\ArticlesMaker($basename,$username,$password);
+ * if (!file_exists($basename.'.db3')) $Arti-> BaseFirstCreate();
+ * 
+ * // Подключаем объект по редактированию материала - для работы в галерее 
+ * // и рабочей области редактирования
+ * $WorkTinyHeight='60'; $FooterTinyHeight='35'; $KwinGalleryWidth='30'; $EdIzm='%';
+ * $Edit=new ttools\TinyGallery($SiteRoot,$urlHome,
+ * $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti);
+ * // Выполняем действия на странице до отправления заголовков:
+ * // (устанавливаем кукисы и т.д.)
+ * $Edit->ZeroEditSpace();
  * 
  * --// Cоздаем объект для управления изображениями в галерее, связанной с 
  * --// материалами сайта из базы данных
@@ -75,6 +93,9 @@
 // ---Подгружаем нужные модули библиотеки прикладных классов
 // ---require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 
+define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
+define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
+
 class TinyGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
@@ -84,24 +105,29 @@ class TinyGallery
    protected $FooterTinyHeight; // Высота подвала области редактирования
    protected $KwinGalleryWidth; // Ширина галереи изображений
    protected $EdIzm;            // Единица измерения заданных параметров
+   protected $Arti;             // Объект по работе с базой данных материалов
    //protected $nym;      // Префикс имен файлов для фотографий галереи и материалов
    //protected $pid;      // Идентификатор группы текущего материала
    //protected $uid;      // Идентификатор текущего материала
 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($SiteRoot,$urlHome,
-      $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm) 
+      $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti) 
    {
       // Инициализируем свойства класса
       $this->editdir=editdir; 
       // Принимаем путь к каталогу файлов класса
       $this->classdir=pathPhpTools.'/TTinyGallery';
+      // Регистрируем объект по работе с базой данных материалов
+      // и инициируем транслит выбранного материала
+      $this->Arti=$Arti;
       // Считываем предопределенные размеры частей рабочей области редактирования
       $this->WorkTinyHeight=$WorkTinyHeight;
       $this->FooterTinyHeight=$FooterTinyHeight;
       $this->KwinGalleryWidth=$KwinGalleryWidth;
       $this->EdIzm=$EdIzm;
       // Проверяем, установлен ли файл стилей в каталоге редактирования
+      // и, при его отсутствии, загружаем из класса 
       $fileStyle=$this->editdir.'/WorkTiny.css';
       $filename=$this->classdir.'/WorkTiny.css';
       //if (!file_exists($fileStyle)) 
@@ -110,12 +136,14 @@ class TinyGallery
          \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
       //} 
       // Трассируем установленные свойства
+      /*
       \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
       \prown\ConsoleLog('$this->classdir='.$this->classdir); 
       \prown\ConsoleLog('$this->WorkTinyHeight='.$this->WorkTinyHeight); 
       \prown\ConsoleLog('$this->FooterTinyHeight='.$this->FooterTinyHeight); 
       \prown\ConsoleLog('$this->KwinGalleryWidth='.$this->KwinGalleryWidth); 
       \prown\ConsoleLog('$this->EdIzm='.$this->EdIzm); 
+      */
    }
    
    public function __destruct() 
@@ -127,6 +155,15 @@ class TinyGallery
    // *************************************************************************
    public function ZeroEditSpace()
    {
+      // Если выбран новый материал, то устанавливаем кукис на данный материал
+      // материал мог быть выбран при выполнении методов:
+      //    $apdo=$this->Arti->BaseConnect();
+      //    $this->Arti->GetPunktMenu($apdo);
+      $getArti=\prown\getComRequest('arti');
+      if ($getArti<>NULL)
+      {
+         $this->Arti->cookieGetPunktMenu($getArti); 
+      }
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
@@ -159,23 +196,19 @@ class TinyGallery
       }
       </style>
       ';
-      /*
-      echo '
-      <!-- theme: "modern", -->
-      ';
-      echo '<link rel="stylesheet" type="text/css" href="Styles/Gallery.css">';
-      echo '<link rel="stylesheet" type="text/css" href="Styles/">';
+      // Готовим рабочую область Tiny <!-- theme: "modern", -->
+      //echo '<link rel="stylesheet" type="text/css" href="Styles/Gallery.css">';
+      //echo '<link rel="stylesheet" type="text/css" href="Styles/">';
       // Подключаем TinyMCE
       echo '
          <script src="/TinyMCE5-8-1/tinymce.min.js"></script>
          <script> tinymce.init
          ({
-            selector: "#mytextarea",
-            height: 180,
-            width:  780,'.
-            //'content_css: "/Styles/TinyMCE.css",'.
-            '
-            plugins:
+            selector: "#mytextarea",'.
+            //height: 180,'.
+            //width:  780,'.
+            'content_css: "'.$fileStyle.'",'.
+            'plugins:
             [ 
                "advlist autolink link image imagetools lists charmap print preview hr anchor",
                "pagebreak spellchecker searchreplace wordcount visualblocks",
@@ -204,7 +237,6 @@ class TinyGallery
          });
          </script>
       ';
-      */ 
    }
    // *************************************************************************
    // *              Открыть пространство редактирования материала            *
@@ -225,85 +257,64 @@ class TinyGallery
    // .                                          .                            .
    // -------------------------------------------------------------------------
 
+   // Подключаемся к базе данных материалов
+   $apdo=$this->Arti->BaseConnect();
+   // Определяем материал для редактирования
+   $table=$this->Arti->SelUidPid
+      ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt);
    // Включаем в разметку див галереи изображений 
    echo '<div id="KwinGallery">'; 
-      echo 'KwinGallery<br>'; 
-      /*
-      // Выводим меню для выбора материала 
-      if (prown\isComRequest(mmlVybratStatyuRedakti))
+      // Если указан выбор материала в запросе, то dыводим меню для выбора материала 
+      if (\prown\isComRequest(mmlVybratStatyuRedakti))
       {
-         $Arti->GetPunktMenu($apdo); 
-         //$Arti->MakeMenu();          
+         $this->Arti->GetPunktMenu($apdo); 
       }
-      // Если указан выбор материала в запросе то в случае, 
-      // если это режим редактирования, редактируем галерею 
-      $getArti=prown\getComRequest('arti');
-      if ($getArti<>NULL)
+      // В обычном режиме
+      else
       {
-         //echo '$_COOKIE["ModeArticle"]='.$_COOKIE["ModeArticle"].'<br>';
-         if ($_COOKIE["ModeArticle"]==maGetPunktMenu)
-         {
-            //echo '$getArti='.$getArti.'<br>';
-            // Выбираем $pid,$uid заказанного материала
-            $pid=2; // 16
-            $uid=3; // 17
-            $Arti->SelUidPid($apdo,$getArti,$pid,$uid,$NameGru,$NameArt,$DateArt);
-            //echo '$pid='.$pid.'<br>';
-            //echo '$uid='.$uid.'<br>';
-            //echo '$NameGru='.$NameGru.'<br>';
-           //echo '$NameArt='.$NameArt.'<br>';
-           //echo '$DateArt='.$DateArt.'<br>';
-           // Cоздаем объект для управления изображениями в галерее, связанной с 
-           // материалами сайта из базы данных
-           $Galli=new ttools\KwinGallery(editdir,nym,$pid,$uid);
-           $Galli->ViewGallery(editdir,$apdo);
+         echo 'KwinGallery<br>';
+         echo '$this->Arti->getArti='.$this->Arti->getArti.'<br>';
+         /*
+         //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
+         //$Arti=new ArticlesMaker($basename,$username,$password);
+         //$apdo=$Arti->BaseConnect();
+         //$Galli->ViewGallery(gallidir,$apdo);
          
-           $pref=editdir.nym.pid.'-'.uid.'-';
-           $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
-           GViewImage($pref.'Подъём-настроения.jpg',$Comment);
-           GLoadImage("ittveEdit/sampo.jpg");
-           $Comment="На горе Сампо всем хорошо!";
-           GViewImage($pref.'На-Сампо.jpg',$Comment);
-         }
-      }
-      //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-      //$Arti=new ArticlesMaker($basename,$username,$password);
-      //$apdo=$Arti->BaseConnect();
-      //$Galli->ViewGallery(gallidir,$apdo);
-      */
+         // Cоздаем объект для управления изображениями в галерее, связанной с 
+         // материалами сайта из базы данных
+         $Galli=new ttools\KwinGallery(editdir,nym,$pid,$uid);
+         $Galli->ViewGallery(editdir,$apdo);
+         
+         $pref=editdir.nym.pid.'-'.uid.'-';
+         $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
+         GViewImage($pref.'Подъём-настроения.jpg',$Comment);
+         GLoadImage("ittveEdit/sampo.jpg");
+         $Comment="На горе Сампо всем хорошо!";
+         GViewImage($pref.'На-Сампо.jpg',$Comment);
+         */   
+      } 
    echo '</div>'; 
    // Включаем в разметку рабочую область редактирования
    echo '<div id="WorkTiny">';
-      echo 'WorkTiny<br>'; 
-      /*
-      // Формируем заголовки статьи
-      if ($getArti<>NULL)
-      {
-         echo '<div id="NameGru">'; 
-         echo $NameGru.':';
-         echo '</div>'; 
-         echo '<div id="NameArt">'; 
-         echo $NameArt.' ['.$DateArt.']';
-         echo '</div>'; 
-      }
+      // Выводим заголовок статьи
+      $this->MakeTitle($NameGru,$NameArt,$DateArt);
       // Готовим форму для рабочей области Tiny
       echo '
          <form id="frmTinyText" method="get" action="/TinyItTve.php">
-        <textarea id="mytextarea" name="dor">
+         <textarea id="mytextarea" name="dor">
       '; 
-      echo htmlspecialchars($contents);
+      //echo htmlspecialchars($contents);
       echo '
          </textarea>
          </form>
       '; 
       // Подключаем загрузку  
-      require_once $SiteRoot."/UploadImg.php";
-      */
+      //require_once $SiteRoot."/UploadImg.php";
    echo '</div>';
+   // Формируем префикс вызова страниц из меню на сайте и localhost
+   $cPref='?Com=';
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
-      echo 'FooterTiny<br>'; 
-      /*
       echo '
          <ul class="uli">
          <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На-главную</a></li>
@@ -311,11 +322,27 @@ class TinyGallery
          <li class="ili"><a class="ali" href="#">Пункт-меню-3</a></li>
          </ul>   
       ';
-      */
    echo '</div>';
    }
 
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
+   
+   // *************************************************************************
+   // *                         Вывести заголовок статьи                      *
+   // *************************************************************************
+   private function MakeTitle($NameGru,$NameArt,$DateArt)
+   {
+      if ($NameArt=='')
+      { 
+         echo '<div id="NameGru">'.$NameGru.'</div>'; 
+         echo '<div id="NameArt">'.'</div>'; 
+      }
+      else
+      {
+         echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
+         echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
+      } 
+   }
 } 
 
 // *************************************************** TinyGalleryClass.php ***

@@ -22,7 +22,7 @@
 #KwinGallery{background:LightCyan;}
 #WorkTiny{background:GhostWhite;}
 #FooterTiny{background:LightYellow;}
-/* Позиционируем секции области редакторования */
+/* Позиционируем секции области редактирования */
 #KwinGallery
 {
    position:fixed; 
@@ -40,4 +40,16 @@
    position:fixed; 
    left:0;
    overflow:auto;
+}
+
+/* Настраиваем рабочую область Tiny */
+#frmTinyText
+{
+   margin-top:1rem;
+   width:100%;
+   height:100%;
+}
+#mytextarea
+{
+   height:100%;
 }
