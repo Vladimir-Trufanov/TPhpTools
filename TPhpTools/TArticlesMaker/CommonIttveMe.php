@@ -682,7 +682,7 @@ function SelRecord($pdo,$UnID)
 // ****************************************************************************
 // *             Выбрать $pid,$uid,$NameGru,$NameArt по транслиту             *
 // ****************************************************************************
-function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt)
+function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt,&$contents)
 {
    // Инициируем возвращаемые данные
    $pid=0; $uid=0; 
@@ -692,11 +692,11 @@ function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt)
    //\prown\ConsoleLog('$getArti='.$getArti);
    $stmt=$pdo->query($cSQL);
    $table=$stmt->fetchAll();
-   //\prown\ConsoleLog('count($table)='.count($table)); 
    if (count($table)==1)
    {
       $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
       $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
+      $contents=$table[0]['Art'];
       // Добираем $NameGru
       $table=SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
    }

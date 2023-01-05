@@ -95,7 +95,7 @@
 
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
-define ('mmlSohranitMaterial',    'sohranit-material');
+define ('mmlNaznachitStatyu',     'naznachit-statyu');
 class TinyGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
@@ -270,15 +270,18 @@ class TinyGallery
 
    // Подключаемся к базе данных материалов
    $apdo=$this->Arti->BaseConnect();
-   // Определяем материал для редактирования
+   // Вытаскиваем материал для редактирования
    $table=$this->Arti->SelUidPid
-      ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt);
-      
-      
-      
-      
-      
-      
+      ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
+   // Если был выбран режим сохранения отредактированного материала, 
+   // то выбираем его из запроса и сохраняем    
+   $contentNews=\prown\getComRequest('mytextarea');
+   if ($contentNews<>NULL)
+   {
+      $this->Arti->UpdateByTranslit($apdo,$this->Arti->getArti,$contentNews);
+      $table=$this->Arti->SelUidPid
+      ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
+   }
    // Включаем в разметку див галереи изображений 
    echo '<div id="KwinGallery">'; 
       // Если указан выбор материала в запросе, то dыводим меню для выбора материала 
@@ -317,16 +320,21 @@ class TinyGallery
       $this->MakeTitle($NameGru,$NameArt,$DateArt);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
-         <form id="frmTinyText" method="get" action="'.$SaveAction.'">
+         <form id="frmTinyText" method="post" action="'.$SaveAction.'">
          <textarea id="mytextarea" name="mytextarea">
       '; 
-      //echo htmlspecialchars($contents);
+      if ($contents<>NULL)
+      {
+         echo htmlspecialchars($contents);
+      }
+      else
+      {
+         echo '';
+      }
       echo '
          </textarea>
          </form>
       '; 
-      // Подключаем загрузку  
-      //require_once $SiteRoot."/UploadImg.php";
    echo '</div>';
    // Формируем префикс вызова страниц из меню на сайте и localhost
    $cPref='?Com=';
@@ -335,12 +343,13 @@ class TinyGallery
       echo '
          <ul class="uli">
          <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать статью</a></li>
-         <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
-         <!-- <li class="ili"><a class="ali" href="'.$cPref.mmlSohranitMaterial.   '">Сохранить материал</a></li> -->
+         <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+         <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText">'.'</li>
          </ul>   
       ';
    echo '</div>';
+   // <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
    }
 
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
