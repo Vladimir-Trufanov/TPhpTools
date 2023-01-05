@@ -12,6 +12,8 @@
 ?>
 <style>
 
+
+/*
 .accordion,
 .accordion ul,
 .accordion li,
@@ -92,6 +94,7 @@
    text-shadow:0px 1px 0px rgba(0,0,0, .35);
    background:#B9B5B2;
 }
+*/
 /**
  * Выводим иконки в названиях разделов
 **/
@@ -131,11 +134,12 @@
 .accordion li.v-kontakte > a:before{background-position:-72px -24px;}
 .accordion li.v-kontakte:hover > a:before,
 .accordion li.v-kontakte:target > a:before{background-position:-72px 0;}
-
 */
+
 /**
  * Устанавливаем цвета и бордюры пунктов меню со статьями
 **/
+/*
 .sub-menu li a 
 {
    color:#797979;
@@ -150,24 +154,30 @@
 { 
    border:none;
 }
+*/
 /**
  * Выделяем статьи, на которые наезжаем курсором
 **/
+/*
 .sub-menu li:hover a
 {
    background:#efefef;
 }
+*/
 /**
  * Определяем цвет дат статей и бордюр их
 **/
+/*
 .sub-menu li > a span 
 {
    color:#797979;
    border:1px solid #c9c9c9;
 }
+*/
 /**
  * Выделяем порядковые номера статей в разделах
 **/
+/*
 .sub-menu em 
 {
    position: absolute;
@@ -177,9 +187,11 @@
    color: #a6a6a6;
    font: normal 10px/32px Arial, sans-serif;
 }
+*/
 /**
  * Разворачиваем аккордеон
 **/
+/*
 .accordion li>.sub-menu 
 {
    height:0;
@@ -194,6 +206,8 @@
 {
    height: 100%;
 }
+*/
+
 </style>
 <?php
 

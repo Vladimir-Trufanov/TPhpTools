@@ -234,6 +234,46 @@ function _ShowSampleMenu()
    ';
    echo $Menu;
 }
+// *************************************************************************
+// *                   Показать пример меню (где i вместо a)               *
+// *************************************************************************
+function _ShowProbaMenu() 
+{
+   $Menu='
+   <ul class="accordion">
+   <li id="moya-zhizn" class="moya-zhizn"><i onclick="iproba('."'moya-zhizn'".')">Моя жизнь<a href="#495"><span>495</span></a></i>
+      <ul class="sub-menu">
+         <li><i><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></i></li>			
+      </ul>
+   </li>
+   <li id="mikroputeshestviya" class="mikroputeshestviya"><i onclick="iproba('."'mikroputeshestviya'".')">Микропутешествия<a href="#26"> <span>26 </span></a></i>
+      <ul class="sub-menu">
+         <li><i><em>12</em>Киндасово - земля карельского юмора<span>20.06.2010</span></i></li>			
+         <li><i><em>13</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></i></li>			
+      </ul>                                                                                     
+   </li>
+   <li id="vsyakoe-raznoe" class="vsyakoe-raznoe"><i onclick="iproba('."'vsyakoe-raznoe'".')">Всякое-разное<a href="#1958"><span>1958</span></a></i>
+   </li>
+   <li id="progulki" class="progulki"><i onclick="iproba('."'progulki'".')">Прогулки<a href="#201"><span>201</span></a></i>
+      <ul class="sub-menu">
+         <li><i><em>21</em>Охота на медведя<span>24.07.2010</span></i></li>			
+      </ul>
+   </li>
+   <li id="dopolneniya" class="dopolneniya"><i onclick="iproba('."'dopolneniya'".')">Дополнения к микропутешествиям<a href="#15"><span>15</span></a></i>
+   </li>
+   </ul>
+   ';
+
+   echo $Menu;
+   ?> 
+   <script>
+   function iproba(stri='заглушка')
+   {
+      console.log(stri);
+   }
+   </script>
+   <?php
+}
 // ****************************************************************************
 // *          Сформировать массив для представления таблицы до уровня         *
 // *              (по мотивам - https://m.habr.com/ru/post/280944/)           *
@@ -404,8 +444,7 @@ function cUidPid($Uid,$Pid,$cLast)
 }
 // ****************************************************************************
 // *       Сформировать строки меню для выборки записи для редактирования:    *
-// *       $cli - вставка конца пункта меню
-
+// *                    $cli - вставка конца пункта меню                      *            
 // ****************************************************************************
 function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
 {
@@ -451,6 +490,54 @@ function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl='
       echo("</ul>\n");  $cLast='-ul';
    }
 }
+   // *************************************************************************
+   // *     Сформировать строки меню для добавления заголовка новой статьи    *
+   // ****************************************************************************
+   function ShowTitlesArt($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
+   {
+      // Определяем текущий уровень меню
+      $lvl++; 
+      // Выбираем все записи одного родителя
+      $cSQL="SELECT uid,NameArt,Translit,pid,IdCue,DateArt FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
+      $stmt = $pdo->query($cSQL);
+      $table = $stmt->fetchAll();
+      if (count($table)>0) 
+      {
+         echo('<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
+         // Перебираем все записи родителя, подсчитываем количество, формируем пункты меню
+         $nPoint=0;
+         foreach ($table as $row)
+         {
+            $nLine++; $cLine=''; 
+            $Uid=$row["uid"]; $Pid=$row["pid"]; $Translit=$row["Translit"];
+            $IdCue=$row["IdCue"]; $DateArt=$row["DateArt"]; 
+            if ($cLast<>'+ul') 
+            {
+                $cli="</li>\n";
+                echo($cli); $cLast='-li';
+            }
+            //echo('<li id="'.$Translit.'" class="'.$Translit.'" > '); 
+            //echo('<a href="#'.$Translit.'">'.$Uid.' '.$row['NameArt'].'</a>'."\n"); 
+            if ($IdCue==-1)
+            {
+               echo('<li id="'.$Translit.'" class="'.$Translit.'" > '); 
+               echo('<a href="#'.$Translit.'">'.$Uid.' '.$row['NameArt'].'</a>'."\n"); 
+            } 
+            else
+            {
+               $nPoint++;
+               echo("<li> ");
+               echo('<a href="#'.$Translit.'">'.'<em>'.$Uid.'</em>'.$row['NameArt'].$cLine.'</a>'."\n"); 
+            }
+            $cLast='+li';
+            ShowTitlesArt($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,' class="sub-menu"'); 
+            $lvl--; 
+         }
+         $cli="</li>\n";
+         echo($cli); $cLast='-li'; 
+         echo("</ul>\n");  $cLast='-ul';
+      }
+   }
 // ****************************************************************************
 // *           Сформировать строки меню для записей одного родителя           *
 // ****************************************************************************

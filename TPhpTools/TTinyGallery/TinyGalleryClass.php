@@ -287,7 +287,12 @@ class TinyGallery
       // Если указан выбор материала в запросе, то dыводим меню для выбора материала 
       if (\prown\isComRequest(mmlVybratStatyuRedakti))
       {
-         $this->Arti->GetPunktMenu($apdo); 
+         //$this->Arti->GetPunktMenu($apdo); 
+         $this->Arti->ShowSampleMenu(); 
+      }
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      {
+         $this->Arti->ShowProbaMenu(); 
       }
       // В обычном режиме
       else

@@ -152,6 +152,10 @@ class ArticlesMaker
    {
       _ShowSampleMenu();
    }
+   public function ShowProbaMenu() 
+   {
+      _ShowProbaMenu();
+   }
    // ----------------------------------------------------- ЗАПРОСЫ ПО БАЗЕ ---
    
    // *************************************************************************
@@ -193,6 +197,16 @@ class ArticlesMaker
       $statement = $pdo->prepare("UPDATE [stockpw] SET [Art] = :Art WHERE [Translit] = :Translit;");
       $statement->execute(["Art"=>$contents,"Translit"=>$Translit]);
       //\prown\ConsoleLog('2 update='.$Translit); 
+   }
+   // *************************************************************************
+   // *     Сформировать строки меню для добавления заголовка новой статьи    *
+   // ****************************************************************************
+   public function MakeTitlesArt($pdo)
+   {
+      $lvl=-1; $cLast='+++';
+      $nLine=0; 
+      $cli=""; // Начальная вставка конца пункта меню
+      ShowTitlesArt($pdo,1,1,$cLast,$nLine,$cli,$lvl);
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 }
