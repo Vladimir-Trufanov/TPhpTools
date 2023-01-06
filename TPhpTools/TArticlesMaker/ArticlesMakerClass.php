@@ -90,6 +90,9 @@ class ArticlesMaker
       //\prown\ConsoleLog('$this->basename='.$this->basename); 
       //\prown\ConsoleLog('$this->username='.$this->username); 
       //\prown\ConsoleLog('$this->password='.$this->password); 
+      
+      
+      
    }
    public function __destruct() 
    {

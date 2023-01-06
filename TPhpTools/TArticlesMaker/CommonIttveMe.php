@@ -241,33 +241,36 @@ function _ShowProbaMenu()
 {
    $Menu='
    <ul class="accordion">
-   <li id="moya-zhizn" class="moya-zhizn"><i onclick="iproba('."'moya-zhizn'".')">Моя жизнь<a href="#495"><span>495</span></a></i>
+   <li id="moya-zhizn" class="moya-zhizn"><i>Моя жизнь<a href="#495"><span>495</span></a></i>
       <ul class="sub-menu">
          <li><i><em>1</em>Особенности устройства винтиков в моей голове<span>01.02.2013</span></i></li>			
       </ul>
    </li>
-   <li id="mikroputeshestviya" class="mikroputeshestviya"><i onclick="iproba('."'mikroputeshestviya'".')">Микропутешествия<a href="#26"> <span>26 </span></a></i>
+   <li id="mikroputeshestviya" class="mikroputeshestviya"><i>Микропутешествия<a href="#26"><span>26</span></a></i>
       <ul class="sub-menu">
          <li><i><em>12</em>Киндасово - земля карельского юмора<span>20.06.2010</span></i></li>			
          <li><i><em>13</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></i></li>			
       </ul>                                                                                     
    </li>
-   <li id="vsyakoe-raznoe" class="vsyakoe-raznoe"><i onclick="iproba('."'vsyakoe-raznoe'".')">Всякое-разное<a href="#1958"><span>1958</span></a></i>
+   <li id="vsyakoe-raznoe" class="vsyakoe-raznoe"><i>Всякое-разное<a href="#1958"><span>1958</span></a></i>
    </li>
-   <li id="progulki" class="progulki"><i onclick="iproba('."'progulki'".')">Прогулки<a href="#201"><span>201</span></a></i>
+   <li id="progulki" class="progulki"><i>Прогулки<a href="#201"><span>201</span></a></i>
       <ul class="sub-menu">
          <li><i><em>21</em>Охота на медведя<span>24.07.2010</span></i></li>			
       </ul>
    </li>
-   <li id="dopolneniya" class="dopolneniya"><i onclick="iproba('."'dopolneniya'".')">Дополнения к микропутешествиям<a href="#15"><span>15</span></a></i>
+   <li id="dopolneniya" class="dopolneniya"><i>Дополнения к микропутешествиям<a href="#15"><span>15</span></a></i>
    </li>
    </ul>
    ';
-
    echo $Menu;
+   // *************************************************************************
+   // *                 Вывести сообщение по вставленному в тег клику         *
+   // *               .'<i onclick="iShowProbaMenu('."'progulki'".')">'.      *
+   // *************************************************************************
    ?> 
    <script>
-   function iproba(stri='заглушка')
+   function iShowProbaMenu(stri='заглушка')
    {
       console.log(stri);
    }

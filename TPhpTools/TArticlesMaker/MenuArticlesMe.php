@@ -13,23 +13,25 @@
 <style>
 
 
-/*
 .accordion,
 .accordion ul,
 .accordion li,
 .accordion a,
-.accordion span 
+.accordion span,
+.accordion i
 {
    margin:0;
    padding:0;
    border:none;
    outline:none;
+   background:#ffffff;
 }
 .accordion li 
 {
    list-style:none;
 }
-.accordion li > a 
+.accordion li > a, 
+.accordion li > i 
 {
    display:block;
    position:relative;
@@ -55,7 +57,9 @@
    box-shadow:inset 0 .1rem 0 0 rgba(255,255,255,.1), 0 .1rem 0 0 rgba(0,0,0,.1);
 }
 .accordion > li:hover > a,
-.accordion > li:target > a 
+.accordion > li:target > a, 
+.accordion > li:hover > i > a,
+.accordion > li:target > i > a 
 {
    color:#fdfdfd;
    text-shadow:.1rem .1rem .1rem rgba(255,255,255,.2);
@@ -67,7 +71,8 @@
    background:-ms-linear-gradient(bottom,#6c6e74 0%,#4b4d51 100%);
    background:linear-gradient(to bottom,#6c6e74 0%,#4b4d51 100%);
 }
-.accordion li > a span 
+.accordion li > a span, 
+.accordion li > i span 
 {
    display:block;
    position:absolute;
@@ -88,13 +93,14 @@
    box-shadow:inset .1rem .1rem .1rem rgba(0,0,0,.2), .1rem .1rem .1rem rgba(255,255,255,.1);
 }
 .accordion > li:hover > a span,
-.accordion > li:target > a span 
+.accordion > li:target > a span, 
+.accordion > li:hover > i span,
+.accordion > li:target > i span 
 {
    color:#fdfdfd;
    text-shadow:0px 1px 0px rgba(0,0,0, .35);
    background:#B9B5B2;
 }
-*/
 /**
  * Выводим иконки в названиях разделов
 **/
@@ -188,11 +194,10 @@
    font: normal 10px/32px Arial, sans-serif;
 }
 */
-/**
- * Разворачиваем аккордеон
-**/
+/* Разворачиваем аккордеон в случае, когда выбираем материал */
+/* Этого нет, когда создаем заголовок новой статьи */ 
 /*
-.accordion li>.sub-menu 
+.accordion li .sub-menu 
 {
    height:0;
    overflow:hidden;
@@ -202,12 +207,11 @@
    -ms-transition: height .2s ease-in-out;
    transition: height .2s ease-in-out;
 }
-.accordion li:target>.sub-menu 
+.accordion li:target .sub-menu 
 {
    height: 100%;
 }
 */
-
 </style>
 <?php
 
