@@ -19,6 +19,7 @@
  * articleSite  - тип базы данных (по сайту)
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
+ * editdir      - каталог размещения файлов, связанных c материалом
  *    
  * Пример создания объекта класса:
  * 
@@ -26,6 +27,8 @@
  * define ("pathPhpPrown",$SiteHost.'/TPhpPrown/TPhpPrown');
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
+ * // Указываем каталог размещения файлов, связанных c материалом
+ * define("editdir",'ittveEdit');
  * 
  * // Cоздаем объект для управления материалами сайта в базе данных
  * $Arti=new ttools\ArticlesMaker($basename,$username,$password);
@@ -72,30 +75,65 @@ require_once(pathPhpPrown."/RecalcSizeInfo.php");
 class ArticlesMaker
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $basename;             // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
-   protected $username;             // логин для доступа к базе данных
-   protected $password;             // пароль
-   public    $getArti;              // транслит выбранного материала
+   protected $editdir;          // Каталог размещения файлов, связанных c материалом
+   protected $classdir;         // Каталог файлов класса
+   protected $basename;         // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
+   protected $username;         // логин для доступа к базе данных
+   protected $password;         // пароль
+   protected $fileStyle;        // Файл стилей
+   public    $getArti;          // транслит выбранного материала
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($basename,$username,$password) 
    {
       // Инициализируем свойства класса
+      $this->editdir  = editdir; 
+      $this->classdir=pathPhpTools.'/TArticlesMaker';
       $this->basename = $basename;
       $this->username = $username;
       $this->password = $password;
       if (isset($_COOKIE['PunktMenu'])) 
       $this->getArti=\prown\MakeCookie('PunktMenu');
       else $this->getArti=NULL; 
+      // Выполняем действия на странице до отправления заголовков страницы: 
+      // (устанавливаем кукисы и т.д.)                  
+      $this->ZeroEditSpace();
       // Трассируем установленные свойства
       //\prown\ConsoleLog('$this->basename='.$this->basename); 
       //\prown\ConsoleLog('$this->username='.$this->username); 
       //\prown\ConsoleLog('$this->password='.$this->password); 
-      
-      
-      
    }
    public function __destruct() 
    {
+   }
+   // *************************************************************************
+   // *   Выполнить действия на странице до отправления заголовков страницы:  *
+   // *                         (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function ZeroEditSpace()
+   {
+      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      $fileStyle=$this->editdir.'/ArticlesMaker.css';
+      clearstatcache($fileStyle);
+      $filename=$this->classdir.'/ArticlesMaker.css';
+      clearstatcache($filename);
+      if ((!file_exists($fileStyle))||
+      (filesize($filename)<>filesize($fileStyle))||
+      (filemtime($filename)>filemtime($fileStyle))) 
+      {
+         if (!copy($filename,$fileStyle))
+         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
+      }
+   }
+   // *************************************************************************
+   // *        Установить стили пространства редактирования материала         *
+   // *************************************************************************
+   public function IniEditSpace()
+   {
+      // Настраиваемся на файл стилей
+      $this->fileStyle=$this->editdir.'/ArticlesMaker.css';
+      echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
    }
    // *************************************************************************
    // *                     Открыть соединение с базой данных                 *

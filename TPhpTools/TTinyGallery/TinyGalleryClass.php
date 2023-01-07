@@ -112,7 +112,9 @@ class TinyGallery
       $this->EdIzm=$EdIzm;
       // Подключаемся к базе данных материалов
       $this->apdo=$this->Arti->BaseConnect();
-
+      // Выполняем действия на странице до отправления заголовков страницы: 
+      // (устанавливаем кукисы и т.д.)                  
+      $this->ZeroEditSpace();
       // Трассируем установленные свойства
       /*
       \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
@@ -122,18 +124,47 @@ class TinyGallery
       \prown\ConsoleLog('$this->KwinGalleryWidth='.$this->KwinGalleryWidth); 
       \prown\ConsoleLog('$this->EdIzm='.$this->EdIzm); 
       */
-      $this->ZeroEditSpace();
    }
-   
    public function __destruct() 
    {
+   }
+   // *************************************************************************
+   // *   Выполнить действия на странице до отправления заголовков страницы:  *
+   // *                         (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function ZeroEditSpace()
+   {
+      // Если выбран новый материал, то устанавливаем кукис на данный материал
+      // материал мог быть выбран при выполнении методов:
+      //    $apdo=$this->Arti->BaseConnect();
+      //    $this->Arti->GetPunktMenu($apdo);
+      $getArti=\prown\getComRequest('arti');
+      if ($getArti<>NULL)
+      {
+         $this->Arti->cookieGetPunktMenu($getArti); 
+      }
+      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      $fileStyle=$this->editdir.'/WorkTiny.css';
+      clearstatcache($fileStyle);
+      $filename=$this->classdir.'/WorkTiny.css';
+      clearstatcache($filename);
+      if ((!file_exists($fileStyle))||
+      (filesize($filename)<>filesize($fileStyle))||
+      (filemtime($filename)>filemtime($fileStyle))) 
+      {
+         if (!copy($filename,$fileStyle))
+         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
+      } 
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
    // *************************************************************************
    public function IniEditSpace()
    {
-      // Настраиваемся на файл стилей
+      // Настраиваемся на файлы стилей
+      $this->Arti->IniEditSpace();
       $this->fileStyle=$this->editdir.'/WorkTiny.css';
       echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
       // Настраиваем размеры частей рабочей области редактирования
@@ -295,31 +326,6 @@ class TinyGallery
          echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
          echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
       } 
-   }
-   // *************************************************************************
-   // *   Выполнить действия на странице до отправления заголовков страницы:  *
-   // *                         (установить кукисы и т.д.)                    *
-   // *************************************************************************
-   private function ZeroEditSpace()
-   {
-      // Если выбран новый материал, то устанавливаем кукис на данный материал
-      // материал мог быть выбран при выполнении методов:
-      //    $apdo=$this->Arti->BaseConnect();
-      //    $this->Arti->GetPunktMenu($apdo);
-      $getArti=\prown\getComRequest('arti');
-      if ($getArti<>NULL)
-      {
-         $this->Arti->cookieGetPunktMenu($getArti); 
-      }
-      // Проверяем, установлен ли файл стилей в каталоге редактирования
-      // и, при его отсутствии, загружаем из класса 
-      $fileStyle=$this->editdir.'/WorkTiny.css';
-      $filename=$this->classdir.'/WorkTiny.css';
-      //if (!file_exists($fileStyle)) 
-      //{
-         if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
-      //} 
    }
    // *************************************************************************
    // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
