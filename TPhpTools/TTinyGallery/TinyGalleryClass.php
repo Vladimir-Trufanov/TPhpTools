@@ -378,6 +378,16 @@ class TinyGallery
    }
    private function IniEditSpace_mmlNaznachitStatyu()
    {
+      // Отключаем разворачивание аккордеона
+      // в случае, когда создаем заголовок новой статьи. 
+      echo '
+      <style>
+      .accordion li .sub-menu 
+      {
+         height:100%;
+      }
+      </style>
+      ';
       // Включаем рождественскую версию шрифтов и полосок меню
       $this->IniFontChristmas();
    }
@@ -387,26 +397,7 @@ class TinyGallery
    }
    private function IniEditSpace_mmlVybratStatyuRedakti()
    {
-      // Разворачиваем аккордеон в случае, когда выбираем материал.
-      // Этого нет, когда создаем заголовок новой статьи. 
-      echo '
-      <style>
-      .accordion li .sub-menu 
-      {
-         height:0;
-         overflow:hidden;
-         -webkit-transition: height .2s ease-in-out;
-         -moz-transition: height .2s ease-in-out;
-         -o-transition: height .2s ease-in-out;
-         -ms-transition: height .2s ease-in-out;
-         transition: height .2s ease-in-out;
-      }
-      .accordion li:target .sub-menu 
-      {
-         height: 100%;
-      }
-      </style>
-      ';
+      \prown\ConsoleLog('IniEditSpace_mmlVybratStatyuRedakti'); 
       // Включаем рождественскую версию шрифтов и полосок меню
       $this->IniFontChristmas();
    }
