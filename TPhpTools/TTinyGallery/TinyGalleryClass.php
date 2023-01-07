@@ -476,7 +476,8 @@ class TinyGallery
    }
    private function WorkTiny_mmlNaznachitStatyu()
    {
-      $this->Arti->ShowProbaMenu(); 
+      $this->Arti->MakeTitlesArt($this->apdo);
+      //$this->Arti->ShowProbaMenu(); 
    }
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {

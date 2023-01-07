@@ -519,19 +519,33 @@ function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl='
                 $cli="</li>\n";
                 echo($cli); $cLast='-li';
             }
-            //echo('<li id="'.$Translit.'" class="'.$Translit.'" > '); 
-            //echo('<a href="#'.$Translit.'">'.$Uid.' '.$row['NameArt'].'</a>'."\n"); 
             if ($IdCue==-1)
             {
-               echo('<li id="'.$Translit.'" class="'.$Translit.'" > '); 
-               echo('<a href="#'.$Translit.'">'.$Uid.' '.$row['NameArt'].'</a>'."\n"); 
+               echo('<li id="'.$Translit.'" class="'.$Translit.'">'); 
+               echo('<i>'.$row['NameArt'].'<a href="?titl='.$Uid.'">'.'<span>'.$Uid.'</span></a></i>'."\n"); 
             } 
             else
             {
                $nPoint++;
-               echo("<li> ");
-               echo('<a href="#'.$Translit.'">'.'<em>'.$Uid.'</em>'.$row['NameArt'].$cLine.'</a>'."\n"); 
+               echo('<li><i><em>'.$Uid.'</em>'.$row['NameArt'].'</i>'."\n"); 
+               //<li><i><em>13</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></i></li>			
             }
+            
+            /*
+            <li id="progulki" class="progulki"><i>Прогулки<a href="?titl=16"><span>16</span></a>
+            <ul class="sub-menu">
+            <li><i><em>17</em>Охота на медведя<span>04.07.2010</span></i>
+            </li>
+            </ul>
+            
+            <li id="progulki" class="progulki"><i>Прогулки<a href="#201"><span>201</span></a></i>
+            <ul class="sub-menu">
+            <li><i><em>21</em>Охота на медведя<span>24.07.2010</span></i></li>			
+            </ul>
+            </li>
+            */
+            
+            
             $cLast='+li';
             ShowTitlesArt($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,' class="sub-menu"'); 
             $lvl--; 

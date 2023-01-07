@@ -307,6 +307,11 @@
    padding:0 1rem;
    margin-right:1rem;
 }
+/* Смещаем материалы в группе */
+.accordion li > i > em
+{
+   padding:0 .4rem 0 2rem;
+}
 </style>
 <?php
 
