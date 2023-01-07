@@ -35,6 +35,7 @@
    position:fixed; 
    left:0;
    top:0;
+   overflow:auto;
 }
 #FooterTiny
 {
@@ -54,19 +55,4 @@
 {
    height:100%;
 }
-
-/*
-.accordion > li:hover > a span
-{
-   background:magenta;
-}
-.accordion > li:target > a span 
-{
-   background:red;
-}
-.accordion > li:active > a span 
-{
-   background:yellow;
-}
-*/
 

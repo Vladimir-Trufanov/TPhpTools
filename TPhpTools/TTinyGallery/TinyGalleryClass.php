@@ -48,50 +48,24 @@
  * $WorkTinyHeight='60'; $FooterTinyHeight='35'; $KwinGalleryWidth='30'; $EdIzm='%';
  * $Edit=new ttools\TinyGallery($SiteRoot,$urlHome,
  * $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti);
- * // Выполняем действия на странице до отправления заголовков:
- * // (устанавливаем кукисы и т.д.)
- * $Edit->ZeroEditSpace();
  * 
- * --// Cоздаем объект для управления изображениями в галерее, связанной с 
- * --// материалами сайта из базы данных
- * -----$Galli=new ttools\KwinGallery(gallidir,$nym,$pid,$uid);
- * 
- * 
- * 
- * --// Готовим объект для работы с изображениями, где $SiteRoot - корневой каталог
- * --// сайта, $urlHome - начальная страница сайта
- * --require_once $SiteRoot."/_ImgAjaxSqlite/TImgAjaxSqlite/ImgAjaxSqliteClass.php";
- * --$Imgaj=new ImgAjaxSqlite($urlHome."/_ImgAjaxSqlite/TImgAjaxSqlite");
- * --// При необходимости создаем базу данных для изображений
- * --$imfilename=$Imgaj->imbasename.'.db3';
- * --if (!file_exists($imfilename)) $Imgaj->BaseFirstCreate();
- * --// Подключаемся к базе данных
- * --$impdo=$Imgaj->BaseConnect();
- * --// Подключаем шрифты и стили документа
- * --echo '<head>';
- * --$Imgaj->iniStyles(); 
- * --echo '</head>';
- * --// Готовим и отрабатываем форму по загрузке изображений
- * --echo '<body>'; 
- * --$Imgaj->SelImagesSendProcess();
- * --echo '</body>'; 
+ * // Подключаем стили для редактирования материалов
+ * echo '<head>';
+ *    require_once pathPhpTools."/TArticlesMaker/MenuArticlesMe.php";
+ *    $Edit->IniEditSpace();
+ * echo '</head>';
+ * // Разворачиваем область для редактирования материала
+ * echo '
+ *    <body> 
+ *    <div id="Info">
+ * ';
+ * $Edit->OpenEditSpace();
+ * echo '
+ *    </div>
+ *    </body>
+ * ';
  * 
 **/
-
-// Свойства:
-//
-// --- $FltLead - команда управления передачей данных. По умолчанию fltNotTransmit,
-// ---           то есть данные о загрузке не передаются для контроля ни в кукисы, 
-// ---ни в консоль, а только записываются в LocalStorage. Если LocalStorage,
-// ---браузером не поддерживается, то данные будут записываться в кукисы при 
-// ---установке свойства $FltLead в значение fltSendCookies или fltAll 
-// ---$Page - название страницы сайта;
-// ---$Uagent - браузер пользователя;
-
-// ---Подгружаем нужные модули библиотеки прикладных функций
-// ---require_once pathPhpPrown."/CommonPrown.php";
-// ---Подгружаем нужные модули библиотеки прикладных классов
-// ---require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
@@ -108,6 +82,12 @@ class TinyGallery
    protected $KwinGalleryWidth; // Ширина галереи изображений
    protected $EdIzm;            // Единица измерения заданных параметров
    protected $Arti;             // Объект по работе с базой данных материалов
+   protected $contents;         // Текущий материал
+   protected $NameGru;          // Заголовок текущей группы материалов
+   protected $NameArt;          // Заголовок текущего материала
+   protected $DateArt;          // Дата текущего материала
+   protected $fileStyle;        // Файл стилей
+   protected $apdo;             // Подключение к базе данных материалов
    //protected $nym;      // Префикс имен файлов для фотографий галереи и материалов
    //protected $pid;      // Идентификатор группы текущего материала
    //protected $uid;      // Идентификатор текущего материала
@@ -130,15 +110,9 @@ class TinyGallery
       $this->FooterTinyHeight=$FooterTinyHeight;
       $this->KwinGalleryWidth=$KwinGalleryWidth;
       $this->EdIzm=$EdIzm;
-      // Проверяем, установлен ли файл стилей в каталоге редактирования
-      // и, при его отсутствии, загружаем из класса 
-      $fileStyle=$this->editdir.'/WorkTiny.css';
-      $filename=$this->classdir.'/WorkTiny.css';
-      //if (!file_exists($fileStyle)) 
-      //{
-         if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
-      //} 
+      // Подключаемся к базе данных материалов
+      $this->apdo=$this->Arti->BaseConnect();
+
       // Трассируем установленные свойства
       /*
       \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
@@ -148,26 +122,11 @@ class TinyGallery
       \prown\ConsoleLog('$this->KwinGalleryWidth='.$this->KwinGalleryWidth); 
       \prown\ConsoleLog('$this->EdIzm='.$this->EdIzm); 
       */
+      $this->ZeroEditSpace();
    }
    
    public function __destruct() 
    {
-   }
-   // *************************************************************************
-   // *   Выполнить действия на странице до отправления заголовков страницы:  *
-   // *                         (установить кукисы и т.д.)                    *
-   // *************************************************************************
-   public function ZeroEditSpace()
-   {
-      // Если выбран новый материал, то устанавливаем кукис на данный материал
-      // материал мог быть выбран при выполнении методов:
-      //    $apdo=$this->Arti->BaseConnect();
-      //    $this->Arti->GetPunktMenu($apdo);
-      $getArti=\prown\getComRequest('arti');
-      if ($getArti<>NULL)
-      {
-         $this->Arti->cookieGetPunktMenu($getArti); 
-      }
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
@@ -175,8 +134,8 @@ class TinyGallery
    public function IniEditSpace()
    {
       // Настраиваемся на файл стилей
-      $fileStyle=$this->editdir.'/WorkTiny.css';
-      echo '<link rel="stylesheet" type="text/css" href="'.$fileStyle.'">';
+      $this->fileStyle=$this->editdir.'/WorkTiny.css';
+      echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
       // Настраиваем размеры частей рабочей области редактирования
       echo '
       <style>
@@ -200,6 +159,174 @@ class TinyGallery
       }
       </style>
       ';
+      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+      {
+         $this->IniEditSpace_mmlVybratStatyuRedakti();
+      }
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      {
+         $this->IniEditSpace_mmlNaznachitStatyu();
+      }
+      // В обычном режиме
+      else
+      {
+         $this->IniEditSpace_main();
+      }
+   }
+   // *************************************************************************
+   // *              Открыть пространство редактирования материала            *
+   // *************************************************************************
+   public function OpenEditSpace()
+   {
+   // id=WorkTiny ------------------------------- id=KwinGallery --------------
+   // .------------------------------------------.                            .                        
+   // . id=NameGru                    id=NameArt .                            .
+   // .------------------------------------------.                            .
+   // .id=frmTinyText ---------------------------.                            .
+   // .                                          .                            .
+   // . id=mytextarea                            .                            .
+   // .                                          .                            .
+   // .                                          .                            .
+   // id=FooterTiny -----------------------------.                            .
+   // . id=UlTiny                                .                            .
+   // .                                          .                            .
+   // -------------------------------------------------------------------------
+
+   // Вытаскиваем материал для редактирования
+   $table=$this->Arti->SelUidPid
+      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
+   // Если был выбран режим сохранения отредактированного материала, 
+   // то выбираем его из запроса и сохраняем    
+   $contentNews=\prown\getComRequest('mytextarea');
+   if ($contentNews<>NULL)
+   {
+      $this->Arti->UpdateByTranslit($apdo,$this->Arti->getArti,$contentNews);
+      $table=$this->Arti->SelUidPid
+      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
+   }
+   // Запоминаем в объекте текущий материал
+   $this->contents=$contents;
+   $this->NameGru=$NameGru;
+   $this->NameArt=$NameArt;
+   $this->DateArt=$DateArt;
+   // Включаем в разметку див галереи изображений 
+   echo '<div id="KwinGallery">'; 
+      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+      {
+         $this->KwinGallery_mmlVybratStatyuRedakti();
+      }
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      {
+         $this->KwinGallery_mmlNaznachitStatyu();
+      }
+      // В обычном режиме
+      else
+      {
+         $this->KwinGallery_main();
+      }
+      // В обычном режиме
+      //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
+      //echo 'KwinGallery<br>';
+      /*
+      //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
+      //$Arti=new ArticlesMaker($basename,$username,$password);
+      //$apdo=$Arti->BaseConnect();
+      //$Galli->ViewGallery(gallidir,$apdo);
+      // Cоздаем объект для управления изображениями в галерее, связанной с 
+      // материалами сайта из базы данных
+      $Galli=new ttools\KwinGallery(editdir,nym,$pid,$uid);
+      $Galli->ViewGallery(editdir,$apdo);
+      $pref=editdir.nym.pid.'-'.uid.'-';
+      $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
+      GViewImage($pref.'Подъём-настроения.jpg',$Comment);
+      GLoadImage("ittveEdit/sampo.jpg");
+      $Comment="На горе Сампо всем хорошо!";
+      GViewImage($pref.'На-Сампо.jpg',$Comment);
+      */   
+   echo '</div>'; 
+   // Включаем в разметку рабочую область редактирования
+   echo '<div id="WorkTiny">';
+      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+      {
+         $this->WorkTiny_mmlVybratStatyuRedakti();
+      }
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      {
+         $this->WorkTiny_mmlNaznachitStatyu();
+      }
+      // В обычном режиме
+      else
+      {
+         $this->WorkTiny_main();
+      }
+   echo '</div>';
+   
+   // Обустраиваем подвал области редактирования
+   echo '<div id="FooterTiny">';
+      // Формируем префикс вызова страниц из меню на сайте и localhost
+      $cPref='?Com=';
+      // Выводим управляющееменю
+      echo '
+         <ul class="uli">
+         <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+         <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+         <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText">'.'</li>
+         </ul>   
+      ';
+   echo '</div>';
+   // <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
+   }
+
+   // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
+   
+   // *************************************************************************
+   // *                         Вывести заголовок статьи                      *
+   // *************************************************************************
+   private function MakeTitle($NameGru,$NameArt,$DateArt)
+   {
+      if ($NameArt=='')
+      { 
+         echo '<div id="NameGru">'.$NameGru.'</div>'; 
+         echo '<div id="NameArt">'.'</div>'; 
+      }
+      else
+      {
+         echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
+         echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
+      } 
+   }
+   // *************************************************************************
+   // *   Выполнить действия на странице до отправления заголовков страницы:  *
+   // *                         (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function ZeroEditSpace()
+   {
+      // Если выбран новый материал, то устанавливаем кукис на данный материал
+      // материал мог быть выбран при выполнении методов:
+      //    $apdo=$this->Arti->BaseConnect();
+      //    $this->Arti->GetPunktMenu($apdo);
+      $getArti=\prown\getComRequest('arti');
+      if ($getArti<>NULL)
+      {
+         $this->Arti->cookieGetPunktMenu($getArti); 
+      }
+      // Проверяем, установлен ли файл стилей в каталоге редактирования
+      // и, при его отсутствии, загружаем из класса 
+      $fileStyle=$this->editdir.'/WorkTiny.css';
+      $filename=$this->classdir.'/WorkTiny.css';
+      //if (!file_exists($fileStyle)) 
+      //{
+         if (!copy($filename,$fileStyle))
+         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
+      //} 
+   }
+   // *************************************************************************
+   // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
+   // *   ----                      (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function IniEditSpace_main()
+   {
       // Готовим рабочую область Tiny <!-- theme: "modern", -->
       //echo '<link rel="stylesheet" type="text/css" href="Styles/Gallery.css">';
       //echo '<link rel="stylesheet" type="text/css" href="Styles/">';
@@ -218,7 +345,7 @@ class TinyGallery
             //},'.
             //height: 180,'.
             //width:  780,'.
-            'content_css: "'.$fileStyle.'",'.
+            'content_css: "'.$this->fileStyle.'",'.
             'plugins:
             [ 
                "advlist autolink link image imagetools lists charmap print preview hr anchor",
@@ -249,88 +376,103 @@ class TinyGallery
          </script>
       ';
    }
-   // *************************************************************************
-   // *              Открыть пространство редактирования материала            *
-   // *************************************************************************
-   public function OpenEditSpace()
+   private function IniEditSpace_mmlNaznachitStatyu()
    {
-   // id=WorkTiny ------------------------------- id=KwinGallery --------------
-   // .------------------------------------------.                            .                        
-   // . id=NameGru                    id=NameArt .                            .
-   // .------------------------------------------.                            .
-   // .id=frmTinyText ---------------------------.                            .
-   // .                                          .                            .
-   // . id=mytextarea                            .                            .
-   // .                                          .                            .
-   // .                                          .                            .
-   // id=FooterTiny -----------------------------.                            .
-   // . id=UlTiny                                .                            .
-   // .                                          .                            .
-   // -------------------------------------------------------------------------
-
-   // Подключаемся к базе данных материалов
-   $apdo=$this->Arti->BaseConnect();
-   // Вытаскиваем материал для редактирования
-   $table=$this->Arti->SelUidPid
-      ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
-   // Если был выбран режим сохранения отредактированного материала, 
-   // то выбираем его из запроса и сохраняем    
-   $contentNews=\prown\getComRequest('mytextarea');
-   if ($contentNews<>NULL)
-   {
-      $this->Arti->UpdateByTranslit($apdo,$this->Arti->getArti,$contentNews);
-      $table=$this->Arti->SelUidPid
-      ($apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
+      // Включаем рождественскую версию шрифтов и полосок меню
+      $this->IniFontChristmas();
    }
-   // Включаем в разметку див галереи изображений 
-   echo '<div id="KwinGallery">'; 
-      // Если указан выбор материала в запросе, то dыводим меню для выбора материала 
-      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+   private function IniEditSpace_mmlVernutsyaNaGlavnuyu()
+   {
+      \prown\ConsoleLog('IniEditSpace_mmlVernutsyaNaGlavnuyu'); 
+   }
+   private function IniEditSpace_mmlVybratStatyuRedakti()
+   {
+      // Разворачиваем аккордеон в случае, когда выбираем материал.
+      // Этого нет, когда создаем заголовок новой статьи. 
+      echo '
+      <style>
+      .accordion li .sub-menu 
       {
-         //$this->Arti->GetPunktMenu($apdo); 
-         $this->Arti->ShowSampleMenu(); 
+         height:0;
+         overflow:hidden;
+         -webkit-transition: height .2s ease-in-out;
+         -moz-transition: height .2s ease-in-out;
+         -o-transition: height .2s ease-in-out;
+         -ms-transition: height .2s ease-in-out;
+         transition: height .2s ease-in-out;
       }
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      .accordion li:target .sub-menu 
       {
-         $this->Arti->ShowProbaMenu(); 
+         height: 100%;
       }
-      // В обычном режиме
-      else
+      </style>
+      ';
+      // Включаем рождественскую версию шрифтов и полосок меню
+      $this->IniFontChristmas();
+   }
+   // *************************************************************************
+   // *    Настроить размеры шрифтов и полосок меню (рождественская версия)   *
+   // *************************************************************************
+   private function IniFontChristmas()
+   {
+      echo '
+      <style>
+      .accordion li > a, 
+      .accordion li > i 
       {
-         //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
-         echo 'KwinGallery<br>';
-         /*
-         //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-         //$Arti=new ArticlesMaker($basename,$username,$password);
-         //$apdo=$Arti->BaseConnect();
-         //$Galli->ViewGallery(gallidir,$apdo);
-         
-         // Cоздаем объект для управления изображениями в галерее, связанной с 
-         // материалами сайта из базы данных
-         $Galli=new ttools\KwinGallery(editdir,nym,$pid,$uid);
-         $Galli->ViewGallery(editdir,$apdo);
-         
-         $pref=editdir.nym.pid.'-'.uid.'-';
-         $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
-         GViewImage($pref.'Подъём-настроения.jpg',$Comment);
-         GLoadImage("ittveEdit/sampo.jpg");
-         $Comment="На горе Сампо всем хорошо!";
-         GViewImage($pref.'На-Сампо.jpg',$Comment);
-         */   
-      } 
-   echo '</div>'; 
-   // Включаем в разметку рабочую область редактирования
-   echo '<div id="WorkTiny">';
+         font:bold .9rem/1.8rem Arial, sans-serif;
+         padding:0 1rem 0 1rem;
+         height:2rem;
+      }
+      .accordion li > a span, 
+      .accordion li > i span 
+      {
+         font:normal bold .8rem/1.2rem Arial, sans-serif;
+         top:.4rem;
+         right:0;
+         padding:0 .6rem;
+         margin-right:.6rem;
+      }
+      </style>
+      ';
+   }
+
+   // *************************************************************************
+   // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
+   // *   ----                      (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function KwinGallery_main()
+   {
+      echo 'KwinGallery_main<br>';
+   }
+   private function KwinGallery_mmlNaznachitStatyu()
+   {
+      echo 'KwinGallery_mmlNaznachitStatyu<br>';
+   }
+   private function KwinGallery_mmlVernutsyaNaGlavnuyu()
+   {
+      echo 'KwinGallery_mmlVernutsyaNaGlavnuyu<br>';
+   }
+   private function KwinGallery_mmlVybratStatyuRedakti()
+   {
+      echo 'KwinGallery_mmlVybratStatyuRedakti<br>';
+   }
+   // *************************************************************************
+   // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
+   // *   ----                      (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function WorkTiny_main()
+   {
       // Выводим заголовок статьи
-      $this->MakeTitle($NameGru,$NameArt,$DateArt);
+      $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
          <form id="frmTinyText" method="post" action="'.$SaveAction.'">
          <textarea id="mytextarea" name="mytextarea">
       '; 
-      if ($contents<>NULL)
+      if ($this->contents<>NULL)
       {
-         echo htmlspecialchars($contents);
+         echo htmlspecialchars($this->contents);
       }
       else
       {
@@ -340,40 +482,19 @@ class TinyGallery
          </textarea>
          </form>
       '; 
-   echo '</div>';
-   // Формируем префикс вызова страниц из меню на сайте и localhost
-   $cPref='?Com=';
-   // Обустраиваем подвал области редактирования
-   echo '<div id="FooterTiny">';
-      echo '
-         <ul class="uli">
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-         <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText">'.'</li>
-         </ul>   
-      ';
-   echo '</div>';
-   // <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
    }
-
-   // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
-   
-   // *************************************************************************
-   // *                         Вывести заголовок статьи                      *
-   // *************************************************************************
-   private function MakeTitle($NameGru,$NameArt,$DateArt)
+   private function WorkTiny_mmlNaznachitStatyu()
    {
-      if ($NameArt=='')
-      { 
-         echo '<div id="NameGru">'.$NameGru.'</div>'; 
-         echo '<div id="NameArt">'.'</div>'; 
-      }
-      else
-      {
-         echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
-         echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
-      } 
+      $this->Arti->ShowProbaMenu(); 
+   }
+   private function WorkTiny_mmlVernutsyaNaGlavnuyu()
+   {
+      echo 'WorkTiny_mmlVernutsyaNaGlavnuyu<br>';
+   }
+   private function WorkTiny_mmlVybratStatyuRedakti()
+   {
+      $this->Arti->GetPunktMenu($this->apdo); 
+      //$this->Arti->ShowSampleMenu(); 
    }
 } 
 

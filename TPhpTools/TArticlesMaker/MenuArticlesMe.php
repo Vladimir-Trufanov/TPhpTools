@@ -12,7 +12,6 @@
 ?>
 <style>
 
-
 .accordion,
 .accordion ul,
 .accordion li,
@@ -36,11 +35,8 @@
    display:block;
    position:relative;
    min-width:1.1rem;
-   padding:0 1rem 0 4rem;
-   height:3.2rem;
 
    color:#777;
-   font:bold 1.3rem/3rem Arial, sans-serif;
    text-decoration:none;
    text-shadow:0 .1rem 0 rgba(0,0,0,.35);
 
@@ -76,12 +72,12 @@
 {
    display:block;
    position:absolute;
+   /*
    top:.7rem;
    right:0;
    padding:0 1rem;
    margin-right:1rem;
-	
-   font:normal bold 1.2rem/1.8rem Arial, sans-serif;
+   */
    background:#e0e3ec url(../Images/Menu/bgnoise_lg.jpg) repeat top left;
 	
    -webkit-border-radius:1.5rem;
@@ -101,6 +97,47 @@
    text-shadow:0px 1px 0px rgba(0,0,0, .35);
    background:#B9B5B2;
 }
+
+/**
+ * Настраиваем размеры шрифтов и полосок меню (базовая версия)
+**/
+.accordion li > a, 
+.accordion li > i 
+{
+   font:bold 1.3rem/3rem Arial, sans-serif;
+   padding:0 1rem 0 4rem;
+   height:3.2rem;
+}
+.accordion li > a span, 
+.accordion li > i span 
+{
+   font:normal bold 1.2rem/1.8rem Arial, sans-serif;
+   top:.7rem;
+   right:0;
+   padding:0 1rem;
+   margin-right:1rem;
+}
+/**
+ * Настраиваем размеры шрифтов и полосок меню (рождественская версия)
+**/
+/*
+.accordion li > a, 
+.accordion li > i 
+{
+   font:bold .9rem/1.8rem Arial, sans-serif;
+   padding:0 1rem 0 1rem;
+   height:2rem;
+}
+.accordion li > a span, 
+.accordion li > i span 
+{
+   font:normal bold .8rem/1.2rem Arial, sans-serif;
+   top:.4rem;
+   right:0;
+   padding:0 .6rem;
+   margin-right:.6rem;
+}
+*/
 /**
  * Выводим иконки в названиях разделов
 **/
@@ -194,6 +231,7 @@
    font: normal 10px/32px Arial, sans-serif;
 }
 */
+
 /* Разворачиваем аккордеон в случае, когда выбираем материал */
 /* Этого нет, когда создаем заголовок новой статьи */ 
 /*
