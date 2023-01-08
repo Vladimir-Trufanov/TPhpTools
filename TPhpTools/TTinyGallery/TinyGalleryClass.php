@@ -484,6 +484,7 @@ class TinyGallery
    {
       $this->Arti->MakeTitlesArt($this->apdo);
       //$this->Arti->ShowProbaMenu(); 
+      //$this->Arti->MakeMenu();
    }
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {

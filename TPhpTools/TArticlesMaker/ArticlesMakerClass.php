@@ -114,9 +114,15 @@ class ArticlesMaker
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $fileStyle=$this->editdir.'/ArticlesMaker.css';
+      $this->CompareCopy('ArticlesMaker.css');
+      $this->CompareCopy('bgnoise_lg.jpg');
+      $this->CompareCopy('icons.png');
+   }
+   private function CompareCopy($Namef)
+   {
+      $fileStyle=$this->editdir.'/'.$Namef;
       clearstatcache($fileStyle);
-      $filename=$this->classdir.'/ArticlesMaker.css';
+      $filename=$this->classdir.'/'.$Namef;
       clearstatcache($filename);
       if ((!file_exists($fileStyle))||
       (filesize($filename)<>filesize($fileStyle))||
@@ -134,6 +140,22 @@ class ArticlesMaker
       // Настраиваемся на файл стилей
       $this->fileStyle=$this->editdir.'/ArticlesMaker.css';
       echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
+      // Настраиваем фоны графическими файлами
+      $bgnoise_lg=$this->editdir.'/bgnoise_lg.jpg';
+      $icons=$this->editdir.'/icons.png';
+      echo '
+      <style>
+      .accordion li > a span,
+      .accordion li > i span 
+      {
+         background:#e0e3ec url('.$bgnoise_lg.') repeat top left;
+      }
+      .accordion > li > a:before 
+      {
+         background-image:url('.$icons.');
+      }
+      </style>
+      ';
    }
    // *************************************************************************
    // *                     Открыть соединение с базой данных                 *
