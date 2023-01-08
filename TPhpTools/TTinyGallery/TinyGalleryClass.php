@@ -146,9 +146,14 @@ class TinyGallery
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $fileStyle=$this->editdir.'/WorkTiny.css';
+      $this->CompareCopy('WorkTiny.css');
+      $this->CompareCopy('WorkTiny.js');
+   }
+   private function CompareCopy($Namef)
+   {
+      $fileStyle=$this->editdir.'/'.$Namef;
       clearstatcache($fileStyle);
-      $filename=$this->classdir.'/WorkTiny.css';
+      $filename=$this->classdir.'/'.$Namef;
       clearstatcache($filename);
       if ((!file_exists($fileStyle))||
       (filesize($filename)<>filesize($fileStyle))||
@@ -156,17 +161,20 @@ class TinyGallery
       {
          if (!copy($filename,$fileStyle))
          \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
-      } 
+      }
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
    // *************************************************************************
    public function IniEditSpace()
    {
-      // Настраиваемся на файлы стилей
+      // Настраиваемся на файлы стилей и js-скрипты
       $this->Arti->IniEditSpace();
       $this->fileStyle=$this->editdir.'/WorkTiny.css';
       echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
+      $this->fileStyle=$this->editdir.'/WorkTiny.js';
+      echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
+      echo '<script src="'.$this->fileStyle.'"></script>';
       // Настраиваем размеры частей рабочей области редактирования
       echo '
       <style>
@@ -223,6 +231,10 @@ class TinyGallery
    // .                                          .                            .
    // -------------------------------------------------------------------------
 
+   \prown\ConsoleLog('KwinGalleryWidth=' .$this->KwinGalleryWidth.$this->EdIzm); 
+   \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
+
+
    // Вытаскиваем материал для редактирования
    $table=$this->Arti->SelUidPid
       ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
@@ -231,7 +243,7 @@ class TinyGallery
    $contentNews=\prown\getComRequest('mytextarea');
    if ($contentNews<>NULL)
    {
-      $this->Arti->UpdateByTranslit($apdo,$this->Arti->getArti,$contentNews);
+      $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentNews);
       $table=$this->Arti->SelUidPid
       ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
    }
@@ -464,7 +476,7 @@ class TinyGallery
       $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
-         <form id="frmTinyText" method="post" action="'.$SaveAction.'">
+         <form id="frmTinyText" method="get" action="'.$SaveAction.'">
          <textarea id="mytextarea" name="mytextarea">
       '; 
       if ($this->contents<>NULL)
@@ -482,9 +494,20 @@ class TinyGallery
    }
    private function WorkTiny_mmlNaznachitStatyu()
    {
-      $this->Arti->MakeTitlesArt($this->apdo);
+      //$this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
+      //$this->Arti->MakeTitlesArt($this->apdo);
       //$this->Arti->ShowProbaMenu(); 
       //$this->Arti->MakeMenu();
+      $SaveAction=$_SERVER["SCRIPT_NAME"];
+      echo '
+      <div class="form-group">
+         <form method="get" action="'.$SaveAction.'">
+         <input type="text" class="user" name="user" placeholder="type your user name">
+         <input type="text" class="pwd"  name="pwd"  placeholder="type your password">
+         <input id="inSub" type="submit" value="Записать">     
+         </form>
+      </div>
+      ';
    }
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {
