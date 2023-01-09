@@ -1,15 +1,3 @@
-#NameGru
-{
-   float:left;
-   margin-left:.5rem;
-   /*background:Red;*/
-}
-#NameArt
-{
-   float:right;
-   margin-right:.5rem;
-   /*background:magenta;*/
-}
 
 #KwinGallery,#WorkTiny,#FooterTiny
 {
@@ -55,6 +43,35 @@
 {
    height:100%;
 }
+
+/* Назначем стили вывода заголовков */ 
+#NameGru,#NameError
+{
+   float:left;
+   margin-left:.5rem;
+   /*background:Red;*/
+}
+#NameError
+{
+   float:left;
+   margin-left:.5rem;
+   color:Red;
+}
+#Message
+{
+   float:left;
+   margin-left:.5rem;
+   color:maroon;
+   font-weight:600;
+}
+#NameArt
+{
+   float:right;
+   margin-right:.5rem;
+   /*background:magenta;*/
+}
+
+
 
 /* Устанавлиаем стили при назначении статьи */
 
@@ -133,7 +150,7 @@
 
 #inSub
 {
-  margin-top: 14%;
+  margin-top: 34%;
 }
 
 

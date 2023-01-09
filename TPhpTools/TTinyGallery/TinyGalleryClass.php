@@ -67,9 +67,15 @@
  * 
 **/
 
+require_once pathPhpTools."/TMenuLeader/MenuLeaderClass.php";
+
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
 define ('mmlNaznachitStatyu',     'naznachit-statyu');
+
+define ("ttMessage", 1);  // вывести информационное сообщение
+define ("ttError",   2);  // вывести сообщение об ошибке
+
 class TinyGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
@@ -88,6 +94,7 @@ class TinyGallery
    protected $DateArt;          // Дата текущего материала
    protected $fileStyle;        // Файл стилей
    protected $apdo;             // Подключение к базе данных материалов
+   protected $menu;             // Управляющее меню в подвале
    //protected $nym;      // Префикс имен файлов для фотографий галереи и материалов
    //protected $pid;      // Идентификатор группы текущего материала
    //protected $uid;      // Идентификатор текущего материала
@@ -293,7 +300,8 @@ class TinyGallery
       {
          $this->WorkTiny_mmlVybratStatyuRedakti();
       }
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      else if (\prown\isComRequest(mmlNaznachitStatyu)||
+      (\prown\getComRequest('titl')<>NULL))
       {
          $this->WorkTiny_mmlNaznachitStatyu();
       }
@@ -306,17 +314,9 @@ class TinyGallery
    
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
-      // Формируем префикс вызова страниц из меню на сайте и localhost
-      $cPref='?Com=';
-      // Выводим управляющееменю
-      echo '
-         <ul class="uli">
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-         <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText">'.'</li>
-         </ul>   
-      ';
+      // Подключаем управляющее меню в подвале
+      $menu=new MenuLeader(kwintiny,$this->urlHome);
+      $menu->Menu();
    echo '</div>';
    // <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
    }
@@ -326,18 +326,23 @@ class TinyGallery
    // *************************************************************************
    // *                         Вывести заголовок статьи                      *
    // *************************************************************************
-   private function MakeTitle($NameGru,$NameArt,$DateArt)
+   private function MakeTitle($NameGru,$NameArt,$DateArt='')
    {
-      if ($NameArt=='')
-      { 
-         echo '<div id="NameGru">'.$NameGru.'</div>'; 
-         echo '<div id="NameArt">'.'</div>'; 
-      }
+      if ($NameArt==ttMessage) echo '<div id="Message">'.$NameGru.'</div>'; 
+      else if ($NameArt==ttError) echo '<div id="NameError">'.$NameGru.'</div>'; 
       else
       {
-         echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
-         echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
-      } 
+         if ($NameArt=='')
+         { 
+            echo '<div id="NameGru">'.$NameGru.'</div>'; 
+            echo '<div id="NameArt">'.'</div>'; 
+         }
+         else
+         {
+            echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
+           echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
+         } 
+      }
    }
    // *************************************************************************
    // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
@@ -492,22 +497,42 @@ class TinyGallery
          </form>
       '; 
    }
+   // *************************************************************************
+   // *                       Выполнить действия при назначении новой статьи: *
+   // * на первой странице,  когда требуется выбрать группу статей, к которой *
+   // * будет относиться новая статья;                                        *
+   // * на второй странице, когда задаются название и дата статьи             *
+   // *************************************************************************
    private function WorkTiny_mmlNaznachitStatyu()
    {
-      //$this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
-      //$this->Arti->MakeTitlesArt($this->apdo);
-      //$this->Arti->ShowProbaMenu(); 
-      //$this->Arti->MakeMenu();
-      $SaveAction=$_SERVER["SCRIPT_NAME"];
-      echo '
-      <div class="form-group">
-         <form method="get" action="'.$SaveAction.'">
-         <input type="text" class="user" name="user" placeholder="type your user name">
-         <input type="text" class="pwd"  name="pwd"  placeholder="type your password">
-         <input id="inSub" type="submit" value="Записать">     
-         </form>
-      </div>
-      ';
+      $uid=\prown\getComRequest('titl');
+      // Первая страница: выбираем группу материалов для которой создается
+      // новая статья
+      if ($uid==NULL)
+      {
+         $this->MakeTitle('Следует определить группу материалов для новой статьи',ttMessage);
+         echo '<div id="frmTinyText">';
+            $this->Arti->MakeTitlesArt($this->apdo);
+            //$this->Arti->ShowProbaMenu(); 
+            //$this->Arti->MakeMenu();
+         echo '</div>';
+      }
+      // Вторая страница: выбираем название и дату новой статьи
+      else
+      {
+         $SaveAction=$_SERVER["SCRIPT_NAME"];
+         echo '
+            <div class="form-group">
+            <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
+            <input type="text" class="user" name="user" placeholder="type your user name">
+            <input type="text" class="pwd"  name="pwd"  placeholder="type your password">
+            </form>
+            </div>
+         ';
+         echo '
+            <input id="inSub" type="submit" value="Записать i" form="frmNaznachitStatyu">     
+        ';
+      }
    }
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {
