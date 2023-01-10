@@ -71,10 +71,12 @@ class MenuLeader
       $this->urlHome=$urlHome; 
       
       // Формируем префиксы вызова страниц для сайта 'ittve.me' и localhost
-      if ($this->is_ittveme()) $this->cPreMe=''; 
-      else $this->cPreMe='?Com=';
-      if ($this->is_ittveme()) $this->ComTiny=''; 
-      else $this->ComTiny='?Com=';
+      //if ($this->is_ittveme()) $this->cPreMe=''; 
+      //else 
+      $this->cPreMe='?Com=';
+      //if ($this->is_ittveme()) $this->ComTiny=''; 
+      //else 
+      $this->ComTiny='?Com=';
 
       // Трассируем установленные свойства
       \prown\ConsoleLog('$this->typemenu='.$this->typemenu); 
@@ -105,16 +107,59 @@ class MenuLeader
    {
       // Формируем префикс вызова страниц из меню на сайте и localhost
       $cPref=$this->ComTiny;
-      // Выводим управляющее меню
-      echo '
-         <ul class="uli">
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
-         <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-         <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText">'.'</li>
-         </ul>   
-      ';
-
+      // Выводим управляющие меню по страницам
+      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+      {
+         echo '
+            <ul class="uli">
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
+            </ul>   
+         ';
+      }
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      {
+         echo '
+            <ul class="uli">
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+            <li class="ili">'.'<input id="nsSub" type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">'.'</li>
+            </ul>   
+         ';
+      }
+      else if (\prown\isComRequest(mmlUdalitMaterial))
+      {
+         echo '
+            <ul class="uli">
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
+            </ul>   
+         ';
+      }
+      /*
+      else if (\prown\isComRequest(mmlNaznachitStatyu)||
+      (\prown\getComRequest('titl')<>NULL))
+      {
+         $this->WorkTiny_mmlNaznachitStatyu();
+      }
+      */
+      // В обычном режиме
+      else
+      {
+         echo '
+            <ul class="uli">
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+            <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText">'.'</li>
+            </ul>   
+         ';
+      }
    }
    // *************************************************************************
    // *             Отработать меню управления на сайте "ittve.me"            *

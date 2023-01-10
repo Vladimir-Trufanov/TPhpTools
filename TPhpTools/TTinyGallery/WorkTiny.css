@@ -75,8 +75,27 @@
 
 /* Устанавлиаем стили при назначении статьи */
 
+/*
+#date_input
+{
+   text-indent:-500px; height:25px; width:200px;
+}
+*/
 
-.form-group 
+
+#AddArticle
+{
+   /*margin:10rem,0,0,0;*/
+   margin-top:10rem;
+   padding:0;
+   border:0;
+   vertical-align:baseline;
+   width:100%;
+   /*height:99%;*/
+}
+
+
+#nsGroup 
 {
    position: relative;
    top: 10%;
@@ -90,8 +109,8 @@
   transition-delay: 1s;
 }
 
-.user,
-.pwd 
+#nsName,
+#nsDate 
 {
   position: absolute;
   display: block;
@@ -99,7 +118,7 @@
   height: 30px;
   background: #fff;
   font-size: 10pt;
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
   padding-left: 20px;
   color: rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.2);
@@ -120,14 +139,14 @@
   transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.user:focus, .user:active:focus,
-.pwd:focus,
-.pwd:active:focus {
+#nsName:focus, #nsName:active:focus,
+#nsDate:focus,
+#nsDate:active:focus {
   outline: none;
   padding-left: 30px;
 }
 
-.user {
+#nsName {
   /*margin-bottom: 10%;*/
   z-index: 2;
   -webkit-transition: 0.5s;
@@ -137,7 +156,7 @@
   transition: 0.5s;
 }
 
-.pwd {
+#nsDate {
   margin-top: 7%;
   z-index: 1;
   background: rgba(0, 0, 0, 0.1);
@@ -148,9 +167,10 @@
   transition: 0.5s;
 }
 
-#inSub
+/*
+#nsSub
 {
   margin-top: 34%;
 }
-
+*/
 

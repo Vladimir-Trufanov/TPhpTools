@@ -49,8 +49,13 @@
  * $Edit=new ttools\TinyGallery($SiteRoot,$urlHome,
  * $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti);
  * 
- * // Подключаем стили для редактирования материалов
  * echo '<head>';
+ *    // Подключаем jquery и jquery-ui скрипты 
+ *    echo ' 
+ *       <script src="jquery-1.11.1.min.js"></script>
+ *       <script src="jquery-ui.min.js"></script>
+ *    ';
+ *    // Подключаем стили для редактирования материалов
  *    require_once pathPhpTools."/TArticlesMaker/MenuArticlesMe.php";
  *    $Edit->IniEditSpace();
  * echo '</head>';
@@ -72,6 +77,7 @@ require_once pathPhpTools."/TMenuLeader/MenuLeaderClass.php";
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
 define ('mmlNaznachitStatyu',     'naznachit-statyu');
+define ('mmlUdalitMaterial',      'udalit-material');
 
 define ("ttMessage", 1);  // вывести информационное сообщение
 define ("ttError",   2);  // вывести сообщение об ошибке
@@ -213,6 +219,10 @@ class TinyGallery
       {
          $this->IniEditSpace_mmlNaznachitStatyu();
       }
+      else if (\prown\isComRequest(mmlUdalitMaterial))
+      {
+         $this->IniEditSpace_mmlUdalitMaterial();
+      }
       // В обычном режиме
       else
       {
@@ -241,7 +251,6 @@ class TinyGallery
    \prown\ConsoleLog('KwinGalleryWidth=' .$this->KwinGalleryWidth.$this->EdIzm); 
    \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
 
-
    // Вытаскиваем материал для редактирования
    $table=$this->Arti->SelUidPid
       ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
@@ -268,6 +277,10 @@ class TinyGallery
       else if (\prown\isComRequest(mmlNaznachitStatyu))
       {
          $this->KwinGallery_mmlNaznachitStatyu();
+      }
+      else if (\prown\isComRequest(mmlUdalitMaterial))
+      {
+         $this->KwinGallery_mmlUdalitMaterial();
       }
       // В обычном режиме
       else
@@ -300,11 +313,21 @@ class TinyGallery
       {
          $this->WorkTiny_mmlVybratStatyuRedakti();
       }
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      {
+         $this->WorkTiny_mmlNaznachitStatyu();
+      }
+      else if (\prown\isComRequest(mmlUdalitMaterial))
+      {
+         $this->WorkTiny_mmlUdalitMaterial();
+      }
+      /*
       else if (\prown\isComRequest(mmlNaznachitStatyu)||
       (\prown\getComRequest('titl')<>NULL))
       {
          $this->WorkTiny_mmlNaznachitStatyu();
       }
+      */
       // В обычном режиме
       else
       {
@@ -418,6 +441,10 @@ class TinyGallery
    {
       \prown\ConsoleLog('IniEditSpace_mmlVernutsyaNaGlavnuyu'); 
    }
+   private function IniEditSpace_mmlUdalitMaterial()
+   {
+      \prown\ConsoleLog('IniEditSpace_mmlUdalitMaterial'); 
+   }
    private function IniEditSpace_mmlVybratStatyuRedakti()
    {
       \prown\ConsoleLog('IniEditSpace_mmlVybratStatyuRedakti'); 
@@ -463,6 +490,10 @@ class TinyGallery
    {
       echo 'KwinGallery_mmlNaznachitStatyu<br>';
    }
+   private function KwinGallery_mmlUdalitMaterial()
+   {
+      echo 'KwinGallery_mmlUdalitMaterial<br>';
+   }
    private function KwinGallery_mmlVernutsyaNaGlavnuyu()
    {
       echo 'KwinGallery_mmlVernutsyaNaGlavnuyu<br>';
@@ -505,6 +536,28 @@ class TinyGallery
    // *************************************************************************
    private function WorkTiny_mmlNaznachitStatyu()
    {
+      $this->MakeTitle('Указать название, дату и группу материалов для новой статьи',ttMessage);
+      // Выбираем название и дату новой статьи
+      $SaveAction=$_SERVER["SCRIPT_NAME"];
+      echo '
+         <div id="nsGroup">
+         <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
+            <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
+            <input id="nsDate" type="date" name="nsnDate" required>
+            <!--
+               <input id ="date_input" dateformat="yy.mm.dd" type="date">
+               <span class="datepicker_label" style="pointer-events: none;">2014.02.29</span>
+            -->
+         </form>
+         </div>
+      ';
+      // Выбираем группу материалов для которой создается новая статья
+      echo '<div id="AddArticle">';
+         $this->Arti->MakeTitlesArt($this->apdo);
+         //$this->Arti->MakeMenu();
+      echo '</div>';
+
+      /*
       $uid=\prown\getComRequest('titl');
       // Первая страница: выбираем группу материалов для которой создается
       // новая статья
@@ -533,10 +586,15 @@ class TinyGallery
             <input id="inSub" type="submit" value="Записать i" form="frmNaznachitStatyu">     
         ';
       }
+      */
    }
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {
       echo 'WorkTiny_mmlVernutsyaNaGlavnuyu<br>';
+   }
+   private function WorkTiny_mmlUdalitMaterial()
+   {
+      echo 'WorkTiny_mmlUdalitMaterial<br>';
    }
    private function WorkTiny_mmlVybratStatyuRedakti()
    {

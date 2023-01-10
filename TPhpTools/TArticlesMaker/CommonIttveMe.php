@@ -522,12 +522,13 @@ function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl='
             if ($IdCue==-1)
             {
                echo('<li id="'.$Translit.'" class="'.$Translit.'">'); 
-               echo('<i>'.$row['NameArt'].'<a href="?titl='.$Uid.'">'.'<span>'.$Uid.'</span></a></i>'."\n"); 
+               //echo('<i>'.$row['NameArt'].'<a href="?titl='.$Uid.'">'.'<span>'.$Uid.'</span></a></i>'."\n"); 
+               echo('<i>'.$row['NameArt'].'<span>'.$Uid.'.</span></i>'."\n"); 
             } 
             else
             {
                $nPoint++;
-               echo('<li><i><em>'.$Uid.'</em>'.$row['NameArt'].'</i>'."\n"); 
+               echo('<li><i><em>'.$Uid.'.</em>'.$row['NameArt'].'</i>'."\n"); 
                //<li><i><em>13</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></i></li>			
             }
             
