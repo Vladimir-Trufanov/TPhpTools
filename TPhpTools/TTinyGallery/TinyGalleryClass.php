@@ -338,6 +338,13 @@ class TinyGallery
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
       // Подключаем управляющее меню в подвале
+      
+      echo '
+      <div>
+      <span id="childSpan">foo bar</span>
+      </div>
+      ';
+      
       $menu=new MenuLeader(kwintiny,$this->urlHome);
       $menu->Menu();
    echo '</div>';
@@ -434,6 +441,46 @@ class TinyGallery
       }
       </style>
       ';
+      
+      echo '
+      <script>
+      </script>
+      ';
+      
+      /*
+      // <div>
+      //  <span id="childSpan">foo bar</span>
+      // </div>
+
+      // Создаём новый пустой элемент
+      // without an ID, any attributes, or any content
+      var sp1 = document.createElement("span");
+
+      // Присваиваем ему id 'newSpan'
+      sp1.setAttribute("id", "newSpan");
+
+      // Создаём строку.
+      var sp1_content = document.createTextNode("new replacement span element.");
+
+      // Добавляем контент в созданный нами узел
+      sp1.appendChild(sp1_content);
+
+      // создаём ссылку на существующий элемент который будем заменять
+      var sp2 = document.getElementById("childSpan");
+      var parentDiv = sp2.parentNode;
+
+      // заменяем существующий элемент sp2 на созданный нами sp1
+      parentDiv.replaceChild(sp1, sp2);
+
+      // Результат:
+      // <div>
+      //   <span id="newSpan">new replacement span element.</span>
+      // </div>
+      */
+ 
+      
+      
+      
       // Включаем рождественскую версию шрифтов и полосок меню
       $this->IniFontChristmas();
    }

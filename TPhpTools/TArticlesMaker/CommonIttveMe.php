@@ -10,6 +10,57 @@
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
 
+
+      ?> 
+      <!--
+      <script>
+
+      function isi()
+      {
+         /*
+         var sp1 = document.createElement("span");
+         //sp1.setAttribute("id", "newSpan");
+         var sp1_content = document.createTextNode("new replacement span element.");
+         sp1.appendChild(sp1_content);
+         var sp2 = document.getElementById("childSpan");
+         var parentDiv = sp2.parentNode;
+         parentDiv.replaceChild(sp1, sp2);
+         */
+         
+         /*
+         var sp1 = document.createElement("span");
+         var sp1_content = document.createTextNode("new replacement");
+         sp1.appendChild(sp1_content);
+         var sp2 = document.getElementById("spa4");
+         //var sp2 = document.getElementsByClassName("inpspan");
+         var parentDiv = sp2.parentNode;
+         parentDiv.replaceChild(sp1, sp2);
+         */
+         
+         /*
+         sp2 = document.getElementsByClassName("ispan");
+         sp2.remove();
+         */
+
+         console.log("isi");
+      }
+
+      </script>
+      -->
+      <?php
+
+         
+     
+      
+      
+      
+      
+      
+
+
+
+
+
 // _BaseFirstCreate($basename,$username,$password,$aCharters)                 - Создать резервную копию базы данных и заново построить новую базу данных
 // _MakeMenu($basename,$username,$password)                                   - Построить html-код меню по базе данных материалов сайта 
 // _MakeTblMenu($basename,$username,$password,$ListFields,$SignAsc,$SignDesc) - Построить html-код в строке ТАБЛИЦЫ меню по базе данных материалов сайта 
@@ -493,69 +544,6 @@ function ShowCaseMe($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl='
       echo("</ul>\n");  $cLast='-ul';
    }
 }
-   // *************************************************************************
-   // *     Сформировать строки меню для добавления заголовка новой статьи    *
-   // ****************************************************************************
-   function ShowTitlesArt($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
-   {
-      // Определяем текущий уровень меню
-      $lvl++; 
-      // Выбираем все записи одного родителя
-      $cSQL="SELECT uid,NameArt,Translit,pid,IdCue,DateArt FROM stockpw WHERE pid=".$ParentID." ORDER BY uid";
-      $stmt = $pdo->query($cSQL);
-      $table = $stmt->fetchAll();
-      if (count($table)>0) 
-      {
-         echo('<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
-         // Перебираем все записи родителя, подсчитываем количество, формируем пункты меню
-         $nPoint=0;
-         foreach ($table as $row)
-         {
-            $nLine++; $cLine=''; 
-            $Uid=$row["uid"]; $Pid=$row["pid"]; $Translit=$row["Translit"];
-            $IdCue=$row["IdCue"]; $DateArt=$row["DateArt"]; 
-            if ($cLast<>'+ul') 
-            {
-                $cli="</li>\n";
-                echo($cli); $cLast='-li';
-            }
-            if ($IdCue==-1)
-            {
-               echo('<li id="'.$Translit.'" class="'.$Translit.'">'); 
-               //echo('<i>'.$row['NameArt'].'<a href="?titl='.$Uid.'">'.'<span>'.$Uid.'</span></a></i>'."\n"); 
-               echo('<i>'.$row['NameArt'].'<span>'.$Uid.'.</span></i>'."\n"); 
-            } 
-            else
-            {
-               $nPoint++;
-               echo('<li><i><em>'.$Uid.'.</em>'.$row['NameArt'].'</i>'."\n"); 
-               //<li><i><em>13</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></i></li>			
-            }
-            
-            /*
-            <li id="progulki" class="progulki"><i>Прогулки<a href="?titl=16"><span>16</span></a>
-            <ul class="sub-menu">
-            <li><i><em>17</em>Охота на медведя<span>04.07.2010</span></i>
-            </li>
-            </ul>
-            
-            <li id="progulki" class="progulki"><i>Прогулки<a href="#201"><span>201</span></a></i>
-            <ul class="sub-menu">
-            <li><i><em>21</em>Охота на медведя<span>24.07.2010</span></i></li>			
-            </ul>
-            </li>
-            */
-            
-            
-            $cLast='+li';
-            ShowTitlesArt($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,' class="sub-menu"'); 
-            $lvl--; 
-         }
-         $cli="</li>\n";
-         echo($cli); $cLast='-li'; 
-         echo("</ul>\n");  $cLast='-ul';
-      }
-   }
 // ****************************************************************************
 // *           Сформировать строки меню для записей одного родителя           *
 // ****************************************************************************
