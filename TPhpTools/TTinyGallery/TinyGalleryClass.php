@@ -589,18 +589,23 @@ class TinyGallery
       echo '
          <div id="nsGroup">
          <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
-            <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
+            <input id="nsName" type="text" name="nsnName" value="NEW азвание NEW">
             <input id="nsDate" type="date" name="nsnDate" required>
+            <input type="hidden" name="reset" value="4">            
             <!--
+            <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
                <input id ="date_input" dateformat="yy.mm.dd" type="date">
                <span class="datepicker_label" style="pointer-events: none;">2014.02.29</span>
             -->
+      ';
+      $this->Arti->MakeTitlesArt($this->apdo);
+      echo '
          </form>
          </div>
       ';
       // Выбираем группу материалов для которой создается новая статья
       echo '<div id="AddArticle">';
-         $this->Arti->MakeTitlesArt($this->apdo);
+         //$this->Arti->MakeTitlesArt($this->apdo);
          //$this->Arti->MakeMenu();
       echo '</div>';
 

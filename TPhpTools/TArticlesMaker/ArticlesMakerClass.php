@@ -107,19 +107,20 @@ class ArticlesMaker
    {
       ?> 
       <script>
-      function isi()
+      function isi(Uid)
       {
       
-               var sp1 = document.createElement("span");
-         var sp1_content = document.createTextNode("new replacement");
+         var sp1 = document.createElement("span");
+         //var sp1_content = document.createTextNode("new replacement");
+         var sp1_content = document.createTextNode('<input name="reset" value="'+Uid+'">');
          sp1.appendChild(sp1_content);
-         var sp2 = document.getElementById("spa4");
+         var sp2 = document.getElementById("spa"+Uid);
          //var sp2 = document.getElementsByClassName("inpspan");
          var parentDiv = sp2.parentNode;
          parentDiv.replaceChild(sp1, sp2);
 
       
-         console.log("isi");
+         console.log("isi"+Uid);
       }
 
       </script>
@@ -159,7 +160,21 @@ class ArticlesMaker
             {
                echo('<li id="'.$Translit.'" class="'.$Translit.'">'); 
                //echo('<i>'.$row['NameArt'].'<a href="?titl='.$Uid.'">'.'<span>'.$Uid.'</span></a></i>'."\n"); 
-               echo('<i class="ispan" onclick="isi()">'.$row['NameArt'].'<div><span class="inpspan" id="spa'.$Uid.'">'.$Uid.'.</span></div></i>'."\n"); 
+               //echo('<i class="ispan" onclick="isi('.$Uid.')">'.$row['NameArt'].'<div><span class="inpspan" id="spa'.$Uid.'">'.$Uid.'.</span></div></i>'."\n"); 
+               //echo('<i onclick="isi('.$Uid.')">'.$row['NameArt'].'<div><span class="inpspan" id="spa'.$Uid.'">'.$Uid.'.</span></div></i>'."\n"); 
+               echo('<i onclick="isi('.$Uid.')">'.$row['NameArt'].
+                    '<span id="spa'.$Uid.'">'.$Uid.'.</span>'.
+                    '</i>'."\n");
+               /*
+               echo('<i onclick="isi('.$Uid.')">'.$row['NameArt'].
+                    '<span id="spa'.$Uid.'">'.'<input name="reset" value="'.$Uid.'">'.'</span>'.
+                    '</i>'."\n");
+               */
+               /*
+               echo('<i>'.$row['NameArt'].
+                    '<span id="spa'.$Uid.'">'.'<input name="reset" value="'.$Uid.'">'.'</span>'.
+                    '</i>'."\n");
+              */
             } 
             else
             {
