@@ -7,7 +7,7 @@
 // *                 и галереи изображений, связанной с этим материалом (uid) *
 // *                                    из выбранной (указанной) группы (pid) *
 // *                                                                          *
-// * v2.0, 02.01.2022                              Автор:       Труфанов В.Е. *
+// * v2.0, 13.01.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  18.12.2019 *
 // ****************************************************************************
 
@@ -47,7 +47,7 @@
  * // и рабочей области редактирования
  * $WorkTinyHeight='60'; $FooterTinyHeight='35'; $KwinGalleryWidth='30'; $EdIzm='%';
  * $Edit=new ttools\TinyGallery($SiteRoot,$urlHome,
- * $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti);
+ *    $WorkTinyHeight,$FooterTinyHeight,$KwinGalleryWidth,$EdIzm,$Arti);
  * 
  * echo '<head>';
  *    // Подключаем jquery и jquery-ui скрипты 
@@ -56,7 +56,6 @@
  *       <script src="jquery-ui.min.js"></script>
  *    ';
  *    // Подключаем стили для редактирования материалов
- *    require_once pathPhpTools."/TArticlesMaker/MenuArticlesMe.php";
  *    $Edit->IniEditSpace();
  * echo '</head>';
  * // Разворачиваем область для редактирования материала
@@ -98,7 +97,7 @@ class TinyGallery
    protected $NameGru;          // Заголовок текущей группы материалов
    protected $NameArt;          // Заголовок текущего материала
    protected $DateArt;          // Дата текущего материала
-   protected $fileStyle;        // Файл стилей
+   protected $fileStyle;        // Файл стилей элементов класса
    protected $apdo;             // Подключение к базе данных материалов
    protected $menu;             // Управляющее меню в подвале
    //protected $nym;      // Префикс имен файлов для фотографий галереи и материалов
@@ -130,8 +129,6 @@ class TinyGallery
       $this->ZeroEditSpace();
       // Трассируем установленные свойства
       /*
-      \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
-      \prown\ConsoleLog('$this->classdir='.$this->classdir); 
       \prown\ConsoleLog('$this->WorkTinyHeight='.$this->WorkTinyHeight); 
       \prown\ConsoleLog('$this->FooterTinyHeight='.$this->FooterTinyHeight); 
       \prown\ConsoleLog('$this->KwinGalleryWidth='.$this->KwinGalleryWidth); 
@@ -247,10 +244,6 @@ class TinyGallery
    // . id=UlTiny                                .                            .
    // .                                          .                            .
    // -------------------------------------------------------------------------
-
-   \prown\ConsoleLog('KwinGalleryWidth=' .$this->KwinGalleryWidth.$this->EdIzm); 
-   \prown\ConsoleLog('$this->editdir=' .$this->editdir); 
-
    // Вытаскиваем материал для редактирования
    $table=$this->Arti->SelUidPid
       ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
@@ -338,17 +331,9 @@ class TinyGallery
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
       // Подключаем управляющее меню в подвале
-      
-      echo '
-      <div>
-      <span id="childSpan">foo bar</span>
-      </div>
-      ';
-      
       $menu=new MenuLeader(kwintiny,$this->urlHome);
       $menu->Menu();
    echo '</div>';
-   // <li class="ili">'.'<input type="submit" name="enter" value="Сохранить материал" form="frmTinyText">'.'</li>
    }
 
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
@@ -381,8 +366,6 @@ class TinyGallery
    private function IniEditSpace_main()
    {
       // Готовим рабочую область Tiny <!-- theme: "modern", -->
-      //echo '<link rel="stylesheet" type="text/css" href="Styles/Gallery.css">';
-      //echo '<link rel="stylesheet" type="text/css" href="Styles/">';
       // Подключаем TinyMCE
       echo '
          <script src="/TinyMCE5-8-1/tinymce.min.js"></script>
@@ -446,40 +429,6 @@ class TinyGallery
       <script>
       </script>
       ';
-      
-      /*
-      // <div>
-      //  <span id="childSpan">foo bar</span>
-      // </div>
-
-      // Создаём новый пустой элемент
-      // without an ID, any attributes, or any content
-      var sp1 = document.createElement("span");
-
-      // Присваиваем ему id 'newSpan'
-      sp1.setAttribute("id", "newSpan");
-
-      // Создаём строку.
-      var sp1_content = document.createTextNode("new replacement span element.");
-
-      // Добавляем контент в созданный нами узел
-      sp1.appendChild(sp1_content);
-
-      // создаём ссылку на существующий элемент который будем заменять
-      var sp2 = document.getElementById("childSpan");
-      var parentDiv = sp2.parentNode;
-
-      // заменяем существующий элемент sp2 на созданный нами sp1
-      parentDiv.replaceChild(sp1, sp2);
-
-      // Результат:
-      // <div>
-      //   <span id="newSpan">new replacement span element.</span>
-      // </div>
-      */
- 
-      
-      
       
       // Включаем рождественскую версию шрифтов и полосок меню
       $this->IniFontChristmas();
@@ -589,57 +538,22 @@ class TinyGallery
       echo '
          <div id="nsGroup">
          <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
-            <input id="nsName" type="text" name="nsnName" value="NEW азвание NEW">
-            <input id="nsDate" type="date" name="nsnDate" required>
-            <input type="hidden" name="reset" value="4">            
-            <!--
-            <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
-               <input id ="date_input" dateformat="yy.mm.dd" type="date">
-               <span class="datepicker_label" style="pointer-events: none;">2014.02.29</span>
-            -->
       ';
-      $this->Arti->MakeTitlesArt($this->apdo);
+      echo '
+         <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
+         <input id="nsDate" type="date" name="nsnDate" required>
+      ';
       echo '
          </form>
          </div>
       ';
       // Выбираем группу материалов для которой создается новая статья
       echo '<div id="AddArticle">';
-         //$this->Arti->MakeTitlesArt($this->apdo);
+         $this->Arti->MakeTitlesArt($this->apdo);
          //$this->Arti->MakeMenu();
       echo '</div>';
-
-      /*
-      $uid=\prown\getComRequest('titl');
-      // Первая страница: выбираем группу материалов для которой создается
-      // новая статья
-      if ($uid==NULL)
-      {
-         $this->MakeTitle('Следует определить группу материалов для новой статьи',ttMessage);
-         echo '<div id="frmTinyText">';
-            $this->Arti->MakeTitlesArt($this->apdo);
-            //$this->Arti->ShowProbaMenu(); 
-            //$this->Arti->MakeMenu();
-         echo '</div>';
-      }
-      // Вторая страница: выбираем название и дату новой статьи
-      else
-      {
-         $SaveAction=$_SERVER["SCRIPT_NAME"];
-         echo '
-            <div class="form-group">
-            <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
-            <input type="text" class="user" name="user" placeholder="type your user name">
-            <input type="text" class="pwd"  name="pwd"  placeholder="type your password">
-            </form>
-            </div>
-         ';
-         echo '
-            <input id="inSub" type="submit" value="Записать i" form="frmNaznachitStatyu">     
-        ';
-      }
-      */
    }
+
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {
       echo 'WorkTiny_mmlVernutsyaNaGlavnuyu<br>';

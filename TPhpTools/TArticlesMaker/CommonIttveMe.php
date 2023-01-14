@@ -10,57 +10,6 @@
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
 
-
-      ?> 
-      <!--
-      <script>
-
-      function isi()
-      {
-         /*
-         var sp1 = document.createElement("span");
-         //sp1.setAttribute("id", "newSpan");
-         var sp1_content = document.createTextNode("new replacement span element.");
-         sp1.appendChild(sp1_content);
-         var sp2 = document.getElementById("childSpan");
-         var parentDiv = sp2.parentNode;
-         parentDiv.replaceChild(sp1, sp2);
-         */
-         
-         /*
-         var sp1 = document.createElement("span");
-         var sp1_content = document.createTextNode("new replacement");
-         sp1.appendChild(sp1_content);
-         var sp2 = document.getElementById("spa4");
-         //var sp2 = document.getElementsByClassName("inpspan");
-         var parentDiv = sp2.parentNode;
-         parentDiv.replaceChild(sp1, sp2);
-         */
-         
-         /*
-         sp2 = document.getElementsByClassName("ispan");
-         sp2.remove();
-         */
-
-         console.log("isi");
-      }
-
-      </script>
-      -->
-      <?php
-
-         
-     
-      
-      
-      
-      
-      
-
-
-
-
-
 // _BaseFirstCreate($basename,$username,$password,$aCharters)                 - Создать резервную копию базы данных и заново построить новую базу данных
 // _MakeMenu($basename,$username,$password)                                   - Построить html-код меню по базе данных материалов сайта 
 // _MakeTblMenu($basename,$username,$password,$ListFields,$SignAsc,$SignDesc) - Построить html-код в строке ТАБЛИЦЫ меню по базе данных материалов сайта 

@@ -103,36 +103,35 @@ class ArticlesMaker
       //\prown\ConsoleLog('$this->username='.$this->username); 
       //\prown\ConsoleLog('$this->password='.$this->password); 
    }
+   // *************************************************************************
+   // *             Прячем в __destruct обработку клика выбора раздела        *
+   // *                    (при назначении новой статьи)                      *
+   // *************************************************************************
    public function __destruct() 
    {
       ?> 
       <script>
       function isi(Uid)
       {
-      
-         var sp1 = document.createElement("span");
-         //var sp1_content = document.createTextNode("new replacement");
-         var sp1_content = document.createTextNode('<input name="reset" value="'+Uid+'">');
-         sp1.appendChild(sp1_content);
-         var sp2 = document.getElementById("spa"+Uid);
-         //var sp2 = document.getElementsByClassName("inpspan");
-         var parentDiv = sp2.parentNode;
-         parentDiv.replaceChild(sp1, sp2);
-
-      
-         console.log("isi"+Uid);
+         // Укладываем в кукис назначенный раздел материалов
+         document.cookie="nsnCue="+Uid; 
+         console.log("nsnCue="+Uid);
       }
 
       </script>
       <?php
-
-   
-
    }
-      // *************************************************************************
+   // *************************************************************************
    // *     Сформировать строки меню для добавления заголовка новой статьи    *
-   // ****************************************************************************
-
+   // *                    (при назначении новой статьи)                      *
+   // *************************************************************************
+   public function MakeTitlesArt($pdo)
+   {
+      $lvl=-1; $cLast='+++';
+      $nLine=0; 
+      $cli=""; // Начальная вставка конца пункта меню
+      $this->ShowTitlesArt($pdo,1,1,$cLast,$nLine,$cli,$lvl);
+   }
    private function ShowTitlesArt($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
    {
       // Определяем текущий уровень меню
@@ -364,16 +363,5 @@ class ArticlesMaker
       $statement->execute(["Art"=>$contents,"Translit"=>$Translit]);
       //\prown\ConsoleLog('2 update='.$Translit); 
    }
-   // *************************************************************************
-   // *     Сформировать строки меню для добавления заголовка новой статьи    *
-   // ****************************************************************************
-   public function MakeTitlesArt($pdo)
-   {
-      $lvl=-1; $cLast='+++';
-      $nLine=0; 
-      $cli=""; // Начальная вставка конца пункта меню
-      $this->ShowTitlesArt($pdo,1,1,$cLast,$nLine,$cli,$lvl);
-   }
-   // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 }
 // ************************************************* ArticlesMakerClass.php ***
