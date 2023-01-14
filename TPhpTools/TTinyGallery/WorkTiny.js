@@ -1,35 +1,8 @@
+// Выполняем действия  по завершении загрузки страницы
 $(document).ready(function()
 {
-
-   $("#date_input").on("change", function () 
-   {
-      /*$(this).css("color", "rgba(0,0,0,0)");*/
-      lbl=$(this).siblings(".datepicker_label");
-      /*lbl.css({left:"-40px", background:'magenta'});
-      lbl.css({width:$(this).width()});*/
-      lbl.text($(this).val().length==0 ? "":($.datepicker.formatDate($(this).attr("dateformat"), new Date($(this).val()))));
-   });
-
-   /*
-   $("#date_input").on("change", function () 
-   {
-      $(this).css("color", "rgba(0,0,0,0)").siblings(".datepicker_label").css
-      ({ "text-align":"center", position: "absolute",left: "10px", top:"14px",width:$(this).width()}).
-      text($(this).val().length == 0 ? "" : ($.datepicker.formatDate($(this).attr("dateformat"), new Date($(this).val()))));
-   });
-   */
-
-   $("#date_input").on("change", function () 
-   {
-      /*
-      $(this).css("color","rgba(0,0,0,0)");
-      $(this).siblings(".datepicker_label");
-      */
-      /*
-      $(this).css("color", "rgba(0,0,0,0)").siblings(".datepicker_label").css({width:$(this).width()}).
-      text($(this).val().length == 0 ? "" : ($.datepicker.formatDate($(this).attr("dateformat"), new Date($(this).val()))));
-      */
-   });
+   console.log('Проверяем QupZillу и Safari');
+   //Alert('Проверяем QupZillу и Safari');
    
    $('#nsDate').on('focusin',function()
   {

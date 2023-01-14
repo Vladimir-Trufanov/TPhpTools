@@ -711,18 +711,10 @@ function CountPoint($pdo,$ParentID)
    else $Result='<span>'.$nCount.'</span>';
    return $Result; 
 }
+
+/*
 // ****************************************************************************
-// *                        Выбрать запись по идентификатору                  *
-// ****************************************************************************
-function SelRecord($pdo,$UnID)
-{
-   $cSQL='SELECT * FROM stockpw WHERE uid='.$UnID;
-   $stmt = $pdo->query($cSQL);
-   $table = $stmt->fetchAll();
-   return $table; 
-}
-// ****************************************************************************
-// *             Выбрать $pid,$uid,$NameGru,$NameArt по транслиту             *
+// *             Выбрать $pid,$uid,$NameGru,$NameArt,$DateArt,$contents по транслиту             *
 // ****************************************************************************
 function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt,&$contents)
 {
@@ -744,5 +736,6 @@ function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt,&$co
    }
    return $table;
 }
+*/
 
 // ****************************************************** CommonIttveMe.php ***

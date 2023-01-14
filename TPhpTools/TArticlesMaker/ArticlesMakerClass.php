@@ -111,13 +111,39 @@ class ArticlesMaker
    {
       ?> 
       <script>
+      pathPhpTools="<?php echo pathPhpTools;?>";
+      pathPhpPrown="<?php echo pathPhpPrown;?>";
+      editdir="<?php echo $this->editdir;?>"
+
       function isi(Uid)
       {
+         // Делаем запрос на определение наименования раздела материалов
+         pathphp="getNameCue.php";
+         pathphp=editdir+"/getNameCue.php";
+         //console.log('pathphp='+pathphp);
+         //console.log('editdir='+editdir);
+         alert('editdir='+editdir);
+         alert('pathphp='+pathphp);
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            async: false,
+            error: function()
+            {
+               console.log('Ошибка!');
+               /*$('#res').text("Ошибка!");*/
+            },
+            success: function(message)
+            {
+               console.log('message='+message);
+               //$('#res').show().text("Сохранено!").fadeOut(1000);
+            }
+         });
          // Укладываем в кукис назначенный раздел материалов
          document.cookie="nsnCue="+Uid; 
          console.log("nsnCue="+Uid);
       }
-
       </script>
       <?php
    }
@@ -219,6 +245,7 @@ class ArticlesMaker
       $this->CompareCopy('ArticlesMaker.css');
       $this->CompareCopy('bgnoise_lg.jpg');
       $this->CompareCopy('icons.png');
+      $this->CompareCopy('getNameCue.php');
    }
    private function CompareCopy($Namef)
    {
@@ -324,16 +351,43 @@ class ArticlesMaker
    // ----------------------------------------------------- ЗАПРОСЫ ПО БАЗЕ ---
    
    // *************************************************************************
-   // *                      Выбрать $pid,$uid по транслиту                   *
+   // *  Выбрать $pid,$uid,$NameGru,$NameArt,$DateArt,$contents по транслиту  *
    // *************************************************************************
    public function SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt,&$contents)
    {
-      _SelUidPid($pdo,$getArti,$pid,$uid,$NameGru,$NameArt,$DateArt,$contents);
+      // Инициируем возвращаемые данные
+      $pid=0; $uid=0; 
+      $NameGru='Материал для редактирования не выбран!'; $NameArt=''; $DateArt='';
+      // Выбираем по транслиту $pid,$uid,$NameArt
+      $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
+      //\prown\ConsoleLog('$getArti='.$getArti);
+      $stmt=$pdo->query($cSQL);
+      $table=$stmt->fetchAll();
+      if (count($table)==1)
+      {
+         $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
+         $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
+         $contents=$table[0]['Art'];
+         // Добираем $NameGru
+         $table=$this->SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
+      }
    }
-   
-   // ****************************************************************************
-   // *                         Вставить материал по транслиту                   *
-   // ****************************************************************************
+   // *************************************************************************
+   // * Выбрать запись по идентификатору                                      *
+   // *              (например, узнать наименование группы по идентификатору: *
+   // *          $table=SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];) *
+   // *************************************************************************
+   public function SelRecord($pdo,$UnID)
+   {
+      $cSQL='SELECT * FROM stockpw WHERE uid='.$UnID;
+      $stmt = $pdo->query($cSQL);
+      $table = $stmt->fetchAll();
+      return $table; 
+   }
+
+   // *************************************************************************
+   // *                      Вставить материал по транслиту                   *
+   // *************************************************************************
    public function InsertByTranslit($pdo,$Translit,$pid,$uid,$NameGru,$NameArt,$DateArt,$contents)
    {
       \prown\ConsoleLog('1 insert='.$Translit); 
