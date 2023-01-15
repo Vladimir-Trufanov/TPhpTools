@@ -119,11 +119,10 @@ class ArticlesMaker
       {
          // Делаем запрос на определение наименования раздела материалов
          pathphp="getNameCue.php";
-         pathphp=editdir+"/getNameCue.php";
-         //console.log('pathphp='+pathphp);
+         //pathphp=editdir+"/getNameCue.php";
          //console.log('editdir='+editdir);
-         alert('editdir='+editdir);
-         alert('pathphp='+pathphp);
+         //alert('editdir='+editdir);
+         //alert('pathphp='+pathphp);
          $.ajax({
             url: pathphp,
             type: 'POST',
@@ -131,18 +130,17 @@ class ArticlesMaker
             async: false,
             error: function()
             {
-               console.log('Ошибка!');
+               //console.log('Ошибка!');
+               alert('Ошибка!');
                /*$('#res').text("Ошибка!");*/
             },
             success: function(message)
             {
-               console.log('message='+message);
-               //$('#res').show().text("Сохранено!").fadeOut(1000);
+               $('#Message').html(message+': Указать название и дату для новой статьи');
+               $('#nsCue').attr('value',Uid);
             }
          });
-         // Укладываем в кукис назначенный раздел материалов
-         document.cookie="nsnCue="+Uid; 
-         console.log("nsnCue="+Uid);
+         console.log('pathphp='+pathphp);
       }
       </script>
       <?php

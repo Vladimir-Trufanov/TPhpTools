@@ -80,6 +80,8 @@ define ('mmlUdalitMaterial',      'udalit-material');
 
 define ("ttMessage", 1);  // вывести информационное сообщение
 define ("ttError",   2);  // вывести сообщение об ошибке
+ 
+define ("NoDefine", -1);  // Признак того, что группа материалов не выбрана
 
 class TinyGallery
 {
@@ -542,6 +544,7 @@ class TinyGallery
       echo '
          <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
          <input id="nsDate" type="date" name="nsnDate" required>
+         <input id="nsCue"  type="hidden" name="nsCue" value="'.NoDefine.'">
       ';
       echo '
          </form>
