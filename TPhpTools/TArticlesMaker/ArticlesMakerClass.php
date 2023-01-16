@@ -19,7 +19,7 @@
  * articleSite  - тип базы данных (по сайту)
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
- * editdir      - каталог размещения файлов, связанных c материалом
+ * editdir      - каталог размещения файлов, относительно корневого
  *    
  * Пример создания объекта класса:
  * 
@@ -31,7 +31,7 @@
  * define("editdir",'ittveEdit');
  * 
  * // Cоздаем объект для управления материалами сайта в базе данных
- * $Arti=new ttools\ArticlesMaker($basename,$username,$password);
+ * $Arti=new ttools\ArticlesMaker($basename,$username,$password,$SiteRoot);
 **/
 
 // Свойства:
@@ -78,11 +78,11 @@ class ArticlesMaker
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $editdir;          // Каталог размещения файлов, связанных c материалом
    protected $classdir;         // Каталог файлов класса
-   protected $basename;         // база материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
-   protected $username;         // логин для доступа к базе данных
-   protected $password;         // пароль
+   protected $basename;         // База материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
+   protected $username;         // Логин для доступа к базе данных
+   protected $password;         // Пароль
    protected $fileStyle;        // Файл стилей
-   public    $getArti;          // транслит выбранного материала
+   public    $getArti;          // Транслит выбранного материала
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($basename,$username,$password) 
    {
@@ -92,6 +92,7 @@ class ArticlesMaker
       $this->basename = $basename;
       $this->username = $username;
       $this->password = $password;
+      
       if (isset($_COOKIE['PunktMenu'])) 
       $this->getArti=\prown\MakeCookie('PunktMenu');
       else $this->getArti=NULL; 
@@ -113,16 +114,15 @@ class ArticlesMaker
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
-      editdir="<?php echo $this->editdir;?>"
 
       function isi(Uid)
       {
-         // Делаем запрос на определение наименования раздела материалов
+         // Задаем обработчик аякс-запроса
+         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
+         // кроме корневого каталога. Это особенность скорее из-за того,
+         // что работа выполняется в объекте класса
          pathphp="getNameCue.php";
-         //pathphp=editdir+"/getNameCue.php";
-         //console.log('editdir='+editdir);
-         //alert('editdir='+editdir);
-         //alert('pathphp='+pathphp);
+         // Делаем запрос на определение наименования раздела материалов
          $.ajax({
             url: pathphp,
             type: 'POST',
@@ -130,9 +130,7 @@ class ArticlesMaker
             async: false,
             error: function()
             {
-               //console.log('Ошибка!');
                alert('Ошибка!');
-               /*$('#res').text("Ошибка!");*/
             },
             success: function(message)
             {
@@ -140,7 +138,6 @@ class ArticlesMaker
                $('#nsCue').attr('value',Uid);
             }
          });
-         console.log('pathphp='+pathphp);
       }
       </script>
       <?php
@@ -240,14 +237,23 @@ class ArticlesMaker
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $this->CompareCopy('ArticlesMaker.css');
-      $this->CompareCopy('bgnoise_lg.jpg');
-      $this->CompareCopy('icons.png');
-      $this->CompareCopy('getNameCue.php');
+      $this->CompareCopyRoot('ArticlesMaker.css',$this->editdir);
+      $this->CompareCopyRoot('bgnoise_lg.jpg',$this->editdir);
+      $this->CompareCopyRoot('icons.png',$this->editdir);
+      $this->CompareCopyRoot('getNameCue.php');
    }
-   private function CompareCopy($Namef)
+   // *************************************************************************
+   // *    Проверить существование, параметры и перебросит файл из каталога   *
+   // *      класса в любой каталог относительно корневого каталога сайта     *
+   // *************************************************************************
+   private function CompareCopyRoot($Namef,$toDir='')
    {
-      $fileStyle=$this->editdir.'/'.$Namef;
+      // Если каталог, в который нужно перебросить файл - корневой
+      if ($toDir=='') $thisdir=$toDir;
+      // Если каталог указан относительно корневого (без обратных слэшей !!!)
+      else $thisdir=$toDir.'/';
+      // Проверяем существование, параметры и перебрасываем файл
+      $fileStyle=$thisdir.$Namef;
       clearstatcache($fileStyle);
       $filename=$this->classdir.'/'.$Namef;
       clearstatcache($filename);
