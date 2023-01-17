@@ -114,7 +114,71 @@ class ArticlesMaker
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
+      
+      function isi(Uid)
+      {
+         // Задаем обработчик аякс-запроса
+         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
+         // кроме корневого каталога. Это особенность скорее из-за того,
+         // что работа выполняется в объекте класса
+         pathphp="getNameCue.php";
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            async: false,
+            error: function()
+            {
+               alert('Ошибка!');
+            },
+            success: function(message)
+            {
+               arr=JSON.parse(message); 
+               //alert(message);
+               alert('success!');
+               //$('#Message').html(message+'. Указать название и дату для новой статьи');
+               $('#Message').html(arr[0]+'. Указать название и дату для новой статьи');
+               //$('#nsCue').attr('value',Uid);
+            }
+         });
+      }
+      </script>
+      <?php
+     
+   }
+   // *************************************************************************
+   // *     Сформировать строки меню для добавления заголовка новой статьи    *
+   // *                    (при назначении новой статьи)                      *
+   // *************************************************************************
+   
+               /*
+            
+                    
+            $.ajax({
+            type:'POST',                        // тип запроса
+            url: 'getNameCue.php',           // скрипт обработчика
+            dataType: "json",
+            data:  {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            //cache: true,  // запрошенные страницы кэшировать браузером (задаем явно для IE)
+            //processData: false,                 // отключаем, так как передаем файл
+            // Отмечаем результат выполнения скрипта по аякс-запросу (успешный или нет)
+            success:function(data)
+            {
+               //alert(data[0].text);
+            },
+            // Отмечаем безуспешное удаление старых файлов
+            error:function(data)
+            {
+               alert('Ошибка!');
+            }
+            });
 
+         
+         
+         
+ 
+            
       function isi(Uid)
       {
          // Задаем обработчик аякс-запроса
@@ -139,13 +203,70 @@ class ArticlesMaker
             }
          });
       }
-      </script>
-      <?php
-   }
-   // *************************************************************************
-   // *     Сформировать строки меню для добавления заголовка новой статьи    *
-   // *                    (при назначении новой статьи)                      *
-   // *************************************************************************
+      */
+
+         /*
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            //method: 'get',
+            dataType: 'json',
+            
+            
+            type:'POST',                        // тип запроса
+            cache: true,  // запрошенные страницы кэшировать браузером (задаем явно для IE)
+            processData: false,                 // отключаем, так как передаем файл
+
+            
+            
+            
+            
+            success: function(data)
+            {
+               //NameGru=data[0].NameGru;
+	           //console.dir(data);
+               //$('#Message').html(NameGru+'. Указать название и дату для новой статьи');
+               //$('#nsCue').attr('value',Uid);
+            },
+            error: function (jqXHR, exception) 
+            {
+	           if (jqXHR.status === 0) 
+               {
+		          alert('Ошибка/нет соединения.');
+	           } 
+               else if (jqXHR.status == 404) 
+               {
+		          alert('Требуемая страница не найдена (404).');
+	           } 
+               else if (jqXHR.status == 500) 
+               {
+		          alert('Внутренняя ошибка сервера (500).');
+	           } 
+               else if (exception === 'parsererror') 
+               {
+		          alert('Cинтаксический анализ JSON не выполнен.');
+               } 
+               else if (exception === 'timeout') 
+               {
+		          alert('Ошибка (time out) времени ожидания ответа.');
+	           } 
+               else if (exception === 'abort') 
+               {
+		          alert('Ajax-запрос прерван.');
+	           } 
+               else 
+               {
+	    	      alert('Неперехваченная ошибка: '+jqXHR.responseText);
+	           }
+            }
+         });
+         */
+
+      
+
+   
+   
    public function MakeTitlesArt($pdo)
    {
       $lvl=-1; $cLast='+++';

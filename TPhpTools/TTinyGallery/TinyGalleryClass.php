@@ -146,11 +146,32 @@ class TinyGallery
    // *************************************************************************
    private function ZeroEditSpace()
    {
-      // Если выбран новый материал, то устанавливаем кукис на данный материал
-      // материал мог быть выбран при выполнении методов:
+      // Если выбран материал (транслит) для редактирования, то готовим 
+      // установку кукиса на данный материал. Материал мог быть выбран при 
+      // выполнении методов:
       //    $apdo=$this->Arti->BaseConnect();
       //    $this->Arti->GetPunktMenu($apdo);
-      $getArti=\prown\getComRequest('arti');
+      $getArti=\prown\getComRequest('arti'); // выбрали транслит 
+      
+      // Если было назначение нового материала/статьи, 
+      // то делаем запись в базу данных и готовим транслит статьи для установки
+      // кукиса и начала редактирования материала
+      if ((\prown\getComRequest('nsnCue')<>NULL)&&
+      (\prown\getComRequest('nsnName')<>NULL)&&
+      (\prown\getComRequest('nsnDate')<>NULL))
+      {
+         /*
+         $apdo=$this->Arti->BaseConnect();
+         $NameArt=\prown\getComRequest('nsnName');
+         $Translit=\prown\getTranslit('$NameArt');
+         $DateArt=\prown\getComRequest('nsnDate');
+         $contents='Новый материал';
+         $pid=\prown\getComRequest('nsnCue');
+         $this->Arti->InsertByTranslit($apdo,$Translit,$pid,$uid,$NameGru,$NameArt,$DateArt,$contents)
+         */
+       }
+      
+      // Устанавливаем кукис на новый или выбранный материал
       if ($getArti<>NULL)
       {
          $this->Arti->cookieGetPunktMenu($getArti); 
