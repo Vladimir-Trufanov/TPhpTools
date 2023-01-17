@@ -119,6 +119,22 @@ class MenuLeader
             </ul>   
          ';
       }
+      // Если было назначение статьи без указания выбранного раздела, 
+      // то перезапускаем страницу "Назначить статью"
+      if ((\prown\getComRequest('nsnCue')==-1)&&
+      (\prown\getComRequest('nsnName')<>NULL)&&
+      (\prown\getComRequest('nsnDate')<>NULL))
+      {
+         echo '
+            <ul class="uli">
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
+            <li class="ili">'.'<input id="nsSub" type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">'.'</li>
+            </ul>   
+         ';
+      }
+      // Если просто была выбрана страница "Назначить статью" 
       else if (\prown\isComRequest(mmlNaznachitStatyu))
       {
          echo '

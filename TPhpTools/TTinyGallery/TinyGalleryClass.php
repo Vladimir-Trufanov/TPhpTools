@@ -210,7 +210,15 @@ class TinyGallery
       }
       </style>
       ';
-      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+      // Если было назначение статьи без указания выбранного раздела, 
+      // то инициализируем страницу "Назначить статью"
+      if ((\prown\getComRequest('nsnCue')==-1)&&
+      (\prown\getComRequest('nsnName')<>NULL)&&
+      (\prown\getComRequest('nsnDate')<>NULL))
+      {
+         $this->IniEditSpace_mmlNaznachitStatyu();
+      }
+      else if (\prown\isComRequest(mmlVybratStatyuRedakti))
       {
          $this->IniEditSpace_mmlVybratStatyuRedakti();
       }
@@ -271,7 +279,7 @@ class TinyGallery
       }
       else if (\prown\isComRequest(mmlNaznachitStatyu))
       {
-         $this->KwinGallery_mmlNaznachitStatyu();
+         $this->KwinGallery_mmlNaznachitStatyu('');
       }
       else if (\prown\isComRequest(mmlUdalitMaterial))
       {
@@ -304,25 +312,26 @@ class TinyGallery
    echo '</div>'; 
    // Включаем в разметку рабочую область редактирования
    echo '<div id="WorkTiny">';
-      if (\prown\isComRequest(mmlVybratStatyuRedakti))
+      // Если было назначение статьи без указания выбранного раздела, 
+      // то перезапускаем страницу "Назначить статью"
+      if ((\prown\getComRequest('nsnCue')==-1)&&
+      (\prown\getComRequest('nsnName')<>NULL)&&
+      (\prown\getComRequest('nsnDate')<>NULL))
+      {
+         $this->WorkTiny_mmlNaznachitStatyu('Указать группу материалов для новой статьи');
+      }
+      else if (\prown\isComRequest(mmlVybratStatyuRedakti))
       {
          $this->WorkTiny_mmlVybratStatyuRedakti();
       }
       else if (\prown\isComRequest(mmlNaznachitStatyu))
       {
-         $this->WorkTiny_mmlNaznachitStatyu();
+         $this->WorkTiny_mmlNaznachitStatyu('Указать название, дату и группу материалов для новой статьи');
       }
       else if (\prown\isComRequest(mmlUdalitMaterial))
       {
          $this->WorkTiny_mmlUdalitMaterial();
       }
-      /*
-      else if (\prown\isComRequest(mmlNaznachitStatyu)||
-      (\prown\getComRequest('titl')<>NULL))
-      {
-         $this->WorkTiny_mmlNaznachitStatyu();
-      }
-      */
       // В обычном режиме
       else
       {
@@ -431,7 +440,6 @@ class TinyGallery
       <script>
       </script>
       ';
-      
       // Включаем рождественскую версию шрифтов и полосок меню
       $this->IniFontChristmas();
    }
@@ -532,19 +540,25 @@ class TinyGallery
    // * будет относиться новая статья;                                        *
    // * на второй странице, когда задаются название и дата статьи             *
    // *************************************************************************
-   private function WorkTiny_mmlNaznachitStatyu()
+   private function WorkTiny_mmlNaznachitStatyu($messa)
    {
-      $this->MakeTitle('Указать название, дату и группу материалов для новой статьи',ttMessage);
+      // Проверяем и учитываем уже выбранные данные
+      if (\prown\getComRequest('nsnName')==NULL) $nsnName='';
+      else $nsnName='value="'.\prown\getComRequest('nsnName').'"';
+      if (\prown\getComRequest('nsnDate')==NULL) $nsnDate='';
+      else $nsnDate='value="'.\prown\getComRequest('nsnDate').'"';
+      // Выводим заголовочное сообщение
+      $this->MakeTitle($messa,ttMessage);
       // Выбираем название и дату новой статьи
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
          <div id="nsGroup">
-         <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
+         <form id="frmNaznachitStatyu" method="post" action="'.$SaveAction.'">
       ';
       echo '
-         <input id="nsName" type="text" name="nsnName" placeholder="Название нового материала" required>
-         <input id="nsDate" type="date" name="nsnDate" required>
-         <input id="nsCue"  type="hidden" name="nsCue" value="'.NoDefine.'">
+         <input id="nsName" type="text" name="nsnName" '.$nsnName.' placeholder="Название нового материала" required>
+         <input id="nsDate" type="date" name="nsnDate" '.$nsnDate.' required>
+         <input id="nsCue"  type="hidden" name="nsnCue" value="'.NoDefine.'">
       ';
       echo '
          </form>

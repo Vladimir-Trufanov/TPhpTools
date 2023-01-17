@@ -134,7 +134,7 @@ class ArticlesMaker
             },
             success: function(message)
             {
-               $('#Message').html(message+': Указать название и дату для новой статьи');
+               $('#Message').html(message+'. Указать название и дату для новой статьи');
                $('#nsCue').attr('value',Uid);
             }
          });

@@ -59,7 +59,8 @@
 }
 #Message
 {
-   float:left;
+   /*float:left;*/
+   text-align:center;
    margin-left:.5rem;
    color:maroon;
    font-weight:600;
@@ -73,8 +74,7 @@
 
 
 
-/* Устанавлиаем стили при назначении статьи */
-
+/* Устанавливаем стили при назначении статьи */
 #AddArticle
 {
   margin-top:6rem;
