@@ -51,9 +51,10 @@ define ("tbsIttvepw", 'IttvePw');
 define ("acsAll",   1);      // доступ разрешен всем
 define ("acsClose", 2);      // закрыт, статья в разработке
 define ("acsAutor", 4);      // только автору-хозяину сайта
-// ----------------------------------- Режимы текущей работы объекта класса ---
-// define ("maGetPunktMenu", 1);  // задана выборка материала для редактирования
-// define ("maMakeMenu",     2);  // выбран материал для активной страницы
+// --------------- Ошибки обработки аякс-запросе названия группы материалов ---
+define ("gncPrown", '1');    // нет пути к библиотекам прикладных функций
+define ("gncTools", '2');    // нет пути к библиотекам прикладных классов
+define ("gncIdCue", '3');    // не передан идентификатор группы материалов
 
 // Подгружаем общие функции класса
 require_once("CommonArticlesMaker.php"); 
@@ -110,10 +111,15 @@ class ArticlesMaker
    // *************************************************************************
    public function __destruct() 
    {
+      /* --- 19/01/2023
       ?> 
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
+      
+      gncPrown="<?php echo gncPrown;?>";  // нет пути к библиотекам прикладных функций
+      gncTools="<?php echo gncTools;?>";  // нет пути к библиотекам прикладных функций
+      gncIdCue="<?php echo gncIdCue;?>";  // не передан идентификатор группы материалов
       
       function isi(Uid)
       {
@@ -128,107 +134,6 @@ class ArticlesMaker
             type: 'POST',
             data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
             async: false,
-            error: function()
-            {
-               alert('Ошибка!');
-            },
-            success: function(message)
-            {
-               arr=JSON.parse(message); 
-               //alert(message);
-               alert('success!');
-               //$('#Message').html(message+'. Указать название и дату для новой статьи');
-               $('#Message').html(arr[0]+'. Указать название и дату для новой статьи');
-               //$('#nsCue').attr('value',Uid);
-            }
-         });
-      }
-      </script>
-      <?php
-     
-   }
-   // *************************************************************************
-   // *     Сформировать строки меню для добавления заголовка новой статьи    *
-   // *                    (при назначении новой статьи)                      *
-   // *************************************************************************
-   
-               /*
-            
-                    
-            $.ajax({
-            type:'POST',                        // тип запроса
-            url: 'getNameCue.php',           // скрипт обработчика
-            dataType: "json",
-            data:  {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            //cache: true,  // запрошенные страницы кэшировать браузером (задаем явно для IE)
-            //processData: false,                 // отключаем, так как передаем файл
-            // Отмечаем результат выполнения скрипта по аякс-запросу (успешный или нет)
-            success:function(data)
-            {
-               //alert(data[0].text);
-            },
-            // Отмечаем безуспешное удаление старых файлов
-            error:function(data)
-            {
-               alert('Ошибка!');
-            }
-            });
-
-         
-         
-         
- 
-            
-      function isi(Uid)
-      {
-         // Задаем обработчик аякс-запроса
-         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
-         // кроме корневого каталога. Это особенность скорее из-за того,
-         // что работа выполняется в объекте класса
-         pathphp="getNameCue.php";
-         // Делаем запрос на определение наименования раздела материалов
-         $.ajax({
-            url: pathphp,
-            type: 'POST',
-            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            async: false,
-            error: function()
-            {
-               alert('Ошибка!');
-            },
-            success: function(message)
-            {
-               $('#Message').html(message+'. Указать название и дату для новой статьи');
-               $('#nsCue').attr('value',Uid);
-            }
-         });
-      }
-      */
-
-         /*
-         // Делаем запрос на определение наименования раздела материалов
-         $.ajax({
-            url: pathphp,
-            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            //method: 'get',
-            dataType: 'json',
-            
-            
-            type:'POST',                        // тип запроса
-            cache: true,  // запрошенные страницы кэшировать браузером (задаем явно для IE)
-            processData: false,                 // отключаем, так как передаем файл
-
-            
-            
-            
-            
-            success: function(data)
-            {
-               //NameGru=data[0].NameGru;
-	           //console.dir(data);
-               //$('#Message').html(NameGru+'. Указать название и дату для новой статьи');
-               //$('#nsCue').attr('value',Uid);
-            },
             error: function (jqXHR, exception) 
             {
 	           if (jqXHR.status === 0) 
@@ -259,14 +164,81 @@ class ArticlesMaker
                {
 	    	      alert('Неперехваченная ошибка: '+jqXHR.responseText);
 	           }
+            },
+            success: function(message)
+            {
+               arr=JSON.parse(message); 
+               if (arr[0]==gncPrown)
+               {
+                  alert('Нет пути к библиотекам прикладных функций TPhpPrown');
+               }
+               else if (arr[0]==gncTools)
+               {
+                  alert('Нет пути к библиотекам прикладных классов TPhpTools');
+               }
+               else if (arr[0]==gncIdCue)
+               {
+                  alert('Не передан идентификатор группы материалов');
+               }
+               else
+               {
+                  //alert(message);
+                  //alert('success!');
+                  //$('#Message').html(message+'. Указать название и дату для новой статьи');
+                  $('#Message').html(arr[0]+'. Указать название и дату для новой статьи');
+                  $('#nsCue').attr('value',Uid);
+               }
+               //$('#Message').html(message+'. Указать название и дату для новой статьи');
             }
          });
-         */
+      }
+      </script>
+      <?php
+      */
 
-      
 
-   
-   
+   /* --------------------------------
+   */
+      ?> 
+      <script>
+      pathPhpTools="<?php echo pathPhpTools;?>";
+      pathPhpPrown="<?php echo pathPhpPrown;?>";
+
+      function isi(Uid)
+      {
+         // Задаем обработчик аякс-запроса
+         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
+         // кроме корневого каталога. Это особенность скорее из-за того,
+         // что работа выполняется в объекте класса
+         pathphp="getNameCue.php";
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            async: false,
+            error: function()
+            {
+               alert('Ошибка!');
+            },
+            success: function(message)
+            {
+               $('#Message').html(message+': Указать название и дату для новой статьи');
+               $('#nsCue').attr('value',Uid);
+            }
+         });
+      }
+      </script>
+      <?php
+      /*
+      */ 
+
+
+   }
+   // *************************************************************************
+   // *     Сформировать строки меню для добавления заголовка новой статьи    *
+   // *                    (при назначении новой статьи)                      *
+   // *************************************************************************
    public function MakeTitlesArt($pdo)
    {
       $lvl=-1; $cLast='+++';
