@@ -55,28 +55,14 @@ else
    //$NameGru=$basename; 
    $message='["'.$NameGru.'"]';
 }
-//restore_error_handler();
 echo $message;
-//exit;
-*/ 
-/* 19.01.2023 -----------------------------------------------------------------
-  $NameGru='POST[pathTools])';
-  $message='["'.$NameGru.'", 5, "false"]';
+
+  //$NameGru='POST[pathTools])';
+  //$message='["'.$NameGru.'", 5, "false"]';
+  // --------------------------------------------------------------------------
 */
 
-/*
-// ****************************************************************************
-// *                          Обыграть ошибки                                 *
-// ****************************************************************************
-function getNameCueHandler($errno,$errstr,$errfile,$errline)
-{
-   $modul='getNameCueHandler';
-   \prown\putErrorInfo($modul,$errno,$errstr,$errfile,$errline);
-}
-*/
-
-/* ---13/01/2023------------------------------------------------
-*/
+/* 13/01/2023 --- работало! ---------------------------------------------------
 // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker   
 define ("articleSite",'IttveMe'); 
 // Указываем каталог размещения файлов, связанных c материалом
@@ -101,20 +87,20 @@ PutString('$NameGru='.$NameGru);
 restore_error_handler();
 echo $NameGru;
 exit;
-/*
-*/ 
+
 function PutString($String)
 {
       $fp = fopen("LogName.txt","a+");
       if (flock($fp,LOCK_EX)) 
       { 
-         fputs($fp,$String);
+         fputs($fp,$String."\n");
          flock($fp, LOCK_UN); 
          fclose($fp);
       } 
       else 
       {
-         echo "Не могу запереть файл! [".$this->LogName.".txt".']';  // Далее уйти в исключение
+         echo "Не могу запереть файл! [".$this->LogName.".txt".']';  
+         // Далее уйти в исключение
       }
 }
 // ****************************************************************************
@@ -124,6 +110,55 @@ function getNameCueHandler($errno,$errstr,$errfile,$errline)
 {
    $modul='getNameCueHandler';
    \prown\putErrorInfo($modul,$errno,$errstr,$errfile,$errline);
+}
+// ----------------------------------------------------------------------------
+*/
+
+/* 20.01.2023 -----------------------------------------------------------------
+// ----------------------------------------------------------------------------
+*/
+
+// Указываем тип базы данных (по сайту) для управления классом ArticlesMaker   
+define ("articleSite",'IttveMe'); 
+// Указываем каталог размещения файлов, связанных c материалом
+define("editdir",'ittveEdit');
+// Извлекаем пути к библиотекам прикладных функций и классов
+define ("pathPhpPrown",$_POST['pathPrown']);
+define ("pathPhpTools",$_POST['pathTools']);
+// Подгружаем нужные модули библиотек
+require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
+require_once pathPhpPrown."/CommonPrown.php";
+// Подключаем объект для работы с базой данных материалов
+// (при необходимости создаем базу данных материалов)
+$NameGru='Группа материалов';
+$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
+$Arti=new ttools\ArticlesMaker($basename,$username,$password);
+$pdo=$Arti->BaseConnect();
+$table=$Arti->SelRecord($pdo,$_POST['idCue']); 
+$NameGru=$table[0]['NameArt'];
+unset($Arti); unset($pdo); unset($table);
+//$message='["'.$NameGru.'", 5, "false"]';
+//$message='{"NameGru":'.$NameGru.', "Piati":5, "iif":"falsi"}';
+$message='{"result":true, "count":42}';
+
+$message='qwerty{"person":"Павелим"}qwerty';
+PutString('$message='.$message);
+echo $message;
+exit;
+
+function PutString($String)
+{
+   $fp = fopen("LogName.txt","a+");
+   if (flock($fp,LOCK_EX)) 
+   { 
+      fputs($fp,$String."\n");
+      flock($fp, LOCK_UN); 
+      fclose($fp);
+   } 
+   else 
+   {
+      \prown\Alert('Не могу запереть файл: LogName.txt');
+   }
 }
 
 // ********************************************************* getNameCue.php ***

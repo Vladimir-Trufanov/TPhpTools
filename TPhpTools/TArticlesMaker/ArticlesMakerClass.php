@@ -111,7 +111,7 @@ class ArticlesMaker
    // *************************************************************************
    public function __destruct() 
    {
-      /* --- 19/01/2023
+      /* 19.01.2023 -----------------------------------------------------------
       ?> 
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
@@ -194,11 +194,10 @@ class ArticlesMaker
       }
       </script>
       <?php
+      // ----------------------------------------------------------------------
       */
 
-
-   /* --------------------------------
-   */
+      /* 13.01.2023 -----------------------------------------------------------
       ?> 
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
@@ -230,10 +229,143 @@ class ArticlesMaker
       }
       </script>
       <?php
-      /*
-      */ 
+      // ----------------------------------------------------------------------
+      */
+      
+      /* 20.01.2023 -----------------------------------------------------------
+      // ----------------------------------------------------------------------
+      */
+      ?> 
+      <script>
+      pathPhpTools="<?php echo pathPhpTools;?>";
+      pathPhpPrown="<?php echo pathPhpPrown;?>";
+
+      function isi(Uid)
+      {
+         // Задаем обработчик аякс-запроса
+         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
+         // кроме корневого каталога. Это особенность скорее из-за того,
+         // что работа выполняется в объекте класса
+         pathphp="getNameCue.php";
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            error: function()
+            {
+               alert('Ошибка!');
+            },
+            success: function(message)
+            {
+            
+            
+               //user = '{ "name": "John" }';
+               //user1= JSON.parse(user);
+               //alert(user1.name); 
+            
+            
+               messagei='{"person":"Павелм"}';
+               user1=JSON.parse(messagei);
+               alert(user1.person); 
+               
+               
+
+               let str = 'lorem ipsum';
+               let target = 'm'; // цель поиска
+               let pos = 0;
+               while (true) 
+               {
+                  let foundPos = str.indexOf(target, pos);
+                  if (foundPos < 0) break;
+                  console.log( "Искомая подстрока на позиции: "+foundPos);
+                  pos = foundPos + 1; // продолжаем со следующей позиции
+               };
+               
+               
+               str = message;
+               target = 'qwerty'; // цель поиска
+               pos = 0;
+               while (true) 
+               {
+                  foundPos = str.indexOf(target, pos);
+                  if (foundPos < 0) break;
+                  console.log( "Искомая подстрока на позиции: "+foundPos);
+                  pos = foundPos + 1; // продолжаем со следующей позиции
+               };
+
+               str = message;
+               target = 'qwerty'; // цель поиска
+               pos = 0;
+
+               foundPos = str.indexOf(target, pos);
+               console.log( "Искомая подстрока на позиции: "+foundPos);
+               pos = foundPos + 1; // продолжаем со следующей позиции
+
+               foundPos = str.indexOf(target, pos);
+               console.log( "Искомая подстрока на позиции: "+foundPos);
+               pos = foundPos + 1; // продолжаем со следующей позиции
+
+               foundPos = str.indexOf(target, pos);
+               console.log( "Искомая подстрока на позиции: "+foundPos);
+               n1=foundPos;
+               pos = foundPos + 1; // продолжаем со следующей позиции
+
+               foundPos = str.indexOf(target, pos);
+               console.log( "Искомая подстрока на позиции: "+foundPos);
+               n2=foundPos;
+
+               str=str.substring(n1+6,n2); 
+               console.log('str='+str);
+
+            
+               messagei=str;
+               user1=JSON.parse(messagei);
+               alert(user1.person); 
 
 
+               /*
+               console.log(message);
+               str = message;
+               tag='```';
+               
+               
+               nPoint=str.indexOf(tag);
+               console.log('nPoint='+nPoint);
+               str=str.substring(nPoint); 
+               console.log(str);
+
+               nPoint=str.indexOf(tag);
+               console.log('nPoint='+nPoint);
+               str=str.substring(nPoint); 
+               console.log(str);
+
+               nPoint=str.indexOf(tag);
+               console.log('nPoint='+nPoint);
+               //str=str.substring(nPoint); 
+               //console.log(str);
+               
+               
+               //user1=JSON.parse(message);
+               //alert(user1.person); 
+               
+               //obj=$.parseJSON(message);
+               //console.log(messagei.person);
+               //console.log(message.person);
+            
+               //obj=$.parseJSON(message);
+               //console.log(obj.iif);
+               //alert(obj.iif);
+               */
+               
+               //$('#Message').html(obj.iif+': Указать название и дату для новой статьи');
+               $('#Message').html(message+': Указать название и дату для новой статьи');
+               $('#nsCue').attr('value',Uid);
+            }
+         });
+      }
+      </script>
+      <?php
    }
    // *************************************************************************
    // *     Сформировать строки меню для добавления заголовка новой статьи    *
