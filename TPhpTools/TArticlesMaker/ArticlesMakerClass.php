@@ -51,11 +51,12 @@ define ("tbsIttvepw", 'IttvePw');
 define ("acsAll",   1);      // доступ разрешен всем
 define ("acsClose", 2);      // закрыт, статья в разработке
 define ("acsAutor", 4);      // только автору-хозяину сайта
+/*
 // --------------- Ошибки обработки аякс-запросе названия группы материалов ---
 define ("gncPrown", '1');    // нет пути к библиотекам прикладных функций
 define ("gncTools", '2');    // нет пути к библиотекам прикладных классов
 define ("gncIdCue", '3');    // не передан идентификатор группы материалов
-
+*/
 // Подгружаем общие функции класса
 require_once("CommonArticlesMaker.php"); 
 // Подгружаем модули функций класса, связанные с конкретным сайтом
@@ -106,34 +107,36 @@ class ArticlesMaker
       //\prown\ConsoleLog('$this->password='.$this->password); 
    }
    // *************************************************************************
-   // *             Прячем в __destruct обработку клика выбора раздела        *
+   // *           Спрятать в __destruct обработку клика выбора раздела        *
    // *                    (при назначении новой статьи)                      *
    // *************************************************************************
    public function __destruct() 
    {
-      /* 19.01.2023 -----------------------------------------------------------
+      
+      /* 20.01.2023 -----------------------------------------------------------
+      // ----------------------------------------------------------------------
+      */
       ?> 
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
-      
-      gncPrown="<?php echo gncPrown;?>";  // нет пути к библиотекам прикладных функций
-      gncTools="<?php echo gncTools;?>";  // нет пути к библиотекам прикладных функций
-      gncIdCue="<?php echo gncIdCue;?>";  // не передан идентификатор группы материалов
-      
+
+      // **********************************************************************
+      // *  Задать обработчик аякс-запроса по клику выбора раздела материалов *
+      // *  при назначении новой статьи:                                      *
+      // *         !!! 16.01.2023 - не удалось запускать обработчик из других *
+      // *       мест, кроме корневого каталога. Это особенность скорее из-за *
+      // *                     того, что работа выполняется в объекте класса. *
+      // *************************************************************************
       function isi(Uid)
       {
-         // Задаем обработчик аякс-запроса
-         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
-         // кроме корневого каталога. Это особенность скорее из-за того,
-         // что работа выполняется в объекте класса
          pathphp="getNameCue.php";
          // Делаем запрос на определение наименования раздела материалов
          $.ajax({
             url: pathphp,
             type: 'POST',
             data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            async: false,
+            // Выводим ошибки при выполнении запроса в PHP-сценарии
             error: function (jqXHR, exception) 
             {
 	           if (jqXHR.status === 0) 
@@ -152,8 +155,7 @@ class ArticlesMaker
                {
 		          alert('Cинтаксический анализ JSON не выполнен.');
                } 
-               else if (exception === 'timeout') 
-               {
+               else if (exception === 'timeout')          {
 		          alert('Ошибка (time out) времени ожидания ответа.');
 	           } 
                else if (exception === 'abort') 
@@ -165,204 +167,50 @@ class ArticlesMaker
 	    	      alert('Неперехваченная ошибка: '+jqXHR.responseText);
 	           }
             },
+            // Обрабатываем ответное сообщение
             success: function(message)
             {
-               arr=JSON.parse(message); 
-               if (arr[0]==gncPrown)
-               {
-                  alert('Нет пути к библиотекам прикладных функций TPhpPrown');
-               }
-               else if (arr[0]==gncTools)
-               {
-                  alert('Нет пути к библиотекам прикладных классов TPhpTools');
-               }
-               else if (arr[0]==gncIdCue)
-               {
-                  alert('Не передан идентификатор группы материалов');
-               }
-               else
-               {
-                  //alert(message);
-                  //alert('success!');
-                  //$('#Message').html(message+'. Указать название и дату для новой статьи');
-                  $('#Message').html(arr[0]+'. Указать название и дату для новой статьи');
-                  $('#nsCue').attr('value',Uid);
-               }
-               //$('#Message').html(message+'. Указать название и дату для новой статьи');
+               //console.log('message='+message);
+
+               // Вырезаем из запроса чистое сообщение
+               messa=FreshLabel(message);
+               //console.log('message='+messa);
+               // Получаем параметры ответа
+               parm=JSON.parse(messa);
+               //console.log('parm.NameGru='+parm.NameGru);
+               //console.log('parm.Piati='  +parm.Piati);
+               //console.log('parm.iif='    +parm.iif);
+ 
+               $('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
+               $('#nsCue').attr('value',Uid);
+               $('#nsGru').attr('value',parm.NameGru);
             }
          });
       }
-      </script>
-      <?php
-      // ----------------------------------------------------------------------
-      */
-
-      /* 13.01.2023 -----------------------------------------------------------
-      ?> 
-      <script>
-      pathPhpTools="<?php echo pathPhpTools;?>";
-      pathPhpPrown="<?php echo pathPhpPrown;?>";
-
-      function isi(Uid)
+      // **********************************************************************
+      // *             Выделить метку (наборы символов до и после) в принятом *
+      // *                                     сообщения и извлечь сообщение. *
+      // * так как в АЯКС-запросах на jQuery, когда от сервера                *
+      // * передается сообщение в js, то (фактически - 19.01.2023)            *
+      // * перед сообщением подвешивается сам js-скрипт запроса.              *   
+      // **********************************************************************
+      function FreshLabel(messa)
       {
-         // Задаем обработчик аякс-запроса
-         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
-         // кроме корневого каталога. Это особенность скорее из-за того,
-         // что работа выполняется в объекте класса
-         pathphp="getNameCue.php";
-         // Делаем запрос на определение наименования раздела материалов
-         $.ajax({
-            url: pathphp,
-            type: 'POST',
-            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            async: false,
-            error: function()
-            {
-               alert('Ошибка!');
-            },
-            success: function(message)
-            {
-               $('#Message').html(message+': Указать название и дату для новой статьи');
-               $('#nsCue').attr('value',Uid);
-            }
-         });
-      }
-      </script>
-      <?php
-      // ----------------------------------------------------------------------
-      */
-      
-      /* 20.01.2023 -----------------------------------------------------------
-      // ----------------------------------------------------------------------
-      */
-      ?> 
-      <script>
-      pathPhpTools="<?php echo pathPhpTools;?>";
-      pathPhpPrown="<?php echo pathPhpPrown;?>";
-
-      function isi(Uid)
-      {
-         // Задаем обработчик аякс-запроса
-         // !!! 16.01.2023 - не удалось запускать обработчик из других мест,
-         // кроме корневого каталога. Это особенность скорее из-за того,
-         // что работа выполняется в объекте класса
-         pathphp="getNameCue.php";
-         // Делаем запрос на определение наименования раздела материалов
-         $.ajax({
-            url: pathphp,
-            type: 'POST',
-            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            error: function()
-            {
-               alert('Ошибка!');
-            },
-            success: function(message)
-            {
-            
-            
-               //user = '{ "name": "John" }';
-               //user1= JSON.parse(user);
-               //alert(user1.name); 
-            
-            
-               messagei='{"person":"Павелм"}';
-               user1=JSON.parse(messagei);
-               alert(user1.person); 
-               
-               
-
-               let str = 'lorem ipsum';
-               let target = 'm'; // цель поиска
-               let pos = 0;
-               while (true) 
-               {
-                  let foundPos = str.indexOf(target, pos);
-                  if (foundPos < 0) break;
-                  console.log( "Искомая подстрока на позиции: "+foundPos);
-                  pos = foundPos + 1; // продолжаем со следующей позиции
-               };
-               
-               
-               str = message;
-               target = 'qwerty'; // цель поиска
-               pos = 0;
-               while (true) 
-               {
-                  foundPos = str.indexOf(target, pos);
-                  if (foundPos < 0) break;
-                  console.log( "Искомая подстрока на позиции: "+foundPos);
-                  pos = foundPos + 1; // продолжаем со следующей позиции
-               };
-
-               str = message;
-               target = 'qwerty'; // цель поиска
-               pos = 0;
-
-               foundPos = str.indexOf(target, pos);
-               console.log( "Искомая подстрока на позиции: "+foundPos);
-               pos = foundPos + 1; // продолжаем со следующей позиции
-
-               foundPos = str.indexOf(target, pos);
-               console.log( "Искомая подстрока на позиции: "+foundPos);
-               pos = foundPos + 1; // продолжаем со следующей позиции
-
-               foundPos = str.indexOf(target, pos);
-               console.log( "Искомая подстрока на позиции: "+foundPos);
-               n1=foundPos;
-               pos = foundPos + 1; // продолжаем со следующей позиции
-
-               foundPos = str.indexOf(target, pos);
-               console.log( "Искомая подстрока на позиции: "+foundPos);
-               n2=foundPos;
-
-               str=str.substring(n1+6,n2); 
-               console.log('str='+str);
-
-            
-               messagei=str;
-               user1=JSON.parse(messagei);
-               alert(user1.person); 
-
-
-               /*
-               console.log(message);
-               str = message;
-               tag='```';
-               
-               
-               nPoint=str.indexOf(tag);
-               console.log('nPoint='+nPoint);
-               str=str.substring(nPoint); 
-               console.log(str);
-
-               nPoint=str.indexOf(tag);
-               console.log('nPoint='+nPoint);
-               str=str.substring(nPoint); 
-               console.log(str);
-
-               nPoint=str.indexOf(tag);
-               console.log('nPoint='+nPoint);
-               //str=str.substring(nPoint); 
-               //console.log(str);
-               
-               
-               //user1=JSON.parse(message);
-               //alert(user1.person); 
-               
-               //obj=$.parseJSON(message);
-               //console.log(messagei.person);
-               //console.log(message.person);
-            
-               //obj=$.parseJSON(message);
-               //console.log(obj.iif);
-               //alert(obj.iif);
-               */
-               
-               //$('#Message').html(obj.iif+': Указать название и дату для новой статьи');
-               $('#Message').html(message+': Указать название и дату для новой статьи');
-               $('#nsCue').attr('value',Uid);
-            }
-         });
+         result='{"NameGru":"nodef", "Piati":0, "iif":"nodef"}';
+         str=messa;
+         target='ghjun5'; // цель поиска
+         pos=0; nBeg=0; nEnd=0;
+         while (true) 
+         {
+            foundPos=str.indexOf(target,pos);
+            if (foundPos<0) break;
+            // Меняем начальную и конечную позиции подстроки
+            nBeg=nEnd+6; nEnd=foundPos;
+            result=str.substring(nBeg,nEnd); 
+            // Продолжаем со следующей позиции
+            pos=foundPos+1; 
+         };
+         return result;
       }
       </script>
       <?php
@@ -617,10 +465,9 @@ class ArticlesMaker
    // *************************************************************************
    // *                      Вставить материал по транслиту                   *
    // *************************************************************************
-   public function InsertByTranslit($pdo,$Translit,$pid,$uid,$NameGru,$NameArt,$DateArt,$contents)
+   public function InsertByTranslit($pdo,$Translit,$pid,$NameGru,$NameArt,$DateArt,$contents)
    {
       \prown\ConsoleLog('1 insert='.$Translit); 
-      //$icontents = htmlspecialchars($contents,ENT_QUOTES);	
       $icontents = htmlspecialchars($contents);	
       $statement = $pdo->prepare("INSERT INTO [stockpw] ".
          "([pid], [IdCue], [NameArt], [Translit], [access], [DateArt], [Art]) VALUES ".

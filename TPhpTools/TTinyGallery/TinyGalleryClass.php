@@ -163,11 +163,12 @@ class TinyGallery
          /*
          $apdo=$this->Arti->BaseConnect();
          $NameArt=\prown\getComRequest('nsnName');
-         $Translit=\prown\getTranslit('$NameArt');
          $DateArt=\prown\getComRequest('nsnDate');
-         $contents='Новый материал';
          $pid=\prown\getComRequest('nsnCue');
-         $this->Arti->InsertByTranslit($apdo,$Translit,$pid,$uid,$NameGru,$NameArt,$DateArt,$contents)
+         $Translit=\prown\getTranslit('$NameArt');
+         $NameGru=\prown\getComRequest('nsnGru');
+         $contents='Новый материал';
+         $this->Arti->InsertByTranslit($apdo,$Translit,$pid,$NameGru,$NameArt,$DateArt,$contents);
          */
        }
       
@@ -580,6 +581,7 @@ class TinyGallery
          <input id="nsName" type="text" name="nsnName" '.$nsnName.' placeholder="Название нового материала" required>
          <input id="nsDate" type="date" name="nsnDate" '.$nsnDate.' required>
          <input id="nsCue"  type="hidden" name="nsnCue" value="'.NoDefine.'">
+         <input id="nsGru"  type="hidden" name="nsnGru" value="'.NoDefine.'">
       ';
       echo '
          </form>

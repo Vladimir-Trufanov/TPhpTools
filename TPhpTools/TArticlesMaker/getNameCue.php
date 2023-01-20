@@ -122,6 +122,9 @@ function getNameCueHandler($errno,$errstr,$errfile,$errline)
 define ("articleSite",'IttveMe'); 
 // Указываем каталог размещения файлов, связанных c материалом
 define("editdir",'ittveEdit');
+
+// Готовим начальные значения параметров возвращаемого сообщения
+$NameGru='NoDefine'; $Piati=0; $iif='NoDefine';
 // Извлекаем пути к библиотекам прикладных функций и классов
 define ("pathPhpPrown",$_POST['pathPrown']);
 define ("pathPhpTools",$_POST['pathTools']);
@@ -134,14 +137,15 @@ $NameGru='Группа материалов';
 $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
 $Arti=new ttools\ArticlesMaker($basename,$username,$password);
 $pdo=$Arti->BaseConnect();
+// Выбираем запись по идентификатору группы материалов
 $table=$Arti->SelRecord($pdo,$_POST['idCue']); 
+// Выделяем из записи элементы
 $NameGru=$table[0]['NameArt'];
+// Освобождаем память
 unset($Arti); unset($pdo); unset($table);
-//$message='["'.$NameGru.'", 5, "false"]';
-//$message='{"NameGru":'.$NameGru.', "Piati":5, "iif":"falsi"}';
-$message='{"result":true, "count":42}';
-
-$message='qwerty{"person":"Павелим"}qwerty';
+// Возвращаем сообщение
+$message='{"NameGru":"'.$NameGru.'", "Piati":'.$Piati.', "iif":"'.$iif.'"}';
+$message=\prown\makeLabel($message,'ghjun5','ghjun5');
 PutString('$message='.$message);
 echo $message;
 exit;
