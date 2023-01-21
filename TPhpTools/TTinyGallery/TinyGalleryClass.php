@@ -158,18 +158,20 @@ class TinyGallery
       // кукиса и начала редактирования материала
       if ((\prown\getComRequest('nsnCue')<>NULL)&&
       (\prown\getComRequest('nsnName')<>NULL)&&
+      (\prown\getComRequest('nsnGru')<>NULL)&&
       (\prown\getComRequest('nsnDate')<>NULL))
       {
-         /*
+         // Делаем новую запись в базе данных
          $apdo=$this->Arti->BaseConnect();
          $NameArt=\prown\getComRequest('nsnName');
          $DateArt=\prown\getComRequest('nsnDate');
          $pid=\prown\getComRequest('nsnCue');
-         $Translit=\prown\getTranslit('$NameArt');
+         $Translit=\prown\getTranslit($NameArt);
          $NameGru=\prown\getComRequest('nsnGru');
          $contents='Новый материал';
-         $this->Arti->InsertByTranslit($apdo,$Translit,$pid,$NameGru,$NameArt,$DateArt,$contents);
-         */
+         $this->Arti->InsertByTranslit($apdo,$Translit,$pid,$NameArt,$DateArt,$contents);
+         // Готовим кукис текущего материала
+         $getArti=$Translit;
        }
       
       // Устанавливаем кукис на новый или выбранный материал
@@ -177,6 +179,7 @@ class TinyGallery
       {
          $this->Arti->cookieGetPunktMenu($getArti); 
       }
+      //\prown\Alert($getArti);
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
@@ -602,6 +605,9 @@ class TinyGallery
    {
       echo 'WorkTiny_mmlUdalitMaterial<br>';
    }
+   // *************************************************************************
+   // *                     Выбрать статью для редактирования                 *
+   // *************************************************************************
    private function WorkTiny_mmlVybratStatyuRedakti()
    {
       $this->Arti->GetPunktMenu($this->apdo); 

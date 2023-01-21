@@ -121,7 +121,7 @@ class MenuLeader
       }
       // Если было назначение статьи без указания выбранного раздела, 
       // то перезапускаем страницу "Назначить статью"
-      if ((\prown\getComRequest('nsnCue')==-1)&&
+      else if ((\prown\getComRequest('nsnCue')==-1)&&
       (\prown\getComRequest('nsnName')<>NULL)&&
       (\prown\getComRequest('nsnDate')<>NULL))
       {
@@ -157,13 +157,6 @@ class MenuLeader
             </ul>   
          ';
       }
-      /*
-      else if (\prown\isComRequest(mmlNaznachitStatyu)||
-      (\prown\getComRequest('titl')<>NULL))
-      {
-         $this->WorkTiny_mmlNaznachitStatyu();
-      }
-      */
       // В обычном режиме
       else
       {

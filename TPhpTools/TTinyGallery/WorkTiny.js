@@ -1,10 +1,7 @@
 // Выполняем действия  по завершении загрузки страницы
 $(document).ready(function()
 {
-   console.log('Проверяем QupZillу и Safari');
-   //Alert('Проверяем QupZillу и Safari');
-   
-   $('#nsDate').on('focusin',function()
+  $('#nsDate').on('focusin',function()
   {
     $(this).siblings('#nsName').css({
       'z-index'   :'1',

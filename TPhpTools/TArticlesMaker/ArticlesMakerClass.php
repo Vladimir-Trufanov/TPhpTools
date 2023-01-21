@@ -465,9 +465,11 @@ class ArticlesMaker
    // *************************************************************************
    // *                      Вставить материал по транслиту                   *
    // *************************************************************************
-   public function InsertByTranslit($pdo,$Translit,$pid,$NameGru,$NameArt,$DateArt,$contents)
+   public function InsertByTranslit($pdo,$Translit,$pid,$NameArt,$DateArt,$contents)
    {
-      \prown\ConsoleLog('1 insert='.$Translit); 
+    try 
+    {
+      $pdo->beginTransaction();
       $icontents = htmlspecialchars($contents);	
       $statement = $pdo->prepare("INSERT INTO [stockpw] ".
          "([pid], [IdCue], [NameArt], [Translit], [access], [DateArt], [Art]) VALUES ".
@@ -481,17 +483,43 @@ class ArticlesMaker
          "DateArt"  => $DateArt, 
          "Art"      => $icontents
       ]);
-      \prown\ConsoleLog('2 insert='.$Translit); 
+      $pdo->commit();
+    } 
+    catch (Exception $e) 
+    {
+      // Если в транзакции, то делаем откат изменений
+      if ($pdo->inTransaction()) 
+      {
+         $pdo->rollback();
+      }
+      // Продолжаем исключение
+      throw $e;
+    }
    }
-   // ****************************************************************************
-   // *                         Обновить материал по транслиту                   *
-   // ****************************************************************************
+   // *************************************************************************
+   // *                       Обновить материал по транслиту                  *
+   // *************************************************************************
    public function UpdateByTranslit($pdo,$Translit,$contents)
    {
+    try 
+    {
+      $pdo->beginTransaction();
       //\prown\ConsoleLog('1 update='.$Translit); 
       $statement = $pdo->prepare("UPDATE [stockpw] SET [Art] = :Art WHERE [Translit] = :Translit;");
       $statement->execute(["Art"=>$contents,"Translit"=>$Translit]);
       //\prown\ConsoleLog('2 update='.$Translit); 
+      $pdo->commit();
+    } 
+    catch (Exception $e) 
+    {
+      // Если в транзакции, то делаем откат изменений
+      if ($pdo->inTransaction()) 
+      {
+         $pdo->rollback();
+      }
+      // Продолжаем исключение
+      throw $e;
+    }
    }
 }
 // ************************************************* ArticlesMakerClass.php ***
