@@ -437,10 +437,11 @@ class ArticlesMaker
       $NameGru='Материал для редактирования не выбран!'; $NameArt=''; $DateArt='';
       // Выбираем по транслиту $pid,$uid,$NameArt
       $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
-      //\prown\ConsoleLog('$getArti='.$getArti);
       $stmt=$pdo->query($cSQL);
       $table=$stmt->fetchAll();
-      if (count($table)==1)
+      $count=count($table);
+      // Если найдена одна запись, то выбираем данные
+      if ($count==1)
       {
          $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
          $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
@@ -448,6 +449,12 @@ class ArticlesMaker
          // Добираем $NameGru
          $table=$this->SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
       }
+      // Если больше одной записи, то диагностируем ошибку
+      else if ($count>1)
+      \prown\Alert('Найдено несколько ['.$count.'] записей по транслиту: '.$getArti); 
+      // Если не найдено записей, то диагностируем ошибку
+      else if ($count<1)
+      \prown\Alert('Не найдено записей по транслиту: '.$getArti);
    }
    // *************************************************************************
    // * Выбрать запись по идентификатору                                      *

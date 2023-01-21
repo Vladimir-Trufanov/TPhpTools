@@ -79,9 +79,9 @@ class MenuLeader
       $this->ComTiny='?Com=';
 
       // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->typemenu='.$this->typemenu); 
-      \prown\ConsoleLog('$this->urlHome='.$this->urlHome); 
-      \prown\ConsoleLog('$this->cPreMe='.$this->cPreMe); 
+      //\prown\ConsoleLog('$this->typemenu='.$this->typemenu); 
+      //\prown\ConsoleLog('$this->urlHome='.$this->urlHome); 
+      //\prown\ConsoleLog('$this->cPreMe='.$this->cPreMe); 
    }
    public function __destruct() 
    {

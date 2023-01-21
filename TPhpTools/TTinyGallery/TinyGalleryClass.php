@@ -152,7 +152,6 @@ class TinyGallery
       //    $apdo=$this->Arti->BaseConnect();
       //    $this->Arti->GetPunktMenu($apdo);
       $getArti=\prown\getComRequest('arti'); // выбрали транслит 
-      
       // Если было назначение нового материала/статьи, 
       // то делаем запись в базу данных и готовим транслит статьи для установки
       // кукиса и начала редактирования материала
@@ -173,13 +172,11 @@ class TinyGallery
          // Готовим кукис текущего материала
          $getArti=$Translit;
        }
-      
       // Устанавливаем кукис на новый или выбранный материал
       if ($getArti<>NULL)
       {
          $this->Arti->cookieGetPunktMenu($getArti); 
       }
-      //\prown\Alert($getArti);
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
@@ -279,18 +276,16 @@ class TinyGallery
    // . id=UlTiny                                .                            .
    // .                                          .                            .
    // -------------------------------------------------------------------------
-   // Вытаскиваем материал для редактирования
-   $table=$this->Arti->SelUidPid
-      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
    // Если был выбран режим сохранения отредактированного материала, 
    // то выбираем его из запроса и сохраняем    
    $contentNews=\prown\getComRequest('mytextarea');
    if ($contentNews<>NULL)
    {
       $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentNews);
-      $table=$this->Arti->SelUidPid
-      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
    }
+   // Вытаскиваем материал для редактирования
+   $table=$this->Arti->SelUidPid
+      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
    // Запоминаем в объекте текущий материал
    $this->contents=$contents;
    $this->NameGru=$NameGru;
@@ -391,7 +386,7 @@ class TinyGallery
          else
          {
             echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
-           echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
+            echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
          } 
       }
    }
@@ -478,7 +473,6 @@ class TinyGallery
    }
    private function IniEditSpace_mmlVybratStatyuRedakti()
    {
-      \prown\ConsoleLog('IniEditSpace_mmlVybratStatyuRedakti'); 
       // Включаем рождественскую версию шрифтов и полосок меню
       $this->IniFontChristmas();
    }
@@ -610,6 +604,8 @@ class TinyGallery
    // *************************************************************************
    private function WorkTiny_mmlVybratStatyuRedakti()
    {
+      // Выводим заголовочное сообщение
+      $this->MakeTitle('Выбрать статью для редактирования',ttMessage);
       $this->Arti->GetPunktMenu($this->apdo); 
       //$this->Arti->ShowSampleMenu(); 
    }

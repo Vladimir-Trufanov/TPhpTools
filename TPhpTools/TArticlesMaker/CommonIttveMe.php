@@ -711,31 +711,4 @@ function CountPoint($pdo,$ParentID)
    else $Result='<span>'.$nCount.'</span>';
    return $Result; 
 }
-
-/*
-// ****************************************************************************
-// *             Выбрать $pid,$uid,$NameGru,$NameArt,$DateArt,$contents по транслиту             *
-// ****************************************************************************
-function _SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt,&$contents)
-{
-   // Инициируем возвращаемые данные
-   $pid=0; $uid=0; 
-   $NameGru='Материал для редактирования не выбран!'; $NameArt=''; $DateArt='';
-   // Выбираем по транслиту $pid,$uid,$NameArt
-   $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
-   //\prown\ConsoleLog('$getArti='.$getArti);
-   $stmt=$pdo->query($cSQL);
-   $table=$stmt->fetchAll();
-   if (count($table)==1)
-   {
-      $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
-      $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
-      $contents=$table[0]['Art'];
-      // Добираем $NameGru
-      $table=SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
-   }
-   return $table;
-}
-*/
-
 // ****************************************************** CommonIttveMe.php ***
