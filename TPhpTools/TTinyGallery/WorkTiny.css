@@ -59,7 +59,6 @@
 }
 #Message
 {
-   /*float:left;*/
    text-align:center;
    margin-left:.5rem;
    color:maroon;
@@ -69,11 +68,15 @@
 {
    float:right;
    margin-right:.5rem;
-   /*background:magenta;*/
 }
-
-
-
+#TopLine
+{
+   display:block;
+   overflow:hidden;
+   margin:0;
+   padding:0;
+   border:0;
+}
 /* Устанавливаем стили при назначении статьи */
 #AddArticle
 {

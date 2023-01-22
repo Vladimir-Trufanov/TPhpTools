@@ -378,8 +378,9 @@ class TinyGallery
       else if ($NameArt==ttError) echo '<div id="NameError">'.$NameGru.'</div>'; 
       else
       {
+         echo '<div id="TopLine">'; 
          if ($NameArt=='')
-         { 
+         {
             echo '<div id="NameGru">'.$NameGru.'</div>'; 
             echo '<div id="NameArt">'.'</div>'; 
          }
@@ -388,11 +389,11 @@ class TinyGallery
             echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
             echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
          } 
+         echo '</div>'; 
       }
    }
    // *************************************************************************
-   // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
-   // *   ----                      (установить кукисы и т.д.)                    *
+   // *    Выполнить действия на странице в обычном режиме редактирования     *
    // *************************************************************************
    private function IniEditSpace_main()
    {
@@ -612,7 +613,7 @@ class TinyGallery
    private function WorkTiny_mmlUdalitMaterial()
    {
       // Выводим заголовочное сообщение
-      $this->MakeTitle('$messa',ttMessage);
+      $this->MakeTitle('Выбрать и удалить материал',ttMessage);
       // Строим меню
       $this->Arti->MakeUniMenu($this->apdo,'','UdalitMater');
    }
@@ -624,8 +625,6 @@ class TinyGallery
       // Выводим заголовочное сообщение
       $this->MakeTitle('Выбрать статью для редактирования',ttMessage);
       $this->Arti->GetPunktMenu($this->apdo); 
-      //$this->Arti->ShowSampleMenu(); 
    }
 } 
-
 // *************************************************** TinyGalleryClass.php ***
