@@ -122,13 +122,20 @@ class ArticlesMaker
       pathPhpPrown="<?php echo pathPhpPrown;?>";
 
       // **********************************************************************
+      // *        Задать обработчик аякс-запроса по удалению материала        *
+      // **********************************************************************
+      function UdalitMater(Uid)
+      {
+         alert('Удаляем материал по Uid='+Uid);
+      }
+      // **********************************************************************
       // *  Задать обработчик аякс-запроса по клику выбора раздела материалов *
       // *  при назначении новой статьи:                                      *
       // *         !!! 16.01.2023 - не удалось запускать обработчик из других *
       // *       мест, кроме корневого каталога. Это особенность скорее из-за *
       // *                     того, что работа выполняется в объекте класса. *
-      // *************************************************************************
-      function isi(Uid)
+      // **********************************************************************
+      function SelMatiSection(Uid)
       {
          pathphp="getNameCue.php";
          // Делаем запрос на определение наименования раздела материалов
@@ -137,50 +144,14 @@ class ArticlesMaker
             type: 'POST',
             data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
             // Выводим ошибки при выполнении запроса в PHP-сценарии
-            error: function (jqXHR, exception) 
-            {
-	           if (jqXHR.status === 0) 
-               {
-		          alert('Ошибка/нет соединения.');
-	           } 
-               else if (jqXHR.status == 404) 
-               {
-		          alert('Требуемая страница не найдена (404).');
-	           } 
-               else if (jqXHR.status == 500) 
-               {
-		          alert('Внутренняя ошибка сервера (500).');
-	           } 
-               else if (exception === 'parsererror') 
-               {
-		          alert('Cинтаксический анализ JSON не выполнен.');
-               } 
-               else if (exception === 'timeout')          {
-		          alert('Ошибка (time out) времени ожидания ответа.');
-	           } 
-               else if (exception === 'abort') 
-               {
-		          alert('Ajax-запрос прерван.');
-	           } 
-               else 
-               {
-	    	      alert('Неперехваченная ошибка: '+jqXHR.responseText);
-	           }
-            },
+            error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
             // Обрабатываем ответное сообщение
             success: function(message)
             {
-               //console.log('message='+message);
-
                // Вырезаем из запроса чистое сообщение
                messa=FreshLabel(message);
-               //console.log('message='+messa);
                // Получаем параметры ответа
                parm=JSON.parse(messa);
-               //console.log('parm.NameGru='+parm.NameGru);
-               //console.log('parm.Piati='  +parm.Piati);
-               //console.log('parm.iif='    +parm.iif);
- 
                $('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
                $('#nsCue').attr('value',Uid);
                $('#nsGru').attr('value',parm.NameGru);
@@ -212,21 +183,58 @@ class ArticlesMaker
          };
          return result;
       }
+      // **********************************************************************
+      // *             Обработать ошибку выполнения аякс-запроса              *
+      // **********************************************************************
+      function SmarttodoError(jqXHR,exception) 
+      {
+	     if (jqXHR.status === 0) 
+         {
+		    alert('Ошибка/нет соединения.');
+	     } 
+         else if (jqXHR.status == 404) 
+         {
+		    alert('Требуемая страница не найдена (404).');
+	     } 
+         else if (jqXHR.status == 500) 
+         {
+		    alert('Внутренняя ошибка сервера (500).');
+	     } 
+         else if (exception === 'parsererror') 
+         {
+		    alert('Cинтаксический анализ JSON не выполнен.');
+         } 
+         else if (exception === 'timeout')          
+         {
+		    alert('Ошибка (time out) времени ожидания ответа.');
+	     } 
+         else if (exception === 'abort') 
+         {
+		    alert('Ajax-запрос прерван.');
+	     } 
+         else 
+         {
+	        alert('Неперехваченная ошибка: '+jqXHR.responseText);
+	     }
+      }
       </script>
       <?php
    }
    // *************************************************************************
-   // *     Сформировать строки меню для добавления заголовка новой статьи    *
-   // *                    (при назначении новой статьи)                      *
+   // *           Сформировать строки меню по базе данных материалов          *
+   // *  (общий механизм: $clickGru-вызов процедуры обработки клика по группе *
+   // *   материалов, $clickGru-вызов процедуры обработки клика по материалу) *
    // *************************************************************************
-   public function MakeTitlesArt($pdo)
+   public function MakeUniMenu($pdo,$clickGru='',$clickOne='')
    {
-      $lvl=-1; $cLast='+++';
-      $nLine=0; 
-      $cli=""; // Начальная вставка конца пункта меню
-      $this->ShowTitlesArt($pdo,1,1,$cLast,$nLine,$cli,$lvl);
+      $lvl=-1;      // инициировали текущий уровень меню
+      $cLast='+++'; // инициировали признак типа сформированной строки меню
+      $nLine=0;     // инициировали счетчик сформированных строк меню
+      $cli="";      // сбрасили начальную вставку конца пункта меню
+      $this->_MakeUniMenu($clickGru,$clickOne,$pdo,1,1,$cLast,$nLine,$cli,$lvl);
    }
-   private function ShowTitlesArt($pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
+   private function _MakeUniMenu($clickGru,$clickOne,
+   $pdo,$ParentID,$PidIn,&$cLast,&$nLine,&$cli,&$lvl,$FirstUl=' class="accordion"')
    {
       // Определяем текущий уровень меню
       $lvl++; 
@@ -238,61 +246,38 @@ class ArticlesMaker
       {
          echo('<ul'.$FirstUl.'>'."\n"); $cLast='+ul';
          // Перебираем все записи родителя, подсчитываем количество, формируем пункты меню
-         $nPoint=0;
          foreach ($table as $row)
          {
-            $nLine++; $cLine=''; 
-            $Uid=$row["uid"]; $Pid=$row["pid"]; $Translit=$row["Translit"];
+            // Инкрементируем счетчик строк
+            $nLine++; 
+            // Выбираем параметры записи
+            $Uid=$row["uid"]; $Pid=$row["pid"]; 
+            $NameArt=$row['NameArt']; $Translit=$row["Translit"];
             $IdCue=$row["IdCue"]; $DateArt=$row["DateArt"]; 
+            // Закрываем предыдущий 'LI'
             if ($cLast<>'+ul') 
             {
                 $cli="</li>\n";
                 echo($cli); $cLast='-li';
             }
+            // Выводим 'LI' группы материалов или собственно материала
+            $grClick=$this->HandleСlick($clickGru,$Uid);
+            $maClick=$this->HandleСlick($clickOne,$Uid);
+            echo('<li>'); 
             if ($IdCue==-1)
             {
-               echo('<li id="'.$Translit.'" class="'.$Translit.'">'); 
-               //echo('<i>'.$row['NameArt'].'<a href="?titl='.$Uid.'">'.'<span>'.$Uid.'</span></a></i>'."\n"); 
-               //echo('<i class="ispan" onclick="isi('.$Uid.')">'.$row['NameArt'].'<div><span class="inpspan" id="spa'.$Uid.'">'.$Uid.'.</span></div></i>'."\n"); 
-               //echo('<i onclick="isi('.$Uid.')">'.$row['NameArt'].'<div><span class="inpspan" id="spa'.$Uid.'">'.$Uid.'.</span></div></i>'."\n"); 
-               echo('<i onclick="isi('.$Uid.')">'.$row['NameArt'].
+               echo('<i'.$grClick.'>'.$NameArt.
                     '<span id="spa'.$Uid.'">'.$Uid.'.</span>'.
                     '</i>'."\n");
-               /*
-               echo('<i onclick="isi('.$Uid.')">'.$row['NameArt'].
-                    '<span id="spa'.$Uid.'">'.'<input name="reset" value="'.$Uid.'">'.'</span>'.
-                    '</i>'."\n");
-               */
-               /*
-               echo('<i>'.$row['NameArt'].
-                    '<span id="spa'.$Uid.'">'.'<input name="reset" value="'.$Uid.'">'.'</span>'.
-                    '</i>'."\n");
-              */
             } 
             else
             {
-               $nPoint++;
-               echo('<li><i><em>'.$Uid.'.</em>'.$row['NameArt'].'</i>'."\n"); 
-               //<li><i><em>13</em>Таёжный зоопарк на озере Сямозеро<span>04.07.2010</span></i></li>			
+               echo('<i'.$maClick.'><em>'.$Uid.'.</em>'.$NameArt.'</i>'."\n"); 
             }
-            
-            /*
-            <li id="progulki" class="progulki"><i>Прогулки<a href="?titl=16"><span>16</span></a>
-            <ul class="sub-menu">
-            <li><i><em>17</em>Охота на медведя<span>04.07.2010</span></i>
-            </li>
-            </ul>
-            
-            <li id="progulki" class="progulki"><i>Прогулки<a href="#201"><span>201</span></a></i>
-            <ul class="sub-menu">
-            <li><i><em>21</em>Охота на медведя<span>24.07.2010</span></i></li>			
-            </ul>
-            </li>
-            */
-            
-            
             $cLast='+li';
-            $this->ShowTitlesArt($pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,' class="sub-menu"'); 
+            // Заходим на следующую строку
+            $this->_MakeUniMenu($clickGru,$clickOne,
+               $pdo,$Uid,$Pid,$cLast,$nLine,$cli,$lvl,' class="sub-menu"'); 
             $lvl--; 
          }
          $cli="</li>\n";
@@ -300,7 +285,12 @@ class ArticlesMaker
          echo("</ul>\n");  $cLast='-ul';
       }
    }
-
+   private function HandleСlick($clickIs,$Uid)
+   {
+      if ($clickIs=='') $Result='';
+      else $Result=' onclick="'.$clickIs.'('.$Uid.')"';
+      return $Result;
+   }
    // *************************************************************************
    // *   Выполнить действия на странице до отправления заголовков страницы:  *
    // *                         (установить кукисы и т.д.)                    *
@@ -441,7 +431,7 @@ class ArticlesMaker
       $table=$stmt->fetchAll();
       $count=count($table);
       // Если найдена одна запись, то выбираем данные
-      if ($count==1)
+      if ($count>0)
       {
          $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
          $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
@@ -450,8 +440,11 @@ class ArticlesMaker
          $table=$this->SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
       }
       // Если больше одной записи, то диагностируем ошибку
-      else if ($count>1)
-      \prown\Alert('Найдено несколько ['.$count.'] записей по транслиту: '.$getArti); 
+      if ($count>1)
+      {
+         \prown\Alert("В группе '".$NameGru."' статья '".$NameArt."' c дублированным транслитом: ".$getArti); 
+         //\prown\Alert('Найдено несколько ['.$count.'] записей по транслиту: '.$getArti); 
+      }
       // Если не найдено записей, то диагностируем ошибку
       else if ($count<1)
       \prown\Alert('Не найдено записей по транслиту: '.$getArti);

@@ -469,7 +469,23 @@ class TinyGallery
    }
    private function IniEditSpace_mmlUdalitMaterial()
    {
-      \prown\ConsoleLog('IniEditSpace_mmlUdalitMaterial'); 
+      // Отключаем разворачивание аккордеона
+      // в случае, когда создаем заголовок новой статьи. 
+      echo '
+      <style>
+      .accordion li .sub-menu 
+      {
+         height:100%;
+      }
+      </style>
+      ';
+      
+      echo '
+      <script>
+      </script>
+      ';
+      // Включаем рождественскую версию шрифтов и полосок меню
+      $this->IniFontChristmas();
    }
    private function IniEditSpace_mmlVybratStatyuRedakti()
    {
@@ -586,18 +602,19 @@ class TinyGallery
       ';
       // Выбираем группу материалов для которой создается новая статья
       echo '<div id="AddArticle">';
-         $this->Arti->MakeTitlesArt($this->apdo);
-         //$this->Arti->MakeMenu();
+         $this->Arti->MakeUniMenu($this->apdo,'SelMatiSection');
       echo '</div>';
    }
-
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {
       echo 'WorkTiny_mmlVernutsyaNaGlavnuyu<br>';
    }
    private function WorkTiny_mmlUdalitMaterial()
    {
-      echo 'WorkTiny_mmlUdalitMaterial<br>';
+      // Выводим заголовочное сообщение
+      $this->MakeTitle('$messa',ttMessage);
+      // Строим меню
+      $this->Arti->MakeUniMenu($this->apdo,'','UdalitMater');
    }
    // *************************************************************************
    // *                     Выбрать статью для редактирования                 *
