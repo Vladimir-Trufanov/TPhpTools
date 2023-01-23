@@ -121,7 +121,22 @@ class ArticlesMaker
       // **********************************************************************
       function UdalitMater(Uid)
       {
-         alert('Удаляем материал по Uid='+Uid);
+         //$("#DialogWind").css("color","red");
+         htmlText="Удалить выбранный материал по "+Uid+"?";
+         $('#DialogWind').html(htmlText);
+         $('#DialogWind').dialog
+         ({
+            title: "Удалить материал",
+            buttons:[
+               {text: "OK",     click: function() {xUdalitMater(Uid)}},
+               {text: "Отмена", click: function() {$(this).dialog("close")}}
+            ]
+         });
+      }
+      function xUdalitMater(Uid)
+      {
+         alert('Uid='+Uid);
+         $("#DialogWind" ).dialog("close");
       }
       // **********************************************************************
       // *  Задать обработчик аякс-запроса по клику выбора раздела материалов *

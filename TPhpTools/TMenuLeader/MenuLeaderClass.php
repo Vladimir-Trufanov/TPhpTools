@@ -128,11 +128,12 @@ class MenuLeader
          echo '
             <ul class="uli">
             <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
             <li class="ili">'.'<input id="nsSub" type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">'.'</li>
             </ul>   
          ';
+            //<li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
       }
       // Если просто была выбрана страница "Назначить статью" 
       else if (\prown\isComRequest(mmlNaznachitStatyu))
@@ -140,11 +141,12 @@ class MenuLeader
          echo '
             <ul class="uli">
             <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
             <li class="ili">'.'<input id="nsSub" type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">'.'</li>
             </ul>   
          ';
+            //<li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
       }
       else if (\prown\isComRequest(mmlUdalitMaterial))
       {

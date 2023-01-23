@@ -276,6 +276,15 @@ class TinyGallery
    // . id=UlTiny                                .                            .
    // .                                          .                            .
    // -------------------------------------------------------------------------
+
+   //
+   echo '
+   <div id="DialogWind" class="dialog_window" title="Это окно">
+       <p>Привет, мир!</p>
+   </div>
+   ';
+
+
    // Если был выбран режим сохранения отредактированного материала, 
    // то выбираем его из запроса и сохраняем    
    $contentNews=\prown\getComRequest('mytextarea');
@@ -613,7 +622,7 @@ class TinyGallery
    private function WorkTiny_mmlUdalitMaterial()
    {
       // Выводим заголовочное сообщение
-      $this->MakeTitle('Выбрать и удалить материал',ttMessage);
+      $this->MakeTitle('Выбрать материал для удаления',ttMessage);
       // Строим меню
       $this->Arti->MakeUniMenu($this->apdo,'','UdalitMater');
    }
