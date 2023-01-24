@@ -36,13 +36,10 @@
 
 // Свойства:
 //
-// --- $FltLead - команда управления передачей данных. По умолчанию fltNotTransmit,
-//            то есть данные о загрузке не передаются для контроля ни в кукисы, 
-// ни в консоль, а только записываются в LocalStorage. Если LocalStorage,
-// браузером не поддерживается, то данные будут записываться в кукисы при 
-// установке свойства $FltLead в значение fltSendCookies или fltAll 
-// $Page - название страницы сайта;
-// $Uagent - браузер пользователя;
+// $kindMessage - объект вывода сообщений. По умолчанию = NULL, что означает,
+//    что сообщение выводится через alert. Методом setKindMessage может быть
+//    подключен объект класса TNotice, который и будет заниматься выводом всех
+//    сообщений
 
 // --------------------- Константы для указания типа базы данных (по сайту) ---
 define ("tbsIttveme", 'IttveMe'); 
@@ -78,13 +75,15 @@ require_once(pathPhpPrown."/RecalcSizeInfo.php");
 class ArticlesMaker
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
+   public $kindMessage;         // Объект вывода сообщений;  
+   public $getArti;             // Транслит выбранного материала
+
    protected $editdir;          // Каталог размещения файлов, связанных c материалом
    protected $classdir;         // Каталог файлов класса
    protected $basename;         // База материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
    protected $username;         // Логин для доступа к базе данных
    protected $password;         // Пароль
    protected $fileStyle;        // Файл стилей
-   public    $getArti;          // Транслит выбранного материала
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($basename,$username,$password) 
    {
@@ -94,6 +93,7 @@ class ArticlesMaker
       $this->basename = $basename;
       $this->username = $username;
       $this->password = $password;
+      $this->kindMessage = NULL;
       
       if (isset($_COOKIE['PunktMenu'])) 
       $this->getArti=\prown\MakeCookie('PunktMenu');
@@ -113,6 +113,20 @@ class ArticlesMaker
    public function __destruct() 
    {
       ?> 
+      <style>
+      @font-face 
+      {
+         font-family: Emojitveme; 
+         src: url(Styles/Lobster.ttf); 
+      }
+      /*
+      p 
+      {
+         font-family: Emojitveme;
+      }
+      */
+      </style>
+
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
@@ -121,17 +135,38 @@ class ArticlesMaker
       // **********************************************************************
       function UdalitMater(Uid)
       {
-         //$("#DialogWind").css("color","red");
          htmlText="Удалить выбранный материал по "+Uid+"?";
          $('#DialogWind').html(htmlText);
          $('#DialogWind').dialog
          ({
+            bgiframe:true,      // совместимость с IE6
+            closeOnEscape:true, // закрывать при нажатии Esc
+            modal:true,         // модальное окно
+            resizable:true,     // разрешено изменение размера
+            height:"auto",      // высота окна автоматически
+            draggable:true, 
+            show:{effect:"fade",delay:250,duration:1000},
+            hide:{effect:"explode",delay:250,duration:1000,easing:'swing'},
             title: "Удалить материал",
-            buttons:[
-               {text: "OK",     click: function() {xUdalitMater(Uid)}},
-               {text: "Отмена", click: function() {$(this).dialog("close")}}
-            ]
+            buttons:[{text:"OK",click:function(){xUdalitMater(Uid)}}]
          });
+         // Устанавливаем шрифты диалогового окна
+         // 'font-family':'"Verdana", sans-serif'
+         $('#DialogWind').parent().find(".ui-dialog").css({
+         });
+         $('#DialogWind').parent().find(".ui-dialog-title").css({
+            'font-size': '1.2rem',
+            'font-weight':800,
+            'color':'red',
+            'font-family':'"Emojitveme"'
+         });
+         $('#DialogWind').parent().find(".ui-dialog-content").css(
+            'color','blue'
+         );
+         // При необходимости скрываем заголовок диалога
+         // $('#DialogWind').parent().find(".ui-dialog-titlebar").hide();
+         // Прячем крестик
+         // $('#DialogWind').parent().find(".ui-dialog-titlebar-close").hide();
       }
       function xUdalitMater(Uid)
       {
@@ -229,6 +264,14 @@ class ArticlesMaker
       }
       </script>
       <?php
+   }
+   // *************************************************************************
+   // *       Подключить объект класса TNotice, который будет заниматься      *
+   // *                        выводом всех сообщений                         *
+   // *************************************************************************
+   public function setKindMessage($note)
+   {
+      $this->kindMessage = $note;
    }
    // *************************************************************************
    // *           Сформировать строки меню по базе данных материалов          *
