@@ -15,14 +15,12 @@
  * Класс --------- KwinGallery строит интерфейс для выбора некоторых символа Юникода.
  * Выборка символов осуществляется из одного из подмассивов общего массива 
  * массива $aUniCues. Подмассивы (наборы) созданы из авторских соображений и 
- * имеют свои номера и названия, так 0 - 'Знаки всякие-разные', 1 - 'Символы 
- * валют', 2 - 'Ожидаемые символы' и так далее.
  * 
  * Для взаимодействия с объектами класса должны быть определены константы:
  *
- * articleSite  - тип базы данных (по сайту)
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
+ * editdir      - каталог размещения файлов, относительно корневого
  *    
  * Пример создания объекта класса:
  * 
@@ -30,11 +28,50 @@
  * define ("pathPhpPrown",$SiteHost.'/TPhpPrown/TPhpPrown');
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
- * // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker
- * define ("articleSite",'IttveMe'); 
- * // Cоздаем объект для управления изображениями в галерее, связанной с 
- * // материалами сайта из базы данных
- * $Galli=new ttools\KwinGallery(gallidir,$nym,$pid,$uid);
+ * // Указываем каталог размещения файлов, связанных c материалом
+ * define("editdir",'ittveEdit');
+ * 
+ * // Подключаем объект единообразного вывода сообщений
+ * $note=new ttools\Notice();
+ * 
+ * echo '<head>';
+ *    // Подключаем jquery и jquery-ui скрипты 
+ *    echo ' 
+ *       <script src="/jQuery/jquery-3.6.3.min.js"></script>
+ *       <script src="/jQuery/jquery-ui.min.js"></script>
+ *    ';
+ *    // Инициируем объект и подключаем стили 
+ *    $note->Init();
+ * echo '</head>';
+ * 
+ * // Открываем и работаем с диалогом, например через JavaScript, jQueryUI:
+ * // $('#DialogWind').dialog - прямое обращение к диалогу через его идентификатор;
+ * // Notice_Info, js-функция вывода информационного сообщения через '#DialogWind'
+ * 
+ * echo '<body>';
+ * echo '
+ *    <script>
+ *    // **********************************************************************
+ *    // *     Добавить кнопку в диалог и задать вопрос по поводу удаления    *
+ *    // **********************************************************************
+ *    function UdalitMater(Uid)
+ *    {
+ *       $('#DialogWind').dialog
+ *       ({
+ *          buttons:[{text:"OK",click:function(){xUdalitMater(Uid)}}]
+ *       });
+ *       htmlText="Удалить выбранный материал по "+Uid+"?";
+ *       Notice_Info(htmlText,"Удалить материал");
+ *    }
+ *    function xUdalitMater(Uid)
+ *    {
+ *       alert('Uid='+Uid);
+ *       $("#DialogWind").dialog("close");
+ *    }
+ *    </script>
+ * ';
+ * echo '</body>';
+ * 
 **/
 
 // Свойства:
@@ -48,9 +85,7 @@
 // $Uagent - браузер пользователя;
 
 // Подгружаем нужные модули библиотеки прикладных функций
-// require_once pathPhpPrown."/CommonPrown.php";
-// Подгружаем нужные модули библиотеки прикладных классов
-// require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
+require_once pathPhpPrown."/CommonPrown.php";
 
 // Возможные типы сообщений
 define ("Error",   1);
@@ -60,30 +95,89 @@ define ("Warning", 3);
 class Notice
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $typemenu;  // Тип меню (для ittve.me или kwintiny)
-   protected $urlHome;   // Начальная страница сайта 
+   protected $editdir;        // Каталог размещения файлов, необходимыъх классу
+   protected $classdir;       // Каталог файлов класса
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct() 
    {
       // Инициализируем свойства класса
-      //$this->typemenu=$typemenu; 
-      //$this->urlHome=$urlHome; 
-
-      // Трассируем установленные свойства
-      //\prown\ConsoleLog('$this->typemenu='.$this->typemenu); 
-      //\prown\ConsoleLog('$this->urlHome='.$this->urlHome); 
-      //\prown\ConsoleLog('$this->cPreMe='.$this->cPreMe); 
+      $this->editdir  = editdir; 
+      $this->classdir = pathPhpTools.'/TNotice';
    }
    public function __destruct() 
    {
+      ?>
+      <script>
+      // **********************************************************************
+      // *                 Создать и настроить виджет "Диалог"                *
+      // **********************************************************************
+      function CreateDialog()
+      {
+         $('#DialogWind').dialog
+         ({
+            bgiframe:true,      // совместимость с IE6
+            closeOnEscape:true, // закрывать при нажатии Esc
+            modal:true,         // модальное окно
+            resizable:true,     // разрешено изменение размера
+            height:"auto",      // высота окна автоматически
+            autoOpen:false,     // сразу диалог не открывать
+            width:600,
+            draggable:true, 
+            show:{effect:"fade",delay:250,duration:1000},
+            hide:{effect:"explode",delay:250,duration:1000,easing:'swing'},
+            title: "Это окно",
+         });
+         // Устанавливаем шрифты диалогового окна
+         // 'font-family':'"Verdana", sans-serif'
+         $('#DialogWind').parent().find(".ui-dialog").css({
+         });
+         $('#DialogWind').parent().find(".ui-dialog-title").css({
+            'font-size': '1.1rem',
+            'font-weight':800,
+            'color':'red',
+            'font-family':'"EmojNotice"'
+         });
+         $('#DialogWind').parent().find(".ui-dialog-content").css(
+            'color','blue'
+         );
+         // При необходимости скрываем заголовок диалога
+         // $('#DialogWind').parent().find(".ui-dialog-titlebar").hide();
+         // Прячем крестик
+         // $('#DialogWind').parent().find(".ui-dialog-titlebar-close").hide();
+         //}
+      }
+      // **********************************************************************
+      // *                 Создать и настроить виджет "Диалог"                *
+      // **********************************************************************
+      function Notice_Info(messa,ititle)
+      {
+         $('#DialogWind').html(messa);
+         $('#DialogWind').dialog
+         ({
+            title: ititle,
+         });
+         $('#DialogWind').dialog("open")
+      }
+      </script>
+      <?php
    }
-
    // *************************************************************************
    // *                 Проинициализировать стили объекта                     *
    // *        (выполнить действия в области <head></head> страницы)          *
    // *************************************************************************
    public function Init() 
    {
+      // src: url(Styles/Lobster.ttf); 
+      $urlttf='url('.$this->editdir.'/Lobster.ttf)';
+      echo '
+         <style>
+         @font-face 
+         {
+            font-family: EmojNotice; 
+            src: '.$urlttf.'; 
+      }
+      </style>
+      ';
       ?> 
       <script>
       $(document).ready(function()
@@ -94,14 +188,45 @@ class Notice
          noticediv.innerHTML="<p>Привет, мир!</p>";
          noticediv.id="DialogWind";
          document.body.append(noticediv);
+         CreateDialog();
       })
       </script>
       <?php
+      // Проверяем, нужно ли заменить файлы стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      $this->CompareCopyRoot('Lobster.ttf',$this->editdir);
+      // Трассируем установленные свойства
+      \prown\ConsoleLog('$this->editdir='.$this->editdir); 
+      \prown\ConsoleLog('$this->classdir='.$this->classdir); 
+   }
+   // *************************************************************************
+   // *    Проверить существование, параметры и перебросит файл из каталога   *
+   // *      класса в любой каталог относительно корневого каталога сайта     *
+   // *************************************************************************
+   private function CompareCopyRoot($Namef,$toDir='')
+   {
+      // Если каталог, в который нужно перебросить файл - корневой
+      if ($toDir=='') $thisdir=$toDir;
+      // Если каталог указан относительно корневого (без обратных слэшей !!!)
+      else $thisdir=$toDir.'/';
+      // Проверяем существование, параметры и перебрасываем файл
+      $fileStyle=$thisdir.$Namef;
+      clearstatcache($fileStyle);
+      $filename=$this->classdir.'/'.$Namef;
+      clearstatcache($filename);
+      if ((!file_exists($fileStyle))||
+      (filesize($filename)<>filesize($fileStyle))||
+      (filemtime($filename)>filemtime($fileStyle))) 
+      {
+         if (!copy($filename,$fileStyle))
+         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
+      }
    }
    // *************************************************************************
    // *                     Вывести информационное сообщение                  *
    // *************************************************************************
-   public function Info($messa)
+   public function Info($messa,$title)
    {
    }
    // *************************************************************************

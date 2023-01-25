@@ -113,20 +113,6 @@ class ArticlesMaker
    public function __destruct() 
    {
       ?> 
-      <style>
-      @font-face 
-      {
-         font-family: Emojitveme; 
-         src: url(Styles/Lobster.ttf); 
-      }
-      /*
-      p 
-      {
-         font-family: Emojitveme;
-      }
-      */
-      </style>
-
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
@@ -135,43 +121,17 @@ class ArticlesMaker
       // **********************************************************************
       function UdalitMater(Uid)
       {
-         htmlText="Удалить выбранный материал по "+Uid+"?";
-         $('#DialogWind').html(htmlText);
          $('#DialogWind').dialog
          ({
-            bgiframe:true,      // совместимость с IE6
-            closeOnEscape:true, // закрывать при нажатии Esc
-            modal:true,         // модальное окно
-            resizable:true,     // разрешено изменение размера
-            height:"auto",      // высота окна автоматически
-            draggable:true, 
-            show:{effect:"fade",delay:250,duration:1000},
-            hide:{effect:"explode",delay:250,duration:1000,easing:'swing'},
-            title: "Удалить материал",
             buttons:[{text:"OK",click:function(){xUdalitMater(Uid)}}]
          });
-         // Устанавливаем шрифты диалогового окна
-         // 'font-family':'"Verdana", sans-serif'
-         $('#DialogWind').parent().find(".ui-dialog").css({
-         });
-         $('#DialogWind').parent().find(".ui-dialog-title").css({
-            'font-size': '1.2rem',
-            'font-weight':800,
-            'color':'red',
-            'font-family':'"Emojitveme"'
-         });
-         $('#DialogWind').parent().find(".ui-dialog-content").css(
-            'color','blue'
-         );
-         // При необходимости скрываем заголовок диалога
-         // $('#DialogWind').parent().find(".ui-dialog-titlebar").hide();
-         // Прячем крестик
-         // $('#DialogWind').parent().find(".ui-dialog-titlebar-close").hide();
+         htmlText="Удалить выбранный материал по "+Uid+"?";
+         Notice_Info(htmlText,"Удалить материал");
       }
       function xUdalitMater(Uid)
       {
          alert('Uid='+Uid);
-         $("#DialogWind" ).dialog("close");
+         $("#DialogWind").dialog("close");
       }
       // **********************************************************************
       // *  Задать обработчик аякс-запроса по клику выбора раздела материалов *
