@@ -123,7 +123,7 @@ class Notice
             autoOpen:false,     // сразу диалог не открывать
             width:600,
             draggable:true, 
-            show:{effect:"fade",delay:250,duration:1000},
+            show:{effect:"fade",delay:100,duration:1500},
             hide:{effect:"explode",delay:250,duration:1000,easing:'swing'},
             title: "Это окно",
          });
@@ -149,12 +149,15 @@ class Notice
       // **********************************************************************
       // *                 Создать и настроить виджет "Диалог"                *
       // **********************************************************************
-      function Notice_Info(messa,ititle)
+      function Notice_Info(messa,ititle,delayClose=250)
       {
          $('#DialogWind').html(messa);
          $('#DialogWind').dialog
          ({
             title: ititle,
+            // Восстанавливаем параметры закрытия, 
+            // так как они, возможно, были изменены
+            hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
          });
          $('#DialogWind').dialog("open")
       }

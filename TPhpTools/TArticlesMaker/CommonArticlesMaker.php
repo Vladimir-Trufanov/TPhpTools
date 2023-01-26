@@ -20,12 +20,16 @@ function _BaseConnect($basename,$username,$password)
    // Создается объект PDO и файл базы данных
    $pathBase='sqlite:'.$filename; 
    // Подключаем PDO к базе
+   //$pdo = new \PDO($pathBase,$username,$password);
+   //$pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
+   
    $pdo = new \PDO(
       $pathBase, 
       $username,
       $password,
       array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
    );
+   
    return $pdo;
 }
 // ****************************************************************************

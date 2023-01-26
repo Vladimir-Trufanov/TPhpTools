@@ -130,7 +130,39 @@ class ArticlesMaker
       }
       function xUdalitMater(Uid)
       {
-         alert('Uid='+Uid);
+         // Выводим в диалог предварительный результат выполнения запроса
+         htmlText="Удалить статью по "+Uid+" не удалось!";
+         $('#DialogWind').html(htmlText);
+         // Выполняем запрос на удаление
+         pathphp="deleteArt.php";
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            // Выводим ошибки при выполнении запроса в PHP-сценарии
+            error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
+            // Обрабатываем ответное сообщение
+            success: function(message)
+            {
+               // Вырезаем из запроса чистое сообщение
+               messa=FreshLabel(message);
+               // Получаем параметры ответа
+               parm=JSON.parse(messa);
+               // Выводим результат выполнения
+               htmlText='Удалена статья "'+parm.NameArt+'"';
+               $('#DialogWind').html(htmlText);
+            }
+         });
+         // Удаляем кнопку из диалога и увеличиваем задержку до закрытия
+         delayClose=1500;
+         $('#DialogWind').dialog
+         ({
+            buttons:[],
+            hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
+            title: "Удален материал",
+         });
+         // Закрываем окно
          $("#DialogWind").dialog("close");
       }
       // **********************************************************************
@@ -317,6 +349,7 @@ class ArticlesMaker
       $this->CompareCopyRoot('bgnoise_lg.jpg',$this->editdir);
       $this->CompareCopyRoot('icons.png',$this->editdir);
       $this->CompareCopyRoot('getNameCue.php');
+      $this->CompareCopyRoot('deleteArt.php');
    }
    // *************************************************************************
    // *    Проверить существование, параметры и перебросит файл из каталога   *
@@ -338,7 +371,7 @@ class ArticlesMaker
       (filemtime($filename)>filemtime($fileStyle))) 
       {
          if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
+         \prown\Alert('Не удалось скопировать файл класса: '.$filename); 
       }
    }
    // *************************************************************************
@@ -474,6 +507,75 @@ class ArticlesMaker
       $table = $stmt->fetchAll();
       return $table; 
    }
+   // *************************************************************************
+   // *                     Удалить запись по идентификатору                  *
+   // *************************************************************************
+   public function DelRecord($pdo,$UnID)
+   {
+    try 
+    {
+      $pdo->beginTransaction();
+      $cSQL='DELETE FROM stockpw12 WHERE uid='.$UnID;
+      $stmt = $pdo->query($cSQL);
+      //$table = $stmt->fetchAll();
+      //return $table; 
+      $pdo->commit();
+      $messa='OOOkkk';
+      $this->PutString($messa);
+      return $messa;
+    } 
+    catch (\PDOException $e) 
+    {
+      $messa=$e->getMessage();
+      //\prown\Alert('$messa');
+      //$this->PutString($messa);
+      
+      
+      $fp = fopen("LogName.txt","a+");
+      if (flock($fp,LOCK_EX)) 
+      { 
+         fputs($fp,$messa."\n");
+         flock($fp, LOCK_UN); 
+         fclose($fp);
+      } 
+      else 
+      {
+         //echo "Не могу запереть файл! [".$this->LogName.".txt".']';  
+         // Далее уйти в исключение
+         fputs($fp,"Не могу запереть файл!"."\n");
+         flock($fp, LOCK_UN); 
+         fclose($fp);
+      }
+ 
+      
+      
+      
+      
+      
+      // Если в транзакции, то делаем откат изменений
+      if ($pdo->inTransaction()) 
+      {
+         $pdo->rollback();
+      }
+      return $messa;
+    }
+   }
+   
+public function PutString($String)
+{
+      $fp = fopen("LogName.txt","a+");
+      if (flock($fp,LOCK_EX)) 
+      { 
+         fputs($fp,$String."\n");
+         flock($fp, LOCK_UN); 
+         fclose($fp);
+      } 
+      else 
+      {
+         echo "Не могу запереть файл! [".$this->LogName.".txt".']';  
+         // Далее уйти в исключение
+      }
+}
 
    // *************************************************************************
    // *                      Вставить материал по транслиту                   *
