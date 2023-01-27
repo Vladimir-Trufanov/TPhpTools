@@ -617,35 +617,6 @@ class TinyGallery
       $this->MakeTitle('Выбрать материал для удаления',ttMessage);
       // Строим меню
       $this->Arti->MakeUniMenu($this->apdo,'','UdalitMater');
-      
-      /*
-      $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-      $Arti1=new ArticlesMaker($basename,$username,$password);
-      $pdo=$Arti1->BaseConnect();
-      // Выбираем запись по идентификатору группы материалов
-      $table=$Arti1->SelRecord($pdo,30); 
-      // Выделяем из записи элементы
-      $NameArt=$table[0]['NameArt'];
-      echo '$NameArt='.$NameArt.'<br>';
-      
-      $UnID=30;
-      
-      try 
-      {
-         $pdo->beginTransaction();
-         $cSQL='DELETE FROM stockpw1 WHERE uid='.$UnID;
-         $stmt = $pdo->query($cSQL);
-         $pdo->commit();
-      } 
-      catch (\PDOException $e) 
-      {
-         $messa=$e->getMessage();
-         echo '$messa='.$messa.'<br>';
-      }
-     */ 
-
-
-      
    }
    // *************************************************************************
    // *                     Выбрать статью для редактирования                 *

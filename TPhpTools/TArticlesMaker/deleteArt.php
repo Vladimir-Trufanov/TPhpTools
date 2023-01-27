@@ -1,12 +1,12 @@
 <?php
 
-// PHP7/HTML5, EDGE/CHROME                               *** getNameCue.php ***
+// PHP7/HTML5, EDGE/CHROME                                *** deleteArt.php ***
 
 // ****************************************************************************
-// * TArticleMaker      ------ По указанному идентификатору в аякс-запросе вытащить *
-// *                    ------     данные о группе материалов и вернуть на страницу *
+// * TArticleMaker     По указанному идентификатору в аякс-запросе определить *
+// *            наименование материала, а затем удалить запись из базы данных *
 // *                                                                          *
-// * v1.0, 18.01.2023                              Автор:       Труфанов В.Е. *
+// * v1.0, 27.01.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
 
@@ -25,18 +25,26 @@ require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 require_once pathPhpPrown."/CommonPrown.php";
 // Подключаем объект для работы с базой данных материалов
 // (при необходимости создаем базу данных материалов)
-$NameArt='Не найденная статья';
 $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
 $Arti=new ttools\ArticlesMaker($basename,$username,$password);
 $pdo=$Arti->BaseConnect();
 // Выбираем запись по идентификатору группы материалов
 $table=$Arti->SelRecord($pdo,$_POST['idCue']); 
-// Выделяем из записи элементы
-$NameArt=$table[0]['NameArt'];
+// Определяем количество найденных записей
+$count=count($table);
 
-// Удаляем запись
-$NameArt=$Arti->DelRecord($pdo,$_POST['idCue']);
-
+// Если записей не найдено, то готовим сообщение
+if ($count<1) $NameArt=gncNoCue;
+// Иначе готовим удаление записи
+else
+{
+   // Формируем сообщение удачного удаления
+   $NameArt='Удаляется статья. '.$table[0]['NameArt'].'.';
+   // Удаляем запись
+   $messa=$Arti->DelRecord($pdo,$_POST['idCue']);
+   // Если удаление с ошибкой, то готовим сообщение
+   if ($messa<>imok) $NameArt='Ошибка. '.$messa;
+}
 // Освобождаем память
 unset($Arti); unset($pdo); unset($table);
 // Возвращаем сообщение
@@ -45,6 +53,4 @@ $message=\prown\makeLabel($message,'ghjun5','ghjun5');
 echo $message;
 exit;
 
-
-
-// ********************************************************* getNameCue.php ***
+// ********************************************************** deleteArt.php ***

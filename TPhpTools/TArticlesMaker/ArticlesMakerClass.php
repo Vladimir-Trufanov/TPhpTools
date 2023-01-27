@@ -48,12 +48,9 @@ define ("tbsIttvepw", 'IttvePw');
 define ("acsAll",   1);      // доступ разрешен всем
 define ("acsClose", 2);      // закрыт, статья в разработке
 define ("acsAutor", 4);      // только автору-хозяину сайта
-/*
-// --------------- Ошибки обработки аякс-запросе названия группы материалов ---
-define ("gncPrown", '1');    // нет пути к библиотекам прикладных функций
-define ("gncTools", '2');    // нет пути к библиотекам прикладных классов
-define ("gncIdCue", '3');    // не передан идентификатор группы материалов
-*/
+// ----------------------------------------- Ошибки обработки аякс-запросов ---
+define ("gncNoCue", 'Статья не найдена в базе'); 
+
 // Подгружаем общие функции класса
 require_once("CommonArticlesMaker.php"); 
 // Подгружаем модули функций класса, связанные с конкретным сайтом
@@ -62,12 +59,7 @@ elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php");
 
 // Подгружаем нужные модули библиотеки прикладных функций
 require_once(pathPhpPrown."/MakeCookie.php");
-/*
-require_once(pathPhpPrown."/iniRegExp.php");
-require_once(pathPhpPrown."/MakeRID.php");
-require_once(pathPhpPrown."/MakeUserError.php");
-require_once(pathPhpPrown."/RecalcSizeInfo.php");
-*/
+require_once(pathPhpPrown."/iniConstMem.php");
 // Подгружаем нужные модули библиотеки прикладных классов
 //require_once(pathPhpTools."/iniToolsMessage.php");
 
@@ -116,6 +108,8 @@ class ArticlesMaker
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
       pathPhpPrown="<?php echo pathPhpPrown;?>";
+      gncNoCue="<?php echo gncNoCue;?>"; 
+
       // **********************************************************************
       // *        Задать обработчик аякс-запроса по удалению материала        *
       // **********************************************************************
@@ -150,7 +144,8 @@ class ArticlesMaker
                // Получаем параметры ответа
                parm=JSON.parse(messa);
                // Выводим результат выполнения
-               htmlText='Удалена статья "'+parm.NameArt+'"';
+               if (parm.NameArt==gncNoCue) htmlText=parm.NameArt+' Uid='+Uid;
+               else htmlText=parm.NameArt;
                $('#DialogWind').html(htmlText);
             }
          });
@@ -160,10 +155,12 @@ class ArticlesMaker
          ({
             buttons:[],
             hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
-            title: "Удален материал",
+            title: "Удаление материала",
          });
          // Закрываем окно
          $("#DialogWind").dialog("close");
+         // Перезагружаем страницу через 4 секунды
+         setTimeout(function() {location.reload();}, 4000);
       }
       // **********************************************************************
       // *  Задать обработчик аякс-запроса по клику выбора раздела материалов *
@@ -489,11 +486,12 @@ class ArticlesMaker
       if ($count>1)
       {
          \prown\Alert("В группе '".$NameGru."' статья '".$NameArt."' c дублированным транслитом: ".$getArti); 
-         //\prown\Alert('Найдено несколько ['.$count.'] записей по транслиту: '.$getArti); 
       }
-      // Если не найдено записей, то диагностируем ошибку
+      // Если не найдено записей, то диагностируем ошибку.
+      // Это сообщение сбрасываем в консоль, так как на странице ситуация 
+      // очевидна (на 27.01.2023)
       else if ($count<1)
-      \prown\Alert('Не найдено записей по транслиту: '.$getArti);
+         \prown\ConsoleLog('Не найдено записей по транслиту: '.$getArti);
    }
    // *************************************************************************
    // * Выбрать запись по идентификатору                                      *
@@ -508,75 +506,26 @@ class ArticlesMaker
       return $table; 
    }
    // *************************************************************************
-   // *                     Удалить запись по идентификатору                  *
+   // * Удалить запись по идентификатору: в случае успешного удаления функция *
+   // *     возвращает сообщение, что все хорошо, иначе сообщение об ошибке   *
    // *************************************************************************
    public function DelRecord($pdo,$UnID)
    {
-    try 
-    {
-      $pdo->beginTransaction();
-      $cSQL='DELETE FROM stockpw12 WHERE uid='.$UnID;
-      $stmt = $pdo->query($cSQL);
-      //$table = $stmt->fetchAll();
-      //return $table; 
-      $pdo->commit();
-      $messa='OOOkkk';
-      $this->PutString($messa);
-      return $messa;
-    } 
-    catch (\PDOException $e) 
-    {
-      $messa=$e->getMessage();
-      //\prown\Alert('$messa');
-      //$this->PutString($messa);
-      
-      
-      $fp = fopen("LogName.txt","a+");
-      if (flock($fp,LOCK_EX)) 
-      { 
-         fputs($fp,$messa."\n");
-         flock($fp, LOCK_UN); 
-         fclose($fp);
-      } 
-      else 
-      {
-         //echo "Не могу запереть файл! [".$this->LogName.".txt".']';  
-         // Далее уйти в исключение
-         fputs($fp,"Не могу запереть файл!"."\n");
-         flock($fp, LOCK_UN); 
-         fclose($fp);
-      }
- 
-      
-      
-      
-      
-      
-      // Если в транзакции, то делаем откат изменений
-      if ($pdo->inTransaction()) 
-      {
-         $pdo->rollback();
-      }
-      return $messa;
-    }
+     try
+     {
+       $pdo->beginTransaction();
+       $cSQL='DELETE FROM stockpw WHERE uid='.$UnID;
+       $stmt = $pdo->query($cSQL);
+       $pdo->commit();
+       $messa=imok;
+     } 
+     catch (\Exception $e) 
+     {
+       $messa=$e->getMessage();
+       if ($pdo->inTransaction()) $pdo->rollback();
+     }
+     return $messa;
    }
-   
-public function PutString($String)
-{
-      $fp = fopen("LogName.txt","a+");
-      if (flock($fp,LOCK_EX)) 
-      { 
-         fputs($fp,$String."\n");
-         flock($fp, LOCK_UN); 
-         fclose($fp);
-      } 
-      else 
-      {
-         echo "Не могу запереть файл! [".$this->LogName.".txt".']';  
-         // Далее уйти в исключение
-      }
-}
-
    // *************************************************************************
    // *                      Вставить материал по транслиту                   *
    // *************************************************************************
