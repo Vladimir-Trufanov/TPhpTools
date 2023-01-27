@@ -55,34 +55,92 @@ class KwinGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $gallidir;  // Каталог для размещения файлов галереи и связанных материалов
+   protected $classdir;  // Каталог класса
    protected $nym;       // Префикс имен файлов для фотографий галереи и материалов
    protected $pid;       // Идентификатор группы текущего материала
    protected $uid;       // Идентификатор текущего материала
-
-   protected $editdir='ittveEdit/';
-
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($gallidir,$nym,$pid,$uid) 
    {
       // Инициализируем свойства класса
-      $this->gallidir=$gallidir; 
-      $this->nym=$nym; $this->pid=$pid; $this->uid=$uid;
+      $this->gallidir=$gallidir;                    // каталог файлов редактирования
+      $this->classdir=pathPhpTools.'/TKwinGallery'; // каталог класса
+      $this->nym=$nym;                              // префикс сайта (платформы)
+      $this->pid=$pid;                              
+      $this->uid=$uid;
+      // Выполняем действия на странице до отправления заголовков страницы: 
+      // (устанавливаем кукисы и т.д.)                  
+      $this->ZeroEditSpace();
       // Трассируем установленные свойства
       //\prown\ConsoleLog('$this->gallidir='.$this->gallidir); 
       //\prown\ConsoleLog('$this->nym='.$this->nym); 
       //\prown\ConsoleLog('$this->pid='.$this->pid); 
       //\prown\ConsoleLog('$this->uid='.$this->uid); 
    }
-   
    public function __destruct() 
    {
+   }
+   // *************************************************************************
+   // *   Выполнить действия на странице до отправления заголовков страницы:  *
+   // *                         (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function ZeroEditSpace()
+   {
+      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      $this->CompareCopyRoot('sampo.jpg',$this->gallidir);
+   }
+   // *************************************************************************
+   // *    Проверить существование, параметры и перебросит файл из каталога   *
+   // *      класса в любой каталог относительно корневого каталога сайта     *
+   // *************************************************************************
+   private function CompareCopyRoot($Namef,$toDir='')
+   {
+      // Если каталог, в который нужно перебросить файл - корневой
+      if ($toDir=='') $thisdir=$toDir;
+      // Если каталог указан относительно корневого (без обратных слэшей !!!)
+      else $thisdir=$toDir.'/';
+      // Проверяем существование, параметры и перебрасываем файл
+      $fileStyle=$thisdir.$Namef;
+      clearstatcache($fileStyle);
+      $filename=$this->classdir.'/'.$Namef;
+      clearstatcache($filename);
+      if ((!file_exists($fileStyle))||
+      (filesize($filename)<>filesize($fileStyle))||
+      (filemtime($filename)>filemtime($fileStyle))) 
+      {
+         if (!copy($filename,$fileStyle))
+         \prown\Alert('Не удалось скопировать файл класса: '.$filename); 
+      }
    }
    // *************************************************************************
    // *       Развернуть изображения галереи и обеспечить их ведение:         *
    // *                $Dir - каталог для размещения изображений              *
    // *************************************************************************
-   public function ViewGallery($Dir,$apdo)
+   public function ViewGallery()
    {
+      // $FileName="ittveEdit/ittve2-3-Подъём-настроения.jpg";
+      $pref=$this->gallidir.'/'.$this->nym.$this->pid.'-'.$this->uid.'-';
+     
+      $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
+      $this->GViewImage($pref.'Подъём-настроения.jpg',$Comment);
+
+      $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
+      //$this->GLoadImage($pref.'Размыло-дорогу.jpg');
+      //$Comment="Здесь комментарий.";
+      //$this->GViewImage($pref.'Размыло-дорогу.jpg',$Comment);
+
+      $Comment="На горе Сампо всем хорошо!";
+      $this->GViewImage($pref.'На-Сампо.jpg',$Comment);
+
+      $Comment="'С заботой и к мамам' - такой мамочкин хвостик.";
+      $this->GViewImage($pref.'С-заботой-и-к-мамам.jpg',$Comment);
+
+      // Из галереи задаем режим представления выбранной картинки - "на высоту страницы"
+      //$s_ModeImg=prown\MakeSession('ModeImg',vimOnPage,tInt);           
+   
+      /*
       // Выбираем режим работы с изображениями, как режим редактирования материала
       if ($Dir==$this->editdir)
       {
@@ -100,15 +158,75 @@ class KwinGallery
       {
          \prown\ConsoleLog('НЕ ='.$this->editdir); 
       }
+      */
    }
-   // Формируем определяющий массив для базы данных редактируемого материала
-   // по образцу (выбирая данные из базы данных материалов):
-   //    $aCharters=[                                                          
-   //      [ 1, 0,-1, 'ittve.me',         '/',                 acsAll,'20',''],
-   //      [16, 1,-1, 'Прогулки',         'progulki',          acsAll,'20',''],
-   //      [17,16, 0, 'Охота на медведя', 'ohota-na-medvedya', acsAll,'2011.05.06',''],
-   //      [21, 0,-1, 'ittve.end',        '/',                 acsAll,'20','']
-   //    ];       
+   
+   protected function GViewImage($FileName,$Comment,$Action='Image')
+   {
+      echo 
+         '<div class="Card">'.
+         '<button class="bCard" type="submit" name="'.$Action.'" value="'.$FileName.'">'.
+         '<img class="imgCard" src="'.$FileName.'" alt="'.$FileName.'">'.
+         '</button>';
+      echo '<p class="pCard">'.$Comment.'</p>';
+      echo 
+         '</div>';
+   }
+   
+   protected function GLoadImage($FileName)
+   {
+      /**
+       * Размещаем в форме поле для загрузки файла, а перед ним (иначе не будет
+       * работать) поле для контроля размера загружаемого файла. 
+       * Преимущество скрытого поля с именем MAX_FILE_SIZE в том, что PHP остановит
+       * процесс загрузки файла при превышении размера
+       * 
+       * При нажатии на кнопку 'submit' запрос страницы с четырьмя параметрами:
+       * http: ... .php ?MAX_FILE_SIZE=xx1 &IMG=aa2.jpg &AREAM=aa3 &SUBMI=aa4
+      **/
+      /*
+      echo '
+      <div class="Card">
+      <form method="get" enctype="multipart/form-data">
+      <input type="hidden"     name="MAX_FILE_SIZE" id="inhCard" value="1600000">
+      <input type="file"       name="IMG"           id="infCard"
+         accept="image/jpeg,image/png,image/gif" 
+         onchange="alf2LoadFile(this);">
+      <img id="imgCardi" src="'.$FileName.'" alt="FileName">
+      <textarea class="taCard" name="AREAM">Текст комментария к картинке</textarea>
+      <input type="submit"     name="SUBMI"     id="insCard" value="Загрузить">
+      </form>
+      </div>
+      ';
+      */
+      echo '
+      <div class="Card">
+      <form method="get" enctype="multipart/form-data">
+      <input type="hidden"     name="MAX_FILE_SIZE" id="inhCard" value="1600000">
+      <input type="file"       name="IMG"           id="infCard"
+         accept="image/jpeg,image/png,image/gif" 
+         onchange="readFile(this);">
+      <img id="imgCardi" src="'.$FileName.'" alt="FileName">
+      <textarea class="taCard" name="AREAM">Текст комментария</textarea>
+      <input type="submit"     name="SUBMI"     id="insCard" value="Загрузить">
+      </form>
+      </div>
+      ';
+   }
+
+   
+   // *************************************************************************
+   // *     Сформировать определяющий массив для базы данных редактируемого   *
+   // *     материала по образцу (выбирая данные из базы данных материалов):  *
+   //  
+   // $aCharters=[                                                          
+   //   [ 1, 0,-1,'ittve.me',        '/',                acsAll,'20',''],
+   //   [16, 1,-1,'Прогулки',        'progulki',         acsAll,'20',''],
+   //   [17,16, 0,'Охота на медведя','ohota-na-medvedya',acsAll,'2011.05.06',''],
+   //   [21, 0,-1,'ittve.end',       '/',                acsAll,'20','']
+   // ]; 
+   //      
+   // *************************************************************************
    protected function MakeaCharters($apdo)
    {
       $t1=SelRecord($apdo,$this->pid);

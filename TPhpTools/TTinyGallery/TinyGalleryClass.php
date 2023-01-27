@@ -520,34 +520,8 @@ class TinyGallery
       </style>
       ';
    }
-
    // *************************************************************************
-   // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
-   // *   ----                      (установить кукисы и т.д.)                    *
-   // *************************************************************************
-   private function KwinGallery_main()
-   {
-      echo 'KwinGallery_main<br>';
-   }
-   private function KwinGallery_mmlNaznachitStatyu()
-   {
-      echo 'KwinGallery_mmlNaznachitStatyu<br>';
-   }
-   private function KwinGallery_mmlUdalitMaterial()
-   {
-      echo 'KwinGallery_mmlUdalitMaterial<br>';
-   }
-   private function KwinGallery_mmlVernutsyaNaGlavnuyu()
-   {
-      echo 'KwinGallery_mmlVernutsyaNaGlavnuyu<br>';
-   }
-   private function KwinGallery_mmlVybratStatyuRedakti()
-   {
-      echo 'KwinGallery_mmlVybratStatyuRedakti<br>';
-   }
-   // *************************************************************************
-   // *   ----Выполнить действия на странице до отправления заголовков страницы:  *
-   // *   ----                      (установить кукисы и т.д.)                    *
+   // *     Открыть рабочую область и обеспечить редактирование материала     *
    // *************************************************************************
    private function WorkTiny_main()
    {
@@ -555,7 +529,7 @@ class TinyGallery
       $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
-         <form id="frmTinyText" method="get" action="'.$SaveAction.'">
+         <form id="frmTinyText" method="post" action="'.$SaveAction.'">
          <textarea id="mytextarea" name="mytextarea">
       '; 
       if ($this->contents<>NULL)
@@ -627,5 +601,51 @@ class TinyGallery
       $this->MakeTitle('Выбрать статью для редактирования',ttMessage);
       $this->Arti->GetPunktMenu($this->apdo); 
    }
+   // *************************************************************************
+   // *        Обеспечить просмотр и редактирование фотографий в галерее      *
+   // *************************************************************************
+   private function KwinGallery_main()
+   {
+      // В обычном режиме
+      //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
+      //echo 'KwinGallery<br>';
+      //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
+      //$Arti=new ArticlesMaker($basename,$username,$password);
+      //$apdo=$Arti->BaseConnect();
+      //$Galli->ViewGallery(gallidir,$apdo);
+      
+      // Cоздаем объект для управления изображениями в галерее, связанной с 
+      // материалами сайта из базы данных
+      $pid=2;
+      $uid=3;
+      $apdo=$this->Arti->BaseConnect();
+      $Galli=new KwinGallery(editdir,nym,$pid,$uid);
+      $Galli->ViewGallery();
+      /*
+      $pref=editdir.nym.pid.'-'.uid.'-';
+      $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
+      GViewImage($pref.'Подъём-настроения.jpg',$Comment);
+      GLoadImage("ittveEdit/sampo.jpg");
+      $Comment="На горе Сампо всем хорошо!";
+      GViewImage($pref.'На-Сампо.jpg',$Comment);
+      */   
+   }
+   private function KwinGallery_mmlNaznachitStatyu()
+   {
+      echo 'KwinGallery_mmlNaznachitStatyu<br>';
+   }
+   private function KwinGallery_mmlUdalitMaterial()
+   {
+      echo 'KwinGallery_mmlUdalitMaterial<br>';
+   }
+   private function KwinGallery_mmlVernutsyaNaGlavnuyu()
+   {
+      echo 'KwinGallery_mmlVernutsyaNaGlavnuyu<br>';
+   }
+   private function KwinGallery_mmlVybratStatyuRedakti()
+   {
+      echo 'KwinGallery_mmlVybratStatyuRedakti<br>';
+   }
+
 } 
 // *************************************************** TinyGalleryClass.php ***
