@@ -7,7 +7,7 @@
 // *                 и галереи изображений, связанной с этим материалом (uid) *
 // *                                    из выбранной (указанной) группы (pid) *
 // *                                                                          *
-// * v2.0, 13.01.2022                              Автор:       Труфанов В.Е. *
+// * v2.0, 28.01.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  18.12.2019 *
 // ****************************************************************************
 
@@ -22,6 +22,7 @@
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
  * articleSite  - тип базы данных (по сайту)
  * editdir      - каталог размещения файлов, связанных c материалом
+ * nym          - префикс имен файлов для фотографий галереи и материалов
  * 
  * Пример создания объекта класса и порядок работы с ним:
  * 
@@ -33,7 +34,9 @@
  * define ("articleSite",'IttveMe'); 
  * // Указываем каталог размещения файлов, связанных c материалом
  * define("editdir",'ittveEdit');
- * 
+ * // Указываем префикс имен файлов для фотографий галереи и материалов
+ * define('nym','ittve');
+ *  
  * // Подгружаем нужные модули библиотеки прикладных классов
  * require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
  * require_once pathPhpTools."/TTinyGallery/TinyGalleryClass.php";
@@ -282,13 +285,14 @@ class TinyGallery
    $contentNews=\prown\getComRequest('mytextarea');
    if ($contentNews<>NULL)
    {
-      $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentNews);
+      $contentsOut=htmlentities($contentNews);
+      $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
    }
    // Вытаскиваем материал для редактирования
    $table=$this->Arti->SelUidPid
-      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contents);
+      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contentsIn);
    // Запоминаем в объекте текущий материал
-   $this->contents=$contents;
+   $this->contents=html_entity_decode($contentsIn);
    $this->NameGru=$NameGru;
    $this->NameArt=$NameArt;
    $this->DateArt=$DateArt;
