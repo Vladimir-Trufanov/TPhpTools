@@ -6,7 +6,7 @@
 // * TPhpTools                 Фрэйм галереи изображений, связанных с текущим *
 // *                   материалом (uid) из выбранной (указанной) группы (pid) *
 // *                                                                          *
-// * v2.0, 19.12.2022                              Автор:       Труфанов В.Е. *
+// * v2.0, 28.01.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  18.12.2019 *
 // ****************************************************************************
 
@@ -46,6 +46,10 @@
 // $Page - название страницы сайта;
 // $Uagent - браузер пользователя;
 
+// ----------------------------------------------- Режимы работы с галереей ---
+define ("mwgViewing", 1);   // просмотр
+define ("mwgEditing", 2);   // редактирование
+
 // Подгружаем нужные модули библиотеки прикладных функций
 require_once pathPhpPrown."/CommonPrown.php";
 // Подгружаем нужные модули библиотеки прикладных классов
@@ -59,6 +63,27 @@ class KwinGallery
    protected $nym;       // Префикс имен файлов для фотографий галереи и материалов
    protected $pid;       // Идентификатор группы текущего материала
    protected $uid;       // Идентификатор текущего материала
+   // Образец массива элементов галереи
+   protected $galleryX = array(
+      "gallidir"     => "ittveEdit",
+      "nym"          => "ittve",
+      "pid"          => 2,
+      "uid"          => 3,
+      "gallery" => array(
+         array(
+         "Comment"  => "Ночная прогулка по Ладоге до рассвета и подъёма настроения.",
+         "FileName" => "Подъём-настроения.jpg"
+         ),
+         array(
+         "Comment"  => "На горе Сампо всем хорошо!",
+         "FileName" => "На-Сампо.jpg"
+         ),
+         array(
+         "Comment"  => "'С заботой и к мамам' - такой мамочкин хвостик.",
+         "FileName" => "С-заботой-и-к-мамам.jpg"
+         ),
+      )
+   );
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($gallidir,$nym,$pid,$uid) 
    {
@@ -115,11 +140,37 @@ class KwinGallery
       }
    }
    // *************************************************************************
-   // *       Развернуть изображения галереи и обеспечить их ведение:         *
-   // *                $Dir - каталог для размещения изображений              *
+   // *                          Представить массив галереи                   *
    // *************************************************************************
-   public function ViewGallery()
+   public function ViewGalleryAsArray($galleryIn=NULL)
+   { 
+      if ($galleryIn===NULL) $gallery=$this->galleryX;
+      else $gallery=$galleryIn;
+      echo '<pre>';
+      var_dump($gallery);
+      echo '</pre><br>';
+      //echo '<br>';
+   }
+   // *************************************************************************
+   // *         Развернуть изображения галереи и обеспечить их ведение        *
+   // *     $GalleryMode - режим вывода галереи: mwgViewing или mwgEditing    *
+   // *************************************************************************
+   public function ViewGallery($galleryIn=NULL,$GalleryMode=mwgViewing)
    {
+      if ($galleryIn===NULL) $gallery=$this->galleryX;
+      else $gallery=$galleryIn;
+      $pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
+      $aGallery=$gallery['gallery'];
+      for ($i=0; $i<count($aGallery); $i++) 
+      {
+         $this->GViewImage($pref.$aGallery[$i]["FileName"],$aGallery[$i]["Comment"]);
+         if ($GalleryMode=mwgEditing) 
+         {
+            if ($i==0) $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
+         }
+      }
+   
+      /*
       // $FileName="ittveEdit/ittve2-3-Подъём-настроения.jpg";
       $pref=$this->gallidir.'/'.$this->nym.$this->pid.'-'.$this->uid.'-';
      
@@ -139,7 +190,8 @@ class KwinGallery
 
       // Из галереи задаем режим представления выбранной картинки - "на высоту страницы"
       //$s_ModeImg=prown\MakeSession('ModeImg',vimOnPage,tInt);           
-   
+      */
+      
       /*
       // Выбираем режим работы с изображениями, как режим редактирования материала
       if ($Dir==$this->editdir)

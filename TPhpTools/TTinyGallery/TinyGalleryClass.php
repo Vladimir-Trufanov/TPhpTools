@@ -606,21 +606,14 @@ class TinyGallery
    // *************************************************************************
    private function KwinGallery_main()
    {
-      // В обычном режиме
-      //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
-      //echo 'KwinGallery<br>';
-      //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-      //$Arti=new ArticlesMaker($basename,$username,$password);
-      //$apdo=$Arti->BaseConnect();
-      //$Galli->ViewGallery(gallidir,$apdo);
-      
       // Cоздаем объект для управления изображениями в галерее, связанной с 
       // материалами сайта из базы данных
       $pid=2;
       $uid=3;
       $apdo=$this->Arti->BaseConnect();
       $Galli=new KwinGallery(editdir,nym,$pid,$uid);
-      $Galli->ViewGallery();
+      //$Galli->ViewGalleryAsArray();
+      $Galli->ViewGallery(NULL,mwgEditing);
       /*
       $pref=editdir.nym.pid.'-'.uid.'-';
       $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
