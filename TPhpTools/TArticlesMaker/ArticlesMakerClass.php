@@ -61,8 +61,7 @@ elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php");
 require_once(pathPhpPrown."/MakeCookie.php");
 require_once(pathPhpPrown."/iniConstMem.php");
 // Подгружаем нужные модули библиотеки прикладных классов
-//require_once(pathPhpTools."/iniToolsMessage.php");
-
+require_once(pathPhpTools."/CommonTools.php");
 
 class ArticlesMaker
 {
@@ -104,6 +103,7 @@ class ArticlesMaker
    // *************************************************************************
    public function __destruct() 
    {
+      require_once(pathPhpTools."/JsTools.php");
       ?> 
       <script>
       pathPhpTools="<?php echo pathPhpTools;?>";
@@ -217,40 +217,6 @@ class ArticlesMaker
          };
          return result;
       }
-      // **********************************************************************
-      // *             Обработать ошибку выполнения аякс-запроса              *
-      // **********************************************************************
-      function SmarttodoError(jqXHR,exception) 
-      {
-	     if (jqXHR.status === 0) 
-         {
-		    alert('Ошибка/нет соединения.');
-	     } 
-         else if (jqXHR.status == 404) 
-         {
-		    alert('Требуемая страница не найдена (404).');
-	     } 
-         else if (jqXHR.status == 500) 
-         {
-		    alert('Внутренняя ошибка сервера (500).');
-	     } 
-         else if (exception === 'parsererror') 
-         {
-		    alert('Cинтаксический анализ JSON не выполнен.');
-         } 
-         else if (exception === 'timeout')          
-         {
-		    alert('Ошибка (time out) времени ожидания ответа.');
-	     } 
-         else if (exception === 'abort') 
-         {
-		    alert('Ajax-запрос прерван.');
-	     } 
-         else 
-         {
-	        alert('Неперехваченная ошибка: '+jqXHR.responseText);
-	     }
-      }
       </script>
       <?php
    }
@@ -342,34 +308,11 @@ class ArticlesMaker
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $this->CompareCopyRoot('ArticlesMaker.css',$this->editdir);
-      $this->CompareCopyRoot('bgnoise_lg.jpg',$this->editdir);
-      $this->CompareCopyRoot('icons.png',$this->editdir);
-      $this->CompareCopyRoot('getNameCue.php');
-      $this->CompareCopyRoot('deleteArt.php');
-   }
-   // *************************************************************************
-   // *    Проверить существование, параметры и перебросит файл из каталога   *
-   // *      класса в любой каталог относительно корневого каталога сайта     *
-   // *************************************************************************
-   private function CompareCopyRoot($Namef,$toDir='')
-   {
-      // Если каталог, в который нужно перебросить файл - корневой
-      if ($toDir=='') $thisdir=$toDir;
-      // Если каталог указан относительно корневого (без обратных слэшей !!!)
-      else $thisdir=$toDir.'/';
-      // Проверяем существование, параметры и перебрасываем файл
-      $fileStyle=$thisdir.$Namef;
-      clearstatcache($fileStyle);
-      $filename=$this->classdir.'/'.$Namef;
-      clearstatcache($filename);
-      if ((!file_exists($fileStyle))||
-      (filesize($filename)<>filesize($fileStyle))||
-      (filemtime($filename)>filemtime($fileStyle))) 
-      {
-         if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл класса: '.$filename); 
-      }
+      CompareCopyRoot('ArticlesMaker.css',$this->classdir,$this->editdir);
+      CompareCopyRoot('bgnoise_lg.jpg',$this->classdir,$this->editdir);
+      CompareCopyRoot('icons.png',$this->classdir,$this->editdir);
+      CompareCopyRoot('getNameCue.php',$this->classdir);
+      CompareCopyRoot('deleteArt.php',$this->classdir);
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *

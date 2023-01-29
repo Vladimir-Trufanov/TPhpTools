@@ -75,6 +75,7 @@
 **/
 
 require_once pathPhpTools."/TMenuLeader/MenuLeaderClass.php";
+require_once pathPhpTools."/CommonTools.php";
 
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
@@ -183,22 +184,8 @@ class TinyGallery
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $this->CompareCopy('WorkTiny.css');
-      $this->CompareCopy('WorkTiny.js');
-   }
-   private function CompareCopy($Namef)
-   {
-      $fileStyle=$this->editdir.'/'.$Namef;
-      clearstatcache($fileStyle);
-      $filename=$this->classdir.'/'.$Namef;
-      clearstatcache($filename);
-      if ((!file_exists($fileStyle))||
-      (filesize($filename)<>filesize($fileStyle))||
-      (filemtime($filename)>filemtime($fileStyle))) 
-      {
-         if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
-      }
+      CompareCopyRoot('WorkTiny.css',$this->classdir,$this->editdir);
+      CompareCopyRoot('WorkTiny.js',$this->classdir,$this->editdir);
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
@@ -538,7 +525,7 @@ class TinyGallery
       '; 
       if ($this->contents<>NULL)
       {
-         echo htmlspecialchars($this->contents);
+         echo $this->contents;
       }
       else
       {

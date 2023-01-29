@@ -54,6 +54,7 @@ define ("mwgEditing", 2);   // редактирование
 require_once pathPhpPrown."/CommonPrown.php";
 // Подгружаем нужные модули библиотеки прикладных классов
 require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
+require_once pathPhpTools."/CommonTools.php";
 
 class KwinGallery
 {
@@ -104,6 +105,39 @@ class KwinGallery
    }
    public function __destruct() 
    {
+      ?> 
+      <script>
+      // **********************************************************************
+      // *      Задать обработчик запроса по сохранению галереи материала     *
+      // **********************************************************************
+      function SaveStuff(Uid)
+      {
+         alert('SaveStuff(Uid) 101');
+         /*
+         pathphp="getNameCue.php";
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            // Выводим ошибки при выполнении запроса в PHP-сценарии
+            error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
+            // Обрабатываем ответное сообщение
+            success: function(message)
+            {
+               // Вырезаем из запроса чистое сообщение
+               messa=FreshLabel(message);
+               // Получаем параметры ответа
+               parm=JSON.parse(messa);
+               $('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
+               $('#nsCue').attr('value',Uid);
+               $('#nsGru').attr('value',parm.NameGru);
+            }
+         });
+         */
+      }
+      </script>
+      <?php
    }
    // *************************************************************************
    // *   Выполнить действия на странице до отправления заголовков страницы:  *
@@ -114,30 +148,8 @@ class KwinGallery
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $this->CompareCopyRoot('sampo.jpg',$this->gallidir);
-   }
-   // *************************************************************************
-   // *    Проверить существование, параметры и перебросит файл из каталога   *
-   // *      класса в любой каталог относительно корневого каталога сайта     *
-   // *************************************************************************
-   private function CompareCopyRoot($Namef,$toDir='')
-   {
-      // Если каталог, в который нужно перебросить файл - корневой
-      if ($toDir=='') $thisdir=$toDir;
-      // Если каталог указан относительно корневого (без обратных слэшей !!!)
-      else $thisdir=$toDir.'/';
-      // Проверяем существование, параметры и перебрасываем файл
-      $fileStyle=$thisdir.$Namef;
-      clearstatcache($fileStyle);
-      $filename=$this->classdir.'/'.$Namef;
-      clearstatcache($filename);
-      if ((!file_exists($fileStyle))||
-      (filesize($filename)<>filesize($fileStyle))||
-      (filemtime($filename)>filemtime($fileStyle))) 
-      {
-         if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл класса: '.$filename); 
-      }
+      CompareCopyRoot('sampo.jpg',$this->classdir,$this->gallidir);
+      CompareCopyRoot('SaveStuff.php',$this->classdir);
    }
    // *************************************************************************
    // *                          Представить массив галереи                   *
