@@ -64,6 +64,10 @@ class KwinGallery
    protected $nym;       // Префикс имен файлов для фотографий галереи и материалов
    protected $pid;       // Идентификатор группы текущего материала
    protected $uid;       // Идентификатор текущего материала
+
+   protected $SiteRoot;  // Корневой каталог сайта
+   protected $urlHome;   // Начальная страница сайта
+
    // Образец массива элементов галереи
    protected $galleryX = array(
       "gallidir"     => "ittveEdit",
@@ -86,7 +90,7 @@ class KwinGallery
       )
    );
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct($gallidir,$nym,$pid,$uid) 
+   public function __construct($gallidir,$nym,$pid,$uid,$SiteRoot,$urlHome) 
    {
       // Инициализируем свойства класса
       $this->gallidir=$gallidir;                    // каталог файлов редактирования
@@ -94,6 +98,10 @@ class KwinGallery
       $this->nym=$nym;                              // префикс сайта (платформы)
       $this->pid=$pid;                              
       $this->uid=$uid;
+
+      $this->SiteRoot=$SiteRoot; 
+      $this->urlHome=$urlHome; 
+
       // Выполняем действия на странице до отправления заголовков страницы: 
       // (устанавливаем кукисы и т.д.)                  
       $this->ZeroEditSpace();
@@ -227,10 +235,17 @@ class KwinGallery
    
    protected function GViewImage($FileName,$Comment,$Action='Image')
    {
+      /*
       echo 
          '<div class="Card">'.
          '<button class="bCard" type="submit" name="'.$Action.'" value="'.$FileName.'">'.
          '<img class="imgCard" src="'.$FileName.'" alt="'.$FileName.'">'.
+         '</button>';
+      */
+      echo 
+         '<div class="Card">'.
+         '<button class="bCard" type="submit" name="'.$Action.'">'.
+         '<img class="imgCard" src="'.$FileName.'">'.
          '</button>';
       echo '<p class="pCard">'.$Comment.'</p>';
       echo 
@@ -307,6 +322,44 @@ class KwinGallery
          [           21,             0,              -1,       'ittve.end',                '/', acsAll,             '20','']
       ];       
       return $aCharters;
+   }
+   // *************************************************************************
+   // *         Развернуть изображения галереи и обеспечить их ведение        *
+   // *     $GalleryMode - режим вывода галереи: mwgViewing или mwgEditing    *
+   // *************************************************************************
+   public function UpdateImg($pdo)
+   {
+      // Выбираем текущую страницу
+      $html=curl($this->urlHome,$varerr);
+      //PutString('$varerr ='.$varerr.'<br><br>','proba.txt');
+      //PutString('$html ='.$html.'<br><br>','proba.txt');
+
+      //$pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
+      
+     /* 
+      $url = $this->urlHome;
+$user_agent = 'MySuperBot 1.02';
+$URL_OBJ = abi_get_url_object($url, $user_agent);
+if( $URL_OBJ )
+{
+  $CONTENT = $URL_OBJ['content'];
+  $HEADER = $URL_OBJ['header'];
+  $TITLE = $URL_OBJ['title'];
+  $DESCRIPTION = $URL_OBJ['description'];
+  $KEYWORDS = $URL_OBJ['keywords'];
+  $TIME_REQUEST = $URL_OBJ['time'];
+  
+      \prown\ConsoleLog('$HEADER ='.$HEADER); 
+      \prown\ConsoleLog('$TITLE ='.$TITLE); 
+      \prown\ConsoleLog('$DESCRIPTION ='.$DESCRIPTION); 
+      \prown\ConsoleLog('$KEYWORDS ='.$KEYWORDS); 
+      \prown\ConsoleLog('$TIME_REQUEST ='.$TIME_REQUEST); 
+      PutString($CONTENT,'proba.txt');
+  
+}
+else
+  print 'Запрашиваемая страница недоступна.';
+      */
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 } 

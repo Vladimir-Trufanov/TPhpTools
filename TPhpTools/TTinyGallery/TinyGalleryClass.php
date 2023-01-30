@@ -273,7 +273,7 @@ class TinyGallery
    if ($contentNews<>NULL)
    {
       $contentsOut=htmlentities($contentNews);
-      $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
+      //$this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
    }
    // Вытаскиваем материал для редактирования
    $table=$this->Arti->SelUidPid
@@ -516,6 +516,8 @@ class TinyGallery
    // *************************************************************************
    private function WorkTiny_main()
    {
+      //phpinfo();
+
       // Выводим заголовок статьи
       $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
@@ -602,7 +604,19 @@ class TinyGallery
       $pid=2;
       $uid=3;
       $apdo=$this->Arti->BaseConnect();
-      $Galli=new KwinGallery(editdir,nym,$pid,$uid);
+      
+      $Galli=new KwinGallery(editdir,nym,$pid,$uid,$this->SiteRoot,$this->urlHome);
+
+      // Если был выбран режим сохранения отредактированного материала, 
+      // то сохраняем галерею фотографий текущей статьи    
+      $contentNews=\prown\getComRequest('mytextarea');
+      if ($contentNews<>NULL)
+      {
+         $Galli->UpdateImg($this->apdo);
+         // $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
+      }
+
+      // Показываем галерею изображений
       //$Galli->ViewGalleryAsArray();
       $Galli->ViewGallery(NULL,mwgEditing);
       /*
