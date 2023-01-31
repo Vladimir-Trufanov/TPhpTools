@@ -121,6 +121,8 @@ class KwinGallery
       function SaveStuff(Uid)
       {
          alert('SaveStuff(Uid) 101');
+         iuy=$('#KwinGallery').html();
+         alert(iuy);
          /*
          pathphp="getNameCue.php";
          // Делаем запрос на определение наименования раздела материалов
@@ -329,38 +331,15 @@ class KwinGallery
    // *************************************************************************
    public function UpdateImg($pdo)
    {
+      /*
       // Выбираем текущую страницу
       $html=curl($this->urlHome,$varerr);
-      //PutString('$varerr ='.$varerr.'<br><br>','proba.txt');
-      //PutString('$html ='.$html.'<br><br>','proba.txt');
-
-      //$pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
-      
-     /* 
-      $url = $this->urlHome;
-$user_agent = 'MySuperBot 1.02';
-$URL_OBJ = abi_get_url_object($url, $user_agent);
-if( $URL_OBJ )
-{
-  $CONTENT = $URL_OBJ['content'];
-  $HEADER = $URL_OBJ['header'];
-  $TITLE = $URL_OBJ['title'];
-  $DESCRIPTION = $URL_OBJ['description'];
-  $KEYWORDS = $URL_OBJ['keywords'];
-  $TIME_REQUEST = $URL_OBJ['time'];
-  
-      \prown\ConsoleLog('$HEADER ='.$HEADER); 
-      \prown\ConsoleLog('$TITLE ='.$TITLE); 
-      \prown\ConsoleLog('$DESCRIPTION ='.$DESCRIPTION); 
-      \prown\ConsoleLog('$KEYWORDS ='.$KEYWORDS); 
-      \prown\ConsoleLog('$TIME_REQUEST ='.$TIME_REQUEST); 
-      PutString($CONTENT,'proba.txt');
-  
-}
-else
-  print 'Запрашиваемая страница недоступна.';
+      PutString('$varerr ='.$varerr.'<br><br>','proba.txt');
+      PutString('$html ='.$html.'<br><br>','proba.txt');
       */
+      //$pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
    }
+   
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 } 
 
