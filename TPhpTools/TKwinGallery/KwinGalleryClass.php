@@ -113,6 +113,7 @@ class KwinGallery
    }
    public function __destruct() 
    {
+      require_once(pathPhpTools."/JsTools.php");
       ?> 
       <script>
       // **********************************************************************
@@ -120,16 +121,13 @@ class KwinGallery
       // **********************************************************************
       function SaveStuff(Uid)
       {
-         alert('SaveStuff(Uid) 101');
-         iuy=$('#KwinGallery').html();
-         alert(iuy);
-         /*
-         pathphp="getNameCue.php";
-         // Делаем запрос на определение наименования раздела материалов
+         GalleryText=$('#KwinGallery').html();
+         pathphp="SaveStuff.php";
+         // Делаем запрос на сохранение галлереи материала
          $.ajax({
             url: pathphp,
             type: 'POST',
-            data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            data: {idCue:Uid, area:GalleryText, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
             // Выводим ошибки при выполнении запроса в PHP-сценарии
             error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
             // Обрабатываем ответное сообщение
@@ -137,15 +135,37 @@ class KwinGallery
             {
                // Вырезаем из запроса чистое сообщение
                messa=FreshLabel(message);
+               alert(messa);
                // Получаем параметры ответа
+               /*
                parm=JSON.parse(messa);
-               $('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
-               $('#nsCue').attr('value',Uid);
-               $('#nsGru').attr('value',parm.NameGru);
+               alert(messa);
+               alert(parm.Piati);
+               alert(parm.NameGru);
+               $('#NameGru').html(parm.NameGru);
+               alert('Стоп');
+               */
+               
+               const json = '{"result":"truei", "count":42}';
+               alert(json);
+               const obj = JSON.parse(json);
+               alert(obj.count);
+               alert(obj.result);
+
+               alert(messa);
+               const parm=JSON.parse(messa);
+               alert(parm.Piati);
+               alert(parm.NameGru);
+
+               /*
+               //$('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
+               //$('#nsCue').attr('value',Uid);
+               //$('#nsGru').attr('value',parm.NameGru);
+               */
             }
          });
-         */
       }
+
       </script>
       <?php
    }

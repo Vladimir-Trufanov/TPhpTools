@@ -24,41 +24,68 @@
 <script>
 $(document).ready(function()
 {
-   // *************************************************************************
-   // *                Обработать ошибку выполнения аякс-запроса              *
-   // *************************************************************************
-   function SmarttodoError(jqXHR,exception) 
-   {
-      if (jqXHR.status === 0) 
-      {
-         alert('Ошибка/нет соединения.');
-      } 
-      else if (jqXHR.status == 404) 
-      {
-         alert('Требуемая страница не найдена (404).');
-      } 
-      else if (jqXHR.status == 500) 
-      {
-         alert('Внутренняя ошибка сервера (500).');
-      } 
-      else if (exception === 'parsererror') 
-      {
-         alert('Cинтаксический анализ JSON не выполнен.');
-      } 
-      else if (exception === 'timeout')          
-      {
-         alert('Ошибка (time out) времени ожидания ответа.');
-      } 
-      else if (exception === 'abort') 
-      {
-         alert('Ajax-запрос прерван.');
-      } 
-      else 
-      {
-         alert('Неперехваченная ошибка: '+jqXHR.responseText);
-      }
-   }
 })
+
+// ****************************************************************************
+// *                  Обработать ошибку выполнения аякс-запроса               *
+// ****************************************************************************
+function SmarttodoError(jqXHR,exception) 
+{
+   if (jqXHR.status === 0) 
+   {
+      alert('Ошибка/нет соединения.');
+   } 
+   else if (jqXHR.status == 404) 
+   {
+      alert('Требуемая страница не найдена (404).');
+   } 
+   else if (jqXHR.status == 500) 
+   {
+      alert('Внутренняя ошибка сервера (500).');
+   } 
+   else if (exception === 'parsererror') 
+   {
+      alert('Cинтаксический анализ JSON не выполнен.');
+   } 
+   else if (exception === 'timeout')          
+   {
+      alert('Ошибка (time out) времени ожидания ответа.');
+   } 
+   else if (exception === 'abort') 
+   {
+      alert('Ajax-запрос прерван.');
+   } 
+   else 
+   {
+      alert('Неперехваченная ошибка: '+jqXHR.responseText);
+   }
+}
+// ****************************************************************************
+// *                   Выделить метку (наборы символов до и после) в принятом *
+// *                                           сообщения и извлечь сообщение. *
+// * так как в АЯКС-запросах на jQuery, когда от сервера                      *
+// * передается сообщение в js, то (фактически - 19.01.2023)                  *
+// * перед сообщением подвешивается сам js-скрипт запроса.                    *   
+// ****************************************************************************
+function FreshLabel(messa)
+{
+   result='{"NameGru":"nodef", "Piati":0, "iif":"nodef"}';
+   str=messa;
+   target='ghjun5'; // цель поиска
+   pos=0; nBeg=0; nEnd=0;
+   while (true) 
+   {
+      foundPos=str.indexOf(target,pos);
+      if (foundPos<0) break;
+      // Меняем начальную и конечную позиции подстроки
+      nBeg=nEnd+6; nEnd=foundPos;
+      result=str.substring(nBeg,nEnd); 
+      // Продолжаем со следующей позиции
+      pos=foundPos+1; 
+   };
+   return result;
+}
+   
 </script>
 <?php
 
