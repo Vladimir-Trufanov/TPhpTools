@@ -135,33 +135,10 @@ class KwinGallery
             {
                // Вырезаем из запроса чистое сообщение
                messa=FreshLabel(message);
-               alert(messa);
                // Получаем параметры ответа
-               /*
                parm=JSON.parse(messa);
-               alert(messa);
-               alert(parm.Piati);
-               alert(parm.NameGru);
-               $('#NameGru').html(parm.NameGru);
-               alert('Стоп');
-               */
-               
-               const json = '{"result":"truei", "count":42}';
-               alert(json);
-               const obj = JSON.parse(json);
-               alert(obj.count);
-               alert(obj.result);
-
-               alert(messa);
-               const parm=JSON.parse(messa);
-               alert(parm.Piati);
-               alert(parm.NameGru);
-
-               /*
-               //$('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
-               //$('#nsCue').attr('value',Uid);
-               //$('#nsGru').attr('value',parm.NameGru);
-               */
+               alert(parm.NameArt);
+               alert('parm.Piati='+parm.Piati);
             }
          });
       }

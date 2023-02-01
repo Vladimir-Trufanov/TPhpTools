@@ -16,7 +16,7 @@
 //define("editdir",'ittveEdit');
 
 // Готовим начальные значения параметров возвращаемого сообщения
-$NameArt='NoDefineiiii'; $Piati=0; $iif='NoDefineiii';
+$NameArt='NoDefine'; $Piati=0; $iif='NoDefine';
 // Извлекаем пути к библиотекам прикладных функций и классов
 define ("pathPhpPrown",$_POST['pathPrown']);
 define ("pathPhpTools",$_POST['pathTools']);
@@ -24,6 +24,54 @@ define ("pathPhpTools",$_POST['pathTools']);
 //require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 require_once pathPhpPrown."/CommonPrown.php";
 require_once pathPhpTools."/CommonTools.php";
+
+
+// Выбираем массив файлов галереи для записи в базу данных 
+$GalleryText=$_POST['area'];
+//$GalleryText=htmlspecialchars($GalleryText);
+
+//$pref='src=\"ittveEdit/ittve2-3-';
+//$pattern="src=\"ittveEdit/ittve2-3-([0-9a-zA-Zа-яёА-ЯЁ\s\.\$\n\r\(\)-_:,=&;]+)\"/u";
+//$pattern="input([0-9a-zA-Zа-яёА-ЯЁ\s\.\$\n\r\(\)-_:,=&;]+)hidden/u";
+//$pattern="/tve2/u";
+//$pattern='/src=\"([0-9a-zA-Zа-яёА-ЯЁ-=\.\"]+)\"/u';
+//$pattern='/src=&quot;([0-9a-zA-Zа-яёА-ЯЁ\.-=&;]+)&quot;/u';
+//$pattern='/tve2([0-9a-zA-Zа-яёА-ЯЁ\.-=&;]+)jpg/u';
+
+//$pattern="/ittveEdit/ittve2-3-([0-9a-zA-Zа-яёА-ЯЁ\s\.\$\n\r\(\)\/-_:,=&;]+)jpg/u";
+
+//$pattern='/tve2([0-9a-zA-Zа-яёА-ЯЁ\.-=&;]+)jpg/u';
+
+
+$pattern='/tve2([0-9a-zA-Zа-яёА-ЯЁ\.-]+)\./u';
+$pattern='/tve2([0-9a-zA-Zа-яёА-ЯЁ\.-]+)jpg/u';
+$pattern='/tve2([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
+
+// Выбираем файлы изображений по регулярным выражениям
+$pattern='/ittve2-3-([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
+preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
+
+
+ 
+$NameArt='Галерея записана!';
+foreach ($matches as $val) 
+{
+   $NameArt=$NameArt.$val[0];
+   //$NameArt=$NameArt.$val[0]."\n";
+}
+
+$Piati=count($matches);
+
+
+
+
+
+
+//define ("Pattern",     "/\/\/\sФункция([0-9a-zA-Zа-яёА-ЯЁ\s\.\$\n\r\(\)-_:,=&;]+)function/u");
+//define ("Replacement", "function");
+//$FileItog=preg_replace($pattern,$replacement,$FileContent);
+
+
 // Подключаем объект для работы с базой данных материалов
 // (при необходимости создаем базу данных материалов)
 //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
@@ -47,29 +95,43 @@ else
    if ($messa<>imok) $NameArt='Ошибка. '.$messa;
 }
 */
-$GalleryText=$_POST['area'];
-$json = '{"result":"truei", "count":42}';
-\tools\PutString('$GalleryText='.$GalleryText.'<br><br>','proba.txt');
-\tools\PutString('$json='.$json.'*<br><br>','proba.txt');
-
 // Освобождаем память
 unset($Arti); unset($pdo); unset($table);
 // Возвращаем сообщение
-
-$NameArt='Удаляется статья';
-$NameArt='Delettt';
-
-
 $message='{"NameArt":"'.$NameArt.'", "Piati":'.$Piati.', "iif":"'.$iif.'"}';
-\tools\PutString('$message='.$message.'*<br><br>','proba.txt');
-
-
-
-
-
-
 $message=\prown\makeLabel($message,'ghjun5','ghjun5');
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+\ttools\PutString(
+    '$GalleryText='.$GalleryText.
+    '  pathPhpPrown='.$_POST['pathPrown'].
+    '  pathPhpTools='.$_POST['pathTools'],'proba.txt');
+*/
+//\ttools\PutString('$pattern='.$pattern);
+\ttools\PutString($GalleryText,'proba.txt');
 echo $message;
 exit;
+
+function CodePart($TPhpPrown,$FuncFile,$pattern,$replacement)
+{
+$FileSpec=$TPhpPrown.'/TPhpPrown/'.$FuncFile;
+$FileContent=file_get_contents($FileSpec);
+// Вырезаем комментарий, который уже представлен
+$FileItog=preg_replace($pattern,$replacement,$FileContent);
+// Преобразуем текст в раскрашенный код и показываем его
+$FileCode=highlight_string($FileItog,true);
+echo $FileCode;
+};
 
 // ********************************************************** SaveStuff.php ***
