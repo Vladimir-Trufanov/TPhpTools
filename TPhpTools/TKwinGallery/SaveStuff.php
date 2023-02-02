@@ -3,12 +3,50 @@
 // PHP7/HTML5, EDGE/CHROME                                *** SaveStuff.php ***
 
 // ****************************************************************************
-// * TKwinGallery      По указанному идентификатору в аякс-запросе определить *
-// *            наименование материала, а затем удалить запись из базы данных *
+// * TKwinGallery                       По переданному фрагменту кода галереи *
+// *                 текущей статьи перенести файлы изображений в базу данных *
 // *                                                                          *
-// * v1.0, 29.01.2023                              Автор:       Труфанов В.Е. *
+// * v1.0, 02.02.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
+
+// Выбираем массив файлов галереи для записи в базу данных 
+$GalleryText=$_POST['area'];
+
+// Формат галереи на 02.02.2023: 
+//
+// <div class="Card">
+// <button class="bCard" type="submit" name="Image">
+//    <img class="imgCard" src="ittveEdit/ittve2-3-Подъём-настроения.jpg">
+// </button>
+// <p class="pCard">Ночная прогулка по Ладоге до рассвета и подъёма настроения.</p>
+// </div>
+//
+// <div class="Card">
+// <form method="get" enctype="multipart/form-data">
+//    <input type="hidden" name="MAX_FILE_SIZE" id="inhCard" value="1600000">
+//    <input type="file" name="IMG" id="infCard" accept="image/jpeg,image/png,image/gif" onchange="readFile(this);">
+//    <img id="imgCardi" src="ittveEdit/sampo.jpg" alt="FileName">
+//    <textarea class="taCard" name="AREAM">Текст комментария</textarea>
+//    <input type="submit" name="SUBMI" id="insCard" value="Загрузить">
+// </form>
+// </div>
+//
+// <div class="Card">
+// <button class="bCard" type="submit" name="Image">
+//    <img class="imgCard" src="ittveEdit/ittve2-3-На-Сампо.jpg">
+// </button>
+// <p class="pCard">На горе Сампо всем хорошо!</p>
+// </div>
+//
+// <div class="Card">
+// <button class="bCard" type="submit" name="Image">
+//    <img class="imgCard" src="ittveEdit/ittve2-3-С-заботой-и-к-мамам.jpg">
+// </button>
+// <p class="pCard">'С заботой и к мамам' - такой мамочкин хвостик.</p>
+// </div> 
+//
+// <script> ...
 
 // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker   
 //define ("articleSite",'IttveMe'); 
@@ -26,8 +64,21 @@ require_once pathPhpPrown."/CommonPrown.php";
 require_once pathPhpTools."/CommonTools.php";
 
 
-// Выбираем массив файлов галереи для записи в базу данных 
-$GalleryText=$_POST['area'];
+
+
+// Выбираем загруженные изображения в массив
+$nym='ittve';  // префикс имен файлов для фотографий галереи и материалов
+$pid=2;        // идентификатор текущей группы статей
+$uid=3;        // идентификатор текущей статьи    
+$aImgLoad=getImgLoad($GalleryText,$nym,$pid,$uid);
+// Выбираем введенные комментарии в массив
+$aComLoad=getComLoad($GalleryText);
+
+
+
+
+
+
 //$GalleryText=htmlspecialchars($GalleryText);
 
 //$pref='src=\"ittveEdit/ittve2-3-';
@@ -51,20 +102,51 @@ $pattern='/tve2([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
 $pattern='/ittve2-3-([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
 preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
 
+$text='<link>mezhdu[/link]  yyyyy <link>m"ezh"du[/link]   ';
+$pattern ="/\<link\>(.*?)\[\/link\]/u";
+preg_match_all($pattern,$text,$matches,PREG_SET_ORDER);
+\ttools\PutString('$matches[1][0]='.$matches[1][0],'proba.txt');
 
+/*
+$pattern ="/\"Card\"(.*?)\"bCard\"/";
+preg_match_all($pattern,$text,$matches,PREG_SET_ORDER);
+\ttools\PutString('$matches[0][0]='.$matches[0][0],'proba.txt');
+*/
+
+$pattern ="/div(.*?)Card/u";
+preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
+\ttools\PutString('$matches[0][0]='.$matches[0][0],'proba.txt');
+ 
+$pattern ="/pCard(.*?)p/u";
+preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
+\ttools\PutString('$matches[0][0]='.$matches[0][0],'proba.txt');
+ 
+ 
+ 
  
 $NameArt='Галерея записана!';
+/*
 foreach ($matches as $val) 
 {
    $NameArt=$NameArt.$val[0];
-   //$NameArt=$NameArt.$val[0]."\n";
 }
-
+*/
 $Piati=count($matches);
 
+foreach ($matches as $val) 
+{
+   \ttools\PutString('$val[0]='.$val[0],'proba.txt');
+}
 
 
 
+/*
+$patterns ="/\<link\>(.*?)\[\/link\]/";
+$replacements =  "<a href=\"\\1\">\\1</a>";
+$newText = preg_replace($patterns,$replacements,$text); 
+\ttools\PutString('$text='.$text,'proba.txt');
+\ttools\PutString('$newText='.$newText,'proba.txt');
+*/
 
 
 //define ("Pattern",     "/\/\/\sФункция([0-9a-zA-Zа-яёА-ЯЁ\s\.\$\n\r\(\)-_:,=&;]+)function/u");
@@ -96,21 +178,10 @@ else
 }
 */
 // Освобождаем память
-unset($Arti); unset($pdo); unset($table);
+//unset($Arti); unset($pdo); unset($table);
 // Возвращаем сообщение
 $message='{"NameArt":"'.$NameArt.'", "Piati":'.$Piati.', "iif":"'.$iif.'"}';
 $message=\prown\makeLabel($message,'ghjun5','ghjun5');
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 \ttools\PutString(
@@ -118,20 +189,45 @@ $message=\prown\makeLabel($message,'ghjun5','ghjun5');
     '  pathPhpPrown='.$_POST['pathPrown'].
     '  pathPhpTools='.$_POST['pathTools'],'proba.txt');
 */
-//\ttools\PutString('$pattern='.$pattern);
-\ttools\PutString($GalleryText,'proba.txt');
+//\ttools\PutString($GalleryText,'GalleryText.txt');
 echo $message;
 exit;
 
-function CodePart($TPhpPrown,$FuncFile,$pattern,$replacement)
+// ****************************************************************************
+// *                 Выбрать загруженные изображения в массив                 *
+// ****************************************************************************
+function getImgLoad($GalleryText,$nym,$pid,$uid)
 {
-$FileSpec=$TPhpPrown.'/TPhpPrown/'.$FuncFile;
-$FileContent=file_get_contents($FileSpec);
-// Вырезаем комментарий, который уже представлен
-$FileItog=preg_replace($pattern,$replacement,$FileContent);
-// Преобразуем текст в раскрашенный код и показываем его
-$FileCode=highlight_string($FileItog,true);
-echo $FileCode;
-};
+   $aImgLoad=array();
+   // Формируем префикс для поиска
+   $pref=$nym.$pid.'-'.$uid.'-'; $point=strlen($pref);
+   //$pattern='/ittve2-3-([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
+   $pattern='/'.$pref.'([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
+   preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
+   \ttools\PutString('$pref=   '.$pref,'getImgLoad.txt');
+   \ttools\PutString('$pattern='.$pattern,'getImgLoad.txt');
+   foreach ($matches as $val) 
+   {
+      $FileName=substr($val[0],$point);
+      \ttools\PutString('$val[0]i='.$val[0],'getImgLoad.txt');
+      \ttools\PutString('$FileNamei='.$FileName,'getImgLoad.txt');
+   }
+}
 
+// ****************************************************************************
+// *                 Выбрать загруженные комментарии в массив                 *
+// ****************************************************************************
+function getComLoad($GalleryText)
+{
+   $aComLoad=array();
+   $pattern ="/pCard(.*?)p/u"; $point=7;
+   preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
+   \ttools\PutString('$pattern='.$pattern,'getComLoad.txt');
+   foreach ($matches as $val) 
+   {
+      $Comment=substr($val[0],$point);
+      \ttools\PutString('$val[0]='.$val[0],'getComLoad.txt');
+      \ttools\PutString('$Comment='.$Comment,'getComLoad.txt');
+   }
+}
 // ********************************************************** SaveStuff.php ***
