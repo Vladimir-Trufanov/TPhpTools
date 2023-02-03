@@ -300,7 +300,7 @@ class TinyGallery
       // В обычном режиме
       else
       {
-         $this->KwinGallery_main();
+         $this->KwinGallery_main($pidEdit,$uidEdit);
       }
       // В обычном режиме
       //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
@@ -597,15 +597,12 @@ class TinyGallery
    // *************************************************************************
    // *        Обеспечить просмотр и редактирование фотографий в галерее      *
    // *************************************************************************
-   private function KwinGallery_main()
+   private function KwinGallery_main($pidEdit,$uidEdit)
    {
       // Cоздаем объект для управления изображениями в галерее, связанной с 
       // материалами сайта из базы данных
-      $pid=2;
-      $uid=3;
       $apdo=$this->Arti->BaseConnect();
-      
-      $Galli=new KwinGallery(editdir,nym,$pid,$uid,$this->SiteRoot,$this->urlHome);
+      $Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
 
       // Если был выбран режим сохранения отредактированного материала, 
       // то сохраняем галерею фотографий текущей статьи    

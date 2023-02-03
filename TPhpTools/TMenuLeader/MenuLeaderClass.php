@@ -167,7 +167,7 @@ class MenuLeader
             <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-            <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText" onclick="SaveStuff(10)">'.'</li>
+            <li class="ili">'.'<input type="submit" value="Сохранить материал" form="frmTinyText" onclick="SaveStuff()">'.'</li>
             </ul>   
          ';
       }

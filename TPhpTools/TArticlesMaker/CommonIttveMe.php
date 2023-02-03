@@ -690,24 +690,31 @@ function CreateTables($pdo,$aCharters)
          "DateArt"  => $DateArt, 
          "Art"      => $Art
       ]);
-      // Создаём таблицу для списка изображений   
+      // Создаем индекс по транслиту в таблице материалов      
+      $sql='CREATE INDEX IF NOT EXISTS iTranslit ON stockpw (Translit)';
+      $st = $pdo->query($sql);
+
+      // Создаём таблицу изображений   
       $sql='CREATE TABLE picturepw ('.
          'uid         INTEGER NOT NULL REFERENCES stockpw(uid),'.  // идентификатор пункта меню (раздел или статья сайта)
          'NamePic     VARCHAR NOT NULL,'.                          // заголовок изображения к статье (имя файла без расширения)
          'TranslitPic VARCHAR NOT NULL,'.                          // транслит заголовка изображения
          'Ext         VARCHAR NOT NULL,'.                          // расширение файла заголовка изображения
          'DatePic     DATETIME,'.                                  // дата\время изображения
+         'SizePic     INTEGER,'.                                   // размер изображения
          'Сomment     TEXT,'.                                      // комментарий к изображению
          'Pic         BLOB)';                                      // изображение
       $st = $pdo->query($sql);
+      // Создаем индекс по транслиту имени файла без расширения в таблице изображений      
+      $sql='CREATE INDEX IF NOT EXISTS iTranslitPic ON picturepw (TranslitPic)';
+      $st = $pdo->query($sql);
+
       // Создаём контрольную таблицу базы данных   
       $sql='CREATE TABLE ctrlpw ('.
          'bid         VARCHAR NOT NULL,'.    // наименование базы данных
          'СommBase    TEXT)';                // комментарий по базе данных
       $st = $pdo->query($sql);
-      // Создаем индекс по транслиту в таблице материалов      
-      $sql='CREATE INDEX IF NOT EXISTS iTranslit ON stockpw (Translit)';
-      $st = $pdo->query($sql);
+
       $pdo->commit();
    } 
    catch (Exception $e) 

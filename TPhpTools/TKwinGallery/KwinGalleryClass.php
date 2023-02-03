@@ -73,7 +73,7 @@ class KwinGallery
       "gallidir"     => "ittveEdit",
       "nym"          => "ittve",
       "pid"          => 2,
-      "uid"          => 3,
+      "uid"          => 25,
       "gallery" => array(
          array(
          "Comment"  => "Ночная прогулка по Ладоге до рассвета и подъёма настроения.",
@@ -96,9 +96,8 @@ class KwinGallery
       $this->gallidir=$gallidir;                    // каталог файлов редактирования
       $this->classdir=pathPhpTools.'/TKwinGallery'; // каталог класса
       $this->nym=$nym;                              // префикс сайта (платформы)
-      $this->pid=$pid;                              
-      $this->uid=$uid;
-
+      $this->pid=$pid;                              // идентификатор текущей группы статей
+      $this->uid=$uid;                              // идентификатор текущей статьи 
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
 
@@ -116,10 +115,15 @@ class KwinGallery
       require_once(pathPhpTools."/JsTools.php");
       ?> 
       <script>
+      
+      nym="<?php echo $this->nym;?>";
+      pid="<?php echo $this->pid;?>";
+      uid="<?php echo $this->uid;?>"; 
+
       // **********************************************************************
       // *      Задать обработчик запроса по сохранению галереи материала     *
       // **********************************************************************
-      function SaveStuff(Uid)
+      function SaveStuff()
       {
          GalleryText=$('#KwinGallery').html();
          pathphp="SaveStuff.php";
@@ -127,7 +131,9 @@ class KwinGallery
          $.ajax({
             url: pathphp,
             type: 'POST',
-            data: {idCue:Uid, area:GalleryText, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            data: {
+               nym:nym, pid:pid, uid:uid,
+               area:GalleryText, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
             // Выводим ошибки при выполнении запроса в PHP-сценарии
             error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
             // Обрабатываем ответное сообщение
@@ -234,13 +240,6 @@ class KwinGallery
    
    protected function GViewImage($FileName,$Comment,$Action='Image')
    {
-      /*
-      echo 
-         '<div class="Card">'.
-         '<button class="bCard" type="submit" name="'.$Action.'" value="'.$FileName.'">'.
-         '<img class="imgCard" src="'.$FileName.'" alt="'.$FileName.'">'.
-         '</button>';
-      */
       echo 
          '<div class="Card">'.
          '<button class="bCard" type="submit" name="'.$Action.'">'.
