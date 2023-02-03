@@ -399,7 +399,9 @@ class ArticlesMaker
          $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
          $contents=$table[0]['Art'];
          // Добираем $NameGru
-         $table=$this->SelRecord($pdo,$pid); $NameGru=$table[0]['NameArt'];
+         $table=$this->SelRecord($pdo,$pid); 
+         if (count($table)>0) $NameGru=$table[0]['NameArt'];
+         else \prown\Alert('Для статьи с Uid='.$uid.' неверный идентификатор группы: Pid='.$pid); 
       }
       // Если больше одной записи, то диагностируем ошибку
       if ($count>1)
@@ -410,7 +412,7 @@ class ArticlesMaker
       // Это сообщение сбрасываем в консоль, так как на странице ситуация 
       // очевидна (на 27.01.2023)
       else if ($count<1)
-         \prown\ConsoleLog('Не найдено записей по транслиту: '.$getArti);
+         \prown\Alert('Не найдено записей по транслиту: '.$getArti);
    }
    // *************************************************************************
    // * Выбрать запись по идентификатору                                      *
