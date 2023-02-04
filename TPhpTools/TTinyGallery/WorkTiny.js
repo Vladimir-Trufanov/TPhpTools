@@ -1,6 +1,7 @@
 // Выполняем действия  по завершении загрузки страницы
 $(document).ready(function()
 {
+   // 
   $('#nsDate').on('focusin',function()
   {
     $(this).siblings('#nsName').css({

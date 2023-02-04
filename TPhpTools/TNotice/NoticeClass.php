@@ -161,6 +161,22 @@ class Notice
          });
          $('#DialogWind').dialog("open")
       }
+      // **********************************************************************
+      // *                                 Ошибка!                            *
+      // **********************************************************************
+      function Error_Info(messa)
+      {
+         $('#DialogWind').parent().find(".ui-dialog-content").css('color','red');
+         Notice_Info(messa,'Ошибка',250);
+      }
+      // **********************************************************************
+      // *                               Информация!                          *
+      // **********************************************************************
+      function Info_Info(messa)
+      {
+         $('#DialogWind').parent().find(".ui-dialog-content").css('color','blue');
+         Notice_Info(messa,'Оk',250);
+      }
       </script>
       <?php
    }

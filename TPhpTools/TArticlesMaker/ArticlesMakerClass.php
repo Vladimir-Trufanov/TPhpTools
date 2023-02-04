@@ -111,6 +111,37 @@ class ArticlesMaker
       gncNoCue="<?php echo gncNoCue;?>"; 
 
       // **********************************************************************
+      // *    Проверить целостность базы данных по десяти очередным записям   *
+      // **********************************************************************
+      function GetPunktTestBase()
+      {
+         // Выбираем последний проверенный uid
+         TestPoint=localStorage.getItem('TestPoint');
+         // Инициируем последний проверенный uid
+         if (TestPoint==null) TestPoint=0;
+         alert('BEG GetPunktTestBase: TestPoint='+TestPoint);
+         pathphp="TestBase.php";
+         // Делаем запрос на определение наименования раздела материалов
+         $.ajax({
+            url: pathphp,
+            type: 'POST',
+            data: {TestPoint:TestPoint, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+            // Выводим ошибки при выполнении запроса в PHP-сценарии
+            error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
+            // Обрабатываем ответное сообщение
+            success: function(message)
+            {
+               // Вырезаем из запроса чистое сообщение
+               messa=FreshLabel(message);
+               // Получаем параметры ответа
+               parm=JSON.parse(messa);
+               // Если ошибка, то выводим сообщение
+               if (parm.error==true) Error_Info(parm.messa);
+               else Info_Info(parm.messa);
+            }
+         });
+      }
+      // **********************************************************************
       // *        Задать обработчик аякс-запроса по удалению материала        *
       // **********************************************************************
       function UdalitMater(Uid)
@@ -288,6 +319,7 @@ class ArticlesMaker
       CompareCopyRoot('icons.png',$this->classdir,$this->editdir);
       CompareCopyRoot('getNameCue.php',$this->classdir);
       CompareCopyRoot('deleteArt.php',$this->classdir);
+      CompareCopyRoot('TestBase.php',$this->classdir);
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
@@ -348,11 +380,15 @@ class ArticlesMaker
    // *************************************************************************
    // *          Построить html-код меню и сделать выбор материала            *
    // *************************************************************************
-   public function GetPunktMenu($pdo) 
+   public function getPunktMenu($pdo) 
    {
-      $lvl=-1; $cLast='+++';
-      $nLine=0; 
-      $cli=""; // Начальная вставка конца пункта меню
+      // Проверяем целостность базы данных (по 10 очередным записям) 
+      // ВРЕМЕННО ЗДЕСЬ
+      ?> <script> 
+         $(document).ready(function() {GetPunktTestBase();})
+      </script> <?php
+      // Готовим выбор материала
+      $lvl=-1; $cLast='+++'; $nLine=0; $cli=""; 
       ShowCaseMe($pdo,1,1,$cLast,$nLine,$cli,$lvl);
    }
    // *************************************************************************
