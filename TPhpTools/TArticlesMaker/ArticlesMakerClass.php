@@ -5,7 +5,7 @@
 // ****************************************************************************
 // * TPhpTools                                   Построитель материалов сайта *
 // *                                                                          *
-// * v1.1, 26.12.2022                              Автор:       Труфанов В.Е. *
+// * v1.1, 05.02.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  03.11.2022 *
 // ****************************************************************************
 
@@ -111,17 +111,16 @@ class ArticlesMaker
       gncNoCue="<?php echo gncNoCue;?>"; 
 
       // **********************************************************************
-      // *    Проверить целостность базы данных по десяти очередным записям   *
+      // *       Проверить целостность базы данных по 16 очередным записям    *
       // **********************************************************************
       function GetPunktTestBase()
       {
          // Выбираем последний проверенный uid
-         TestPoint=localStorage.getItem('TestPoint');
-         // Инициируем последний проверенный uid
-         if (TestPoint==null) TestPoint=0;
-         alert('BEG GetPunktTestBase: TestPoint='+TestPoint);
-         pathphp="TestBase.php";
+         TestPoint=Number(localStorage.getItem('TestPoint'));
+         if (Number.isNaN(TestPoint)) TestPoint=0;
+         console.log('в наче '+TestPoint);
          // Делаем запрос на определение наименования раздела материалов
+         pathphp="TestBase.php";
          $.ajax({
             url: pathphp,
             type: 'POST',
@@ -137,7 +136,13 @@ class ArticlesMaker
                parm=JSON.parse(messa);
                // Если ошибка, то выводим сообщение
                if (parm.error==true) Error_Info(parm.messa);
-               else Info_Info(parm.messa);
+               // Иначе меняем значение проверенного uid-а
+               else 
+               {
+                  console.log('в коне '+parm.TestPoint);
+                  localStorage.setItem('TestPoint',parm.TestPoint);
+                  Info_Info(parm.messa);
+               }
             }
          });
       }

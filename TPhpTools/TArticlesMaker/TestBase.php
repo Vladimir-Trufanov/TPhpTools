@@ -9,7 +9,7 @@
          
 
 // *                                                                          *
-// * v1.0, 04.02.2023                              Автор:       Труфанов В.Е. *
+// * v1.0, 06.02.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  04.02.2023 *
 // ****************************************************************************
 
@@ -33,20 +33,33 @@ require_once pathPhpTools."/CommonTools.php";
 $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
 $Arti=new ttools\ArticlesMaker($basename,$username,$password);
 $pdo=$Arti->BaseConnect();
-// Выбираем до 16 нарастающих записей, начиная с заданного Uid, если записей 
-// нет, то выбираем, начиная с начала. 
-$table=array();
+// Выбираем до 16 нарастающих записей, начиная с заданного Uid
 $table=get16TestBase($pdo,$TestPoint,$messa); 
 // Если выборка с ошибкой, то готовим сообщение
 if ($messa<>imok) $error=true;
- 
-/*
-\ttools\PutString(
-    '  TestPoint='.$_POST['TestPoint'].
-    '  pathPhpPrown='.$_POST['pathPrown'].
-    '  pathPhpTools='.$_POST['pathTools'],'proba.txt');
-*/
-
+// Если первая выборка успешна, то анализируем выбранные записи
+else if (count($table)>0)
+{
+   $pass=1; // будем анализировать первую выборку
+   $TestPoint=noPid16TestBase($pdo,$TestPoint,$table,$pass,$messa); 
+   // Если тест с ошибкой, то готовим сообщение
+   if ($messa<>imok) $error=true; 
+}
+// Если в первой выборке нет записей, то делаем её с начала
+else
+{
+   $TestPoint=0;
+   $table=get16TestBase($pdo,$TestPoint,$messa); 
+   if ($messa<>imok) $error=true;
+   // Если вторая выборка успешна, то анализируем выбранные записи
+   else if (count($table)>0)
+   {
+      $pass=2; // будем анализировать вторую выборку
+      $TestPoint=noPid16TestBase($pdo,$TestPoint,$table,$pass,$messa); 
+      // Если тест с ошибкой, то готовим сообщение
+      if ($messa<>imok) $error=true; 
+   }
+}
 // Освобождаем память
 unset($Arti); unset($pdo); unset($table);
 // Возвращаем сообщение
@@ -65,7 +78,7 @@ function get16TestBase($pdo,$TestPoint,&$messa)
    try
    {
       $pdo->beginTransaction();
-      $cSQL='SELECT uid FROM stockpw WHERE (uid > '.$TestPoint.') AND (uid < '.$LastPoint.')';
+      $cSQL='SELECT uid,pid FROM stockpw WHERE (uid > '.$TestPoint.') AND (uid < '.$LastPoint.')';
       $stmt = $pdo->query($cSQL);
       $table = $stmt->fetchAll();
       $pdo->commit();
@@ -77,5 +90,56 @@ function get16TestBase($pdo,$TestPoint,&$messa)
       if ($pdo->inTransaction()) $pdo->rollback();
    }
    return $table;
+}
+// ****************************************************************************
+// *        Проверить все выбранные записи, если есть неверным pid-ом,        *
+// *              удалить их. Изменить проверенный uid.                       *
+// ****************************************************************************
+function noPid16TestBase($pdo,$TestPoint,$tableCtrl,$pass,&$messa) 
+{
+   $table=array();
+   $uid=$TestPoint;
+   try
+   {
+      $messa=imok;
+      $pdo->beginTransaction();
+      foreach ($tableCtrl as $val) 
+      {
+         $uid=$val[0];
+         $pid=$val[1];
+         \ttools\PutString($pass.': $uid='.$uid.'  $pid='.$pid,'proba.txt');
+         // Проверяем правильность pid
+         if ($pid==0)
+         {
+            if (($uid==1)||($uid==21)) { /* это "ittve.me" или "ittve.end" */ }
+            else
+            {
+               $messa="Назначен нулевой pid";  
+            }
+         }
+         // Проверяем запись по родительскому идентификатору
+         else
+         {
+            $cSQL='SELECT uid FROM stockpw WHERE uid = '.$pid;
+            $stmt = $pdo->query($cSQL);
+            $table = $stmt->fetchAll();
+            $count=count($table);
+            if ($count==0)
+            {
+               $messa='Неверный $pid='.$pid.' для $uid='.$uid;
+               \ttools\PutString($messa,'proba.txt');
+            }
+         }  
+      }
+      $pdo->commit();
+      //if ($pass==2) $messa='ytn'.imok;
+      //if ($pass==1) $messa='yeee111tn'.imok;
+   } 
+   catch (\Exception $e) 
+   {
+      $messa=$e->getMessage();
+      if ($pdo->inTransaction()) $pdo->rollback();
+   }
+   return $uid;
 }
 // *********************************************************** TestBase.php ***
