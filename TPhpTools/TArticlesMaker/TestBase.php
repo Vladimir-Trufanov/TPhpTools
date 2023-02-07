@@ -41,7 +41,7 @@ if ($messa<>imok) $error=true;
 else if (count($table)>0)
 {
    $pass=1; // будем анализировать первую выборку
-   $TestPoint=noPid16TestBase($pdo,$TestPoint,$table,$pass,$messa); 
+   $TestPoint=noPid16TestBase($pdo,$TestPoint,$table,$pass,$messa,$Arti); 
    // Если тест с ошибкой, то готовим сообщение
    if ($messa<>imok) $error=true; 
 }
@@ -55,7 +55,7 @@ else
    else if (count($table)>0)
    {
       $pass=2; // будем анализировать вторую выборку
-      $TestPoint=noPid16TestBase($pdo,$TestPoint,$table,$pass,$messa); 
+      $TestPoint=noPid16TestBase($pdo,$TestPoint,$table,$pass,$messa,$Arti); 
       // Если тест с ошибкой, то готовим сообщение
       if ($messa<>imok) $error=true; 
    }
@@ -95,10 +95,12 @@ function get16TestBase($pdo,$TestPoint,&$messa)
 // *        Проверить все выбранные записи, если есть неверным pid-ом,        *
 // *              удалить их. Изменить проверенный uid.                       *
 // ****************************************************************************
-function noPid16TestBase($pdo,$TestPoint,$tableCtrl,$pass,&$messa) 
+function noPid16TestBase($pdo,$TestPoint,$tableCtrl,$pass,&$messa,$Arti) 
 {
+   define("uidWithInvalidPid",-21); // uid c неверным pid-ом
    $table=array();
    $uid=$TestPoint;
+   $errorUid=uidWithInvalidPid; // uid c неверным pid-ом
    try
    {
       $messa=imok;
@@ -124,16 +126,20 @@ function noPid16TestBase($pdo,$TestPoint,$tableCtrl,$pass,&$messa)
             $stmt = $pdo->query($cSQL);
             $table = $stmt->fetchAll();
             $count=count($table);
-            if ($count==0)
-            {
-               $messa='Неверный $pid='.$pid.' для $uid='.$uid;
-               \ttools\PutString($messa,'proba.txt');
-            }
+            // Отмечаем неверный uid и выходим из цикла 
+            if ($count==0) {$errorUid=$uid; break;}
          }  
       }
       $pdo->commit();
-      //if ($pass==2) $messa='ytn'.imok;
-      //if ($pass==1) $messa='yeee111tn'.imok;
+      // Удаляем запись по идентификатору uid c неверным pid-ом: в случае 
+      // успешного удаления функция возвращает сообщение, что все хорошо, 
+      // иначе сообщение об ошибке 
+      if ($errorUid!=uidWithInvalidPid)
+      {
+         $messa='Неверный $pid='.$pid.' для $uid='.$uid.'.  Удаляем!';
+         //\ttools\PutString($messa,'proba.txt');
+         $messa=$Arti->DelRecord($pdo,$uid);
+      }
    } 
    catch (\Exception $e) 
    {

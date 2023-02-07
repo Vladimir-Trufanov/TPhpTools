@@ -140,8 +140,10 @@ class ArticlesMaker
                else 
                {
                   console.log('в коне '+parm.TestPoint);
+                  // Отмечаем последний проверенный uid
                   localStorage.setItem('TestPoint',parm.TestPoint);
-                  Info_Info(parm.messa);
+                  // Выводим сообщение, что все хорошо
+                  // Info_Info(parm.messa); 
                }
             }
          });

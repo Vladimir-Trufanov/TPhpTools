@@ -106,9 +106,6 @@ class TinyGallery
    protected $fileStyle;        // Файл стилей элементов класса
    protected $apdo;             // Подключение к базе данных материалов
    protected $menu;             // Управляющее меню в подвале
-   //protected $nym;      // Префикс имен файлов для фотографий галереи и материалов
-   //protected $pid;      // Идентификатор группы текущего материала
-   //protected $uid;      // Идентификатор текущего материала
 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($SiteRoot,$urlHome,
@@ -161,7 +158,7 @@ class TinyGallery
       // кукиса и начала редактирования материала
       if ((\prown\getComRequest('nsnCue')<>NULL)&&
       (\prown\getComRequest('nsnName')<>NULL)&&
-      (\prown\getComRequest('nsnGru')<>NULL)&&
+      (\prown\getComRequest('nsnGru')<>NoDefine)&&
       (\prown\getComRequest('nsnDate')<>NULL))
       {
          // Делаем новую запись в базе данных
@@ -546,6 +543,13 @@ class TinyGallery
    // *************************************************************************
    private function WorkTiny_mmlNaznachitStatyu($messa)
    {
+   
+      if (\prown\getComRequest('nsnGru')==NoDefine)
+      {
+         ?> <script> 
+            $(document).ready(function() {Error_Info('Группа материалов не назначена!');})
+         </script> <?php
+      }
       // Проверяем и учитываем уже выбранные данные
       if (\prown\getComRequest('nsnName')==NULL) $nsnName='';
       else $nsnName='value="'.\prown\getComRequest('nsnName').'"';
