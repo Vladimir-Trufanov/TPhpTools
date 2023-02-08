@@ -147,6 +147,12 @@ class TinyGallery
    // *************************************************************************
    private function ZeroEditSpace()
    {
+   
+      //if (IsSet($_POST["MAX_FILE_SIZE"])) 
+      //MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
+   
+   
+   
       // Если выбран материал (транслит) для редактирования, то готовим 
       // установку кукиса на данный материал. Материал мог быть выбран при 
       // выполнении методов:
@@ -351,8 +357,48 @@ class TinyGallery
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
       // Подключаем управляющее меню в подвале
-      $menu=new MenuLeader(kwintiny,$this->urlHome);
-      $menu->Menu();
+      //$menu=new MenuLeader(kwintiny,$this->urlHome);
+      //$menu->Menu();
+
+   
+
+
+
+
+   $delta='action="SignaPhoto.php"';   
+   $delta='';   
+   echo '
+      <div id="InfoLead">
+      <form '.$delta.' method="POST" enctype="multipart/form-data"> 
+      <input type="hidden" name="MAX_FILE_SIZE" value="3000024"/> 
+      <input type="file"   id="my_hidden_file" 
+         accept="image/jpeg,image/png,image/gif" 
+         name="loadimg" onchange="alf2LoadFile();"/>  
+      <input type="submit" id="my_hidden_load" value="ssubmit">  
+      </form>
+      </div>
+   ';
+   echo '
+      <button id="bLoadImg"  class="navButtons" onclick="alf1FindFile()"  
+      title="Загрузить изображение">
+      <i id="iLoadImg" class="fa fa-file-image-o fa-3x" aria-hidden="true"></i>
+      </button>
+   ';
+   
+   if (IsSet($_POST["MAX_FILE_SIZE"]))
+   {
+      echo   'MAX_FILE_SIZE';
+   }
+   else echo '-------------';  
+   // MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
+
+      
+      
+      
+      
+      
+      
+      
    echo '</div>';
    }
 

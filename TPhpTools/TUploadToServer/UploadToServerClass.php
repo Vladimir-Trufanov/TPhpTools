@@ -84,8 +84,9 @@ class UploadToServer
       $this->_tmpdir = ini_get('upload_tmp_dir');
       $this->_uploaded = $_FILES;
       // Трассируем установленные свойства
-      /*
       \prown\ConsoleLog('$this->_destination='.$this->_destination); 
+      \prown\ConsoleLog('$this->_name='.$this->_name); 
+      /*
       \prown\ConsoleLog('$this->_max='.$this->_max); 
       \prown\ConsoleLog('$this->_maxphp='.$this->_maxphp); 
       \prown\ConsoleLog('$this->_prefix='.$this->_prefix); 

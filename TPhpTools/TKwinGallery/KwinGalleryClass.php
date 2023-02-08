@@ -55,6 +55,7 @@ require_once pathPhpPrown."/CommonPrown.php";
 // Подгружаем нужные модули библиотеки прикладных классов
 require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 require_once pathPhpTools."/CommonTools.php";
+require_once pathPhpTools."/TKwinGallery/KwinUpload.php";
 
 class KwinGallery
 {
@@ -69,11 +70,12 @@ class KwinGallery
    protected $urlHome;   // Начальная страница сайта
 
    // Образец массива элементов галереи
+   /*
    protected $galleryX = array(
       "gallidir"     => "ittveEdit",
       "nym"          => "ittve",
       "pid"          => 2,
-      "uid"          => 25,
+      "uid"          => 30,
       "gallery" => array(
          array(
          "Comment"  => "Ночная прогулка по Ладоге до рассвета и подъёма настроения.",
@@ -86,6 +88,20 @@ class KwinGallery
          array(
          "Comment"  => "'С заботой и к мамам' - такой мамочкин хвостик.",
          "FileName" => "С-заботой-и-к-мамам.jpg"
+         ),
+      )
+   );
+   */
+   // Образец массива элементов галереи
+   protected $galleryX = array(
+      "gallidir"     => "ittveEdit",
+      "nym"          => "ittve",
+      "pid"          => 2,
+      "uid"          => 30,
+      "gallery" => array(
+         array(
+         "Comment"  => "Ночная прогулка по Ладоге до рассвета и подъёма настроения.",
+         "FileName" => "Подъём-настроения.jpg"
          ),
       )
    );
@@ -163,6 +179,9 @@ class KwinGallery
       // загружаем из класса 
       CompareCopyRoot('sampo.jpg',$this->classdir,$this->gallidir);
       CompareCopyRoot('SaveStuff.php',$this->classdir);
+      // Если файл был загружен во временное хранилище, то перегружаем его
+      // на сервер
+      ifKwinUpload($this->SiteRoot,$this->gallidir);
    }
    // *************************************************************************
    // *                          Представить массив галереи                   *
@@ -191,7 +210,8 @@ class KwinGallery
          $this->GViewImage($pref.$aGallery[$i]["FileName"],$aGallery[$i]["Comment"]);
          if ($GalleryMode=mwgEditing) 
          {
-            if ($i==0) $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
+            //if ($i==0) $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
+            if ($i==0) $this->GLoadImage($this->gallidir.'/'.'ProbaImg.png');
          }
       }
    

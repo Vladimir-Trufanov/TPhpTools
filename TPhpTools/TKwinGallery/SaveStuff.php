@@ -76,9 +76,9 @@ $Piati=0; //count($matches);
 
 // Подключаем объект для работы с базой данных материалов
 // (при необходимости создаем базу данных материалов)
-//$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-//$Arti=new ttools\ArticlesMaker($basename,$username,$password);
-//$pdo=$Arti->BaseConnect();
+$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
+$Arti=new ttools\ArticlesMaker($basename,$username,$password);
+$pdo=$Arti->BaseConnect();
 // Выбираем запись по идентификатору группы материалов
 //$table=$Arti->SelRecord($pdo,$_POST['idCue']); 
 // Определяем количество найденных записей
@@ -120,13 +120,13 @@ function getImgLoad($GalleryText,$nym,$pid,$uid)
    $aImgLoad=array();
    // Формируем префикс для поиска
    $pref=$nym.$pid.'-'.$uid.'-'; $point=strlen($pref);
-   //\ttools\PutString('$pref='.$pref,'getImgLoad.txt');
+   \ttools\PutString('$pref='.$pref);
    $pattern='/'.$pref.'([0-9a-zA-Zа-яёА-ЯЁ\.-]+)(jpg|png|jpeg|gif)/u';
    preg_match_all($pattern,$GalleryText,$matches,PREG_SET_ORDER);
    foreach ($matches as $val) 
    {
       $FileName=substr($val[0],$point);
-      //\ttools\PutString('$FileName='.$FileName,'getImgLoad.txt');
+      \ttools\PutString('$FileName='.$FileName);
    }
 }
 
@@ -143,7 +143,7 @@ function getComLoad($GalleryText)
    {
       $Comment=substr($val[0],$point);
       $Comment=substr($Comment,0,strlen($Comment)-3);
-      //\ttools\PutString('$Comment='.$Comment,'getComLoad.txt');
+      \ttools\PutString('$Comment='.$Comment);
    }
 }
 // ********************************************************** SaveStuff.php ***
