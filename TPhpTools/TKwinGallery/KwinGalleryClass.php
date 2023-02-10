@@ -52,8 +52,11 @@ define ("mwgEditing", 2);   // редактирование
 
 // Подгружаем нужные модули библиотеки прикладных функций
 require_once pathPhpPrown."/CommonPrown.php";
+require_once pathPhpPrown."/getTranslit.php";
+require_once pathPhpPrown."/MakeCookie.php";
 // Подгружаем нужные модули библиотеки прикладных классов
 require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
+require_once pathPhpTools."/TUploadToServer/UploadToServerClass.php";
 require_once pathPhpTools."/CommonTools.php";
 require_once pathPhpTools."/TKwinGallery/KwinUpload.php";
 
@@ -116,6 +119,10 @@ class KwinGallery
       $this->uid=$uid;                              // идентификатор текущей статьи 
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
+      // Формируем начальный кукис изображения для редактирования
+      $this->EditImg=\prown\MakeCookie('EditImg','sampo.jpg',tStr,true);     
+      // Поднимаем из кукиса имя загруженного изображения
+      $this->EditImg=\prown\MakeCookie('EditImg');
 
       // Выполняем действия на странице до отправления заголовков страницы: 
       // (устанавливаем кукисы и т.д.)                  
@@ -181,7 +188,7 @@ class KwinGallery
       CompareCopyRoot('SaveStuff.php',$this->classdir);
       // Если файл был загружен во временное хранилище, то перегружаем его
       // на сервер
-      ifKwinUpload($this->SiteRoot,$this->gallidir);
+      ifKwinUpload($this->SiteRoot,$this->gallidir,$this->nym,$this->pid,$this->uid);
    }
    // *************************************************************************
    // *                          Представить массив галереи                   *
@@ -211,7 +218,8 @@ class KwinGallery
          if ($GalleryMode=mwgEditing) 
          {
             //if ($i==0) $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
-            if ($i==0) $this->GLoadImage($this->gallidir.'/'.'ProbaImg.png');
+            //if ($i==0) $this->GLoadImage($this->gallidir.'/'.'ProbaImg.png');
+            if ($i==0) $this->GLoadImage($this->gallidir.'/'.$this->EditImg);
          }
       }
    
@@ -303,7 +311,7 @@ class KwinGallery
       <input type="file"       name="IMG"           id="infCard"
          accept="image/jpeg,image/png,image/gif" 
          onchange="readFile(this);">
-      <img id="imgCardi" src="'.$FileName.'" alt="FileName">
+      <img id="imgCardi" src="'.$FileName.'" alt="'.$FileName.'">
       <textarea class="taCard" name="AREAM">Текст комментария</textarea>
       <input type="submit"     name="SUBMI"     id="insCard" value="Загрузить">
       </form>

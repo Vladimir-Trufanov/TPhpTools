@@ -106,6 +106,9 @@ class TinyGallery
    protected $fileStyle;        // Файл стилей элементов класса
    protected $apdo;             // Подключение к базе данных материалов
    protected $menu;             // Управляющее меню в подвале
+   protected $Galli;            // Объект управления изображениями в галерее
+   protected $pidEdit;          // Идентификатор группы материалов в базе данных
+   protected $uidEdit;          // Идентификатор материала
 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($SiteRoot,$urlHome,
@@ -115,6 +118,8 @@ class TinyGallery
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
       $this->editdir=editdir; 
+      $this->pidEdit=-1; 
+      $this->uidEdit=-1; 
       // Принимаем путь к каталогу файлов класса
       $this->classdir=pathPhpTools.'/TTinyGallery';
       // Регистрируем объект по работе с базой данных материалов
@@ -147,6 +152,11 @@ class TinyGallery
    // *************************************************************************
    private function ZeroEditSpace()
    {
+      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      CompareCopyRoot('WorkTiny.css',$this->classdir,$this->editdir);
+      CompareCopyRoot('WorkTiny.js',$this->classdir,$this->editdir);
    
       //if (IsSet($_POST["MAX_FILE_SIZE"])) 
       //MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
@@ -184,11 +194,45 @@ class TinyGallery
       {
          $this->Arti->cookieGetPunktMenu($getArti); 
       }
-      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
-      // (при его отсутствии, при несовпадении размеров или старой дате) 
-      // загружаем из класса 
-      CompareCopyRoot('WorkTiny.css',$this->classdir,$this->editdir);
-      CompareCopyRoot('WorkTiny.js',$this->classdir,$this->editdir);
+
+
+   // id=WorkTiny ------------------------------- id=KwinGallery --------------
+   // .------------------------------------------.                            .                        
+   // . id=NameGru                    id=NameArt .                            .
+   // .------------------------------------------.                            .
+   // .id=frmTinyText ---------------------------.                            .
+   // .                                          .                            .
+   // . id=mytextarea                            .                            .
+   // .                                          .                            .
+   // .                                          .                            .
+   // id=FooterTiny -----------------------------.                            .
+   // . id=UlTiny                                .                            .
+   // .                                          .                            .
+   // -------------------------------------------------------------------------
+
+   // Если был выбран режим сохранения отредактированного материала, 
+   // то выбираем его из запроса и сохраняем    
+   $contentNews=\prown\getComRequest('mytextarea');
+   if ($contentNews<>NULL)
+   {
+      $contentsOut=htmlentities($contentNews);
+      //$this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
+   }
+   // Вытаскиваем материал для редактирования
+   $table=$this->Arti->SelUidPid
+      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contentsIn);
+   // Запоминаем в объекте текущий материал
+   $this->contents=html_entity_decode($contentsIn);
+   $this->NameGru=$NameGru;
+   $this->NameArt=$NameArt;
+   $this->DateArt=$DateArt;
+   $this->pidEdit=$pidEdit; 
+   $this->uidEdit=$uidEdit; 
+
+      // Cоздаем объект для управления изображениями в галерее, связанной с 
+      // материалами сайта из базы данных
+      $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
+
    }
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
@@ -256,36 +300,6 @@ class TinyGallery
    // *************************************************************************
    public function OpenEditSpace()
    {
-   // id=WorkTiny ------------------------------- id=KwinGallery --------------
-   // .------------------------------------------.                            .                        
-   // . id=NameGru                    id=NameArt .                            .
-   // .------------------------------------------.                            .
-   // .id=frmTinyText ---------------------------.                            .
-   // .                                          .                            .
-   // . id=mytextarea                            .                            .
-   // .                                          .                            .
-   // .                                          .                            .
-   // id=FooterTiny -----------------------------.                            .
-   // . id=UlTiny                                .                            .
-   // .                                          .                            .
-   // -------------------------------------------------------------------------
-
-   // Если был выбран режим сохранения отредактированного материала, 
-   // то выбираем его из запроса и сохраняем    
-   $contentNews=\prown\getComRequest('mytextarea');
-   if ($contentNews<>NULL)
-   {
-      $contentsOut=htmlentities($contentNews);
-      //$this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
-   }
-   // Вытаскиваем материал для редактирования
-   $table=$this->Arti->SelUidPid
-      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contentsIn);
-   // Запоминаем в объекте текущий материал
-   $this->contents=html_entity_decode($contentsIn);
-   $this->NameGru=$NameGru;
-   $this->NameArt=$NameArt;
-   $this->DateArt=$DateArt;
    // Включаем в разметку див галереи изображений 
    echo '<div id="KwinGallery">'; 
       if (\prown\isComRequest(mmlVybratStatyuRedakti))
@@ -303,7 +317,7 @@ class TinyGallery
       // В обычном режиме
       else
       {
-         $this->KwinGallery_main($pidEdit,$uidEdit);
+         $this->KwinGallery_main($this->pidEdit,$this->uidEdit);
       }
       // В обычном режиме
       //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
@@ -652,23 +666,18 @@ class TinyGallery
    // *************************************************************************
    private function KwinGallery_main($pidEdit,$uidEdit)
    {
-      // Cоздаем объект для управления изображениями в галерее, связанной с 
-      // материалами сайта из базы данных
-      $apdo=$this->Arti->BaseConnect();
-      $Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
-
       // Если был выбран режим сохранения отредактированного материала, 
       // то сохраняем галерею фотографий текущей статьи    
       $contentNews=\prown\getComRequest('mytextarea');
       if ($contentNews<>NULL)
       {
-         $Galli->UpdateImg($this->apdo);
+         $this->Galli->UpdateImg($this->apdo);
          // $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
       }
 
       // Показываем галерею изображений
-      //$Galli->ViewGalleryAsArray();
-      $Galli->ViewGallery(NULL,mwgEditing);
+      //$this->Galli->ViewGalleryAsArray();
+      $this->Galli->ViewGallery(NULL,mwgEditing);
       /*
       $pref=editdir.nym.pid.'-'.uid.'-';
       $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";

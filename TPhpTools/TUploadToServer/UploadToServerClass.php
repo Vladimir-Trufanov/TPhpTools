@@ -146,7 +146,7 @@ class UploadToServer
                   if ($this->_name=='') $name=$field['name'];
                   else
                   {
-                     $this->_type=substr($field['type'],strpos($field['type'],'/')+1);
+                     $this->_type=mb_strtolower(substr($field['name'],strpos($field['name'],'.')+1));
                      $name=$this->_name.'.'.$this->_type;
                   }
                   // Перемещаем файл и присваиваем назначенное имя

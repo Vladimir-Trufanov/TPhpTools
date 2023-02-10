@@ -6,16 +6,29 @@
 // * TKwinGallery                                Переместить загруженный файл *
 // *                                        из временного хранилища на сервер *
 // *                                                                          *
-// * v1.0, 08.02.2023                              Автор:       Труфанов В.Е. *
+// * v1.0, 09.02.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  23.02.2022 *
 // ****************************************************************************
 
-function ifKwinUpload($SiteRoot,$gallidir)
+function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid)
 {
+   // Инициируем префикс, имя файла, расширение 
+   $pref=$nym.$pid.'-'.$uid.'-'; $NameLoadp='NoDefine'; $Ext='nodef';
+   // Ловим момент, когда файл загружен во временное хранилище
    if (IsSet($_POST["MAX_FILE_SIZE"])) 
-   MakeKwinUpload($SiteRoot,$gallidir);
+   {
+      // Перебрасываем файл из временного хранилища
+      MakeKwinUpload($SiteRoot,$gallidir,$pref,$NameLoadp,$Ext);
+      // Отмечаем новое имя загруженного файла
+      \prown\MakeCookie('EditImg',$pref.$NameLoadp.'.'.$Ext,tStr);
+      // Обновляем изображение
+      ?> <script> 
+         niname="<?php echo $pref.$NameLoadp;?>";
+         $('#imgCardi').attr('src','ittveEdit/'+niname); 
+      </script> <?php
+   }
 }
-function MakeKwinUpload($SiteRoot,$gallidir)
+function MakeKwinUpload($SiteRoot,$gallidir,&$pref,&$NameLoadp,&$Ext)
 {
    // Создаем каталог для хранения изображений, если его нет.
    //$modeDir=0777;
@@ -24,78 +37,48 @@ function MakeKwinUpload($SiteRoot,$gallidir)
    //if ($isDir===true)
    //{
    //}
-
-   //$field=current($_FILES);
-   //$type=substr($field['type'],strpos($field['type'],'/')+1);
-   //\prown\ConsoleLog('$type='.$type);
-
-   // Перемещаем оригинальное изображение
-   \prown\ConsoleLog('$SiteRoot='.$SiteRoot);
-   \prown\ConsoleLog('$gallidir='.$gallidir);
    
-   $InfoMess='NoDefine'; $Ext='nodef';
-   $NameLoadp='ProbaImg';
+   // Перемещаем оригинальное изображение
+   //\prown\ConsoleLog('$SiteRoot='.$SiteRoot);
+   //\prown\ConsoleLog('$gallidir='.$gallidir);
+   
+   $InfoMess='NoDefine'; 
    $imgDir=$SiteRoot.'/'.$gallidir;
-   if (MoveFromUpload($imgDir,$NameLoadp,$InfoMess,$Ext))
+   if (MoveFromUpload($imgDir,$pref,$NameLoadp,$Ext,$InfoMess,$FileName,$FileSize))
    {
-      \prown\ConsoleLog('Перемещено!');
+      //\prown\ConsoleLog('Перемещено!');
    }
    else
    {
-      \prown\ConsoleLog('Ошибка. '.$InfoMess);
+     // \prown\ConsoleLog('Ошибка. '.$InfoMess);
    }
-
-
-   //$PostFix='img';
-   //$PrefName=prown\MakeNumRID($imgDir,$PostFix,$type,true);
-   //$NameLoad=$PrefName.$PostFix;
-   //$localimg=$urlDir.'/'.$NameLoad.'.'.$type;
-   //$nameimg=$imgDir.'/'.$NameLoad.'.'.$type;
-   /*
-   if (MoveFromUpload($InfoMess,$imgDir,$NameLoad,$c_FileImg,'FileImg',$localimg))
-   {
-      // Создаем копию оригинального изображение для подписи
-      // Важно: здесь имена создаем через MakeNumRID, как и для оригинального
-      // изображения для того чтобы автоматически удалялся старый файл
-      $PostFix='proba';
-      $PrefName=prown\MakeNumRID($imgDir,$PostFix,$type,true);
-      $NameLoad=$PrefName.$PostFix;
-      $localimgp=$urlDir.'/'.$NameLoad.'.'.$type;
-      $nameimgp=$imgDir.'/'.$NameLoad.'.'.$type;
-      if (copy($nameimg,$nameimgp)) $c_FileProba=prown\MakeCookie('FileProba',$localimgp,tStr);
-      else $InfoMess=ajCopyImageNotCreate;
-   }
-   */
-   \prown\ConsoleLog('MakeKwinUpload');
+   //\prown\ConsoleLog('MakeKwinUpload');
 }
 // ****************************************************************************
 // *       Переместить загруженный файл из временного хранилища на сервер     *
 // ****************************************************************************
-function MoveFromUpload($imgDir,$NameLoadp,&$InfoMess,&$Ext)
+function MoveFromUpload($imgDir,$pref,&$NameLoadp,&$Ext,&$InfoMess,&$FileName,&$FileSize)
 {
-
-   
    //$one=serialize($_FILES);
    //\prown\ConsoleLog('$one:'.$one);
-   //$one=serialize($_FILES['loadimg']);
-   //\prown\ConsoleLog('$one:'.$one);
-   
-   
-   
-   
-   \prown\ConsoleLog('$_FILES["loadimg"]["name"]: '.$_FILES["loadimg"]["name"]);
-   \prown\ConsoleLog('$_FILES["loadimg"]["size"]: '.$_FILES["loadimg"]["size"]);
-
-
-
-
-   require_once(pathPhpTools."/TUploadToServer/UploadToServerClass.php");
+   //\prown\ConsoleLog('$_FILES["loadimg"]["name"]: '.$_FILES["loadimg"]["name"]);
+   //\prown\ConsoleLog('$_FILES["loadimg"]["size"]: '.$_FILES["loadimg"]["size"]);
    $Result=true;
+   // Получаем транслит имени загруженного файла и другие сведения
+                        //$this->_type=substr($field['type'],strpos($field['type'],'/')+1);
+
+   $FileName=$_FILES["loadimg"]["name"]; $FileName=substr($FileName,0,strpos($FileName,'.'));
+   $FileSize=$_FILES["loadimg"]["size"];
+   $NameLoadp=\prown\getTranslit($FileName);
+   //\prown\ConsoleLog('$FileName='.$FileName);
+   //\prown\ConsoleLog('$FileSize='.$FileSize);
+   //\prown\ConsoleLog('$NameLoadp='.$NameLoadp);
+
    // Перебрасываем файл  
-   $upload=new UploadToServer($imgDir,$NameLoadp);
+   $upload=new UploadToServer($imgDir,$pref.$NameLoadp);
    $InfoMess=$upload->move();
    $Ext=$upload->getExt(); 
-   \prown\ConsoleLog('$Ext='.$Ext);
+   //\prown\ConsoleLog('$Ext='.$Ext);
    unset($upload);
    // Если перемещение завершилось неудачно, то выдаем сообщение
    if ($InfoMess<>imok) $Result=false;
