@@ -7,7 +7,7 @@
 // *                 и галереи изображений, связанной с этим материалом (uid) *
 // *                                    из выбранной (указанной) группы (pid) *
 // *                                                                          *
-// * v2.0, 28.01.2022                              Автор:       Труфанов В.Е. *
+// * v2.0, 10.02.2022                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  18.12.2019 *
 // ****************************************************************************
 
@@ -22,6 +22,9 @@
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
  * articleSite  - тип базы данных (по сайту)
  * editdir      - каталог размещения файлов, связанных c материалом
+ * stylesdir    - каталог стилей элементов разметки и фонтов
+ * jsxdir       - каталог размещения файлов javascript
+ * 
  * nym          - префикс имен файлов для фотографий галереи и материалов
  * 
  * Пример создания объекта класса и порядок работы с ним:
@@ -32,8 +35,10 @@
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
  * // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker
  * define ("articleSite",'IttveMe'); 
- * // Указываем каталог размещения файлов, связанных c материалом
- * define("editdir",'ittveEdit');
+ * // Указываем каталоги размещения файлов
+ * define("editdir",'ittveEdit');  // файлы, связанные c материалом
+ * define("stylesdir",'Styles');   // стили элементов разметки и фонты
+ * define("jsxdir",'Jsx');         // файлы javascript
  * // Указываем префикс имен файлов для фотографий галереи и материалов
  * define('nym','ittve');
  *  
@@ -93,11 +98,15 @@ class TinyGallery
    protected $SiteRoot;         // Корневой каталог сайта
    protected $urlHome;          // Начальная страница сайта
    protected $editdir;          // Каталог размещения файлов, связанных c материалом
+   protected $stylesdir;        // Каталог размещения файлов со стилями элементов разметки и фонтов
+   protected $jsxdir;           // Каталог размещения файлов javascript
+
    protected $classdir;         // Каталог файлов класса
    protected $WorkTinyHeight;   // Высота рабочей области Tiny
    protected $FooterTinyHeight; // Высота подвала области редактирования
    protected $KwinGalleryWidth; // Ширина галереи изображений
    protected $EdIzm;            // Единица измерения заданных параметров
+   
    protected $Arti;             // Объект по работе с базой данных материалов
    protected $contents;         // Текущий материал
    protected $NameGru;          // Заголовок текущей группы материалов
@@ -106,6 +115,7 @@ class TinyGallery
    protected $fileStyle;        // Файл стилей элементов класса
    protected $apdo;             // Подключение к базе данных материалов
    protected $menu;             // Управляющее меню в подвале
+   
    protected $Galli;            // Объект управления изображениями в галерее
    protected $pidEdit;          // Идентификатор группы материалов в базе данных
    protected $uidEdit;          // Идентификатор материала
@@ -118,6 +128,8 @@ class TinyGallery
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
       $this->editdir=editdir; 
+      $this->stylesdir=stylesdir; 
+      $this->jsxdir=jsxdir; 
       $this->pidEdit=-1; 
       $this->uidEdit=-1; 
       // Принимаем путь к каталогу файлов класса
@@ -138,30 +150,43 @@ class TinyGallery
       // Трассируем установленные свойства
       /*
       \prown\ConsoleLog('$this->WorkTinyHeight='.$this->WorkTinyHeight); 
-      \prown\ConsoleLog('$this->FooterTinyHeight='.$this->FooterTinyHeight); 
-      \prown\ConsoleLog('$this->KwinGalleryWidth='.$this->KwinGalleryWidth); 
-      \prown\ConsoleLog('$this->EdIzm='.$this->EdIzm); 
       */
    }
    public function __destruct() 
    {
    }
+      
+   // ------------------------------------------------------------------------------------------------ ZERO ---
+
    // *************************************************************************
    // *   Выполнить действия на странице до отправления заголовков страницы:  *
    // *                         (установить кукисы и т.д.)                    *
    // *************************************************************************
    private function ZeroEditSpace()
+
+   // id=WorkTiny ------------------------------- id=KwinGallery --------------
+   // .------------------------------------------.                            .                        
+   // . id=NameGru                    id=NameArt .                            .
+   // .------------------------------------------.                            .
+   // .id=frmTinyText ---------------------------.                            .
+   // .                                          .                            .
+   // . id=mytextarea                            .                            .
+   // .                                          .                            .
+   // .                                          .                            .
+   // id=FooterTiny -----------------------------.                            .
+   // . id=UlTiny                                .                            .
+   // .                                          .                            .
+   // -------------------------------------------------------------------------
+
    {
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      CompareCopyRoot('WorkTiny.css',$this->classdir,$this->editdir);
-      CompareCopyRoot('WorkTiny.js',$this->classdir,$this->editdir);
+      CompareCopyRoot('WorkTiny.css',$this->classdir,$this->stylesdir);
+      CompareCopyRoot('WorkTiny.js',$this->classdir,$this->jsxdir);
    
       //if (IsSet($_POST["MAX_FILE_SIZE"])) 
       //MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
-   
-   
    
       // Если выбран материал (транслит) для редактирования, то готовим 
       // установку кукиса на данный материал. Материал мог быть выбран при 
@@ -188,52 +213,40 @@ class TinyGallery
          $this->Arti->InsertByTranslit($apdo,$Translit,$pid,$NameArt,$DateArt,$contents);
          // Готовим кукис текущего материала
          $getArti=$Translit;
-       }
+      }
       // Устанавливаем кукис на новый или выбранный материал
       if ($getArti<>NULL)
       {
          $this->Arti->cookieGetPunktMenu($getArti); 
       }
-
-
-   // id=WorkTiny ------------------------------- id=KwinGallery --------------
-   // .------------------------------------------.                            .                        
-   // . id=NameGru                    id=NameArt .                            .
-   // .------------------------------------------.                            .
-   // .id=frmTinyText ---------------------------.                            .
-   // .                                          .                            .
-   // . id=mytextarea                            .                            .
-   // .                                          .                            .
-   // .                                          .                            .
-   // id=FooterTiny -----------------------------.                            .
-   // . id=UlTiny                                .                            .
-   // .                                          .                            .
-   // -------------------------------------------------------------------------
-
-   // Если был выбран режим сохранения отредактированного материала, 
-   // то выбираем его из запроса и сохраняем    
-   $contentNews=\prown\getComRequest('mytextarea');
-   if ($contentNews<>NULL)
-   {
-      $contentsOut=htmlentities($contentNews);
-      //$this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
-   }
-   // Вытаскиваем материал для редактирования
-   $table=$this->Arti->SelUidPid
-      ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contentsIn);
-   // Запоминаем в объекте текущий материал
-   $this->contents=html_entity_decode($contentsIn);
-   $this->NameGru=$NameGru;
-   $this->NameArt=$NameArt;
-   $this->DateArt=$DateArt;
-   $this->pidEdit=$pidEdit; 
-   $this->uidEdit=$uidEdit; 
+      // Если был выбран режим сохранения отредактированного материала, 
+      // то выбираем его из запроса и сохраняем    
+      $contentNews=\prown\getComRequest('mytextarea');
+      if ($contentNews<>NULL)
+      {
+         $contentsOut=htmlentities($contentNews);
+         //$this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
+      }
+      // Вытаскиваем материал для редактирования
+      $table=$this->Arti->SelUidPid
+         ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contentsIn);
+      // Запоминаем в объекте текущий материал
+      $this->contents=html_entity_decode($contentsIn);
+      $this->NameGru=$NameGru;
+      $this->NameArt=$NameArt;
+      $this->DateArt=$DateArt;
+      $this->pidEdit=$pidEdit; 
+      $this->uidEdit=$uidEdit; 
 
       // Cоздаем объект для управления изображениями в галерее, связанной с 
       // материалами сайта из базы данных
       $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
-
+      // Подключаем управляющее меню в подвале
+      $this->menu=new MenuLeader(kwintiny,$this->urlHome);
    }
+   
+   // --------------------------------------------------------------------------------------- HEAD and LAST ---
+
    // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
    // *************************************************************************
@@ -241,10 +254,12 @@ class TinyGallery
    {
       // Настраиваемся на файлы стилей и js-скрипты
       $this->Arti->IniEditSpace();
-      $this->fileStyle=$this->editdir.'/WorkTiny.css';
+      
+      // <link rel="stylesheet" type="text/css" href="/Styles/WorkTiny.css">
+      $this->fileStyle='/'.$this->stylesdir.'/WorkTiny.css';
       echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
-      $this->fileStyle=$this->editdir.'/WorkTiny.js';
-      echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
+      // <script src="/Jsx/WorkTiny.js"></script>
+      $this->fileStyle='/'.$this->jsxdir.'/WorkTiny.js';
       echo '<script src="'.$this->fileStyle.'"></script>';
       // Настраиваем размеры частей рабочей области редактирования
       echo '
@@ -371,48 +386,37 @@ class TinyGallery
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
       // Подключаем управляющее меню в подвале
-      //$menu=new MenuLeader(kwintiny,$this->urlHome);
-      //$menu->Menu();
-
+      $this->menu->Menu();   
+      
+      /*
+      // Заплатка отладки загрузки изображения
+      $delta='action="SignaPhoto.php"';   
+      $delta='';   
+      echo '
+         <div id="InfoLead">
+         <form '.$delta.' method="POST" enctype="multipart/form-data"> 
+         <input type="hidden" name="MAX_FILE_SIZE" value="3000024"/> 
+         <input type="file"   id="my_hidden_file" 
+            accept="image/jpeg,image/png,image/gif" 
+            name="loadimg" onchange="alf2LoadFile();"/>  
+         <input type="submit" id="my_hidden_load" value="ssubmit">  
+         </form>
+         </div>
+      ';
+      echo '
+         <button id="bLoadImg"  class="navButtons" onclick="alf1FindFile()"  
+         title="Загрузить изображение">
+         <i id="iLoadImg" class="fa fa-file-image-o fa-3x" aria-hidden="true"></i>
+        </button>
+      ';
    
-
-
-
-
-   $delta='action="SignaPhoto.php"';   
-   $delta='';   
-   echo '
-      <div id="InfoLead">
-      <form '.$delta.' method="POST" enctype="multipart/form-data"> 
-      <input type="hidden" name="MAX_FILE_SIZE" value="3000024"/> 
-      <input type="file"   id="my_hidden_file" 
-         accept="image/jpeg,image/png,image/gif" 
-         name="loadimg" onchange="alf2LoadFile();"/>  
-      <input type="submit" id="my_hidden_load" value="ssubmit">  
-      </form>
-      </div>
-   ';
-   echo '
-      <button id="bLoadImg"  class="navButtons" onclick="alf1FindFile()"  
-      title="Загрузить изображение">
-      <i id="iLoadImg" class="fa fa-file-image-o fa-3x" aria-hidden="true"></i>
-      </button>
-   ';
-   
-   if (IsSet($_POST["MAX_FILE_SIZE"]))
-   {
-      echo   'MAX_FILE_SIZE';
-   }
-   else echo '-------------';  
-   // MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
-
-      
-      
-      
-      
-      
-      
-      
+      if (IsSet($_POST["MAX_FILE_SIZE"]))
+      {
+         echo   'MAX_FILE_SIZE';
+      }
+      else echo '-------------';  
+      // MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
+      */
    echo '</div>';
    }
 

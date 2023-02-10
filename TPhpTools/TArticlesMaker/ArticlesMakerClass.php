@@ -20,6 +20,8 @@
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
  * editdir      - каталог размещения файлов, относительно корневого
+ * stylesdir    - каталог стилей элементов разметки и фонтов
+ * imgdir       - каталог файлов служебных для сайта изображений
  *    
  * Пример создания объекта класса:
  * 
@@ -27,8 +29,10 @@
  * define ("pathPhpPrown",$SiteHost.'/TPhpPrown/TPhpPrown');
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
- * // Указываем каталог размещения файлов, связанных c материалом
- * define("editdir",'ittveEdit');
+ * // Указываем каталоги размещения файлов
+ * define("editdir",'ittveEdit');  // файлы, связанные c материалом
+ * define("stylesdir",'Styles');   // стили элементов разметки и фонты
+ * define("imgdir",'Images');      // служебные для сайта файлы изображений
  * 
  * // Cоздаем объект для управления материалами сайта в базе данных
  * $Arti=new ttools\ArticlesMaker($basename,$username,$password,$SiteRoot);
@@ -69,8 +73,11 @@ class ArticlesMaker
    public $kindMessage;         // Объект вывода сообщений;  
    public $getArti;             // Транслит выбранного материала
 
-   protected $editdir;          // Каталог размещения файлов, связанных c материалом
    protected $classdir;         // Каталог файлов класса
+   protected $editdir;          // Каталог размещения файлов, связанных c материалом
+   protected $stylesdir;        // Каталог размещения файлов со стилями элементов разметки
+   protected $imgdir;           // Каталог файлов служебных для сайта изображений
+
    protected $basename;         // База материалов: $_SERVER['DOCUMENT_ROOT'].'/itpw';
    protected $username;         // Логин для доступа к базе данных
    protected $password;         // Пароль
@@ -79,11 +86,14 @@ class ArticlesMaker
    public function __construct($basename,$username,$password) 
    {
       // Инициализируем свойства класса
-      $this->editdir  = editdir; 
-      $this->classdir=pathPhpTools.'/TArticlesMaker';
-      $this->basename = $basename;
-      $this->username = $username;
-      $this->password = $password;
+      $this->editdir     = editdir; 
+      $this->stylesdir   = stylesdir; 
+      $this->imgdir      = imgdir; 
+      $this->classdir    = pathPhpTools.'/TArticlesMaker';
+      
+      $this->basename    = $basename;
+      $this->username    = $username;
+      $this->password    = $password;
       $this->kindMessage = NULL;
       
       if (isset($_COOKIE['PunktMenu'])) 
@@ -234,6 +244,22 @@ class ArticlesMaker
       <?php
    }
    // *************************************************************************
+   // *   Выполнить действия на странице до отправления заголовков страницы:  *
+   // *                         (установить кукисы и т.д.)                    *
+   // *************************************************************************
+   private function ZeroEditSpace()
+   {
+      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      CompareCopyRoot('ArticlesMaker.css',$this->classdir,$this->stylesdir);
+      CompareCopyRoot('bgnoise_lg.jpg',$this->classdir,$this->imgdir);
+      CompareCopyRoot('icons.png',$this->classdir,$this->imgdir);
+      CompareCopyRoot('getNameCue.php',$this->classdir);
+      CompareCopyRoot('deleteArt.php',$this->classdir);
+      CompareCopyRoot('TestBase.php',$this->classdir);
+   }
+   // *************************************************************************
    // *       Подключить объект класса TNotice, который будет заниматься      *
    // *                        выводом всех сообщений                         *
    // *************************************************************************
@@ -313,32 +339,18 @@ class ArticlesMaker
       return $Result;
    }
    // *************************************************************************
-   // *   Выполнить действия на странице до отправления заголовков страницы:  *
-   // *                         (установить кукисы и т.д.)                    *
-   // *************************************************************************
-   private function ZeroEditSpace()
-   {
-      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
-      // (при его отсутствии, при несовпадении размеров или старой дате) 
-      // загружаем из класса 
-      CompareCopyRoot('ArticlesMaker.css',$this->classdir,$this->editdir);
-      CompareCopyRoot('bgnoise_lg.jpg',$this->classdir,$this->editdir);
-      CompareCopyRoot('icons.png',$this->classdir,$this->editdir);
-      CompareCopyRoot('getNameCue.php',$this->classdir);
-      CompareCopyRoot('deleteArt.php',$this->classdir);
-      CompareCopyRoot('TestBase.php',$this->classdir);
-   }
-   // *************************************************************************
    // *        Установить стили пространства редактирования материала         *
    // *************************************************************************
    public function IniEditSpace()
    {
       // Настраиваемся на файл стилей
-      $this->fileStyle=$this->editdir.'/ArticlesMaker.css';
+      // <link rel="stylesheet" type="text/css" href="/Styles/ArticlesMaker.css">
+      $this->fileStyle='/'.$this->stylesdir.'/ArticlesMaker.css';
       echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
+
       // Настраиваем фоны графическими файлами
-      $bgnoise_lg=$this->editdir.'/bgnoise_lg.jpg';
-      $icons=$this->editdir.'/icons.png';
+      $bgnoise_lg=$this->imgdir.'/bgnoise_lg.jpg';
+      $icons=$this->imgdir.'/icons.png';
       echo '
       <style>
       .accordion li > a span,

@@ -22,6 +22,9 @@
  * articleSite  - тип базы данных (по сайту)
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
+ * articleSite  - тип базы данных (по сайту)
+ * editdir      - каталог размещения файлов, связанных c материалом
+ * imgdir       - каталог файлов служебных для сайта изображений
  *    
  * Пример создания объекта класса:
  * 
@@ -29,6 +32,9 @@
  * define ("pathPhpPrown",$SiteHost.'/TPhpPrown/TPhpPrown');
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
+ * // Указываем каталоги размещения файлов
+ * define("editdir",'ittveEdit');  // файлы, связанные c материалом
+ * define("imgdir",'Images');      // служебные для сайта файлы изображений
  * // Указываем тип базы данных (по сайту) для управления классом ArticlesMaker
  * define ("articleSite",'IttveMe'); 
  * // Cоздаем объект для управления изображениями в галерее, связанной с 
@@ -64,7 +70,9 @@ class KwinGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $gallidir;  // Каталог для размещения файлов галереи и связанных материалов
+   protected $imgdir;    // каталог служебных изображений
    protected $classdir;  // Каталог класса
+
    protected $nym;       // Префикс имен файлов для фотографий галереи и материалов
    protected $pid;       // Идентификатор группы текущего материала
    protected $uid;       // Идентификатор текущего материала
@@ -113,6 +121,7 @@ class KwinGallery
    {
       // Инициализируем свойства класса
       $this->gallidir=$gallidir;                    // каталог файлов редактирования
+      $this->imgdir=imgdir;                         // каталог служебных изображений
       $this->classdir=pathPhpTools.'/TKwinGallery'; // каталог класса
       $this->nym=$nym;                              // префикс сайта (платформы)
       $this->pid=$pid;                              // идентификатор текущей группы статей
@@ -120,7 +129,7 @@ class KwinGallery
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
       // Формируем начальный кукис изображения для редактирования
-      $this->EditImg=\prown\MakeCookie('EditImg','sampo.jpg',tStr,true);     
+      $this->EditImg=\prown\MakeCookie('EditImg',$this->imgdir.'/sampo.jpg',tStr,true);     
       // Поднимаем из кукиса имя загруженного изображения
       $this->EditImg=\prown\MakeCookie('EditImg');
 
@@ -184,7 +193,7 @@ class KwinGallery
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      CompareCopyRoot('sampo.jpg',$this->classdir,$this->gallidir);
+      CompareCopyRoot('sampo.jpg',$this->classdir,$this->imgdir);
       CompareCopyRoot('SaveStuff.php',$this->classdir);
       // Если файл был загружен во временное хранилище, то перегружаем его
       // на сервер
@@ -217,9 +226,11 @@ class KwinGallery
          $this->GViewImage($pref.$aGallery[$i]["FileName"],$aGallery[$i]["Comment"]);
          if ($GalleryMode=mwgEditing) 
          {
-            //if ($i==0) $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
-            //if ($i==0) $this->GLoadImage($this->gallidir.'/'.'ProbaImg.png');
-            if ($i==0) $this->GLoadImage($this->gallidir.'/'.$this->EditImg);
+            // $pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
+            // $this->EditImg=\prown\MakeCookie('EditImg',$pref.'podyom-nastroeniya.jpg');
+
+            // $this->EditImg=\prown\MakeCookie('EditImg',$this->imgdir.'/sampo.jpg');
+            if ($i==0) $this->GLoadImage($this->EditImg);
          }
       }
    

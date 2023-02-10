@@ -21,6 +21,7 @@
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
  * editdir      - каталог размещения файлов, относительно корневого
+ * stylesdir    - каталог стилей элементов разметки и фонтов
  *    
  * Пример создания объекта класса:
  * 
@@ -30,6 +31,7 @@
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
  * // Указываем каталог размещения файлов, связанных c материалом
  * define("editdir",'ittveEdit');
+ * define("stylesdir",'Styles');   // стили элементов разметки и фонты
  * 
  * // Подключаем объект единообразного вывода сообщений
  * $note=new ttools\Notice();
@@ -96,13 +98,15 @@ class Notice
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
    protected $editdir;        // Каталог размещения файлов, необходимыъх классу
+   protected $stylesdir;      // Каталог размещения файлов со стилями элементов разметки
    protected $classdir;       // Каталог файлов класса
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct() 
    {
       // Инициализируем свойства класса
-      $this->editdir  = editdir; 
-      $this->classdir = pathPhpTools.'/TNotice';
+      $this->editdir   = editdir; 
+      $this->stylesdir = stylesdir; 
+      $this->classdir  = pathPhpTools.'/TNotice';
    }
    public function __destruct() 
    {
@@ -186,8 +190,13 @@ class Notice
    // *************************************************************************
    public function Init() 
    {
+      // Проверяем, нужно ли заменить файлы стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      $this->CompareCopyRoot('Lobster.ttf',$this->stylesdir);
+      // Подключаем шрифт
       // src: url(Styles/Lobster.ttf); 
-      $urlttf='url('.$this->editdir.'/Lobster.ttf)';
+      $urlttf='url('.$this->stylesdir.'/Lobster.ttf)';
       echo '
          <style>
          @font-face 
@@ -211,13 +220,6 @@ class Notice
       })
       </script>
       <?php
-      // Проверяем, нужно ли заменить файлы стилей в каталоге редактирования и,
-      // (при его отсутствии, при несовпадении размеров или старой дате) 
-      // загружаем из класса 
-      $this->CompareCopyRoot('Lobster.ttf',$this->editdir);
-      // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->editdir='.$this->editdir); 
-      \prown\ConsoleLog('$this->classdir='.$this->classdir); 
    }
    // *************************************************************************
    // *    Проверить существование, параметры и перебросит файл из каталога   *
