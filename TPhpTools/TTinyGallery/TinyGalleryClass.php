@@ -119,6 +119,8 @@ class TinyGallery
    protected $Galli;            // Объект управления изображениями в галерее
    protected $pidEdit;          // Идентификатор группы материалов в базе данных
    protected $uidEdit;          // Идентификатор материала
+   
+   protected $DelayedMessage;   // Отложенное сообщение
 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($SiteRoot,$urlHome,
@@ -144,13 +146,14 @@ class TinyGallery
       $this->EdIzm=$EdIzm;
       // Подключаемся к базе данных материалов
       $this->apdo=$this->Arti->BaseConnect();
+      // Инициируем отложенное сообщение, то есть сообщение, которое может быть
+      // выведено на фазе BODY процесса построения страницы сайта 
+      $this->DelayedMessage=imok;
       // Выполняем действия на странице до отправления заголовков страницы: 
       // (устанавливаем кукисы и т.д.)                  
       $this->ZeroEditSpace();
       // Трассируем установленные свойства
-      /*
-      \prown\ConsoleLog('$this->WorkTinyHeight='.$this->WorkTinyHeight); 
-      */
+      //\prown\ConsoleLog('$this->WorkTinyHeight='.$this->WorkTinyHeight); 
    }
    public function __destruct() 
    {
@@ -185,9 +188,6 @@ class TinyGallery
       CompareCopyRoot('WorkTiny.css',$this->classdir,$this->stylesdir);
       CompareCopyRoot('WorkTiny.js',$this->classdir,$this->jsxdir);
    
-      //if (IsSet($_POST["MAX_FILE_SIZE"])) 
-      //MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
-   
       // Если выбран материал (транслит) для редактирования, то готовим 
       // установку кукиса на данный материал. Материал мог быть выбран при 
       // выполнении методов:
@@ -219,16 +219,8 @@ class TinyGallery
       {
          $this->Arti->cookieGetPunktMenu($getArti); 
       }
-      // Если был выбран режим сохранения отредактированного материала, 
-      // то выбираем его из запроса и сохраняем    
-      $contentNews=\prown\getComRequest('mytextarea');
-      if ($contentNews<>NULL)
-      {
-         $contentsOut=htmlentities($contentNews);
-         //$this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
-      }
       // Вытаскиваем материал для редактирования
-      $table=$this->Arti->SelUidPid
+      $this->DelayedMessage=$this->Arti->SelUidPid
          ($this->apdo,$this->Arti->getArti,$pidEdit,$uidEdit,$NameGru,$NameArt,$DateArt,$contentsIn);
       // Запоминаем в объекте текущий материал
       $this->contents=html_entity_decode($contentsIn);
@@ -237,7 +229,6 @@ class TinyGallery
       $this->DateArt=$DateArt;
       $this->pidEdit=$pidEdit; 
       $this->uidEdit=$uidEdit; 
-
       // Cоздаем объект для управления изображениями в галерее, связанной с 
       // материалами сайта из базы данных
       $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
@@ -385,17 +376,8 @@ class TinyGallery
    
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
-        
-      if (IsSet($_POST["MAX_FILE_SIZE"]))
-      {
-         echo   'MAX_FILE_SIZE';
-      }
-      else echo '-------------';  
-      
       // Подключаем управляющее меню в подвале
       $this->menu->Menu(); 
-      // MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
-      //\prown\ViewGlobal(avgCOOKIE);
    echo '</div>';
    }
 
@@ -559,7 +541,10 @@ class TinyGallery
       //phpinfo();
 
       // Выводим заголовок статьи
-      $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
+      if ($this->DelayedMessage==imok)
+         $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
+      else 
+         $this->MakeTitle($this->DelayedMessage,ttError);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
          <form id="frmTinyText" method="post" action="'.$SaveAction.'">

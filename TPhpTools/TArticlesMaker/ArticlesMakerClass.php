@@ -63,7 +63,6 @@ elseif (articleSite==tbsIttvepw) require_once("CommonIttvePw.php");
 
 // Подгружаем нужные модули библиотеки прикладных функций
 require_once(pathPhpPrown."/MakeCookie.php");
-require_once(pathPhpPrown."/iniConstMem.php");
 // Подгружаем нужные модули библиотеки прикладных классов
 require_once(pathPhpTools."/CommonTools.php");
 
@@ -83,7 +82,7 @@ class ArticlesMaker
    protected $password;         // Пароль
    protected $fileStyle;        // Файл стилей
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct($basename,$username,$password) 
+   public function __construct($basename,$username,$password,$note) 
    {
       // Инициализируем свойства класса
       $this->editdir     = editdir; 
@@ -104,8 +103,6 @@ class ArticlesMaker
       $this->ZeroEditSpace();
       // Трассируем установленные свойства
       //\prown\ConsoleLog('$this->basename='.$this->basename); 
-      //\prown\ConsoleLog('$this->username='.$this->username); 
-      //\prown\ConsoleLog('$this->password='.$this->password); 
    }
    // *************************************************************************
    // *           Спрятать в __destruct обработку клика выбора раздела        *
@@ -128,7 +125,7 @@ class ArticlesMaker
          // Выбираем последний проверенный uid
          TestPoint=Number(localStorage.getItem('TestPoint'));
          if (Number.isNaN(TestPoint)) TestPoint=0;
-         console.log('в наче '+TestPoint);
+         //console.log('в наче '+TestPoint);
          // Делаем запрос на определение наименования раздела материалов
          pathphp="TestBase.php";
          $.ajax({
@@ -149,7 +146,7 @@ class ArticlesMaker
                // Иначе меняем значение проверенного uid-а
                else 
                {
-                  console.log('в коне '+parm.TestPoint);
+                  //console.log('в коне '+parm.TestPoint);
                   // Отмечаем последний проверенный uid
                   localStorage.setItem('TestPoint',parm.TestPoint);
                   // Выводим сообщение, что все хорошо
@@ -266,6 +263,11 @@ class ArticlesMaker
    public function setKindMessage($note)
    {
       $this->kindMessage = $note;
+   }
+   private function Alert($messa)
+   {
+      if ($this->kindMessage==NULL) \prown\Alert($messa);
+      else $this->kindMessage->Info($messa); 
    }
    // *************************************************************************
    // *           Сформировать строки меню по базе данных материалов          *
@@ -439,35 +441,40 @@ class ArticlesMaker
    // *************************************************************************
    public function SelUidPid($pdo,$getArti,&$pid,&$uid,&$NameGru,&$NameArt,&$DateArt,&$contents)
    {
+      // Так как функция запускается на фазе построения сайта ZERO, то по
+      // ошибке возвращается сообщение об этом, иначе возвращается "Все хорошо у меня"
+      $ErrMessage=imok;
       // Инициируем возвращаемые данные
       $pid=0; $uid=0; 
-      $NameGru='Материал для редактирования не выбран!'; $NameArt=''; $DateArt='';
-      // Выбираем по транслиту $pid,$uid,$NameArt
-      $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
-      $stmt=$pdo->query($cSQL);
-      $table=$stmt->fetchAll();
-      $count=count($table);
-      // Если найдена одна запись, то выбираем данные
-      if ($count>0)
+      $NameGru='Материал для редактирования не выбран!'; 
+      $contents='Новый материал'; 
+      $NameArt=''; $DateArt='';
+      if ($getArti==NULL) $ErrMessage='Транслит материала не определен';
+      else
       {
-         $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
-         $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
-         $contents=$table[0]['Art'];
-         // Добираем $NameGru
-         $table=$this->SelRecord($pdo,$pid); 
-         if (count($table)>0) $NameGru=$table[0]['NameArt'];
-         else \prown\Alert('Для статьи с Uid='.$uid.' неверный идентификатор группы: Pid='.$pid); 
+         // Выбираем по транслиту $pid,$uid,$NameArt
+         $cSQL='SELECT * FROM stockpw WHERE Translit="'.$getArti.'"';
+         $stmt=$pdo->query($cSQL);
+         $table=$stmt->fetchAll();
+         $count=count($table);
+         // Если найдена одна запись, то выбираем данные
+         if ($count>0)
+         {
+            $pid=$table[0]['pid']; $uid=$table[0]['uid']; 
+            $NameArt=$table[0]['NameArt']; $DateArt=$table[0]['DateArt'];
+            $contents=$table[0]['Art'];
+            // Добираем $NameGru
+            $table=$this->SelRecord($pdo,$pid); 
+            if (count($table)>0) $NameGru=$table[0]['NameArt'];
+            else $ErrMessage='Для статьи с Uid='.$uid.' неверный идентификатор группы: Pid='.$pid; 
+         }
+         // Если больше одной записи, то диагностируем ошибку
+         if ($count>1) $ErrMessage="В группе '".$NameGru."' статья '".$NameArt."' c дублированным транслитом: ".$getArti;
+         // Если не найдено записей, то диагностируем ошибку.
+         // На странице ситуация очевидна (на 27.01.2023)
+         else if ($count<1) $ErrMessage='Не найдено записей по транслиту: '.$getArti;
       }
-      // Если больше одной записи, то диагностируем ошибку
-      if ($count>1)
-      {
-         \prown\Alert("В группе '".$NameGru."' статья '".$NameArt."' c дублированным транслитом: ".$getArti); 
-      }
-      // Если не найдено записей, то диагностируем ошибку.
-      // Это сообщение сбрасываем в консоль, так как на странице ситуация 
-      // очевидна (на 27.01.2023)
-      else if ($count<1)
-         \prown\Alert('Не найдено записей по транслиту: '.$getArti);
+      return $ErrMessage;
    }
    // *************************************************************************
    // * Выбрать запись по идентификатору                                      *

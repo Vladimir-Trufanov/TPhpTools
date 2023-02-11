@@ -193,7 +193,7 @@ class Notice
       // Проверяем, нужно ли заменить файлы стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      $this->CompareCopyRoot('Lobster.ttf',$this->stylesdir);
+      CompareCopyRoot('Lobster.ttf',$this->classdir,$this->stylesdir);
       // Подключаем шрифт
       // src: url(Styles/Lobster.ttf); 
       $urlttf='url('.$this->stylesdir.'/Lobster.ttf)';
@@ -222,33 +222,16 @@ class Notice
       <?php
    }
    // *************************************************************************
-   // *    Проверить существование, параметры и перебросит файл из каталога   *
-   // *      класса в любой каталог относительно корневого каталога сайта     *
-   // *************************************************************************
-   private function CompareCopyRoot($Namef,$toDir='')
-   {
-      // Если каталог, в который нужно перебросить файл - корневой
-      if ($toDir=='') $thisdir=$toDir;
-      // Если каталог указан относительно корневого (без обратных слэшей !!!)
-      else $thisdir=$toDir.'/';
-      // Проверяем существование, параметры и перебрасываем файл
-      $fileStyle=$thisdir.$Namef;
-      clearstatcache($fileStyle);
-      $filename=$this->classdir.'/'.$Namef;
-      clearstatcache($filename);
-      if ((!file_exists($fileStyle))||
-      (filesize($filename)<>filesize($fileStyle))||
-      (filemtime($filename)>filemtime($fileStyle))) 
-      {
-         if (!copy($filename,$fileStyle))
-         \prown\Alert('Не удалось скопировать файл стилей '.$filename); 
-      }
-   }
-   // *************************************************************************
    // *                     Вывести информационное сообщение                  *
    // *************************************************************************
-   public function Info($messa,$title)
+   public function Info($messa,$title='')
    {
+      ?> <script> $(document).ready(function()
+      {
+         messa="<?php echo $messa;?>";
+         Info_Info(messa);
+      })
+      </script> <?php
    }
    // *************************************************************************
    // *                         Вывести сообщение об ошибке                   *

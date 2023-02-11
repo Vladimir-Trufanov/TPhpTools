@@ -60,6 +60,7 @@ define ("mwgEditing", 2);   // редактирование
 require_once pathPhpPrown."/CommonPrown.php";
 require_once pathPhpPrown."/getTranslit.php";
 require_once pathPhpPrown."/MakeCookie.php";
+require_once pathPhpPrown."/iniConstMem.php";
 // Подгружаем нужные модули библиотеки прикладных классов
 require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 require_once pathPhpTools."/TUploadToServer/UploadToServerClass.php";
@@ -130,17 +131,14 @@ class KwinGallery
       $this->urlHome=$urlHome; 
       // Формируем начальный кукис изображения для редактирования
       $this->EditImg=\prown\MakeCookie('EditImg',$this->imgdir.'/sampo.jpg',tStr,true);     
-      // Поднимаем из кукиса имя загруженного изображения
-      $this->EditImg=\prown\MakeCookie('EditImg');
-
+      // Если файл был загружен во временное хранилище, то перегружаем его
+      // на сервер. Поднимаем из кукиса имя загруженного изображения.
+      $this->EditImg=ifKwinUpload($this->SiteRoot,$this->gallidir,$this->nym,$this->pid,$this->uid);
       // Выполняем действия на странице до отправления заголовков страницы: 
       // (устанавливаем кукисы и т.д.)                  
       $this->ZeroEditSpace();
       // Трассируем установленные свойства
       //\prown\ConsoleLog('$this->gallidir='.$this->gallidir); 
-      //\prown\ConsoleLog('$this->nym='.$this->nym); 
-      //\prown\ConsoleLog('$this->pid='.$this->pid); 
-      //\prown\ConsoleLog('$this->uid='.$this->uid); 
    }
    public function __destruct() 
    {
@@ -195,9 +193,6 @@ class KwinGallery
       // загружаем из класса 
       CompareCopyRoot('sampo.jpg',$this->classdir,$this->imgdir);
       CompareCopyRoot('SaveStuff.php',$this->classdir);
-      // Если файл был загружен во временное хранилище, то перегружаем его
-      // на сервер
-      ifKwinUpload($this->SiteRoot,$this->gallidir,$this->nym,$this->pid,$this->uid);
    }
    // *************************************************************************
    // *                          Представить массив галереи                   *
@@ -230,7 +225,7 @@ class KwinGallery
             // $this->EditImg=\prown\MakeCookie('EditImg',$pref.'podyom-nastroeniya.jpg');
 
             // $this->EditImg=\prown\MakeCookie('EditImg',$this->imgdir.'/sampo.jpg');
-            if ($i==0) $this->GLoadImage($this->EditImg);
+            if ($i==0) $this->GLoadImage();
          }
       }
    
@@ -289,7 +284,7 @@ class KwinGallery
          '</div>';
    }
    
-   protected function GLoadImage($FileName)
+   protected function GLoadImage()
    {
       /**
        * Размещаем в форме поле для загрузки файла, а перед ним (иначе не будет
@@ -312,15 +307,21 @@ class KwinGallery
          <input type="file"   name="loadimg"  id="infCard"
             accept="image/jpeg,image/png,image/gif" 
             onchange="alf2LoadFile();"/>  
-         <img id="imgCardi" src="'.$FileName.'" alt="'.$FileName.'">
+         <img id="imgCardi" src="'.$this->EditImg.'" alt="'.$this->EditImg.'">
          <textarea class="taCard" name="AREAM">Текст комментария</textarea>
          <input type="submit" id="insCard" value="Загрузить">  
       ';
       echo '</form>';
+      // Обновляем изображение, если была загрузка изображения
+      if (IsSet($_POST["MAX_FILE_SIZE"])) 
+      {
+         ?> <script> 
+            niname="<?php echo $this->EditImg;?>";
+            $('#imgCardi').attr('src',niname); 
+         </script> <?php
+      }
       echo '</div>';
    }
-
-   
    // *************************************************************************
    // *     Сформировать определяющий массив для базы данных редактируемого   *
    // *     материала по образцу (выбирая данные из базы данных материалов):  *

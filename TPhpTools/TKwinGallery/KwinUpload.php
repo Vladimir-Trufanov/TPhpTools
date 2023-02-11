@@ -12,6 +12,7 @@
 
 function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid)
 {
+   $Result=\prown\MakeCookie('EditImg');
    // Инициируем префикс, имя файла, расширение 
    $pref=$nym.$pid.'-'.$uid.'-'; $NameLoadp='NoDefine'; $Ext='nodef';
    // Ловим момент, когда файл загружен во временное хранилище
@@ -20,8 +21,9 @@ function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid)
       // Перебрасываем файл из временного хранилища
       MakeKwinUpload($SiteRoot,$gallidir,$pref,$NameLoadp,$Ext);
       // Отмечаем новое имя загруженного файла
-      \prown\MakeCookie('EditImg',$gallidir.'/'.$pref.$NameLoadp.'.'.$Ext,tStr);
+      $Result=\prown\MakeCookie('EditImg',$gallidir.'/'.$pref.$NameLoadp.'.'.$Ext,tStr);
    }
+   return $Result;
 }
 
       // Обновляем изображение
