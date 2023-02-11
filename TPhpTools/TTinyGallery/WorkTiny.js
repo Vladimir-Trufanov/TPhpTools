@@ -82,7 +82,7 @@ function alf2LoadFile()
 // активировать клик для загрузки файла
 function alf1FindFile() 
 {
-   document.getElementById('my_hidden_file').click(); // alf2LoadFile()
+   document.getElementById('infCard').click(); // alf2LoadFile()
 } 
 
 // При изменении состояния input file активизировать кнопку "submit" для
@@ -92,7 +92,7 @@ function alf2LoadFile()
    // По нажатию кнопки "submit" отправляем запрос из формы на выполнение
    // модуля проверки параметров файла, загруженного во временное хранилище,
    // его переброски на постоянное хранение и переименование  
-   document.getElementById('my_hidden_load').click(); // "SignaUpload.php"
+   document.getElementById('insCard').click(); // "SignaUpload.php"
    // Удаляем старые файлы
    //alfEraseFiles();
 }

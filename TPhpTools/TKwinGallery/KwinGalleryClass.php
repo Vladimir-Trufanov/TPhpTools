@@ -297,37 +297,27 @@ class KwinGallery
        * Преимущество скрытого поля с именем MAX_FILE_SIZE в том, что PHP остановит
        * процесс загрузки файла при превышении размера
        * 
-       * При нажатии на кнопку 'submit' запрос страницы с четырьмя параметрами:
-       * http: ... .php ?MAX_FILE_SIZE=xx1 &IMG=aa2.jpg &AREAM=aa3 &SUBMI=aa4
+       * При нажатии на кнопку 'submit' происходит запрос с параметрами:
+       * http:... .php ?MAX_FILE_SIZE=3000024 &loadimg=... .jpg &AREAM= ... 
       **/
-      /*
+      echo '<div class="Card">';
       echo '
-      <div class="Card">
-      <form method="get" enctype="multipart/form-data">
-      <input type="hidden"     name="MAX_FILE_SIZE" id="inhCard" value="1600000">
-      <input type="file"       name="IMG"           id="infCard"
-         accept="image/jpeg,image/png,image/gif" 
-         onchange="alf2LoadFile(this);">
-      <img id="imgCardi" src="'.$FileName.'" alt="FileName">
-      <textarea class="taCard" name="AREAM">Текст комментария к картинке</textarea>
-      <input type="submit"     name="SUBMI"     id="insCard" value="Загрузить">
-      </form>
-      </div>
+         <button id="bLoadImg"  class="navButtons" onclick="alf1FindFile()"  
+         title="Загрузить изображение">Загрузить изображение
+        </button>
       ';
-      */
       echo '
-      <div class="Card">
-      <form method="get" enctype="multipart/form-data">
-      <input type="hidden"     name="MAX_FILE_SIZE" id="inhCard" value="1600000">
-      <input type="file"       name="IMG"           id="infCard"
-         accept="image/jpeg,image/png,image/gif" 
-         onchange="readFile(this);">
-      <img id="imgCardi" src="'.$FileName.'" alt="'.$FileName.'">
-      <textarea class="taCard" name="AREAM">Текст комментария</textarea>
-      <input type="submit"     name="SUBMI"     id="insCard" value="Загрузить">
-      </form>
-      </div>
+         <form method="post" enctype="multipart/form-data"> 
+         <input type="hidden" name="MAX_FILE_SIZE" value="3000024"/> 
+         <input type="file"   name="loadimg"  id="infCard"
+            accept="image/jpeg,image/png,image/gif" 
+            onchange="alf2LoadFile();"/>  
+         <img id="imgCardi" src="'.$FileName.'" alt="'.$FileName.'">
+         <textarea class="taCard" name="AREAM">Текст комментария</textarea>
+         <input type="submit" id="insCard" value="Загрузить">  
       ';
+      echo '</form>';
+      echo '</div>';
    }
 
    

@@ -385,38 +385,17 @@ class TinyGallery
    
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
-      // Подключаем управляющее меню в подвале
-      $this->menu->Menu();   
-      
-      /*
-      // Заплатка отладки загрузки изображения
-      $delta='action="SignaPhoto.php"';   
-      $delta='';   
-      echo '
-         <div id="InfoLead">
-         <form '.$delta.' method="POST" enctype="multipart/form-data"> 
-         <input type="hidden" name="MAX_FILE_SIZE" value="3000024"/> 
-         <input type="file"   id="my_hidden_file" 
-            accept="image/jpeg,image/png,image/gif" 
-            name="loadimg" onchange="alf2LoadFile();"/>  
-         <input type="submit" id="my_hidden_load" value="ssubmit">  
-         </form>
-         </div>
-      ';
-      echo '
-         <button id="bLoadImg"  class="navButtons" onclick="alf1FindFile()"  
-         title="Загрузить изображение">
-         <i id="iLoadImg" class="fa fa-file-image-o fa-3x" aria-hidden="true"></i>
-        </button>
-      ';
-   
+        
       if (IsSet($_POST["MAX_FILE_SIZE"]))
       {
          echo   'MAX_FILE_SIZE';
       }
       else echo '-------------';  
+      
+      // Подключаем управляющее меню в подвале
+      $this->menu->Menu(); 
       // MakeSignaUpload($InfoMess,$imgDir,$urlDir,$c_FileStamp,$c_FileImg,$c_FileProba);
-      */
+      //\prown\ViewGlobal(avgCOOKIE);
    echo '</div>';
    }
 

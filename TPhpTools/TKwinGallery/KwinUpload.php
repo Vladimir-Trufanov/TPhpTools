@@ -20,28 +20,21 @@ function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid)
       // Перебрасываем файл из временного хранилища
       MakeKwinUpload($SiteRoot,$gallidir,$pref,$NameLoadp,$Ext);
       // Отмечаем новое имя загруженного файла
-      \prown\MakeCookie('EditImg',$pref.$NameLoadp.'.'.$Ext,tStr);
-      // Обновляем изображение
-      ?> <script> 
-         niname="<?php echo $pref.$NameLoadp;?>";
-         $('#imgCardi').attr('src','ittveEdit/'+niname); 
-      </script> <?php
+      \prown\MakeCookie('EditImg',$gallidir.'/'.$pref.$NameLoadp.'.'.$Ext,tStr);
    }
 }
+
+      // Обновляем изображение
+      /*
+      //?> <script> 
+      //   niname="<?php echo $pref.$NameLoadp;?>";
+      //   $('#imgCardi').attr('src','ittveEdit/'+niname); 
+      //</script> <?php
+      */
+
 function MakeKwinUpload($SiteRoot,$gallidir,&$pref,&$NameLoadp,&$Ext)
 {
-   // Создаем каталог для хранения изображений, если его нет.
-   //$modeDir=0777;
-   //$isDir=prown\CreateRightsDir($imgDir,$modeDir,rvsReturn);
-   // Если с каталогом все в порядке, то будем перебрасывать файл на сервер
-   //if ($isDir===true)
-   //{
-   //}
-   
    // Перемещаем оригинальное изображение
-   //\prown\ConsoleLog('$SiteRoot='.$SiteRoot);
-   //\prown\ConsoleLog('$gallidir='.$gallidir);
-   
    $InfoMess='NoDefine'; 
    $imgDir=$SiteRoot.'/'.$gallidir;
    if (MoveFromUpload($imgDir,$pref,$NameLoadp,$Ext,$InfoMess,$FileName,$FileSize))
@@ -52,38 +45,23 @@ function MakeKwinUpload($SiteRoot,$gallidir,&$pref,&$NameLoadp,&$Ext)
    {
      // \prown\ConsoleLog('Ошибка. '.$InfoMess);
    }
-   //\prown\ConsoleLog('MakeKwinUpload');
 }
 // ****************************************************************************
 // *       Переместить загруженный файл из временного хранилища на сервер     *
 // ****************************************************************************
 function MoveFromUpload($imgDir,$pref,&$NameLoadp,&$Ext,&$InfoMess,&$FileName,&$FileSize)
 {
-   //$one=serialize($_FILES);
-   //\prown\ConsoleLog('$one:'.$one);
-   //\prown\ConsoleLog('$_FILES["loadimg"]["name"]: '.$_FILES["loadimg"]["name"]);
-   //\prown\ConsoleLog('$_FILES["loadimg"]["size"]: '.$_FILES["loadimg"]["size"]);
    $Result=true;
-   // Получаем транслит имени загруженного файла и другие сведения
-                        //$this->_type=substr($field['type'],strpos($field['type'],'/')+1);
-
    $FileName=$_FILES["loadimg"]["name"]; $FileName=substr($FileName,0,strpos($FileName,'.'));
    $FileSize=$_FILES["loadimg"]["size"];
    $NameLoadp=\prown\getTranslit($FileName);
-   //\prown\ConsoleLog('$FileName='.$FileName);
-   //\prown\ConsoleLog('$FileSize='.$FileSize);
-   //\prown\ConsoleLog('$NameLoadp='.$NameLoadp);
-
    // Перебрасываем файл  
    $upload=new UploadToServer($imgDir,$pref.$NameLoadp);
    $InfoMess=$upload->move();
    $Ext=$upload->getExt(); 
-   //\prown\ConsoleLog('$Ext='.$Ext);
    unset($upload);
    // Если перемещение завершилось неудачно, то выдаем сообщение
    if ($InfoMess<>imok) $Result=false;
-   // Перемещение файла на сервер выполнилось успешно, меняем кукис
-   //else $c_FileImg=prown\MakeCookie($NameCookie,$localimg,tStr);
    return $Result; 
 }
 
