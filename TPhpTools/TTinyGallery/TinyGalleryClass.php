@@ -229,9 +229,15 @@ class TinyGallery
       $this->DateArt=$DateArt;
       $this->pidEdit=$pidEdit; 
       $this->uidEdit=$uidEdit; 
-      // Cоздаем объект для управления изображениями в галерее, связанной с 
-      // материалами сайта из базы данных
-      $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
+      // Если нет отложенного сообщения, то создаем галерею 
+      // и выбираем другое возможное отложенное сообщение 
+      if ($this->DelayedMessage==imok)
+      {
+         // Cоздаем объект для управления изображениями в галерее, связанной с 
+         // материалами сайта из базы данных
+         $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
+         $this->DelayedMessage=$this->Galli->getDelayedMessage();
+      }
       // Подключаем управляющее меню в подвале
       $this->menu=new MenuLeader(kwintiny,$this->urlHome);
    }
@@ -643,9 +649,12 @@ class TinyGallery
          // $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
       }
 
-      // Показываем галерею изображений
-      //$this->Galli->ViewGalleryAsArray();
-      $this->Galli->ViewGallery(NULL,mwgEditing);
+      // Если нет отложенного сообщения, то показываем галерею изображений
+      if ($this->DelayedMessage==imok)
+      {
+         //$this->Galli->ViewGalleryAsArray();
+         $this->Galli->ViewGallery(NULL,mwgEditing);
+      }
       /*
       $pref=editdir.nym.pid.'-'.uid.'-';
       $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";

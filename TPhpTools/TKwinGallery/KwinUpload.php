@@ -10,7 +10,7 @@
 // * Copyright © 2022 tve                          Дата создания:  23.02.2022 *
 // ****************************************************************************
 
-function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid)
+function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid,&$DelayedMessage)
 {
    $Result=\prown\MakeCookie('EditImg');
    // Инициируем префикс, имя файла, расширение 
@@ -19,39 +19,39 @@ function ifKwinUpload($SiteRoot,$gallidir,$nym,$pid,$uid)
    if (IsSet($_POST["MAX_FILE_SIZE"])) 
    {
       // Перебрасываем файл из временного хранилища
-      MakeKwinUpload($SiteRoot,$gallidir,$pref,$NameLoadp,$Ext);
+      $DelayedMessage=MakeKwinUpload($SiteRoot,$gallidir,$pref,$NameLoadp,$Ext);
       // Отмечаем новое имя загруженного файла
       $Result=\prown\MakeCookie('EditImg',$gallidir.'/'.$pref.$NameLoadp.'.'.$Ext,tStr);
    }
    return $Result;
 }
-
-      // Обновляем изображение
-      /*
-      //?> <script> 
-      //   niname="<?php echo $pref.$NameLoadp;?>";
-      //   $('#imgCardi').attr('src','ittveEdit/'+niname); 
-      //</script> <?php
-      */
-
+// ****************************************************************************
+// *       Переместить загруженный файл из временного хранилища на сервер     *
+// ****************************************************************************
 function MakeKwinUpload($SiteRoot,$gallidir,&$pref,&$NameLoadp,&$Ext)
 {
-   // Перемещаем оригинальное изображение
+   $DelayedMessage=imok;
    $InfoMess='NoDefine'; 
    $imgDir=$SiteRoot.'/'.$gallidir;
-   if (MoveFromUpload($imgDir,$pref,$NameLoadp,$Ext,$InfoMess,$FileName,$FileSize))
-   {
-      //\prown\ConsoleLog('Перемещено!');
-   }
-   else
-   {
-     // \prown\ConsoleLog('Ошибка. '.$InfoMess);
-   }
+   $DelayedMessage=MoveFromUpload($imgDir,$pref,$NameLoadp,$Ext,$InfoMess)
+   $NameLoadp=\prown\getTranslit($FileName);
+   // Перебрасываем файл  
+   $upload=new UploadToServer($imgDir,$pref.$NameLoadp);
+   $InfoMess=$upload->move();
+   $Ext=$upload->getExt(); 
+   unset($upload);
+   // Если перемещение завершилось неудачно, то выдаем сообщение
+   if ($InfoMess<>imok) $Result=false;
+
+
+   $FileName=$_FILES["loadimg"]["name"]; $FileName=substr($FileName,0,strpos($FileName,'.'));
+   $FileSize=$_FILES["loadimg"]["size"];
+   return $Result; 
 }
 // ****************************************************************************
 // *       Переместить загруженный файл из временного хранилища на сервер     *
 // ****************************************************************************
-function MoveFromUpload($imgDir,$pref,&$NameLoadp,&$Ext,&$InfoMess,&$FileName,&$FileSize)
+function MoveFromUpload($imgDir,$pref,&$NameLoadp,&$Ext,&$InfoMess)
 {
    $Result=true;
    $FileName=$_FILES["loadimg"]["name"]; $FileName=substr($FileName,0,strpos($FileName,'.'));

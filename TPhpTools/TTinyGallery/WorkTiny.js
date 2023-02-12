@@ -47,34 +47,6 @@ $(document).ready(function()
       'background' : '#fff'
      });
   });
-
-
-/*
-// По клику на кнопке выполнить выбор файла и 
-// активировать клик для загрузки файла
-function alf1FindFile() 
-{
-   document.getElementById('my_hidden_file').click(); // alf2LoadFile()
-} 
-*/
-/*
-// При изменении состояния input file активизировать кнопку "submit" для
-// загрузки выбранного файла во временное хранилище на сервере 
-function alf2LoadFile() 
-{
-   // По нажатию кнопки "submit" отправляем запрос из формы на выполнение
-   // модуля проверки параметров файла, загруженного во временное хранилище,
-   // его переброски на постоянное хранение и переименование  
-   document.getElementById('my_hidden_load').click(); // "SignaUpload.php"
-   // Удаляем старые файлы
-   //alfEraseFiles();
-}
-*/
-
-
-
-
-
 })
 
 
@@ -84,7 +56,6 @@ function alf1FindFile()
 {
    document.getElementById('infCard').click(); // alf2LoadFile()
 } 
-
 // При изменении состояния input file активизировать кнопку "submit" для
 // загрузки выбранного файла во временное хранилище на сервере 
 function alf2LoadFile() 
@@ -92,11 +63,18 @@ function alf2LoadFile()
    // По нажатию кнопки "submit" отправляем запрос из формы на выполнение
    // модуля проверки параметров файла, загруженного во временное хранилище,
    // его переброски на постоянное хранение и переименование  
-   document.getElementById('insCard').click(); // "SignaUpload.php"
+   document.getElementById('insCard').click(); // "submit"
    // Удаляем старые файлы
    //alfEraseFiles();
 }
+// Инициировать запись в базу данных изображения и комментария
+function alf3SaveImgComm() 
+{
+   document.getElementById('insCard').click(); // "submit"
+} 
 
+
+/*
 function readFile(input) 
 {
   file = input.files[0];
@@ -114,7 +92,7 @@ function readFile(input)
   };
   // $('#imgCardi').attr('src',reader.result);
 }
-
+*/
 
 /*
 // При изменении состояния input file 

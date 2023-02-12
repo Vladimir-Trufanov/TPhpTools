@@ -700,7 +700,7 @@ function CreateTables($pdo,$aCharters)
          'NamePic     VARCHAR NOT NULL,'.                          // заголовок изображения к статье (имя файла без расширения)
          'TranslitPic VARCHAR NOT NULL,'.                          // транслит заголовка изображения
          'Ext         VARCHAR NOT NULL,'.                          // расширение файла заголовка изображения
-         'DatePic     DATETIME,'.                                  // дата\время изображения
+         'DatePic     DATETIME,'.                                  // дата\время создания изображения
          'SizePic     INTEGER,'.                                   // размер изображения
          'Сomment     TEXT,'.                                      // комментарий к изображению
          'Pic         BLOB)';                                      // изображение
