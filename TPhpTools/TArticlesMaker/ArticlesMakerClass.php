@@ -544,6 +544,37 @@ class ArticlesMaker
     }
    }
    // *************************************************************************
+   // *                      Вставить материал по транслиту                   *
+   // *************************************************************************
+   public function InsertImgByTranslit($pdo,$uid,$NamePic,$TranslitPic,$Ext,$mime_type,$DatePic,$SizePic,$Comment)
+   {
+    try 
+    {
+      $pdo->beginTransaction();
+      $statement = $pdo->prepare("INSERT INTO [picturepw] ".              
+         "([uid], [NamePic], [TranslitPic], [Ext], [mime_type], [DatePic], [SizePic], [CommPic]) VALUES ".
+         "(:uid,  :NamePic,  :TranslitPic,  :Ext,  :mime_type,  :DatePic,  :SizePic,  :CommPic);");
+      $statement->execute([
+         "uid"         => $uid, 
+         "NamePic"     => $NamePic, 
+         "TranslitPic" => $TranslitPic, 
+         "Ext"         => $Ext, 
+         "mime_type"   => $mime_type, 
+         "DatePic"     => $DatePic, 
+         "SizePic"     => $SizePic, 
+         "CommPic"     => $Comment
+      ]);
+      $pdo->commit();
+      $messa=imok;
+    } 
+    catch (PDOException $e) 
+    {
+       $messa=$e->getMessage();
+       if ($pdo->inTransaction()) $pdo->rollback();
+    }
+    return $messa;
+   }
+   // *************************************************************************
    // *                       Обновить материал по транслиту                  *
    // *************************************************************************
    public function UpdateByTranslit($pdo,$Translit,$contents)
@@ -551,10 +582,8 @@ class ArticlesMaker
     try 
     {
       $pdo->beginTransaction();
-      //\prown\ConsoleLog('1 update='.$Translit); 
       $statement = $pdo->prepare("UPDATE [stockpw] SET [Art] = :Art WHERE [Translit] = :Translit;");
       $statement->execute(["Art"=>$contents,"Translit"=>$Translit]);
-      //\prown\ConsoleLog('2 update='.$Translit); 
       $pdo->commit();
     } 
     catch (Exception $e) 

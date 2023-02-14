@@ -698,12 +698,14 @@ function CreateTables($pdo,$aCharters)
       $sql='CREATE TABLE picturepw ('.
          'uid         INTEGER NOT NULL REFERENCES stockpw(uid),'.  // идентификатор пункта меню (раздел или статья сайта)
          'NamePic     VARCHAR NOT NULL,'.                          // заголовок изображения к статье (имя файла без расширения)
-         'TranslitPic VARCHAR NOT NULL,'.                          // транслит заголовка изображения
+         'TranslitPic VARCHAR NOT NULL UNIQUE,'.                   // транслит заголовка изображения
          'Ext         VARCHAR NOT NULL,'.                          // расширение файла заголовка изображения
+         'mime_type   TEXT,'.                                      // MIME-тип файла
          'DatePic     DATETIME,'.                                  // дата\время создания изображения
          'SizePic     INTEGER,'.                                   // размер изображения
-         'Сomment     TEXT,'.                                      // комментарий к изображению
-         'Pic         BLOB)';                                      // изображение
+         'CommPic     TEXT,'.                                      // комментарий к изображению
+         'Pic         BLOB,'.                                      // изображение
+         'PRIMARY KEY (uid, TranslitPic))';                                     
       $st = $pdo->query($sql);
       // Создаем индекс по транслиту имени файла без расширения в таблице изображений      
       $sql='CREATE INDEX IF NOT EXISTS iTranslitPic ON picturepw (TranslitPic)';

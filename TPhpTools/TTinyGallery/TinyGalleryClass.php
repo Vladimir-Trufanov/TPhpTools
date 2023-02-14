@@ -137,7 +137,6 @@ class TinyGallery
       // Принимаем путь к каталогу файлов класса
       $this->classdir=pathPhpTools.'/TTinyGallery';
       // Регистрируем объект по работе с базой данных материалов
-      // и инициируем транслит выбранного материала
       $this->Arti=$Arti;
       // Считываем предопределенные размеры частей рабочей области редактирования
       $this->WorkTinyHeight=$WorkTinyHeight;
@@ -235,7 +234,7 @@ class TinyGallery
       {
          // Cоздаем объект для управления изображениями в галерее, связанной с 
          // материалами сайта из базы данных
-         $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome);
+         $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome,$this->Arti);
          $this->DelayedMessage=$this->Galli->getDelayedMessage();
       }
       // Подключаем управляющее меню в подвале
@@ -545,7 +544,9 @@ class TinyGallery
    private function WorkTiny_main()
    {
       //phpinfo();
+      $this->proba();
 
+      /*
       // Выводим заголовок статьи
       if ($this->DelayedMessage==imok)
          $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
@@ -568,6 +569,85 @@ class TinyGallery
          </textarea>
          </form>
       '; 
+      */
+   }
+   private function proba()
+   {
+      require_once pathPhpTools."/TSQLiteBLOB/SQLiteBLOBClass.php";
+      echo 'Ghbdtn!<br>';
+
+      // Получаем спецификацию файла базы данных материалов
+      $filename='proba.db3';
+      // Создается объект PDO и файл базы данных
+      $pathBase='sqlite:'.$filename; 
+      $username='tve'; $password='23ety17'; 
+      // Подключаем PDO к базе
+      $pdo = new \PDO(
+         $pathBase, 
+         $username,
+         $password,
+         array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION)
+      );
+      /*
+      // Включаем действие внешних ключей
+      $sql='PRAGMA foreign_keys=on;';
+      $st = $pdo->query($sql);
+      //
+      $sql='
+      CREATE TABLE IF NOT EXISTS documents 
+      (
+         document_id INTEGER PRIMARY KEY,
+         mime_type   TEXT    NOT NULL,
+         doc         BLOB
+      )';
+      $st = $pdo->query($sql);
+      */
+      
+      $sqlite=new SQLiteBLOB($pdo);
+
+      /*
+      // insert a PDF file into the documents table
+      $pathToPDFFile = 'Proba.pdf';
+      $pdfId = $sqlite->insertDoc('application/pdf', $pathToPDFFile);
+ 
+      // insert a PNG file into the documents table
+      $pathToPNGFile = 'Proba.png';
+      $pngId = $sqlite->insertDoc('image/png', $pathToPNGFile);
+      */
+      
+      // read documet from the database
+      $documentId=1;
+      $doc = $sqlite->readDoc($documentId);
+      
+      /*
+      echo '<pre>';
+      print_r($doc);
+      echo '</pre>';
+      */
+      
+      if ($doc != null) 
+      {
+         /*
+         header("Content-Type:" . $doc['mime_type']);
+         echo $doc['doc'];
+         */
+         //echo '<img src="data:'.$doc['mime_type'].';base64,'.base64_encode($doc['doc']).'"/>';
+         //echo '<embed src="data:'.$doc['mime_type'].';base64,'.base64_encode($doc['doc']).'"/>';
+      }
+      else 
+      {
+         echo 'Error loading document ' . $documentId;
+      }
+      
+      echo '
+         <embed 
+            type="video/webm"
+            src="Proba.mp4"
+            width="250"
+            height="200"
+         >
+      ';
+      
    }
    // *************************************************************************
    // *                       Выполнить действия при назначении новой статьи: *

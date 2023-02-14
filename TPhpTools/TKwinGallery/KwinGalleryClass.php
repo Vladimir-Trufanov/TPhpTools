@@ -69,6 +69,8 @@ require_once pathPhpTools."/CommonTools.php";
 class KwinGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
+   protected $Arti;      // Объект по работе с базой данных материалов
+   protected $apdo;      // Подключение к базе данных материалов
    protected $gallidir;  // Каталог для размещения файлов галереи и связанных материалов
    protected $imgdir;    // каталог служебных изображений
    protected $classdir;  // Каталог класса
@@ -136,7 +138,7 @@ class KwinGallery
       return $this->DelayedMessage;
    }
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
-   public function __construct($gallidir,$nym,$pid,$uid,$SiteRoot,$urlHome) 
+   public function __construct($gallidir,$nym,$pid,$uid,$SiteRoot,$urlHome,$Arti) 
    {
       // Инициализируем свойства класса
       $this->gallidir=$gallidir;                    // каталог файлов редактирования
@@ -150,6 +152,18 @@ class KwinGallery
       // Инициируем отложенное сообщение, то есть сообщение, которое может быть
       // выведено на фазе BODY процесса построения страницы сайта 
       $this->DelayedMessage=imok;
+      // Инициируем свойства текущего изображения
+      $this->NamePic=NULL;     // заголовок изображения к статье (имя файла без расширения)
+      $this->TranslitPic=NULL; // транслит заголовка изображения
+      $this->Ext=NULL;         // расширение файла заголовка изображения
+      $this->DatePic=NULL;     // дата\время создания изображения
+      $this->SizePic=NULL;     // размер изображения
+      $this->Comment=NULL;     // комментарий к изображению
+      $this->Pic=NULL;         // изображение
+      // Регистрируем объект по работе с базой данных материалов
+      $this->Arti=$Arti;
+      // Подключаемся к базе данных материалов
+      $this->apdo=$this->Arti->BaseConnect();
       // Формируем начальный кукис изображения для редактирования
       $this->EditImg=\prown\MakeCookie('EditImg',$this->imgdir.'/sampo.jpg',tStr,true);     
       // Если файл был загружен во временное хранилище, то перегружаем его
@@ -160,14 +174,6 @@ class KwinGallery
         $this->EditComm="На горе Сампо всем хорошо!";
       else
         $this->EditComm="Текст комментария";
-      // Инициируем свойства текущего изображения
-      $this->NamePic=NULL;     // заголовок изображения к статье (имя файла без расширения)
-      $this->TranslitPic=NULL; // транслит заголовка изображения
-      $this->Ext=NULL;         // расширение файла заголовка изображения
-      $this->DatePic=NULL;     // дата\время создания изображения
-      $this->SizePic=NULL;     // размер изображения
-      $this->Comment=NULL;     // комментарий к изображению
-      $this->Pic=NULL;         // изображение
       // Выполняем действия на странице до отправления заголовков страницы: 
       // (устанавливаем кукисы и т.д.)                  
       $this->ZeroEditSpace();
@@ -307,6 +313,7 @@ class KwinGallery
    
    protected function GViewImage($FileName,$Comment,$Action='Image')
    {
+      
       echo 
          '<div class="Card">'.
          '<button class="bCard" type="submit" name="'.$Action.'">'.
@@ -315,6 +322,17 @@ class KwinGallery
       echo '<p class="pCard">'.$Comment.'</p>';
       echo 
          '</div>';
+      
+      /*
+      echo 
+         '<div class="Card">'.
+         '<button class="bCard" type="submit" name="'.$Action.'">'.
+         '<img class="imgCard" src="data:image/jpeg;base64,'.base64_encode(file_get_contents("test.jpg")).'"/>'.
+         '</button>';
+      echo '<p class="pCard">'.$Comment.'</p>';
+      echo 
+         '</div>';
+      */
    }
    
    protected function GLoadImage()
@@ -357,7 +375,7 @@ class KwinGallery
          </button>
       ';
       echo '
-         <form method="get"> 
+         <form method="POST"> 
          <img id="imgCardi" src="'.$this->EditImg.'" alt="'.$this->EditImg.'">
          <textarea class="taCard" name="AREAM">'.$this->EditComm.'</textarea>
          <input type="submit" id="insCard">  
@@ -408,6 +426,14 @@ class KwinGallery
          if ($this->DelayedMessage==imok)
          $Result=\prown\MakeCookie('EditImg',$gallidir.'/'.$pref.$NameLoadp.'.'.$Ext,tStr);
       }
+      if (IsSet($_POST["AREAM"])) 
+      {
+         $aFileImg=unserialize(\prown\MakeCookie('cFileImg'));
+         $this->DelayedMessage=$this->Arti->InsertImgByTranslit
+            ($this->apdo,$this->uid,$aFileImg["NamePic"],$aFileImg["TranslitPic"],
+            $aFileImg["Ext"],$aFileImg["mime_type"],$aFileImg["DatePic"],$aFileImg["SizePic"],$_POST['AREAM']);
+         if ($this->DelayedMessage<>imok) \prown\Alert($this->DelayedMessage); 
+      }
       return $Result;
    }
    // *************************************************************************
@@ -418,24 +444,30 @@ class KwinGallery
       $DelayedMessage=imok;
       $imgDir=$SiteRoot.'/'.$gallidir;
       $FileName=$_FILES["loadimg"]["name"]; 
+      $mime_type=$_FILES["loadimg"]["type"]; 
       $FileName=substr($FileName,0,strpos($FileName,'.'));
       $NameLoadp=\prown\getTranslit($FileName);
       // Перебрасываем файл  
       $upload=new UploadToServer($imgDir,$pref.$NameLoadp);
       $DelayedMessage=$upload->move();
+      $Ext=$upload->getExt();
       // Если переброска была успешной, 
       // то переопределяем свойства текущего изображения
-      // и возвращаем расширение
       if ($this->DelayedMessage==imok)
       {
-         $this->NamePic=$FileName;      // имя исходного файла без расширения
-         $this->TranslitPic=$NameLoadp; // новое имя загруженного файла 
-         $this->Ext=$upload->getExt();  // расширение файла 
-         $this->DatePic=NULL;           // дата\время создания изображения
-         $this->SizePic=$_FILES["loadimg"]["size"];
-         $this->Comment=NULL;           // комментарий к изображению
-         $this->Pic=NULL;               // изображение
-         $Ext=$this->Ext;
+         // Готовим массив свойств загруженного файла
+         $FileSpec=$imgDir.'/'.$pref.$NameLoadp.'.'.$Ext;
+         $aFileImg = array(
+            "NamePic"     => $FileName,
+            "TranslitPic" => $NameLoadp,
+            "Ext"         => $Ext,
+            "mime_type"   => $mime_type,
+            "SizePic"     => $_FILES["loadimg"]["size"],
+            "DatePic"     => date('d.m.Y',filectime($FileSpec)),
+         );
+         // Складываем массив в кукис
+         $cFileImg=serialize($aFileImg); 
+         \prown\MakeCookie('cFileImg',$cFileImg,tStr);
       }
       unset($upload);
       return $DelayedMessage; 
