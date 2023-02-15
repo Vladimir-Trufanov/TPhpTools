@@ -544,9 +544,8 @@ class TinyGallery
    private function WorkTiny_main()
    {
       //phpinfo();
-      $this->proba();
+      //$this->proba();
 
-      /*
       // Выводим заголовок статьи
       if ($this->DelayedMessage==imok)
          $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
@@ -569,7 +568,6 @@ class TinyGallery
          </textarea>
          </form>
       '; 
-      */
    }
    private function proba()
    {
@@ -616,8 +614,8 @@ class TinyGallery
       */
       
       // read documet from the database
-      $documentId=1;
-      $doc = $sqlite->readDoc($documentId);
+      //$documentId=1;
+      //$doc = $sqlite->readDoc($documentId);
       
       /*
       echo '<pre>';

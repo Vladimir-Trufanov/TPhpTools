@@ -51,14 +51,12 @@ class SQLiteBLOB
    {
       if (!file_exists($pathToFile)) throw new \Exception("File %s not found.");
       $sql="INSERT INTO documents(mime_type,doc) VALUES(:mime_type,:doc)";
-      // read data from the file
-      $fhi=fopen($pathToFile,'rb');
+      $fh=fopen($pathToFile,'rb');
       $stmt=$this->pdo->prepare($sql);
       $stmt->bindParam(':mime_type',$mimeType);
-      $stmt->bindParam(':doc',$fhi,\PDO::PARAM_LOB);
+      $stmt->bindParam(':doc',$fh,\PDO::PARAM_LOB);
       $stmt->execute();
-      //fclose($fhi);
-      unset($fhi); 
+      unset($fh); 
       return $this->pdo->lastInsertId();
    }
    // *************************************************************************
@@ -73,7 +71,6 @@ class SQLiteBLOB
    {
       $sql = "SELECT [mime_type],[doc]". 
          "FROM [documents] "."WHERE document_id = :document_id";
-      // initialize the params
       $mimeType = null;
       $doc = null;
       $stmt=$this->pdo->prepare($sql);
@@ -108,17 +105,17 @@ class SQLiteBLOB
    {
       if (!file_exists($pathToFile))
       throw new \Exception("File %s not found.");
-      $fh = fopen($pathToFile, 'rb');
+      $fh = fopen($pathToFile,'rb');
       $sql = "UPDATE documents
              SET mime_type = :mime_type,
              doc = :doc
              WHERE document_id = :document_id";
-      $stmt = $this->conn->prepare($sql);
+      $stmt = $this->pdo->prepare($sql);
       $stmt->bindParam(':mime_type', $mimeType);
-      $stmt->bindParam(':data', $fh, \PDO::PARAM_LOB);
+      $stmt->bindParam(':doc', $fh, \PDO::PARAM_LOB);
       $stmt->bindParam(':document_id', $documentId);
-      fclose($fh);
-      return $stmt->execute();
+      $stmt->execute();
+      unset($fh); 
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 } 
