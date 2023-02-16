@@ -489,6 +489,39 @@ class ArticlesMaker
       return $table; 
    }
    // *************************************************************************
+   // *               Выбрать ключи всех изображений к записи и               *
+   // *                   другую информацию по идентификатору                 *
+   // *************************************************************************
+   public function SelImgKeys($pdo,$UnID)
+   {
+      $cSQL='
+         SELECT uid,TranslitPic,
+         NamePic,Ext,mime_type,DatePic,SizePic,CommPic
+         FROM picturepw WHERE uid='.$UnID;
+      $stmt = $pdo->query($cSQL);
+      $table = $stmt->fetchAll();
+      return $table; 
+   }
+   // *************************************************************************
+   // *              Выбрать сведения об изображении по ключам                *
+   // *************************************************************************
+   public function SelImgPic($pdo,$uid,$TranslitPic)
+   {
+      $cSQL='SELECT [Pic] FROM [picturepw] WHERE uid=:uid AND TranslitPic=:TranslitPic';
+      $Pic = null;
+      $stmt=$pdo->prepare($cSQL);
+      if ($stmt->execute([":uid"=>$uid, ":TranslitPic"=>$TranslitPic]))
+      {
+         $stmt->bindColumn(1, $Pic, \PDO::PARAM_LOB);
+         return $stmt->fetch(\PDO::FETCH_BOUND)?
+         [
+            "uid" => $uid,
+            "TranslitPic"   => $TranslitPic,
+            "Pic"         => $Pic
+         ]:null;
+      } 
+   }
+   // *************************************************************************
    // * Удалить запись по идентификатору: в случае успешного удаления функция *
    // *     возвращает сообщение, что все хорошо, иначе сообщение об ошибке   *
    // *************************************************************************

@@ -310,6 +310,60 @@ class KwinGallery
       }
       */
    }
+   // *************************************************************************
+   // *            Развернуть изображения галереи из базы данных              *
+   // *                          и обеспечить их ведение                      *
+   // *     $GalleryMode - режим вывода галереи: mwgViewing или mwgEditing    *
+   // *************************************************************************
+   public function BaseGallery($GalleryMode=mwgViewing)
+   {
+      // Выбираем все фотографии по идентификатору текущей статьи
+      $tableKeys=$this->Arti->SelImgKeys($this->apdo,$this->uid);
+         
+         //echo '<pre>';
+         //print_r($tableKeys);
+         //echo '</pre>';
+         
+      $i=0;
+      foreach ($tableKeys as $row)
+      {
+         //echo $tableKeys[$i]['mime_type'];
+         //echo $row['mime_type'].'<br>';
+         $uid=$row['uid'];
+         $TranslitPic=$row['TranslitPic'];
+         $Comment=$row['CommPic'];
+         //echo $uid.'->'.$TranslitPic.'<br>';
+         
+         $table=$this->Arti->SelImgPic($this->apdo,$uid,$TranslitPic);
+         //echo '<pre>';
+         //print_r($table);
+         //echo '</pre>';
+         
+         $Action='Image';
+         echo '<div class="Card">'.
+              '<button class="bCard" type="submit" name="'.$Action.'">';
+         if ($table != null) 
+         echo '<img class="imgCard" src="data:'.$row['mime_type'].';base64,'.base64_encode($table['Pic']).'"/>';
+         else echo 'Error loading document';
+         echo 
+            '</button>';
+         echo '<p class="pCard">'.$Comment.'</p>';
+         echo 
+            '</div>';
+
+         
+         // Если задан режим редактирования, то выводим изображение загрузки
+         if (($GalleryMode=mwgEditing)&&($i==0)) 
+         {
+            if (IsSet($_POST["MAX_FILE_SIZE"])) $this->GSaveImgComm();
+            else  $this->GLoadImage();
+         }
+         
+         $i++;
+         
+      } 
+
+   }
    
    protected function GViewImage($FileName,$Comment,$Action='Image')
    {
