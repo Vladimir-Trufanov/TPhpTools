@@ -574,6 +574,30 @@ class ArticlesMaker
     }
     return $messa;
    }
+   public function UpdatePicByTranslit($pdo,$pathToFile,$TranslitPic)
+   {
+    try 
+    {
+      $pdo->beginTransaction();
+      $fh = fopen($pathToFile,'rb');
+      $sql = "UPDATE picturepw
+             SET Pic = :Pic
+             WHERE TranslitPic = :TranslitPic";
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(':Pic', $fh, \PDO::PARAM_LOB);
+      $stmt->bindParam(':TranslitPic', $TranslitPic);
+      $stmt->execute();
+      unset($fh); 
+      $pdo->commit();
+      $messa=imok;
+    } 
+    catch (PDOException $e) 
+    {
+       $messa=$e->getMessage();
+       if ($pdo->inTransaction()) $pdo->rollback();
+    }
+    return $messa;
+   }
    // *************************************************************************
    // *                       Обновить материал по транслиту                  *
    // *************************************************************************

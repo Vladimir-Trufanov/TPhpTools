@@ -429,10 +429,13 @@ class KwinGallery
       if (IsSet($_POST["AREAM"])) 
       {
          $aFileImg=unserialize(\prown\MakeCookie('cFileImg'));
+         
          $this->DelayedMessage=$this->Arti->InsertImgByTranslit
             ($this->apdo,$this->uid,$aFileImg["NamePic"],$aFileImg["TranslitPic"],
             $aFileImg["Ext"],$aFileImg["mime_type"],$aFileImg["DatePic"],$aFileImg["SizePic"],$_POST['AREAM']);
-         if ($this->DelayedMessage<>imok) \prown\Alert($this->DelayedMessage); 
+         if ($this->DelayedMessage<>imok) \prown\Alert($this->DelayedMessage.'[All-]'); 
+         else $this->DelayedMessage=$this->Arti->UpdatePicByTranslit($this->apdo,$aFileImg["FileSpec"],$aFileImg["TranslitPic"]);
+         if ($this->DelayedMessage<>imok) \prown\Alert($this->DelayedMessage.'[Pic]'); 
       }
       return $Result;
    }
@@ -464,6 +467,7 @@ class KwinGallery
             "mime_type"   => $mime_type,
             "SizePic"     => $_FILES["loadimg"]["size"],
             "DatePic"     => date('d.m.Y',filectime($FileSpec)),
+            "FileSpec"    => $FileSpec,
          );
          // Складываем массив в кукис
          $cFileImg=serialize($aFileImg); 
