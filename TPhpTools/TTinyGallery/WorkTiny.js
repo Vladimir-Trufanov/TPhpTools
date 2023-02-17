@@ -73,7 +73,6 @@ function alf3SaveImgComm()
    document.getElementById('insCard').click(); // "submit"
 } 
 
-
 /*
 function readFile(input) 
 {

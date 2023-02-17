@@ -6,7 +6,7 @@
 // * TPhpTools                 Фрэйм галереи изображений, связанных с текущим *
 // *                   материалом (uid) из выбранной (указанной) группы (pid) *
 // *                                                                          *
-// * v2.0, 28.01.2023                              Автор:       Труфанов В.Е. *
+// * v2.0, 17.02.2023                              Автор:       Труфанов В.Е. *
 // * Copyright © 2022 tve                          Дата создания:  18.12.2019 *
 // ****************************************************************************
 
@@ -182,7 +182,6 @@ class KwinGallery
    }
    public function __destruct() 
    {
-      require_once(pathPhpTools."/JsTools.php");
       ?> 
       <script>
       
@@ -221,7 +220,9 @@ class KwinGallery
 
       </script>
       <?php
-   }
+      require_once(pathPhpTools."/JsTools.php");
+      require_once(pathPhpTools."/TKwinGallery/KwinGalleryJs.php");
+    }
    // *************************************************************************
    // *   Выполнить действия на странице до отправления заголовков страницы:  *
    // *                         (установить кукисы и т.д.)                    *
@@ -232,6 +233,7 @@ class KwinGallery
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
       CompareCopyRoot('sampo.jpg',$this->classdir,$this->imgdir);
+      CompareCopyRoot('SaveStuff.php',$this->classdir);
       CompareCopyRoot('SaveStuff.php',$this->classdir);
    }
    // *************************************************************************
@@ -336,6 +338,12 @@ class KwinGallery
             $messa=$table['Pic']; break;
          }
          // Выводим загруженное изображение в карточке
+         if ($GalleryMode=mwgEditing) 
+            $this->GViewOrDelImage($row['mime_type'],$table['Pic'],$Comment,$Action='Image');
+         else
+            $this->GViewImage($row['mime_type'],$table['Pic'],$Comment,$Action='Image');
+            //$this->GViewImage($FileName,$Comment,$Action='Image');
+         /*
          $Action='Image';
          echo '<div class="Card">'.
               '<button class="bCard" type="submit" name="'.$Action.'">';
@@ -347,6 +355,7 @@ class KwinGallery
          echo '<p class="pCard">'.$Comment.'</p>';
          echo 
             '</div>';
+         */
          // Если задан режим редактирования, то выводим изображение для загрузки
          // (как правило, второе при выводе карточек)
          if (($GalleryMode=mwgEditing)&&($i==0)) 
@@ -359,18 +368,17 @@ class KwinGallery
       return $messa;
    }
    
-   protected function GViewImage($FileName,$Comment,$Action='Image')
+   //protected function GViewImage($FileName,$Comment,$Action='Image')
+   protected function GViewImage($mime_type,$DataPic,$Comment,$Action='Image')
    {
       
-      echo 
-         '<div class="Card">'.
-         '<button class="bCard" type="submit" name="'.$Action.'">'.
-         '<img class="imgCard" src="'.$FileName.'">'.
-         '</button>';
+      echo '<div class="Card">';
+      echo '<button class="bCard" type="submit" name="'.$Action.'">';
+      //echo '<img class="imgCard" src="'.$FileName.'">';
+      echo '<img class="imgCard" src="data:'.$mime_type.';base64,'.base64_encode($DataPic).'"/>';
+      echo '</button>';
       echo '<p class="pCard">'.$Comment.'</p>';
-      echo 
-         '</div>';
-      
+      echo '</div>';
       /*
       echo 
          '<div class="Card">'.
@@ -383,6 +391,20 @@ class KwinGallery
       */
    }
    
+   protected function GViewOrDelImage($mime_type,$DataPic,$Comment,$Action='Image')
+   {
+      echo '<div class="Card">';
+      echo '
+         <button id="bLoadImg"  class="navButtons" onclick="DeleteImg()"  
+         title="Удалить изображение">Удалить
+        </button>
+      ';
+      echo '<button class="bCard" type="submit" name="'.$Action.'">';
+      echo '<img class="imgCard" src="data:'.$mime_type.';base64,'.base64_encode($DataPic).'"/>';
+      echo '</button>';
+      echo '<p class="pCard">'.$Comment.'</p>';
+      echo '</div>';
+   }
    protected function GLoadImage($EditImg,$EditComm)
    {
       /**
