@@ -213,6 +213,13 @@ class TinyGallery
          // Готовим кукис текущего материала
          $getArti=$Translit;
       }
+      // Если был выбран режим сохранения отредактированного материала, 
+      // то сохраняем его    
+      $contentNews=\prown\getComRequest('mytextarea');
+      if ($contentNews<>NULL)
+      {
+         $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentNews);
+      }
       // Устанавливаем кукис на новый или выбранный материал
       if ($getArti<>NULL)
       {
@@ -639,14 +646,6 @@ class TinyGallery
    // *************************************************************************
    private function KwinGallery_main($pidEdit,$uidEdit)
    {
-      // Если был выбран режим сохранения отредактированного материала, 
-      // то сохраняем галерею фотографий текущей статьи    
-      $contentNews=\prown\getComRequest('mytextarea');
-      if ($contentNews<>NULL)
-      {
-         $this->Galli->UpdateImg($this->apdo);
-         // $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
-      }
       // Если нет отложенного сообщения, то показываем галерею изображений
       if ($this->DelayedMessage==imok)
       {

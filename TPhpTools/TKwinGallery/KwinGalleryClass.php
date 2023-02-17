@@ -85,7 +85,8 @@ class KwinGallery
    protected $EditImg;   // Имя загруженного изображения
    protected $EditComm;  // Текст начального комментария перед загрузкой файла
    
-   // Свойства текущего изображения
+   // Рабочие свойства текущего изображения
+   /*
    protected $NamePic;     // заголовок изображения (имя исходного файла без расширения)
    protected $TranslitPic; // транслит заголовка изображения
    protected $Ext;         // расширение файла заголовка изображения
@@ -93,7 +94,7 @@ class KwinGallery
    protected $SizePic;     // размер изображения
    protected $Comment;     // комментарий к изображению
    protected $Pic;         // изображение
-   
+   */
    protected $DelayedMessage;   // Отложенное сообщение
 
    // Образец массива элементов галереи
@@ -152,7 +153,8 @@ class KwinGallery
       // Инициируем отложенное сообщение, то есть сообщение, которое может быть
       // выведено на фазе BODY процесса построения страницы сайта 
       $this->DelayedMessage=imok;
-      // Инициируем свойства текущего изображения
+      // Инициируем рабочие свойства текущего изображения
+      /*
       $this->NamePic=NULL;     // заголовок изображения к статье (имя файла без расширения)
       $this->TranslitPic=NULL; // транслит заголовка изображения
       $this->Ext=NULL;         // расширение файла заголовка изображения
@@ -160,6 +162,7 @@ class KwinGallery
       $this->SizePic=NULL;     // размер изображения
       $this->Comment=NULL;     // комментарий к изображению
       $this->Pic=NULL;         // изображение
+      */
       // Регистрируем объект по работе с базой данных материалов
       $this->Arti=$Arti;
       // Подключаемся к базе данных материалов
@@ -182,47 +185,9 @@ class KwinGallery
    }
    public function __destruct() 
    {
-      ?> 
-      <script>
-      
-      nym="<?php echo $this->nym;?>";
-      pid="<?php echo $this->pid;?>";
-      uid="<?php echo $this->uid;?>"; 
-
-      // **********************************************************************
-      // *      Задать обработчик запроса по сохранению галереи материала     *
-      // **********************************************************************
-      function SaveStuff()
-      {
-         GalleryText=$('#KwinGallery').html();
-         pathphp="SaveStuff.php";
-         // Делаем запрос на сохранение галлереи материала
-         $.ajax({
-            url: pathphp,
-            type: 'POST',
-            data: {
-               nym:nym, pid:pid, uid:uid,
-               area:GalleryText, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
-            // Выводим ошибки при выполнении запроса в PHP-сценарии
-            error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
-            // Обрабатываем ответное сообщение
-            success: function(message)
-            {
-               // Вырезаем из запроса чистое сообщение
-               messa=FreshLabel(message);
-               // Получаем параметры ответа
-               parm=JSON.parse(messa);
-               alert(parm.NameArt);
-               alert('parm.Piati='+parm.Piati);
-            }
-         });
-      }
-
-      </script>
-      <?php
       require_once(pathPhpTools."/JsTools.php");
       require_once(pathPhpTools."/TKwinGallery/KwinGalleryJs.php");
-    }
+   }
    // *************************************************************************
    // *   Выполнить действия на странице до отправления заголовков страницы:  *
    // *                         (установить кукисы и т.д.)                    *
@@ -234,7 +199,7 @@ class KwinGallery
       // загружаем из класса 
       CompareCopyRoot('sampo.jpg',$this->classdir,$this->imgdir);
       CompareCopyRoot('SaveStuff.php',$this->classdir);
-      CompareCopyRoot('SaveStuff.php',$this->classdir);
+      CompareCopyRoot('deleteImg.php',$this->classdir);
    }
    // *************************************************************************
    // *                          Представить массив галереи                   *
@@ -339,7 +304,7 @@ class KwinGallery
          }
          // Выводим загруженное изображение в карточке
          if ($GalleryMode=mwgEditing) 
-            $this->GViewOrDelImage($row['mime_type'],$table['Pic'],$Comment,$Action='Image');
+            $this->GViewOrDelImage($row['mime_type'],$table['Pic'],$Comment,$uid,$TranslitPic,$Action='Image');
          else
             $this->GViewImage($row['mime_type'],$table['Pic'],$Comment,$Action='Image');
             //$this->GViewImage($FileName,$Comment,$Action='Image');
@@ -391,12 +356,13 @@ class KwinGallery
       */
    }
    
-   protected function GViewOrDelImage($mime_type,$DataPic,$Comment,$Action='Image')
+   protected function GViewOrDelImage($mime_type,$DataPic,$Comment,$uid,$TranslitPic,$Action='Image')
    {
       echo '<div class="Card">';
+      $FunClick="DeleteImg(".$uid.",'".$TranslitPic."'".",'".$Comment."')";
       echo '
-         <button id="bLoadImg"  class="navButtons" onclick="DeleteImg()"  
-         title="Удалить изображение">Удалить
+        <button id="bLoadImg"  class="navButtons" onclick="'.$FunClick.'" '.  
+         'title="Удалить изображение">Удалить
         </button>
       ';
       echo '<button class="bCard" type="submit" name="'.$Action.'">';
