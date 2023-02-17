@@ -264,7 +264,7 @@ class KwinGallery
          if (($GalleryMode=mwgEditing)&&($i==0)) 
          {
             if (IsSet($_POST["MAX_FILE_SIZE"])) $this->GSaveImgComm();
-            else  $this->GLoadImage();
+            else  $this->GLoadImage($this->EditImg,$this->EditComm);
          }
       }
    
@@ -317,28 +317,25 @@ class KwinGallery
    // *************************************************************************
    public function BaseGallery($GalleryMode=mwgViewing)
    {
+      $messa=imok;
       // Выбираем все фотографии по идентификатору текущей статьи
       $tableKeys=$this->Arti->SelImgKeys($this->apdo,$this->uid);
-         
-         //echo '<pre>';
-         //print_r($tableKeys);
-         //echo '</pre>';
-         
+      // Перебираем изображения и загружаем их по ключам 
+      // для просмотра или редактирования
       $i=0;
       foreach ($tableKeys as $row)
       {
-         //echo $tableKeys[$i]['mime_type'];
-         //echo $row['mime_type'].'<br>';
          $uid=$row['uid'];
          $TranslitPic=$row['TranslitPic'];
          $Comment=$row['CommPic'];
-         //echo $uid.'->'.$TranslitPic.'<br>';
-         
+         // Загружаем изображение для просмотра
          $table=$this->Arti->SelImgPic($this->apdo,$uid,$TranslitPic);
-         //echo '<pre>';
-         //print_r($table);
-         //echo '</pre>';
-         
+         // Если ошибка загрузки, то завершаем цикл и возвращаем сообщение
+         if ($table['TranslitPic']==Err)
+         {
+            $messa=$table['Pic']; break;
+         }
+         // Выводим загруженное изображение в карточке
          $Action='Image';
          echo '<div class="Card">'.
               '<button class="bCard" type="submit" name="'.$Action.'">';
@@ -350,19 +347,16 @@ class KwinGallery
          echo '<p class="pCard">'.$Comment.'</p>';
          echo 
             '</div>';
-
-         
-         // Если задан режим редактирования, то выводим изображение загрузки
+         // Если задан режим редактирования, то выводим изображение для загрузки
+         // (как правило, второе при выводе карточек)
          if (($GalleryMode=mwgEditing)&&($i==0)) 
          {
             if (IsSet($_POST["MAX_FILE_SIZE"])) $this->GSaveImgComm();
-            else  $this->GLoadImage();
+            else  $this->GLoadImage($this->imgdir.'/sampo.jpg',"На горе Сампо всем хорошо!");
          }
-         
          $i++;
-         
       } 
-
+      return $messa;
    }
    
    protected function GViewImage($FileName,$Comment,$Action='Image')
@@ -389,7 +383,7 @@ class KwinGallery
       */
    }
    
-   protected function GLoadImage()
+   protected function GLoadImage($EditImg,$EditComm)
    {
       /**
        * Размещаем в форме поле для загрузки файла, а перед ним (иначе не будет
@@ -412,8 +406,8 @@ class KwinGallery
          <input type="file"   name="loadimg"  id="infCard"
             accept="image/jpeg,image/png,image/gif" 
             onchange="alf2LoadFile();"/>  
-         <img id="imgCardi" src="'.$this->EditImg.'" alt="'.$this->EditImg.'">
-         <p class="pCard">'.$this->EditComm.'</p>
+         <img id="imgCardi" src="'.$EditImg.'" alt="'.$EditImg.'">
+         <p class="pCard">'.$EditComm.'</p>
          <input type="submit" id="insCard">  
       ';
       echo '</form>';

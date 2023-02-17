@@ -647,22 +647,13 @@ class TinyGallery
          $this->Galli->UpdateImg($this->apdo);
          // $this->Arti->UpdateByTranslit($this->apdo,$this->Arti->getArti,$contentsOut);
       }
-
       // Если нет отложенного сообщения, то показываем галерею изображений
       if ($this->DelayedMessage==imok)
       {
          //$this->Galli->ViewGalleryAsArray();
          //$this->Galli->ViewGallery(NULL,mwgEditing);
-         $this->Galli->BaseGallery(mwgEditing);
+         $this->DelayedMessage=$this->Galli->BaseGallery(mwgEditing);
       }
-      /*
-      $pref=editdir.nym.pid.'-'.uid.'-';
-      $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
-      GViewImage($pref.'Подъём-настроения.jpg',$Comment);
-      GLoadImage("ittveEdit/sampo.jpg");
-      $Comment="На горе Сампо всем хорошо!";
-      GViewImage($pref.'На-Сампо.jpg',$Comment);
-      */   
    }
    private function KwinGallery_mmlNaznachitStatyu()
    {

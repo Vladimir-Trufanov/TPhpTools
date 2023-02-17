@@ -507,19 +507,32 @@ class ArticlesMaker
    // *************************************************************************
    public function SelImgPic($pdo,$uid,$TranslitPic)
    {
-      $cSQL='SELECT [Pic] FROM [picturepw] WHERE uid=:uid AND TranslitPic=:TranslitPic';
-      $Pic = null;
-      $stmt=$pdo->prepare($cSQL);
-      if ($stmt->execute([":uid"=>$uid, ":TranslitPic"=>$TranslitPic]))
-      {
+     try
+     {
+       $cSQL='SELECT [Pic] FROM [picturepw] WHERE uid=:uid AND TranslitPic=:TranslitPic';
+       $stmt=$pdo->prepare($cSQL);
+       if ($stmt->execute([":uid"=>$uid, ":TranslitPic"=>$TranslitPic]))
+       {
          $stmt->bindColumn(1, $Pic, \PDO::PARAM_LOB);
-         return $stmt->fetch(\PDO::FETCH_BOUND)?
+         $table=$stmt->fetch(\PDO::FETCH_BOUND)?
          [
-            "uid" => $uid,
-            "TranslitPic"   => $TranslitPic,
+            "uid"         => $uid,
+            "TranslitPic" => $TranslitPic,
             "Pic"         => $Pic
          ]:null;
-      } 
+       } 
+     } 
+     catch (\Exception $e) 
+     {
+       $messa=$e->getMessage();
+       $table=[
+          "uid"          => $uid,
+          "TranslitPic"  => Err,
+          "Pic"          => $messa
+       ];
+       if ($pdo->inTransaction()) $pdo->rollback();
+     }
+     return $table;
    }
    // *************************************************************************
    // * Удалить запись по идентификатору: в случае успешного удаления функция *
