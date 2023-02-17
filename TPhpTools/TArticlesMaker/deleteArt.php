@@ -10,23 +10,26 @@
 // * Copyright © 2022 tve                          Дата создания:  13.11.2022 *
 // ****************************************************************************
 
-// Указываем тип базы данных (по сайту) для управления классом ArticlesMaker   
-define ("articleSite",'IttveMe'); 
-// Указываем каталог размещения файлов, связанных c материалом
-define("editdir",'ittveEdit');
-
 // Готовим начальные значения параметров возвращаемого сообщения
 $NameArt='NoDefine'; $Piati=0; $iif='NoDefine';
 // Извлекаем пути к библиотекам прикладных функций и классов
 define ("pathPhpPrown",$_POST['pathPrown']);
 define ("pathPhpTools",$_POST['pathTools']);
+
+// Для взаимодействия с объектами класса определяем константы:
+define("articleSite",'IttveMe');  // тип базы данных (по сайту)
+define("editdir",'ittveEdit');    // каталог размещения файлов, относительно корневого
+define("stylesdir",'Styles');     // каталог стилей элементов разметки и фонтов
+define("imgdir",'Images');        // каталог файлов служебных для сайта изображений
+
 // Подгружаем нужные модули библиотек
 require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
 require_once pathPhpPrown."/CommonPrown.php";
 // Подключаем объект для работы с базой данных материалов
 // (при необходимости создаем базу данных материалов)
 $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-$Arti=new ttools\ArticlesMaker($basename,$username,$password);
+$note=NULL;
+$Arti=new ttools\ArticlesMaker($basename,$username,$password,$note);
 $pdo=$Arti->BaseConnect();
 // Выбираем запись по идентификатору группы материалов
 $table=$Arti->SelRecord($pdo,$_POST['idCue']); 
