@@ -82,6 +82,8 @@
 require_once pathPhpTools."/TMenuLeader/MenuLeaderClass.php";
 require_once pathPhpTools."/CommonTools.php";
 
+define ("classdir", pathPhpTools.'/TTinyGallery'); // путь к каталогу файлов класса
+
 define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
 define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
 define ('mmlNaznachitStatyu',     'naznachit-statyu');
@@ -98,10 +100,7 @@ class TinyGallery
    protected $SiteRoot;         // Корневой каталог сайта
    protected $urlHome;          // Начальная страница сайта
    protected $editdir;          // Каталог размещения файлов, связанных c материалом
-   protected $stylesdir;        // Каталог размещения файлов со стилями элементов разметки и фонтов
-   protected $jsxdir;           // Каталог размещения файлов javascript
 
-   protected $classdir;         // Каталог файлов класса
    protected $WorkTinyHeight;   // Высота рабочей области Tiny
    protected $FooterTinyHeight; // Высота подвала области редактирования
    protected $KwinGalleryWidth; // Ширина галереи изображений
@@ -130,12 +129,8 @@ class TinyGallery
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
       $this->editdir=editdir; 
-      $this->stylesdir=stylesdir; 
-      $this->jsxdir=jsxdir; 
       $this->pidEdit=-1; 
       $this->uidEdit=-1; 
-      // Принимаем путь к каталогу файлов класса
-      $this->classdir=pathPhpTools.'/TTinyGallery';
       // Регистрируем объект по работе с базой данных материалов
       $this->Arti=$Arti;
       // Считываем предопределенные размеры частей рабочей области редактирования
@@ -184,9 +179,9 @@ class TinyGallery
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      CompareCopyRoot('WorkTiny.css',$this->classdir,$this->stylesdir);
-      CompareCopyRoot('WorkTiny.js',$this->classdir,$this->jsxdir);
-   
+      CompareCopyRoot('CommonTools.js',pathPhpTools,jsxdir);
+      CompareCopyRoot('WorkTiny.css',classdir,stylesdir);
+      CompareCopyRoot('WorkTiny.js',classdir,jsxdir);
       // Если выбран материал (транслит) для редактирования, то готовим 
       // установку кукиса на данный материал. Материал мог быть выбран при 
       // выполнении методов:
@@ -257,13 +252,14 @@ class TinyGallery
    {
       // Настраиваемся на файлы стилей и js-скрипты
       $this->Arti->IniEditSpace();
-      
-      // <link rel="stylesheet" type="text/css" href="/Styles/WorkTiny.css">
-      $this->fileStyle='/'.$this->stylesdir.'/WorkTiny.css';
-      echo '<link rel="stylesheet" type="text/css" href="'.$this->fileStyle.'">';
+      // <script src="/Jsx/CommonTools.js"></script>
+      echo '<script src="/'.jsxdir.'/CommonTools.js"></script>';
       // <script src="/Jsx/WorkTiny.js"></script>
-      $this->fileStyle='/'.$this->jsxdir.'/WorkTiny.js';
-      echo '<script src="'.$this->fileStyle.'"></script>';
+      echo '<script src="/'.jsxdir.'/WorkTiny.js"></script>';
+      // <link rel="stylesheet" type="text/css" href="/Styles/WorkTiny.css">
+      echo '<link rel="stylesheet" type="text/css" href="/'.stylesdir.'/WorkTiny.css">';
+      $this->Galli->Head();
+      
       // Настраиваем размеры частей рабочей области редактирования
       echo '
       <style>

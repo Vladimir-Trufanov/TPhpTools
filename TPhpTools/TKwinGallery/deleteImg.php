@@ -11,29 +11,43 @@
 // ****************************************************************************
 
 // Готовим начальные значения параметров возвращаемого сообщения
-$NameArt='NoDefineING'; $Piati=0; $iif='NoDefine';
+$NameArt='NoDefineIMG'; $Piati=0; $iif='NoDefine';
 // Извлекаем пути к библиотекам прикладных функций и классов
 define ("pathPhpPrown",$_POST['pathPrown']);
 define ("pathPhpTools",$_POST['pathTools']);
+
+// Для взаимодействия с объектами класса определяем константы:
+define("articleSite",'IttveMe');  // тип базы данных (по сайту)
+define("editdir",'ittveEdit');    // каталог размещения файлов, относительно корневого
+define("stylesdir",'Styles');     // каталог стилей элементов разметки и фонтов
+define("imgdir",'Images');        // каталог файлов служебных для сайта изображений
+define("jsxdir",'Jsx');           // файлы javascript
+
 // Подгружаем нужные модули библиотек
+require_once pathPhpPrown."/CommonPrown.php";
 require_once pathPhpTools."/TNotice/NoticeClass.php";
 require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
-require_once pathPhpPrown."/CommonPrown.php";
 // Подключаем объект единообразного вывода сообщений
 $note=new ttools\Notice();
-// Назначаем обязательные константы для объекта работы с базой 
-// данных материалов: тип базы данных (по сайту) для управления классом 
-// ArticlesMaker, каталог размещения файлов, связанных c материалом
-// и создаем сам объект
-define("articleSite",'IttveMe'); 
-define("editdir",'ittveEdit');
+// Создаем объект для работы с базой данных материалов
 $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
 $Arti=new ttools\ArticlesMaker($basename,$username,$password,$note);
 $pdo=$Arti->BaseConnect();
 
+$NameArt='Удаляется статья!';
+$uid=$_POST['uid'];
+$TranslitPic=$_POST['translitpic'];
+
+$Piati=$uid;
+$iif=$TranslitPic;
+
+// Выбираем сведения об изображении по ключам       
+$table=$Arti->SelImgPic1($pdo,$uid,$TranslitPic);
+
+$Piati=$table["uid"];
+$iif=$table["TranslitPic"];
+
 /*
-// Выбираем запись по идентификатору группы материалов
-$table=$Arti->SelRecord($pdo,$_POST['idCue']); 
 // Определяем количество найденных записей
 $count=count($table);
 
@@ -53,9 +67,7 @@ else
 unset($Arti); unset($pdo); unset($table);
 */
 // Возвращаем сообщение
-//$message='{"NameArt":"'.$NameArt.'", "Piati":'.$Piati.', "iif":"'.$iif.'"}';
-
-$message='NameArt Привет! NameArt';
+$message='{"NameArt":"'.$NameArt.'", "Piati":'.$Piati.', "iif":"'.$iif.'"}';
 $message=\prown\makeLabel($message,'ghjun5','ghjun5');
 echo $message;
 exit;

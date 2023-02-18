@@ -11,7 +11,7 @@
 // ****************************************************************************
 
 // Готовим начальные значения параметров возвращаемого сообщения
-$NameArt='NoDefine'; $Piati=0; $iif='NoDefine';
+$NameArt='NoDefineART'; $Piati=0; $iif='NoDefine';
 // Извлекаем пути к библиотекам прикладных функций и классов
 define ("pathPhpPrown",$_POST['pathPrown']);
 define ("pathPhpTools",$_POST['pathTools']);

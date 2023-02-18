@@ -25,6 +25,7 @@
  * articleSite  - тип базы данных (по сайту)
  * editdir      - каталог размещения файлов, связанных c материалом
  * imgdir       - каталог файлов служебных для сайта изображений
+ * jsxdir       - каталог размещения файлов javascript
  *    
  * Пример создания объекта класса:
  * 
@@ -52,6 +53,9 @@
 // $Page - название страницы сайта;
 // $Uagent - браузер пользователя;
 
+
+// ------------------------------------------ Путь к каталогу файлов класса ---
+define ("TKwinGalleryDir", pathPhpTools.'/TKwinGallery');  
 // ----------------------------------------------- Режимы работы с галереей ---
 define ("mwgViewing", 1);   // просмотр
 define ("mwgEditing", 2);   // редактирование
@@ -72,8 +76,6 @@ class KwinGallery
    protected $Arti;      // Объект по работе с базой данных материалов
    protected $apdo;      // Подключение к базе данных материалов
    protected $gallidir;  // Каталог для размещения файлов галереи и связанных материалов
-   protected $imgdir;    // каталог служебных изображений
-   protected $classdir;  // Каталог класса
 
    protected $nym;       // Префикс имен файлов для фотографий галереи и материалов
    protected $pid;       // Идентификатор группы текущего материала
@@ -85,16 +87,6 @@ class KwinGallery
    protected $EditImg;   // Имя загруженного изображения
    protected $EditComm;  // Текст начального комментария перед загрузкой файла
    
-   // Рабочие свойства текущего изображения
-   /*
-   protected $NamePic;     // заголовок изображения (имя исходного файла без расширения)
-   protected $TranslitPic; // транслит заголовка изображения
-   protected $Ext;         // расширение файла заголовка изображения
-   protected $DatePic;     // дата\время создания изображения
-   protected $SizePic;     // размер изображения
-   protected $Comment;     // комментарий к изображению
-   protected $Pic;         // изображение
-   */
    protected $DelayedMessage;   // Отложенное сообщение
 
    // Образец массива элементов галереи
@@ -143,8 +135,6 @@ class KwinGallery
    {
       // Инициализируем свойства класса
       $this->gallidir=$gallidir;                    // каталог файлов редактирования
-      $this->imgdir=imgdir;                         // каталог служебных изображений
-      $this->classdir=pathPhpTools.'/TKwinGallery'; // каталог класса
       $this->nym=$nym;                              // префикс сайта (платформы)
       $this->pid=$pid;                              // идентификатор текущей группы статей
       $this->uid=$uid;                              // идентификатор текущей статьи 
@@ -153,53 +143,51 @@ class KwinGallery
       // Инициируем отложенное сообщение, то есть сообщение, которое может быть
       // выведено на фазе BODY процесса построения страницы сайта 
       $this->DelayedMessage=imok;
-      // Инициируем рабочие свойства текущего изображения
-      /*
-      $this->NamePic=NULL;     // заголовок изображения к статье (имя файла без расширения)
-      $this->TranslitPic=NULL; // транслит заголовка изображения
-      $this->Ext=NULL;         // расширение файла заголовка изображения
-      $this->DatePic=NULL;     // дата\время создания изображения
-      $this->SizePic=NULL;     // размер изображения
-      $this->Comment=NULL;     // комментарий к изображению
-      $this->Pic=NULL;         // изображение
-      */
       // Регистрируем объект по работе с базой данных материалов
       $this->Arti=$Arti;
       // Подключаемся к базе данных материалов
       $this->apdo=$this->Arti->BaseConnect();
       // Формируем начальный кукис изображения для редактирования
-      $this->EditImg=\prown\MakeCookie('EditImg',$this->imgdir.'/sampo.jpg',tStr,true);     
+      $this->EditImg=\prown\MakeCookie('EditImg',imgdir.'/sampo.jpg',tStr,true);     
       // Если файл был загружен во временное хранилище, то перегружаем его
       // на сервер. Поднимаем из кукиса имя загруженного изображения.
       $this->EditImg=$this->ifKwinUpload($this->SiteRoot,$this->gallidir,$this->nym,$this->pid,$this->uid);
       // Формируем текст начального комментария перед загрузкой файла
-      if ($this->EditImg==$this->imgdir.'/sampo.jpg')
+      if ($this->EditImg==imgdir.'/sampo.jpg')
         $this->EditComm="На горе Сампо всем хорошо!";
       else
         $this->EditComm="Текст комментария";
       // Выполняем действия на странице до отправления заголовков страницы: 
       // (устанавливаем кукисы и т.д.)                  
-      $this->ZeroEditSpace();
+      $this->Zero();
       // Трассируем установленные свойства
-      //\prown\ConsoleLog('$this->gallidir='.$this->gallidir); 
+      //\prown\ConsoleLog('$this->DelayedMessage='.$this->DelayedMessage); 
    }
    public function __destruct() 
    {
-      require_once(pathPhpTools."/JsTools.php");
-      require_once(pathPhpTools."/TKwinGallery/KwinGalleryJs.php");
    }
    // *************************************************************************
    // *   Выполнить действия на странице до отправления заголовков страницы:  *
    // *                         (установить кукисы и т.д.)                    *
    // *************************************************************************
-   private function ZeroEditSpace()
+   private function Zero()
    {
       // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
-      CompareCopyRoot('sampo.jpg',$this->classdir,$this->imgdir);
-      CompareCopyRoot('SaveStuff.php',$this->classdir);
-      CompareCopyRoot('deleteImg.php',$this->classdir);
+      CompareCopyRoot('KwinGallery.js',TKwinGalleryDir,jsxdir);
+      CompareCopyRoot('sampo.jpg',TKwinGalleryDir,imgdir);
+      CompareCopyRoot('SaveStuff.php',TKwinGalleryDir);
+      CompareCopyRoot('deleteImg.php',TKwinGalleryDir);
+   }
+   // *************************************************************************
+   // *             Выполнить действия на странице после отправления          *
+   // *                   заголовков страницы, в зоне HEAD                    *
+   // *************************************************************************
+   public function Head()
+   {
+      // <script src="/Jsx/KwinGallery.js"></script>
+      echo '<script src="/'.jsxdir.'/KwinGallery.js"></script>';
    }
    // *************************************************************************
    // *                          Представить массив галереи                   *
@@ -287,9 +275,16 @@ class KwinGallery
       $messa=imok;
       // Выбираем все фотографии по идентификатору текущей статьи
       $tableKeys=$this->Arti->SelImgKeys($this->apdo,$this->uid);
+      $i=0;
+      // Если фотографий нет, предлагаем загрузить первую
+      if (count($tableKeys)==0)
+      if (($GalleryMode=mwgEditing)&&($i==0)) 
+      {
+         if (IsSet($_POST["MAX_FILE_SIZE"])) $this->GSaveImgComm();
+         else  $this->GLoadImage(imgdir.'/sampo.jpg',"На горе Сампо всем хорошо!");
+      }
       // Перебираем изображения и загружаем их по ключам 
       // для просмотра или редактирования
-      $i=0;
       foreach ($tableKeys as $row)
       {
          $uid=$row['uid'];
@@ -326,7 +321,7 @@ class KwinGallery
          if (($GalleryMode=mwgEditing)&&($i==0)) 
          {
             if (IsSet($_POST["MAX_FILE_SIZE"])) $this->GSaveImgComm();
-            else  $this->GLoadImage($this->imgdir.'/sampo.jpg',"На горе Сампо всем хорошо!");
+            else  $this->GLoadImage(imgdir.'/sampo.jpg',"На горе Сампо всем хорошо!");
          }
          $i++;
       } 
@@ -358,8 +353,10 @@ class KwinGallery
    
    protected function GViewOrDelImage($mime_type,$DataPic,$Comment,$uid,$TranslitPic,$Action='Image')
    {
+      $FunClick="DeleteImg(".$uid.",'".$TranslitPic."'".",'".$Comment."'".
+         ",'".pathPhpTools."'".",'".pathPhpPrown."')";
+
       echo '<div class="Card">';
-      $FunClick="DeleteImg(".$uid.",'".$TranslitPic."'".",'".$Comment."')";
       echo '
         <button id="bLoadImg"  class="navButtons" onclick="'.$FunClick.'" '.  
          'title="Удалить изображение">Удалить

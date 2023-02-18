@@ -1,42 +1,39 @@
-<?php namespace ttools;
+// PHP7/HTML5, EDGE/CHROME                               *** KwinGallery.js ***
 
-// PHP7/HTML5, EDGE/CHROME                            *** KwinGalleryJs.php ***
 // ****************************************************************************
 // * KwinGalleryClass         Блок функций сопровождения класса на JavaScript *
 // *                                                                          *
 // * v1.0, 17.02.2023                               Автор:      Труфанов В.Е. *
 // * Copyright © 2023 tve                           Дата создания: 09.01.2023 *
 // ****************************************************************************
-?> 
-<script>
 
-nym="<?php echo $this->nym;?>";
-pid="<?php echo $this->pid;?>";
-uid="<?php echo $this->uid;?>"; 
+//nym="<?php echo $this->nym;?>";
+//pid="<?php echo $this->pid;?>";
+//uid="<?php echo $this->uid;?>"; 
 
 // ****************************************************************************
 // *  Задать обработчик запроса по удалению выбранного изображения c данными  *
 // *           из базы данных по указанному идентификатору и транслиту        *
 // ****************************************************************************
-function DeleteImg(uid,TranslitPic,Comment)
+function DeleteImg(uid,TranslitPic,Comment,pathPhpTools,pathPhpPrown)
 {
    $('#DialogWind').dialog
    ({
-      buttons:[{text:"OK",click:function(){xDeleteImg(uid,TranslitPic,Comment)}}]
+      buttons:[{text:"OK",click:function()
+      {
+         xDeleteImg(uid,TranslitPic,Comment,pathPhpTools,pathPhpPrown)
+      }}]
    });
    htmlText='Удалить изображение "'+Comment+'"?';
    Notice_Info(htmlText,"Удалить изображение");
 } 
-function xDeleteImg(Uid,TranslitPic,Comment)
+function xDeleteImg(Uid,TranslitPic,Comment,pathPhpTools,pathPhpPrown)
 {
    // Выводим в диалог предварительный результат выполнения запроса
    htmlText='Удалить изображение "'+Comment+'" не удалось!';
-   $('#DialogWind').html(htmlText);
-   // Выполняем запрос на удаление
-   pathphp="deleteImg.php";
-   // Делаем запрос на определение наименования раздела материалов
+   // Выполняем запрос на удаление выбранного изображения c данными 
    $.ajax({
-      url: pathphp,
+      url: "deleteImg.php",
       type: 'POST',
       data: {uid:Uid, translitpic:TranslitPic, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
       // Выводим ошибки при выполнении запроса в PHP-сценарии
@@ -44,21 +41,23 @@ function xDeleteImg(Uid,TranslitPic,Comment)
       // Обрабатываем ответное сообщение
       success: function(message)
       {
+         console.log(message);
          // Вырезаем из запроса чистое сообщение
          messa=FreshLabel(message);
-         parm=JSON.parse(messa);
-         //alert(messa);
          //console.log(messa);
-         /*
          // Получаем параметры ответа
          parm=JSON.parse(messa);
+         console.log(parm.NameArt);
+         console.log(parm.Piati);
+         console.log(parm.iif);
          // Выводим результат выполнения
-         if (parm.NameArt==gncNoCue) htmlText=parm.NameArt+' Uid='+Uid;
-         else htmlText=parm.NameArt;
-         */
-         $('#DialogWind').html(htmlText);
+         //if (parm.NameArt==gncNoCue) htmlText=parm.NameArt+' Uid='+Uid;
+         //else htmlText=parm.NameArt;
+         //$('#DialogWind').html(htmlText);
       }
    });
+    
+   /*
    // Удаляем кнопку из диалога и увеличиваем задержку до закрытия
    delayClose=1500;
    $('#DialogWind').dialog
@@ -67,10 +66,13 @@ function xDeleteImg(Uid,TranslitPic,Comment)
       hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
       title: "Удаление изображения",
    });
+   */
+   /*
    // Закрываем окно
-   //$("#DialogWind").dialog("close");
+   $("#DialogWind").dialog("close");
    // Перезагружаем страницу через 2 секунды
-   //setTimeout(function() {location.reload();}, 2000);
+   setTimeout(function() {location.reload();}, 2000);
+   */
 }
 // **********************************************************************
 // *      Задать обработчик запроса по сохранению галереи материала     *
@@ -101,7 +103,5 @@ function SaveStuff()
       }
    });
 }
-</script>
-<?php
 
-// ****************************************************** KwinGalleryJs.php *** 
+// ********************************************************* KwinGallery.js *** 
