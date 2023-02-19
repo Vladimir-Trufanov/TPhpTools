@@ -33,39 +33,35 @@ $note=new ttools\Notice();
 $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
 $Arti=new ttools\ArticlesMaker($basename,$username,$password,$note);
 $pdo=$Arti->BaseConnect();
-
-$NameArt='Удаляется статья!';
+// Определяем ключи поиска
 $uid=$_POST['uid'];
 $TranslitPic=$_POST['translitpic'];
-
-$Piati=$uid;
-$iif=$TranslitPic;
-
 // Выбираем сведения об изображении по ключам       
-$table=$Arti->SelImgPic1($pdo,$uid,$TranslitPic);
-
-$Piati=$table["uid"];
-$iif=$table["TranslitPic"];
-
-/*
-// Определяем количество найденных записей
-$count=count($table);
-
-// Если записей не найдено, то готовим сообщение
-if ($count<1) $NameArt=gncNoCue;
-// Иначе готовим удаление записи
-else
+$table=$Arti->SelImgPic($pdo,$uid,$TranslitPic);
+// Если ошибка выборки, то возвращаем сообщение
+if ($table["TranslitPic"]==Err)
 {
-   // Формируем сообщение удачного удаления
-   $NameArt='Удаляется статья. '.$table[0]['NameArt'].'.';
-   // Удаляем запись
-   $messa=$Arti->DelRecord($pdo,$_POST['idCue']);
-   // Если удаление с ошибкой, то готовим сообщение
-   if ($messa<>imok) $NameArt='Ошибка. '.$messa;
+   $NameArt=$table["Pic"];
+   $iif=$table["TranslitPic"];
 }
-// Освобождаем память
-unset($Arti); unset($pdo); unset($table);
-*/
+// Если по ключу ничего не  найдено, то возвращаем сообщение
+else if ($table["TranslitPic"]==NULL)
+{
+   $NameArt='Изображение не удалось выбрать!';
+   $iif=Err;
+}
+else 
+{
+   // Удаляем запись об изображении
+   $messa=$Arti->DelImgRecord($pdo,$uid,$TranslitPic);
+   // Если удаление с ошибкой, то готовим сообщение
+   if ($messa<>imok)
+   {
+      $NameArt=addslashes($messa);
+      $iif=Err;
+   } 
+   else $iif=imok;
+}
 // Возвращаем сообщение
 $message='{"NameArt":"'.$NameArt.'", "Piati":'.$Piati.', "iif":"'.$iif.'"}';
 $message=\prown\makeLabel($message,'ghjun5','ghjun5');

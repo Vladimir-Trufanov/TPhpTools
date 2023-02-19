@@ -29,15 +29,20 @@ function DeleteImg(uid,TranslitPic,Comment,pathPhpTools,pathPhpPrown)
 } 
 function xDeleteImg(Uid,TranslitPic,Comment,pathPhpTools,pathPhpPrown)
 {
-   // Выводим в диалог предварительный результат выполнения запроса
-   htmlText='Удалить изображение "'+Comment+'" не удалось!';
+   // Задаем константу диагностирования ошибке в ответе на запрос
+   Err="Произошла ошибка";
    // Выполняем запрос на удаление выбранного изображения c данными 
    $.ajax({
       url: "deleteImg.php",
       type: 'POST',
       data: {uid:Uid, translitpic:TranslitPic, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
       // Выводим ошибки при выполнении запроса в PHP-сценарии
-      error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
+      error: function (jqXHR,exception) 
+      {
+         aif=Err;
+         messi=SmarttodoError(jqXHR,exception);       
+         DialogWindMessage(Err,messi,' ');
+      },
       // Обрабатываем ответное сообщение
       success: function(message)
       {
@@ -47,36 +52,45 @@ function xDeleteImg(Uid,TranslitPic,Comment,pathPhpTools,pathPhpPrown)
          //console.log(messa);
          // Получаем параметры ответа
          parm=JSON.parse(messa);
-         console.log(parm.NameArt);
-         console.log(parm.Piati);
-         console.log(parm.iif);
-         // Выводим результат выполнения
-         //if (parm.NameArt==gncNoCue) htmlText=parm.NameArt+' Uid='+Uid;
-         //else htmlText=parm.NameArt;
-         //$('#DialogWind').html(htmlText);
+         //console.log(parm.NameArt);
+         //console.log(parm.Piati);
+         //console.log(parm.iif);
+         DialogWindMessage(parm.iif,parm.NameArt,'Удаляется изображение "'+Comment+'"!');
       }
    });
-    
-   /*
-   // Удаляем кнопку из диалога и увеличиваем задержку до закрытия
-   delayClose=1500;
-   $('#DialogWind').dialog
-   ({
-      buttons:[],
-      hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
-      title: "Удаление изображения",
-   });
-   */
-   /*
-   // Закрываем окно
-   $("#DialogWind").dialog("close");
-   // Перезагружаем страницу через 2 секунды
-   setTimeout(function() {location.reload();}, 2000);
-   */
 }
-// **********************************************************************
-// *      Задать обработчик запроса по сохранению галереи материала     *
-// **********************************************************************
+
+// ****************************************************************************
+// *             Вывести диалоговое окно с сообщением (или с ошибкой)         *
+// ****************************************************************************
+function DialogWindMessage(aif,messi,htmlText)
+{
+   // Если передана ошибка, выводим сообщение
+   if (aif==Err)
+   {
+      Error_Info(messi);
+   } 
+   // Говорим, что сообщение удаляется
+   else 
+   {
+      $('#DialogWind').html(htmlText);
+      // Удаляем кнопку из диалога и увеличиваем задержку до закрытия
+      delayClose=1500;
+      $('#DialogWind').dialog
+      ({
+         buttons:[],
+         hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
+         title: "Удаление изображения",
+      });
+      // Закрываем окно
+      $("#DialogWind").dialog("close");
+   }
+   // Перезагружаем страницу через 2.5 секунды
+   setTimeout(function() {location.reload();},2500);
+}
+// ****************************************************************************
+// *          Задать обработчик запроса по сохранению галереи материала       *
+// ****************************************************************************
 function SaveStuff()
 {
    GalleryText=$('#KwinGallery').html();

@@ -26,32 +26,33 @@ function SmarttodoError(jqXHR,exception)
 {
    if (jqXHR.status === 0) 
    {
-      alert('Ошибка/нет соединения.');
+      messi='Ошибка/нет соединения.';
    } 
    else if (jqXHR.status == 404) 
    {
-      alert('Требуемая страница не найдена (404).');
+      messi='Требуемая страница не найдена (404).';
    } 
    else if (jqXHR.status == 500) 
    {
-      alert('Внутренняя ошибка сервера (500).');
+      messi='Внутренняя ошибка сервера (500).';
    } 
    else if (exception === 'parsererror') 
    {
-      alert('Cинтаксический анализ JSON не выполнен.');
+      messi='Cинтаксический анализ JSON не выполнен.';
    } 
    else if (exception === 'timeout')          
    {
-      alert('Ошибка (time out) времени ожидания ответа.');
+      messi='Ошибка (time out) времени ожидания ответа.';
    } 
    else if (exception === 'abort') 
    {
-      alert('Ajax-запрос прерван.');
+      messi='Ajax-запрос прерван.';
    } 
    else 
    {
-      alert('Неперехваченная ошибка: '+jqXHR.responseText);
+      messi='Неперехваченная ошибка: '+jqXHR.responseText;
    }
+   return messi;
 }
 // ****************************************************************************
 // *                   Выделить метку (наборы символов до и после) в принятом *

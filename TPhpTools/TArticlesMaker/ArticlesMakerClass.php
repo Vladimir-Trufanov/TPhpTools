@@ -418,34 +418,27 @@ class ArticlesMaker
      }
      return $table;
    }
-   public function SelImgPic1($pdo,$uid,$TranslitPic)
+   // *************************************************************************
+   // *      Удалить запись об изображении по идентификатору и транслиту:     *
+   // *                    в случае успешного удаления функция                *
+   // *     возвращает сообщение, что все хорошо, иначе сообщение об ошибке   *
+   // *************************************************************************
+   public function DelImgRecord($pdo,$uid,$TranslitPic)
    {
      try
      {
-       $cSQL='SELECT [Pic] FROM [picturepw1] WHERE uid=:uid AND TranslitPic=:TranslitPic';
-       $stmt=$pdo->prepare($cSQL);
-       if ($stmt->execute([":uid"=>$uid, ":TranslitPic"=>$TranslitPic]))
-       {
-         $stmt->bindColumn(1, $Pic, \PDO::PARAM_LOB);
-         $table=$stmt->fetch(\PDO::FETCH_BOUND)?
-         [
-            "uid"         => $uid,
-            "TranslitPic" => $TranslitPic,
-            "Pic"         => $Pic
-         ]:null;
-       } 
+       $pdo->beginTransaction();
+       $cSQL='DELETE FROM picturepw WHERE uid='.$uid.' AND TranslitPic="'.$TranslitPic.'"';
+       $stmt = $pdo->query($cSQL);
+       $pdo->commit();
+       $messa=imok;
      } 
      catch (\Exception $e) 
      {
        $messa=$e->getMessage();
-       $table=[
-          "uid"          => $uid,
-          "TranslitPic"  => Err,
-          "Pic"          => $messa
-       ];
        if ($pdo->inTransaction()) $pdo->rollback();
      }
-     return $table;
+     return $messa;
    }
    // *************************************************************************
    // * Удалить запись по идентификатору: в случае успешного удаления функция *
