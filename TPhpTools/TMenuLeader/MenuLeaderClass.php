@@ -50,6 +50,7 @@
 // require_once pathPhpPrown."/CommonPrown.php";
 // Подгружаем нужные модули библиотеки прикладных классов
 // require_once pathPhpTools."/TArticlesMaker/ArticlesMakerClass.php";
+// require_once pathPhpTools."/CommonTools.php";
 
 // Возможные типы меню
 define ("ittveme", '-i');
@@ -58,30 +59,26 @@ define ("kwintiny",'-k');
 class MenuLeader
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $typemenu;  // Тип меню (для ittve.me или kwintiny)
-   protected $urlHome;   // Начальная страница сайта 
+   protected $typemenu;  // тип меню (для ittve.me или kwintiny)
+   protected $urlHome;   // начальная страница сайта 
+   protected $classdir;  // путь к каталогу файлов класса
    // ------------------------------------------ ПРЕФИКСЫ ПАРАМЕТРОВ В МЕНЮ ---
-   protected $cPreMe;    // Общие для сайта 'ittve.me' 
-   protected $ComTiny;   // Общие для фрэйма 'kwintiny' 
+   protected $cPreMe;    // общие для сайта 'ittve.me' 
+   protected $ComTiny;   // общие для фрэйма 'kwintiny' 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($typemenu,$urlHome) 
    {
       // Инициализируем свойства класса
       $this->typemenu=$typemenu; 
       $this->urlHome=$urlHome; 
-      
+      $this->classdir=pathPhpTools.'/TMenuLeader'; 
       // Формируем префиксы вызова страниц для сайта 'ittve.me' и localhost
-      //if ($this->is_ittveme()) $this->cPreMe=''; 
-      //else 
-      $this->cPreMe='?Com=';
-      //if ($this->is_ittveme()) $this->ComTiny=''; 
-      //else 
-      $this->ComTiny='?Com=';
-
-      // Трассируем установленные свойства
-      //\prown\ConsoleLog('$this->typemenu='.$this->typemenu); 
-      //\prown\ConsoleLog('$this->urlHome='.$this->urlHome); 
-      //\prown\ConsoleLog('$this->cPreMe='.$this->cPreMe); 
+      if ($this->is_ittveme()) $this->cPreMe='';  else $this->cPreMe='?Com=';
+      if ($this->is_ittveme()) $this->ComTiny=''; else $this->ComTiny='?Com=';
+      // Проверяем, нужно ли заменить файл стилей в каталоге редактирования и,
+      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // загружаем из класса 
+      CompareCopyRoot('MenuLeader.css',$this->classdir,stylesdir);
    }
    public function __destruct() 
    {
@@ -185,10 +182,10 @@ class MenuLeader
          <ul class="navset">
       ';
       // Выводим пункты меню управления для страниц из главного меню
-      if (prown\isComRequest(mmlZhiznIputeshestviya)||
-      prown\isComRequest(mmlDobavitNovyjRazdel)||
-      prown\isComRequest(mmlIzmenitNazvanieIkonku)||
-      prown\isComRequest(mmlUdalitRazdelMaterialov))
+      if (\prown\isComRequest(mmlZhiznIputeshestviya)||
+      \prown\isComRequest(mmlDobavitNovyjRazdel)||
+      \prown\isComRequest(mmlIzmenitNazvanieIkonku)||
+      \prown\isComRequest(mmlUdalitRazdelMaterialov))
       {
          $this->Punkt($this->urlHome,'&#xf015;','Вернуться','на главную страницу');
          $this->Punkt($this->cPreMe.mmlDobavitNovyjRazdel,'&#xf0f2;','Добавить новый','раздел материалов');
@@ -196,7 +193,7 @@ class MenuLeader
          $this->Punkt($this->cPreMe.mmlUdalitRazdelMaterialov,'&#xf1f8;','Удалить раздел','материалов');
       }
       // Выводим пункты меню для страницы изменения настроек сайта
-      else if (prown\isComRequest(mmlIzmenitNastrojkiSajta))
+      else if (\prown\isComRequest(mmlIzmenitNastrojkiSajta))
       {
          $this->Punkt($this->urlHome,'&#xf015;','Вернуться','на главную страницу');
          $this->Punkt($this->cPreMe.mmlOtpravitAvtoruSoobshchenie,'&#xf01c;','Отправить автору','сообщение');
@@ -204,7 +201,7 @@ class MenuLeader
          $this->Punkt($this->cPreMe.mmlSozdatRedaktirovat,'&#xf044;','Создать материал','или редактировать');
       }
       // Выводим пункты меню страницы для входа и регистрации
-      else if (prown\isComRequest(mmlVojtiZaregistrirovatsya))
+      else if (\prown\isComRequest(mmlVojtiZaregistrirovatsya))
       {
          $this->Punkt($this->urlHome,'&#xf015;','Вернуться','на главную страницу');
          $this->Punkt($this->cPreMe.mmlOtpravitAvtoruSoobshchenie,'&#xf01c;','Отправить автору','сообщение');
@@ -212,7 +209,7 @@ class MenuLeader
          $this->Punkt($this->cPreMe.mmlSozdatRedaktirovat,'&#xf044;','Создать материал','или редактировать');
       }
       // Выводим пункты для страницы сообщения автору 
-      else if (prown\isComRequest(mmlOtpravitAvtoruSoobshchenie))
+      else if (\prown\isComRequest(mmlOtpravitAvtoruSoobshchenie))
       {
          $this->Punkt($this->urlHome,'&#xf015;','Вернуться','на главную страницу');
          $this->Punkt($this->cPreMe.mmlIzmenitNastrojkiSajta,'&#xf013;','Изменить настройки','сайта в браузере');
@@ -220,12 +217,13 @@ class MenuLeader
          $this->Punkt($this->cPreMe.mmlSozdatRedaktirovat,'&#xf044;','Создать материал','или редактировать');
       }
       // Выводим пункты меню при работе с материалом 
-      else if (prown\isComRequest(mmlSozdatRedaktirovat))
+      else if (\prown\isComRequest(mmlSozdatRedaktirovat))
       {
          $this->Punkt($this->urlHome,'&#xf015;','Вернуться','на главную страницу');
-         $this->Punkt($this->cPreMe.mmlOtpravitAvtoruSoobshchenie,'&#xf01c;','Отправить автору','сообщение');
-         $this->Punkt($this->cPreMe.mmlIzmenitNastrojkiSajta,'&#xf013;','Изменить настройки','сайта в браузере');
-         $this->Punkt($this->cPreMe.mmlVojtiZaregistrirovatsya,'&#xf007;','Войти или','зарегистрироваться');
+         $this->Punkt($this->cPreMe.mmlNaznachitStatyu,'&#xf0f6;','  Назначить','  новую статью');
+         $this->Punkt($this->cPreMe.mmlVybratStatyuRedakti,'&#xf07c;','Выбрать материал','для изменений');
+         $cPost='<input type="submit" value="Сохранить материал" form="frmTinyText" onclick="SaveStuff()">';
+         $this->PunktPost('&#xf0ed;',$cPost,"Сохранить материал");
       }
       // Выводим пункты меню главной страницы
       else
@@ -243,7 +241,7 @@ class MenuLeader
    // *************************************************************************
    // *   Определить работаем ли на хостинге сайта 'ittve.me' или localhost   *
    // *************************************************************************
-   function is_ittveme()
+   private function is_ittveme()
    { 
       $Result=false;
       if (
@@ -271,6 +269,20 @@ class MenuLeader
          </li>
       ';
    }
+   private function PunktPost($cUniCod,$cPost,$fill)
+   {
+      echo '
+         <li class="link">
+         <span class="prev">'.$cUniCod.'</span>
+         <span class="small">'.$cUniCod.'</span>
+         <span class="full">
+         '.$cPost.'
+         </span>
+         </li>
+      ';
+   }
+   // <span class="k1"><a href="'.$Punkt.'">'.$fString.'</a></span>
+   // <span class="k2"><a href="'.$Punkt.'">'.$sString.'</a></span>
 } 
 
 // **************************************************** MenuLeaderClass.php ***

@@ -79,15 +79,9 @@
  * 
 **/
 
+require_once pathPhpPrown."/CommonPrown.php";
 require_once pathPhpTools."/TMenuLeader/MenuLeaderClass.php";
 require_once pathPhpTools."/CommonTools.php";
-
-define ("classdir", pathPhpTools.'/TTinyGallery'); // путь к каталогу файлов класса
-
-define ('mmlVernutsyaNaGlavnuyu', 'vernutsya-na-glavnuyu-stranicu');
-define ('mmlVybratStatyuRedakti', 'vybrat-statyu-dlya-redaktirovaniya');
-define ('mmlNaznachitStatyu',     'naznachit-statyu');
-define ('mmlUdalitMaterial',      'udalit-material');
 
 define ("ttMessage", 1);  // вывести информационное сообщение
 define ("ttError",   2);  // вывести сообщение об ошибке
@@ -97,29 +91,30 @@ define ("NoDefine", -1);  // Признак того, что группа мат
 class TinyGallery
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $SiteRoot;         // Корневой каталог сайта
-   protected $urlHome;          // Начальная страница сайта
-   protected $editdir;          // Каталог размещения файлов, связанных c материалом
-
-   protected $WorkTinyHeight;   // Высота рабочей области Tiny
-   protected $FooterTinyHeight; // Высота подвала области редактирования
-   protected $KwinGalleryWidth; // Ширина галереи изображений
-   protected $EdIzm;            // Единица измерения заданных параметров
+   protected $SiteRoot;         // корневой каталог сайта
+   protected $urlHome;          // начальная страница сайта
+   protected $editdir;          // каталог размещения файлов, связанных c материалом
+   protected $classdir;         // путь к каталогу файлов класса
+   protected $cPref;            // префикс вызова страницы на сайте и localhost
+   protected $WorkTinyHeight;   // высота рабочей области Tiny
+   protected $FooterTinyHeight; // высота подвала области редактирования
+   protected $KwinGalleryWidth; // ширина галереи изображений
+   protected $EdIzm;            // единица измерения заданных параметров
    
-   protected $Arti;             // Объект по работе с базой данных материалов
-   protected $contents;         // Текущий материал
-   protected $NameGru;          // Заголовок текущей группы материалов
-   protected $NameArt;          // Заголовок текущего материала
-   protected $DateArt;          // Дата текущего материала
-   protected $fileStyle;        // Файл стилей элементов класса
-   protected $apdo;             // Подключение к базе данных материалов
-   protected $menu;             // Управляющее меню в подвале
+   protected $Arti;             // объект по работе с базой данных материалов
+   protected $contents;         // текущий материал
+   protected $NameGru;          // заголовок текущей группы материалов
+   protected $NameArt;          // заголовок текущего материала
+   protected $DateArt;          // зата текущего материала
+   protected $fileStyle;        // файл стилей элементов класса
+   protected $apdo;             // подключение к базе данных материалов
+   protected $menu;             // управляющее меню в подвале
    
-   protected $Galli;            // Объект управления изображениями в галерее
-   protected $pidEdit;          // Идентификатор группы материалов в базе данных
-   protected $uidEdit;          // Идентификатор материала
+   protected $Galli;            // объект управления изображениями в галерее
+   protected $pidEdit;          // идентификатор группы материалов в базе данных
+   protected $uidEdit;          // одентификатор материала
    
-   protected $DelayedMessage;   // Отложенное сообщение
+   protected $DelayedMessage;   // отложенное сообщение
 
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct($SiteRoot,$urlHome,
@@ -129,6 +124,7 @@ class TinyGallery
       $this->SiteRoot=$SiteRoot; 
       $this->urlHome=$urlHome; 
       $this->editdir=editdir; 
+      $this->classdir=pathPhpTools.'/TTinyGallery'; 
       $this->pidEdit=-1; 
       $this->uidEdit=-1; 
       // Регистрируем объект по работе с базой данных материалов
@@ -180,8 +176,8 @@ class TinyGallery
       // (при его отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
       CompareCopyRoot('CommonTools.js',pathPhpTools,jsxdir);
-      CompareCopyRoot('WorkTiny.css',classdir,stylesdir);
-      CompareCopyRoot('WorkTiny.js',classdir,jsxdir);
+      CompareCopyRoot('WorkTiny.css',$this->classdir,stylesdir);
+      CompareCopyRoot('WorkTiny.js',$this->classdir,jsxdir);
       // Если выбран материал (транслит) для редактирования, то готовим 
       // установку кукиса на данный материал. Материал мог быть выбран при 
       // выполнении методов:
@@ -240,7 +236,7 @@ class TinyGallery
          $this->DelayedMessage=$this->Galli->getDelayedMessage();
       }
       // Подключаем управляющее меню в подвале
-      $this->menu=new MenuLeader(kwintiny,$this->urlHome);
+      $this->menu=new MenuLeader(ittveme,$this->urlHome);
    }
    
    // --------------------------------------------------------------------------------------- HEAD and LAST ---
@@ -384,8 +380,39 @@ class TinyGallery
    
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
-      // Подключаем управляющее меню в подвале
-      $this->menu->Menu(); 
+      // Кнопка главного меню 
+      echo '<div id="LifeMenu">';
+      echo '
+      <ul id="btnLifeMenu">
+      <li>
+         <a href= "'.'$cPref.mmlZhiznIputeshestviya'.'">
+         <img id="imgLifeMenu" src="/Images/tveMenuD.png" alt="tveMenuD">
+         </a> 
+      </li> 
+      </ul>
+      ';
+      echo '</div>';
+      // Левая часть подвала для сообщений, разворачиваемых в три строки
+      echo '<div id="LeftFooter">';
+         
+         $menuOld=new MenuLeader(kwintiny,$this->urlHome);
+         $menuOld->Menu(); 
+         echo \prown\getComRequest().'<br>';
+         // а) показываем идентификацию статей
+         if (\prown\isComRequest(mmlSozdatRedaktirovat))
+         {
+            // PlaceIdArticles();
+         }
+         // б) выводим обычное сообщение
+         else
+         {
+            // require_once "MessLeftFooter.php";
+         }
+      echo '</div>';
+      // Правая часть подвала, меню управления
+      echo '<div id="RightFooter">';
+         $this->menu->Menu(); 
+      echo '</div>';
    echo '</div>';
    }
 

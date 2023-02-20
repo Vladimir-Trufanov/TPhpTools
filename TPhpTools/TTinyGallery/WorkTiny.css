@@ -25,12 +25,14 @@
    top:0;
    overflow:auto;
 }
+/*
 #FooterTiny
 {
    position:fixed; 
    left:0;
    overflow:auto;
 }
+*/
 
 /* Настраиваем рабочую область Tiny */
 #frmTinyText
