@@ -82,6 +82,7 @@
 require_once pathPhpPrown."/CommonPrown.php";
 require_once pathPhpTools."/TMenuLeader/MenuLeaderClass.php";
 require_once pathPhpTools."/CommonTools.php";
+require_once pathPhpTools."/TTinyGallery/WorkTiny.php";
 
 define ("ttMessage", 1);  // вывести информационное сообщение
 define ("ttError",   2);  // вывести сообщение об ошибке
@@ -235,8 +236,6 @@ class TinyGallery
          $this->Galli=new KwinGallery(editdir,nym,$pidEdit,$uidEdit,$this->SiteRoot,$this->urlHome,$this->Arti);
          $this->DelayedMessage=$this->Galli->getDelayedMessage();
       }
-      // Подключаем управляющее меню в подвале
-      $this->menu=new MenuLeader(ittveme,$this->urlHome);
    }
    
    // --------------------------------------------------------------------------------------- HEAD and LAST ---
@@ -284,16 +283,14 @@ class TinyGallery
       if ((\prown\getComRequest('nsnCue')==-1)&&
       (\prown\getComRequest('nsnName')<>NULL)&&
       (\prown\getComRequest('nsnDate')<>NULL))
-      {
-         $this->IniEditSpace_mmlNaznachitStatyu();
-      }
+      mmlNaznachitStatyu_HEAD();
+
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+      mmlNaznachitStatyu_HEAD();
+
       else if (\prown\isComRequest(mmlVybratStatyuRedakti))
       {
          $this->IniEditSpace_mmlVybratStatyuRedakti();
-      }
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
-      {
-         $this->IniEditSpace_mmlNaznachitStatyu();
       }
       else if (\prown\isComRequest(mmlUdalitMaterial))
       {
@@ -316,10 +313,10 @@ class TinyGallery
       {
          $this->KwinGallery_mmlVybratStatyuRedakti();
       }
+
       else if (\prown\isComRequest(mmlNaznachitStatyu))
-      {
-         $this->KwinGallery_mmlNaznachitStatyu('');
-      }
+      mmlNaznachitStatyu_BODY_KwinGallery();
+
       else if (\prown\isComRequest(mmlUdalitMaterial))
       {
          $this->KwinGallery_mmlUdalitMaterial();
@@ -329,43 +326,24 @@ class TinyGallery
       {
          $this->KwinGallery_main($this->pidEdit,$this->uidEdit);
       }
-      // В обычном режиме
-      //echo '$_SERVER["SCRIPT_NAME"]='.$_SERVER["SCRIPT_NAME"].'<br>';
-      //echo 'KwinGallery<br>';
-      /*
-      //$basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety17'; 
-      //$Arti=new ArticlesMaker($basename,$username,$password);
-      //$apdo=$Arti->BaseConnect();
-      //$Galli->ViewGallery(gallidir,$apdo);
-      // Cоздаем объект для управления изображениями в галерее, связанной с 
-      // материалами сайта из базы данных
-      $Galli=new ttools\KwinGallery(editdir,nym,$pid,$uid);
-      $Galli->ViewGallery(editdir,$apdo);
-      $pref=editdir.nym.pid.'-'.uid.'-';
-      $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
-      GViewImage($pref.'Подъём-настроения.jpg',$Comment);
-      GLoadImage("ittveEdit/sampo.jpg");
-      $Comment="На горе Сампо всем хорошо!";
-      GViewImage($pref.'На-Сампо.jpg',$Comment);
-      */   
    echo '</div>'; 
    // Включаем в разметку рабочую область редактирования
    echo '<div id="WorkTiny">';
+
       // Если было назначение статьи без указания выбранного раздела, 
       // то перезапускаем страницу "Назначить статью"
       if ((\prown\getComRequest('nsnCue')==-1)&&
       (\prown\getComRequest('nsnName')<>NULL)&&
       (\prown\getComRequest('nsnDate')<>NULL))
-      {
-         $this->WorkTiny_mmlNaznachitStatyu('Указать группу материалов для новой статьи');
-      }
+         mmlNaznachitStatyu_BODY_WorkTiny
+         ('Указать группу материалов для новой статьи',$this->apdo,$this->Arti);
+      else if (\prown\isComRequest(mmlNaznachitStatyu))
+         mmlNaznachitStatyu_BODY_WorkTiny
+         ('Указать название, дату и группу материалов для новой статьи',$this->apdo,$this->Arti);
+
       else if (\prown\isComRequest(mmlVybratStatyuRedakti))
       {
          $this->WorkTiny_mmlVybratStatyuRedakti();
-      }
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
-      {
-         $this->WorkTiny_mmlNaznachitStatyu('Указать название, дату и группу материалов для новой статьи');
       }
       else if (\prown\isComRequest(mmlUdalitMaterial))
       {
@@ -411,36 +389,15 @@ class TinyGallery
       echo '</div>';
       // Правая часть подвала, меню управления
       echo '<div id="RightFooter">';
+      // Подключаем управляющее меню в подвале
+         $this->menu=new MenuLeader(ittveme,$this->urlHome);
          $this->menu->Menu(); 
       echo '</div>';
    echo '</div>';
    }
 
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
-   
-   // *************************************************************************
-   // *                         Вывести заголовок статьи                      *
-   // *************************************************************************
-   private function MakeTitle($NameGru,$NameArt,$DateArt='')
-   {
-      if ($NameArt==ttMessage) echo '<div id="Message">'.$NameGru.'</div>'; 
-      else if ($NameArt==ttError) echo '<div id="NameError">'.$NameGru.'</div>'; 
-      else
-      {
-         echo '<div id="TopLine">'; 
-         if ($NameArt=='')
-         {
-            echo '<div id="NameGru">'.$NameGru.'</div>'; 
-            echo '<div id="NameArt">'.'</div>'; 
-         }
-         else
-         {
-            echo '<div id="NameGru">'.$NameGru.':'.'</div>'; 
-            echo '<div id="NameArt">'.$NameArt.' ['.$DateArt.']'.'</div>'; 
-         } 
-         echo '</div>'; 
-      }
-   }
+
    // *************************************************************************
    // *    Выполнить действия на странице в обычном режиме редактирования     *
    // *************************************************************************
@@ -493,26 +450,6 @@ class TinyGallery
          </script>
       ';
    }
-   private function IniEditSpace_mmlNaznachitStatyu()
-   {
-      // Отключаем разворачивание аккордеона
-      // в случае, когда создаем заголовок новой статьи. 
-      echo '
-      <style>
-      .accordion li .sub-menu 
-      {
-         height:100%;
-      }
-      </style>
-      ';
-      
-      echo '
-      <script>
-      </script>
-      ';
-      // Включаем рождественскую версию шрифтов и полосок меню
-      $this->IniFontChristmas();
-   }
    private function IniEditSpace_mmlVernutsyaNaGlavnuyu()
    {
       \prown\ConsoleLog('IniEditSpace_mmlVernutsyaNaGlavnuyu'); 
@@ -535,38 +472,12 @@ class TinyGallery
       </script>
       ';
       // Включаем рождественскую версию шрифтов и полосок меню
-      $this->IniFontChristmas();
+      IniFontChristmas();
    }
    private function IniEditSpace_mmlVybratStatyuRedakti()
    {
       // Включаем рождественскую версию шрифтов и полосок меню
-      $this->IniFontChristmas();
-   }
-   // *************************************************************************
-   // *    Настроить размеры шрифтов и полосок меню (рождественская версия)   *
-   // *************************************************************************
-   private function IniFontChristmas()
-   {
-      echo '
-      <style>
-      .accordion li > a, 
-      .accordion li > i 
-      {
-         font:bold .9rem/1.8rem Arial, sans-serif;
-         padding:0 1rem 0 1rem;
-         height:2rem;
-      }
-      .accordion li > a span, 
-      .accordion li > i span 
-      {
-         font:normal bold .8rem/1.2rem Arial, sans-serif;
-         top:.4rem;
-         right:0;
-         padding:0 .6rem;
-         margin-right:.6rem;
-      }
-      </style>
-      ';
+      IniFontChristmas();
    }
    // *************************************************************************
    // *     Открыть рабочую область и обеспечить редактирование материала     *
@@ -577,9 +488,9 @@ class TinyGallery
 
       // Выводим заголовок статьи
       if ($this->DelayedMessage==imok)
-         $this->MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
+         MakeTitle($this->NameGru,$this->NameArt,$this->DateArt);
       else 
-         $this->MakeTitle($this->DelayedMessage,ttError);
+         MakeTitle($this->DelayedMessage,ttError);
       $SaveAction=$_SERVER["SCRIPT_NAME"];
       echo '
          <form id="frmTinyText" method="post" action="'.$SaveAction.'">
@@ -598,49 +509,6 @@ class TinyGallery
          </form>
       '; 
    }
-   // *************************************************************************
-   // *                       Выполнить действия при назначении новой статьи: *
-   // * на первой странице,  когда требуется выбрать группу статей, к которой *
-   // * будет относиться новая статья;                                        *
-   // * на второй странице, когда задаются название и дата статьи             *
-   // *************************************************************************
-   private function WorkTiny_mmlNaznachitStatyu($messa)
-   {
-   
-      if (\prown\getComRequest('nsnGru')==NoDefine)
-      {
-         ?> <script> 
-            $(document).ready(function() {Error_Info('Группа материалов не назначена!');})
-         </script> <?php
-      }
-      // Проверяем и учитываем уже выбранные данные
-      if (\prown\getComRequest('nsnName')==NULL) $nsnName='';
-      else $nsnName='value="'.\prown\getComRequest('nsnName').'"';
-      if (\prown\getComRequest('nsnDate')==NULL) $nsnDate='';
-      else $nsnDate='value="'.\prown\getComRequest('nsnDate').'"';
-      // Выводим заголовочное сообщение
-      $this->MakeTitle($messa,ttMessage);
-      // Выбираем название и дату новой статьи
-      $SaveAction=$_SERVER["SCRIPT_NAME"];
-      echo '
-         <div id="nsGroup">
-         <form id="frmNaznachitStatyu" method="post" action="'.$SaveAction.'">
-      ';
-      echo '
-         <input id="nsName" type="text" name="nsnName" '.$nsnName.' placeholder="Название нового материала" required>
-         <input id="nsDate" type="date" name="nsnDate" '.$nsnDate.' required>
-         <input id="nsCue"  type="hidden" name="nsnCue" value="'.NoDefine.'">
-         <input id="nsGru"  type="hidden" name="nsnGru" value="'.NoDefine.'">
-      ';
-      echo '
-         </form>
-         </div>
-      ';
-      // Выбираем группу материалов для которой создается новая статья
-      echo '<div id="AddArticle">';
-         $this->Arti->MakeUniMenu($this->apdo,'SelMatiSection');
-      echo '</div>';
-   }
    private function WorkTiny_mmlVernutsyaNaGlavnuyu()
    {
       echo 'WorkTiny_mmlVernutsyaNaGlavnuyu<br>';
@@ -648,7 +516,7 @@ class TinyGallery
    private function WorkTiny_mmlUdalitMaterial()
    {
       // Выводим заголовочное сообщение
-      $this->MakeTitle('Выбрать материал для удаления',ttMessage);
+      MakeTitle('Выбрать материал для удаления',ttMessage);
       // Строим меню
       $this->Arti->MakeUniMenu($this->apdo,'','UdalitMater');
    }
@@ -659,7 +527,7 @@ class TinyGallery
    private function WorkTiny_mmlVybratStatyuRedakti()
    {
       // Выводим заголовочное сообщение
-      $this->MakeTitle('Выбрать статью для редактирования',ttMessage);
+      MakeTitle('Выбрать статью для редактирования',ttMessage);
       // Выбираем статью для редактирования и, дополнительно,
       // проверяем целостность базы данных
       $this->Arti->getPunktMenu($this->apdo); 
@@ -676,10 +544,6 @@ class TinyGallery
          //$this->Galli->ViewGallery(NULL,mwgEditing);
          $this->DelayedMessage=$this->Galli->BaseGallery(mwgEditing);
       }
-   }
-   private function KwinGallery_mmlNaznachitStatyu()
-   {
-      echo 'KwinGallery_mmlNaznachitStatyu<br>';
    }
    private function KwinGallery_mmlUdalitMaterial()
    {

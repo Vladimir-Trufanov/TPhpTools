@@ -112,19 +112,6 @@ class KwinGallery
       )
    );
    */
-   // Образец массива элементов галереи
-   protected $galleryX = array(
-      "gallidir"     => "ittveEdit",
-      "nym"          => "ittve",
-      "pid"          => 2,
-      "uid"          => 30,
-      "gallery" => array(
-         array(
-         "Comment"  => "Ночная прогулка по Ладоге до рассвета и подъёма настроения.",
-         "FileName" => "Подъём-настроения.jpg"
-         ),
-      )
-   );
    //
    public function getDelayedMessage()
    {
@@ -177,7 +164,6 @@ class KwinGallery
       // загружаем из класса 
       CompareCopyRoot('KwinGallery.js',TKwinGalleryDir,jsxdir);
       CompareCopyRoot('sampo.jpg',TKwinGalleryDir,imgdir);
-      CompareCopyRoot('SaveStuff.php',TKwinGalleryDir);
       CompareCopyRoot('deleteImg.php',TKwinGalleryDir);
    }
    // *************************************************************************
@@ -188,82 +174,6 @@ class KwinGallery
    {
       // <script src="/Jsx/KwinGallery.js"></script>
       echo '<script src="/'.jsxdir.'/KwinGallery.js"></script>';
-   }
-   // *************************************************************************
-   // *                          Представить массив галереи                   *
-   // *************************************************************************
-   public function ViewGalleryAsArray($galleryIn=NULL)
-   { 
-      if ($galleryIn===NULL) $gallery=$this->galleryX;
-      else $gallery=$galleryIn;
-      echo '<pre>';
-      var_dump($gallery);
-      echo '</pre><br>';
-      //echo '<br>';
-   }
-   // *************************************************************************
-   // *         Развернуть изображения галереи и обеспечить их ведение        *
-   // *     $GalleryMode - режим вывода галереи: mwgViewing или mwgEditing    *
-   // *************************************************************************
-   public function ViewGallery($galleryIn=NULL,$GalleryMode=mwgViewing)
-   {
-      if ($galleryIn===NULL) $gallery=$this->galleryX;
-      else $gallery=$galleryIn;
-      $pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
-      $aGallery=$gallery['gallery'];
-      for ($i=0; $i<count($aGallery); $i++) 
-      {
-         // Если есть, то выводим начальное изображение
-         $this->GViewImage($pref.$aGallery[$i]["FileName"],$aGallery[$i]["Comment"]);
-         // Если задан режим редактирования, то выводим изображение загрузки
-         if (($GalleryMode=mwgEditing)&&($i==0)) 
-         {
-            if (IsSet($_POST["MAX_FILE_SIZE"])) $this->GSaveImgComm();
-            else  $this->GLoadImage($this->EditImg,$this->EditComm);
-         }
-      }
-   
-      /*
-      // $FileName="ittveEdit/ittve2-3-Подъём-настроения.jpg";
-      $pref=$this->gallidir.'/'.$this->nym.$this->pid.'-'.$this->uid.'-';
-     
-      $Comment="Ночная прогулка по Ладоге до рассвета и подъёма настроения.";
-      $this->GViewImage($pref.'Подъём-настроения.jpg',$Comment);
-
-      $this->GLoadImage($this->gallidir.'/'.'sampo.jpg');
-      //$this->GLoadImage($pref.'Размыло-дорогу.jpg');
-      //$Comment="Здесь комментарий.";
-      //$this->GViewImage($pref.'Размыло-дорогу.jpg',$Comment);
-
-      $Comment="На горе Сампо всем хорошо!";
-      $this->GViewImage($pref.'На-Сампо.jpg',$Comment);
-
-      $Comment="'С заботой и к мамам' - такой мамочкин хвостик.";
-      $this->GViewImage($pref.'С-заботой-и-к-мамам.jpg',$Comment);
-
-      // Из галереи задаем режим представления выбранной картинки - "на высоту страницы"
-      //$s_ModeImg=prown\MakeSession('ModeImg',vimOnPage,tInt);           
-      */
-      
-      /*
-      // Выбираем режим работы с изображениями, как режим редактирования материала
-      if ($Dir==$this->editdir)
-      {
-         // Формируем определяющий массив для базы данных редактируемого материала
-         $aCharters=$this->MakeaCharters($apdo);
-         // Проверяем существование и создаем базу данных редактируемого материала
-         $basename=$_SERVER['DOCUMENT_ROOT'].'/itEdit'; // имя базы без расширения 'db3'
-         $username='tve';
-         $password='23ety17'; 
-         $Arti=new ArticlesMaker($basename,$username,$password);
-         // Создаем (или открываем) базу данных для редактируемого материала
-         //$Arti->BaseFirstCreate($aCharters);
-      }
-      else
-      {
-         \prown\ConsoleLog('НЕ ='.$this->editdir); 
-      }
-      */
    }
    // *************************************************************************
    // *            Развернуть изображения галереи из базы данных              *
@@ -303,19 +213,6 @@ class KwinGallery
          else
             $this->GViewImage($row['mime_type'],$table['Pic'],$Comment,$Action='Image');
             //$this->GViewImage($FileName,$Comment,$Action='Image');
-         /*
-         $Action='Image';
-         echo '<div class="Card">'.
-              '<button class="bCard" type="submit" name="'.$Action.'">';
-         if ($table != null) 
-         echo '<img class="imgCard" src="data:'.$row['mime_type'].';base64,'.base64_encode($table['Pic']).'"/>';
-         else echo 'Error loading document';
-         echo 
-            '</button>';
-         echo '<p class="pCard">'.$Comment.'</p>';
-         echo 
-            '</div>';
-         */
          // Если задан режим редактирования, то выводим изображение для загрузки
          // (как правило, второе при выводе карточек)
          if (($GalleryMode=mwgEditing)&&($i==0)) 
@@ -327,11 +224,8 @@ class KwinGallery
       } 
       return $messa;
    }
-   
-   //protected function GViewImage($FileName,$Comment,$Action='Image')
    protected function GViewImage($mime_type,$DataPic,$Comment,$Action='Image')
    {
-      
       echo '<div class="Card">';
       echo '<button class="bCard" type="submit" name="'.$Action.'">';
       //echo '<img class="imgCard" src="'.$FileName.'">';
@@ -339,18 +233,7 @@ class KwinGallery
       echo '</button>';
       echo '<p class="pCard">'.$Comment.'</p>';
       echo '</div>';
-      /*
-      echo 
-         '<div class="Card">'.
-         '<button class="bCard" type="submit" name="'.$Action.'">'.
-         '<img class="imgCard" src="data:image/jpeg;base64,'.base64_encode(file_get_contents("test.jpg")).'"/>'.
-         '</button>';
-      echo '<p class="pCard">'.$Comment.'</p>';
-      echo 
-         '</div>';
-      */
    }
-   
    protected function GViewOrDelImage($mime_type,$DataPic,$Comment,$uid,$TranslitPic,$Action='Image')
    {
       $FunClick="DeleteImg(".$uid.",'".$TranslitPic."'".",'".$Comment."'".
@@ -416,29 +299,6 @@ class KwinGallery
       echo '</form>';
       echo '</div>';
    }
-   /*
-   // Обновляем изображение, если была загрузка изображения
-   //if (IsSet($_POST["MAX_FILE_SIZE"])) 
-   //{
-   //   ?> <script> 
-   //      niname="<?php echo $this->EditImg;?>";
-   //      $('#imgCardi').attr('src',niname); 
-   //   </script> <?php
-   //}
-   */
-   // *************************************************************************
-   // *************************************************************************
-   public function UpdateImg($pdo)
-   {
-      /*
-      // Выбираем текущую страницу
-      $html=curl($this->urlHome,$varerr);
-      PutString('$varerr ='.$varerr.'<br><br>','proba.txt');
-      PutString('$html ='.$html.'<br><br>','proba.txt');
-      */
-      //$pref=$gallery['gallidir'].'/'.$gallery['nym'].$gallery['pid'].'-'.$gallery['uid'].'-';
-   }
-   
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
 
    // *************************************************************************

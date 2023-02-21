@@ -7,9 +7,31 @@
 // * Copyright © 2023 tve                           Дата создания: 09.01.2023 *
 // ****************************************************************************
 
-//nym="<?php echo $this->nym;?>";
-//pid="<?php echo $this->pid;?>";
-//uid="<?php echo $this->uid;?>"; 
+/*
+$(function() {
+	
+    $('#dialog').dialog({
+        buttons: [{text: "OK", click: addDataToTable}],
+        modal: true,
+        autoOpen: false,
+        width: 340
+    })
+    
+    $('#show').button().click(function() {
+        $('#dialog').dialog("open");
+    })
+    
+    function addDataToTable() {
+        $('#placeholder').hide();
+		
+        $('<tr><td>' + $('#product').val() + '</td><td>' + $('#color').val() +
+            '</td><td>' + $('#count').val() + '</td></tr>').appendTo('#prods tbody');
+			
+        $('#dialog').dialog("close");
+    }
+			
+});
+*/
 
 // ****************************************************************************
 // *  Задать обработчик запроса по удалению выбранного изображения c данными  *
@@ -87,35 +109,6 @@ function DialogWindMessage(aif,messi,htmlText)
    }
    // Перезагружаем страницу через 2.5 секунды
    setTimeout(function() {location.reload();},2500);
-}
-// ****************************************************************************
-// *          Задать обработчик запроса по сохранению галереи материала       *
-// ****************************************************************************
-function SaveStuff()
-{
-   GalleryText=$('#KwinGallery').html();
-   pathphp="SaveStuff.php";
-   // Делаем запрос на сохранение галлереи материала
-   $.ajax({
-      url: pathphp,
-      type: 'POST',
-      data: {
-         nym:nym, pid:pid, uid:uid,
-         area:GalleryText, pathTools:pathPhpTools, pathPrown:pathPhpPrown
-      },
-      // Выводим ошибки при выполнении запроса в PHP-сценарии
-      error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
-      // Обрабатываем ответное сообщение
-      success: function(message)
-      {
-         // Вырезаем из запроса чистое сообщение
-         messa=FreshLabel(message);
-         // Получаем параметры ответа
-         parm=JSON.parse(messa);
-         alert(parm.NameArt);
-         alert('parm.Piati='+parm.Piati);
-      }
-   });
 }
 
 // ********************************************************* KwinGallery.js *** 
