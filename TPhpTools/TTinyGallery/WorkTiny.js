@@ -49,7 +49,62 @@ $(document).ready(function()
   });
 })
 
-
+// Отметить выбранную дату при назначении новой статьи на панели значений
+function changeNsDate(value)
+{
+   nsDate=new Date(value);
+   newvalue=nsDate.toLocaleDateString()
+   $('#wvDat').html(newvalue);
+   $('#wnDat').css('color','#993300');
+   $('#wvDat').css('color','#993300');
+   test3newArt();
+}
+// Отметить название новой статьи на панели значений
+function changeNsName(value)
+{
+   $('#wvArt').html(value);
+   $('#wnArt').css('color','#993300');
+   $('#wvArt').css('color','#993300');
+   test3newArt();
+}
+// Задать обработчик аякс-запроса по клику выбора раздела материалов
+// при назначении новой статьи
+function getNameCue(Uid)
+{
+   pathphp="getNameCue.php";
+   // Делаем запрос на определение наименования раздела материалов
+   $.ajax({
+      url: pathphp,
+      type: 'POST',
+      data: {idCue:Uid, pathTools:pathPhpTools, pathPrown:pathPhpPrown},
+      // Выводим ошибки при выполнении запроса в PHP-сценарии
+      error: function (jqXHR,exception) {SmarttodoError(jqXHR,exception)},
+      // Обрабатываем ответное сообщение
+      success: function(message)
+      {
+         // Вырезаем из запроса чистое сообщение
+         messa=FreshLabel(message);
+         // Получаем параметры ответа
+         parm=JSON.parse(messa);
+         
+         $('#Message').html(parm.NameGru+': Указать название и дату для новой статьи');
+         $('#nsCue').attr('value',Uid);
+         $('#nsGru').attr('value',parm.NameGru);
+         
+         $('#wvCue').html(parm.NameGru);
+         $('#wnCue').css('color','#993300');
+         $('#wvCue').css('color','#993300');
+         test3newArt();
+      }
+   });
+}
+function test3newArt()
+{
+   let ccue=$('#wvCue').html();
+   let cart=$('#wvArt').html();
+   let cdat=$('#wvDat').html();
+   alert(ccue+'-'+cart+'-'+cdat);
+}
 // По клику на кнопке выполнить выбор файла и 
 // активировать клик для загрузки файла
 function alf1FindFile() 

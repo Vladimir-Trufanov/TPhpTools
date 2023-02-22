@@ -1,3 +1,13 @@
+/** HTML5/CSS3, EDGE/CHROME                                *** WorkTiny.css ***
+
+ ******************************************************************************
+ * TTinyGallery                              Построить стили элементов класса *
+ ******************************************************************************
+
+                                                     Автор:       Труфанов В.Е.
+                                                     Дата создания:  21.11.2022
+ Copyright © 2022 tve                                Посл.изменение: 22.02.2023
+*/
 
 #KwinGallery,#WorkTiny,#FooterTiny
 {
@@ -221,3 +231,30 @@
    font-weight: 600;
 }
 
+/* ------------------------------ Выбор реквизитов при назначении статьи --- */
+.nazst
+{
+   padding:0;
+   margin:0 .8rem 1rem .8rem;
+   background:transparent;
+   /*color: #993300;*/ 
+   border:.4rem double gray;
+}
+.nazstName
+{
+   margin: 1rem .8rem .2rem .8rem;
+}
+.nazstValue
+{
+   margin-bottom:1rem;
+   margin-right:.8rem;
+   text-align:right;
+}
+#nazstSub
+{
+   margin:0;
+   margin-left:.8rem;
+   margin-bottom:.8rem;
+}
+
+/* ******************************************************** WorkTiny.css *** */	

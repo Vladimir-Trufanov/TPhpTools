@@ -80,22 +80,30 @@ function mmlNaznachitStatyu_HEAD()
     // Включаем рождественскую версию шрифтов и полосок меню
     IniFontChristmas();
 }
-
+// ****************************************************************************
+// *   Построить панель выбранных значений при назначении новой статьи        *
+// ****************************************************************************
 function mmlNaznachitStatyu_BODY_KwinGallery()
 {
-   echo 'KwinGallery_uuummlNaznachitStatyu<br>'; 
-   echo '<br>
-      <div id="nazst"> 
-         <p class="nazstName"> Раздел материалов</p><br>
-         <p class="nazstValue" id=wgCue>не выбрано</p><br>
-         <p class="nazstName"> Новая статья</p><br>
-         <p class="nazstValue" id=wgArt>не назначено</p><br>
-         <p class="nazstName"> Дата создания</p><br>
-         <p class="nazstValue" id=wgDat>не выбрано</p><br>
-         <button id="show">Записать реквизиты статьи</button>
+   echo '<br><br>
+      <div class="nazst"> 
+         <p class="nazstName"  id="wnCue">Раздел материалов</p>
+         <p class="nazstValue" id="wvCue">не выбрано</p>
+      </div>
+      <div class="nazst"> 
+         <p class="nazstName"  id="wnArt">Новая статья</p>
+         <p class="nazstValue" id="wvArt">не назначено</p>
+      </div>
+      <div class="nazst"> 
+         <p class="nazstName"  id="wnDat">Дата создания</p>
+         <p class="nazstValue" id="wvDat">не выбрано</p>
+         <div id="nazstSub">
+         </div>
       </div>
    ';
 }
+//          <input type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">
+
 // ****************************************************************************
 // *            Выполнить действия в области редактирования "WorkTiny"        *
 // *                        при назначении новой статьи                       *
@@ -119,11 +127,14 @@ function mmlNaznachitStatyu_BODY_WorkTiny($messa,$pdo,$Arti)
    $SaveAction=$_SERVER["SCRIPT_NAME"];
    echo '
       <div id="nsGroup">
-      <form id="frmNaznachitStatyu" method="post" action="'.$SaveAction.'">
+      <form id="frmNaznachitStatyu" method="get" action="'.$SaveAction.'">
    ';
    echo '
-      <input id="nsName" type="text" name="nsnName" '.$nsnName.' placeholder="Название нового материала" required>
-      <input id="nsDate" type="date" name="nsnDate" '.$nsnDate.' required>
+      <input id="nsName" type="text" name="nsnName" '.$nsnName.
+         ' placeholder="Название нового материала"'.
+         ' required onchange="changeNsName(this.value)">
+      <input id="nsDate" type="date" name="nsnDate" '.$nsnDate.
+         ' required onchange="changeNsDate(this.value)">
       <input id="nsCue"  type="hidden" name="nsnCue" value="'.NoDefine.'">
       <input id="nsGru"  type="hidden" name="nsnGru" value="'.NoDefine.'">
    ';
