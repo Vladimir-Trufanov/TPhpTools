@@ -278,29 +278,16 @@ class TinyGallery
       }
       </style>
       ';
-      // Если было назначение статьи без указания выбранного раздела, 
-      // то инициализируем страницу "Назначить статью"
-      if ((\prown\getComRequest('nsnCue')==-1)&&
-      (\prown\getComRequest('nsnName')<>NULL)&&
-      (\prown\getComRequest('nsnDate')<>NULL))
-      mmlNaznachitStatyu_HEAD();
-
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
-      mmlNaznachitStatyu_HEAD();
-
+      
+      // Инициализируем страницу "Назначить статью"
+      if (\prown\isComRequest(mmlNaznachitStatyu))
+         mmlNaznachitStatyu_HEAD();
       else if (\prown\isComRequest(mmlVybratStatyuRedakti))
-      {
          $this->IniEditSpace_mmlVybratStatyuRedakti();
-      }
       else if (\prown\isComRequest(mmlUdalitMaterial))
-      {
          $this->IniEditSpace_mmlUdalitMaterial();
-      }
       // В обычном режиме
-      else
-      {
-         $this->IniEditSpace_main();
-      }
+      else $this->IniEditSpace_main();
    }
    // *************************************************************************
    // *              Открыть пространство редактирования материала            *
@@ -309,53 +296,28 @@ class TinyGallery
    {
    // Включаем в разметку див галереи изображений 
    echo '<div id="KwinGallery">'; 
-      if (\prown\isComRequest(mmlVybratStatyuRedakti))
-      {
+      if (\prown\isComRequest(mmlNaznachitStatyu))
+         mmlNaznachitStatyu_BODY_KwinGallery();
+      else if (\prown\isComRequest(mmlVybratStatyuRedakti))
          $this->KwinGallery_mmlVybratStatyuRedakti();
-      }
-
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
-      mmlNaznachitStatyu_BODY_KwinGallery();
-
       else if (\prown\isComRequest(mmlUdalitMaterial))
-      {
          $this->KwinGallery_mmlUdalitMaterial();
-      }
       // В обычном режиме
-      else
-      {
-         $this->KwinGallery_main($this->pidEdit,$this->uidEdit);
-      }
+      else $this->KwinGallery_main($this->pidEdit,$this->uidEdit);
    echo '</div>'; 
    // Включаем в разметку рабочую область редактирования
    echo '<div id="WorkTiny">';
-
-      // Если было назначение статьи без указания выбранного раздела, 
-      // то перезапускаем страницу "Назначить статью"
-      if ((\prown\getComRequest('nsnCue')==-1)&&
-      (\prown\getComRequest('nsnName')<>NULL)&&
-      (\prown\getComRequest('nsnDate')<>NULL))
+      // Перезапускаем страницу "Назначить статью"
+      if (\prown\isComRequest(mmlNaznachitStatyu))
          mmlNaznachitStatyu_BODY_WorkTiny
-         ('Указать группу материалов для новой статьи',$this->apdo,$this->Arti);
-      else if (\prown\isComRequest(mmlNaznachitStatyu))
-         mmlNaznachitStatyu_BODY_WorkTiny
-         ('Указать название, дату и группу материалов для новой статьи',$this->apdo,$this->Arti);
-
+         ('Укажите название и дату для новой статьи, выберите раздел материалов',$this->apdo,$this->Arti);
       else if (\prown\isComRequest(mmlVybratStatyuRedakti))
-      {
          $this->WorkTiny_mmlVybratStatyuRedakti();
-      }
       else if (\prown\isComRequest(mmlUdalitMaterial))
-      {
          $this->WorkTiny_mmlUdalitMaterial();
-      }
       // В обычном режиме
-      else
-      {
-         $this->WorkTiny_main();
-      }
+      else $this->WorkTiny_main();
    echo '</div>';
-   
    // Обустраиваем подвал области редактирования
    echo '<div id="FooterTiny">';
       // Кнопка главного меню 

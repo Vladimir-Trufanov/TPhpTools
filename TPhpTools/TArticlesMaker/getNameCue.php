@@ -35,7 +35,7 @@ $basename=$_SERVER['DOCUMENT_ROOT'].'/ittve'; $username='tve'; $password='23ety1
 $Arti=new ttools\ArticlesMaker($basename,$username,$password,$note);
 $pdo=$Arti->BaseConnect();
 // Выбираем запись по идентификатору группы материалов
-$table=$Arti->SelRecord($pdo,$_POST['idCue']); 
+$table=$Arti->SelRecord($pdo,$_POST['idCue1']); 
 // Выделяем из записи элементы
 $NameGru=$table[0]['NameArt'];
 // Освобождаем память

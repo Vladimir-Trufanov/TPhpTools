@@ -85,10 +85,11 @@ function mmlNaznachitStatyu_HEAD()
 // ****************************************************************************
 function mmlNaznachitStatyu_BODY_KwinGallery()
 {
+   // <input type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">
    echo '<br><br>
       <div class="nazst"> 
          <p class="nazstName"  id="wnCue">Раздел материалов</p>
-         <p class="nazstValue" id="wvCue">не выбрано</p>
+         <p class="nazstValue" id="wvCue">'.nstNoVyb.'</p>
       </div>
       <div class="nazst"> 
          <p class="nazstName"  id="wnArt">Новая статья</p>
@@ -102,8 +103,6 @@ function mmlNaznachitStatyu_BODY_KwinGallery()
       </div>
    ';
 }
-//          <input type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">
-
 // ****************************************************************************
 // *            Выполнить действия в области редактирования "WorkTiny"        *
 // *                        при назначении новой статьи                       *

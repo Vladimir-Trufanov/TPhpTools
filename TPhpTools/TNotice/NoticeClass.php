@@ -20,8 +20,8 @@
  *
  * pathPhpTools - путь к каталогу с файлами библиотеки прикладных классов;
  * pathPhpPrown - путь к каталогу с файлами библиотеки прикладных функции
- * editdir      - каталог размещения файлов, относительно корневого
  * stylesdir    - каталог стилей элементов разметки и фонтов
+ * jsxdir       - каталог файлов на javascript
  *    
  * Пример создания объекта класса:
  * 
@@ -30,8 +30,8 @@
  * // Указываем место размещения библиотеки прикладных классов TPhpTools
  * define ("pathPhpTools",$SiteHost.'/TPhpTools/TPhpTools');
  * // Указываем каталог размещения файлов, связанных c материалом
- * define("editdir",'ittveEdit');
- * define("stylesdir",'Styles');   // стили элементов разметки и фонты
+ * define("stylesdir",'Styles');  
+ * define("jsxdir",'Jsx');        
  * 
  * // Подключаем объект единообразного вывода сообщений
  * $note=new ttools\Notice();
@@ -97,92 +97,19 @@ define ("Warning", 3);
 class Notice
 {
    // ----------------------------------------------------- СВОЙСТВА КЛАССА ---
-   protected $editdir;        // Каталог размещения файлов, необходимыъх классу
-   protected $stylesdir;      // Каталог размещения файлов со стилями элементов разметки
-   protected $classdir;       // Каталог файлов класса
+   protected $stylesdir;      // каталог размещения файлов со стилями элементов разметки
+   protected $jsxdir;         // каталог файлов на javascript
+   protected $classdir;       // каталог файлов класса
    // ------------------------------------------------------- МЕТОДЫ КЛАССА ---
    public function __construct() 
    {
       // Инициализируем свойства класса
-      $this->editdir   = editdir; 
       $this->stylesdir = stylesdir; 
+      $this->jsxdir    = jsxdir; 
       $this->classdir  = pathPhpTools.'/TNotice';
    }
    public function __destruct() 
    {
-      ?>
-      <script>
-      // **********************************************************************
-      // *                 Создать и настроить виджет "Диалог"                *
-      // **********************************************************************
-      function CreateDialog()
-      {
-         $('#DialogWind').dialog
-         ({
-            bgiframe:true,      // совместимость с IE6
-            closeOnEscape:true, // закрывать при нажатии Esc
-            modal:true,         // модальное окно
-            resizable:true,     // разрешено изменение размера
-            height:"auto",      // высота окна автоматически
-            autoOpen:false,     // сразу диалог не открывать
-            width:600,
-            draggable:true, 
-            show:{effect:"fade",delay:100,duration:1500},
-            hide:{effect:"explode",delay:250,duration:1000,easing:'swing'},
-            title: "Это окно",
-         });
-         // Устанавливаем шрифты диалогового окна
-         // 'font-family':'"Verdana", sans-serif'
-         $('#DialogWind').parent().find(".ui-dialog").css({
-         });
-         $('#DialogWind').parent().find(".ui-dialog-title").css({
-            'font-size': '1.1rem',
-            'font-weight':800,
-            'color':'red',
-            'font-family':'"EmojNotice"'
-         });
-         $('#DialogWind').parent().find(".ui-dialog-content").css(
-            'color','blue'
-         );
-         // При необходимости скрываем заголовок диалога
-         // $('#DialogWind').parent().find(".ui-dialog-titlebar").hide();
-         // Прячем крестик
-         // $('#DialogWind').parent().find(".ui-dialog-titlebar-close").hide();
-         //}
-      }
-      // **********************************************************************
-      // *                 Создать и настроить виджет "Диалог"                *
-      // **********************************************************************
-      function Notice_Info(messa,ititle,delayClose=250)
-      {
-         $('#DialogWind').html(messa);
-         $('#DialogWind').dialog
-         ({
-            title: ititle,
-            // Восстанавливаем параметры закрытия, 
-            // так как они, возможно, были изменены
-            hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
-         });
-         $('#DialogWind').dialog("open")
-      }
-      // **********************************************************************
-      // *                                 Ошибка!                            *
-      // **********************************************************************
-      function Error_Info(messa)
-      {
-         $('#DialogWind').parent().find(".ui-dialog-content").css('color','red');
-         Notice_Info(messa,'Ошибка',250);
-      }
-      // **********************************************************************
-      // *                               Информация!                          *
-      // **********************************************************************
-      function Info_Info(messa)
-      {
-         $('#DialogWind').parent().find(".ui-dialog-content").css('color','blue');
-         Notice_Info(messa,'Оk',250);
-      }
-      </script>
-      <?php
    }
    // *************************************************************************
    // *                 Проинициализировать стили объекта                     *
@@ -190,11 +117,11 @@ class Notice
    // *************************************************************************
    public function Init() 
    {
-      // Проверяем, нужно ли заменить файлы стилей в каталоге редактирования и,
-      // (при его отсутствии, при несовпадении размеров или старой дате) 
+      // Проверяем, нужно ли заменить файлы стилей в каталогах и,
+      // (при их отсутствии, при несовпадении размеров или старой дате) 
       // загружаем из класса 
       CompareCopyRoot('Lobster.ttf',$this->classdir,$this->stylesdir);
-      // Подключаем шрифт
+      CompareCopyRoot('Notice.js',$this->classdir,$this->jsxdir);
       // src: url(Styles/Lobster.ttf); 
       $urlttf='url('.$this->stylesdir.'/Lobster.ttf)';
       echo '
@@ -206,11 +133,13 @@ class Notice
       }
       </style>
       ';
-      ?> 
+      // <script src="/Jsx/Notice.js"></script>
+      echo '<script src="/'.$this->jsxdir.'/Notice.js"></script>';
+      // Создаем окно для сообщений
+      ?>
       <script>
       $(document).ready(function()
       {
-         // Создаем окно для сообщений
          noticediv=document.createElement('div');
          noticediv.className="dialog_window";
          noticediv.innerHTML="<p>Привет, мир!</p>";

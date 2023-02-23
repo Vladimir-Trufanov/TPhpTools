@@ -116,22 +116,6 @@ class MenuLeader
             </ul>   
          ';
       }
-      // Если было назначение статьи без указания выбранного раздела, 
-      // то перезапускаем страницу "Назначить статью"
-      else if ((\prown\getComRequest('nsnCue')==-1)&&
-      (\prown\getComRequest('nsnName')<>NULL)&&
-      (\prown\getComRequest('nsnDate')<>NULL))
-      {
-         echo '
-            <ul class="uli">
-            <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
-            <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
-            <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-            <li class="ili">'.'<input id="nsSub" type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">'.'</li>
-            </ul>   
-         ';
-            //<li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
-      }
       // Если просто была выбрана страница "Назначить статью" 
       else if (\prown\isComRequest(mmlNaznachitStatyu))
       {
@@ -140,7 +124,7 @@ class MenuLeader
             <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-            <li class="ili">'.'<input id="nsSub" type="submit" value="Записать реквизиты статьи" form="frmNaznachitStatyu">'.'</li>
+            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
             </ul>   
          ';
             //<li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
@@ -151,7 +135,6 @@ class MenuLeader
             <ul class="uli">
             <li class="ili"><a class="ali" href="'.$cPref.mmlVernutsyaNaGlavnuyu.'">На главную</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlVybratStatyuRedakti.'">Выбрать материал</a></li>
-            <li class="ili"><a class="ali" href="'.$cPref.mmlNaznachitStatyu.    '">Назначить статью</a></li>
             <li class="ili"><a class="ali" href="'.$cPref.mmlUdalitMaterial     .'">Удалить материал</a></li>
             </ul>   
          ';
@@ -220,10 +203,11 @@ class MenuLeader
       else if (\prown\isComRequest(mmlSozdatRedaktirovat))
       {
          $this->Punkt($this->urlHome,'&#xf015;','Вернуться','на главную страницу');
-         $this->Punkt($this->cPreMe.mmlNaznachitStatyu,'&#xf0f6;','  Назначить','  новую статью');
+         $this->Punkt($this->cPreMe.mmlNaznachitStatyu,'&#xf0f6;','Назначить','новую статью');
          $this->Punkt($this->cPreMe.mmlVybratStatyuRedakti,'&#xf07c;','Выбрать материал','для изменений');
-         $cPost='<input type="submit" value="Сохранить материал" form="frmTinyText">';
-         $this->PunktPost('&#xf0ed;',$cPost,"Сохранить материал");
+         $this->Punkt($this->cPreMe.mmlUdalitMaterial,'&#xf1f8;','Удалить','указанный материал');
+         //$cPost='<input type="submit" value="Сохранить материал" form="frmTinyText">';
+         //$this->PunktPost('&#xf0ed;',$cPost,"Сохранить материал");
       }
       // Выводим пункты меню главной страницы
       else
@@ -269,6 +253,7 @@ class MenuLeader
          </li>
       ';
    }
+   /*
    private function PunktPost($cUniCod,$cPost,$fill)
    {
       echo '
@@ -281,6 +266,7 @@ class MenuLeader
          </li>
       ';
    }
+   */
    // <span class="k1"><a href="'.$Punkt.'">'.$fString.'</a></span>
    // <span class="k2"><a href="'.$Punkt.'">'.$sString.'</a></span>
 } 
