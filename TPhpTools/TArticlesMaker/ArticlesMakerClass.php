@@ -57,6 +57,7 @@ define ("acsClose", 2);      // закрыт, статья в разработк
 define ("acsAutor", 4);      // только автору-хозяину сайта
 // ----------------------------------------- Ошибки обработки аякс-запросов ---
 define ("gncNoCue", 'Статья не найдена в базе'); 
+//define ("nstErr",   "произошла ошибка");  
 
 // Подгружаем общие функции класса
 require_once("CommonArticlesMaker.php"); 
@@ -367,10 +368,21 @@ class ArticlesMaker
    // *************************************************************************
    public function SelRecord($pdo,$UnID)
    {
-      $cSQL='SELECT * FROM stockpw WHERE uid='.$UnID;
-      $stmt = $pdo->query($cSQL);
-      $table = $stmt->fetchAll();
-      return $table; 
+     try
+     {
+       $pdo->beginTransaction();
+       $cSQL='SELECT * FROM stockpw WHERE uid='.$UnID;
+       $stmt = $pdo->query($cSQL);
+       $table = $stmt->fetchAll();
+       $pdo->commit();
+     } 
+     catch (\Exception $e) 
+     {
+       $messa=$e->getMessage();
+       $table=array(array("NameArt"=>$messa,"Translit"=>nstErr,));
+       if ($pdo->inTransaction()) $pdo->rollback();
+     }
+     return $table; 
    }
    // *************************************************************************
    // *               Выбрать ключи всех изображений к записи и               *
@@ -393,6 +405,7 @@ class ArticlesMaker
    {
      try
      {
+       $pdo->beginTransaction();
        $cSQL='SELECT [Pic] FROM [picturepw] WHERE uid=:uid AND TranslitPic=:TranslitPic';
        $stmt=$pdo->prepare($cSQL);
        if ($stmt->execute([":uid"=>$uid, ":TranslitPic"=>$TranslitPic]))
@@ -405,6 +418,7 @@ class ArticlesMaker
             "Pic"         => $Pic
          ]:null;
        } 
+       $pdo->commit();
      } 
      catch (\Exception $e) 
      {

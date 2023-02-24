@@ -97,6 +97,7 @@ function getNameCue(Uid)
          $('#wnCue').css('color','#993300');
          $('#wvCue').css('color','#993300');
          test3newArt();
+         Dialog_errmess(parm.iif,parm.NameGru,null);
       }
    });
 }
