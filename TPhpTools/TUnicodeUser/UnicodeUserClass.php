@@ -75,7 +75,7 @@ class UnicodeUser
       $this->aUniCues=UnicodeMake();
       $this->FontFamily=UnicodeStyle($FontFamily);
       // Трассируем установленные свойства
-      \prown\ConsoleLog('$this->FontFamily='.$this->FontFamily); 
+      //\prown\ConsoleLog('$this->FontFamily='.$this->FontFamily); 
    }
    public function __destruct() 
    {
@@ -255,50 +255,6 @@ class UnicodeUser
       echo '</tbody> </table>';
    }
    // --------------------------------------------------- ВНУТРЕННИЕ МЕТОДЫ ---
-   /*
-   // *************************************************************************
-   // *                           Проверить размер файла                      *
-   // *************************************************************************
-   protected function checkSize($filename,$size) 
-   {
-      $Result=imok;
-      // Проверяем формат указания размера файла в php.ini, где он должен быть
-      // указан в мбайтах целым числом и символом "M" в конце
-      $point=-1;
-      $subs=Findes(regIntMbyte,$this->_maxphp,$point);
-      if ($subs=='')
-      {
-         // "Неверно определен размер файла загрузки в Мбайт" для php.ini
-         $Result=\prown\MakeUserError(InvalidUploadSize,$this->_prefix,rvsReturn);
-      }
-      // Продолжаем анализ размера файла
-      else
-      {
-         // Переводим мбайты в байты
-         $numb=substr($subs,0,strlen($subs)-1);
-         $Unit="MB"; $point=\prown\RecalcToBytes($Unit,(int)$numb,0,rvsReturn);
-         // Если пересчет с ошибкой, то возвращаем сообщение с ошибкой пересчета
-         if (gettype($point)=="string") $Result=$point;
-         // Переопределяем максимальный размер файла
-         else
-         {
-            if ($point<$this->_max) $this->_max=$point; 
-            // Отмечаем ошибочным сообщением то, что файл слишком большой или не выбран
-            if ($size == 0)
-            {
-               $Result=\prown\MakeUserError(ZeroFileSize,$this->_prefix,rvsReturn);
-            } 
-            // Отмечаем обход скрытого задания максимального размера файла
-            elseif ($size>$this->_max) 
-            {
-               $Result=\prown\MakeUserError
-               (ExceedOnМaxSize.': '.$size.'>'.$this->_max,$this->_prefix,rvsReturn);
-            } 
-         }
-      }
-      return $Result;
-   }
-   */
 } 
 
 // *************************************************** UnicodeUserClass.php ***
