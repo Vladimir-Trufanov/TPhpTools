@@ -34,11 +34,10 @@ function CreateDialog()
       width:600,
       draggable:true, 
       show:{effect:"fade",delay:100,duration:1500},
-      hide:{effect:"explode",delay:250,duration:1000,easing:'swing'},
       title: "Это окно",
    });
    $('#DialogWind').parent().find(".ui-dialog-title").css({
-      'font-size': '1.1rem',
+      'font-size': '1.8rem',
       'font-weight':800,
       'color':'red',
       'font-family':'"EmojNotice"'
@@ -52,16 +51,20 @@ function CreateDialog()
 // ****************************************************************************
 // *                    Создать и настроить виджет "Диалог"                   *
 // ****************************************************************************
-function Notice_Info(messa,ititle,delayClose=250)
+function Notice_Info(messa,ititle,isHide=true,delayClose=250,durClose=1000)
 {
    $('#DialogWind').html(messa);
    $('#DialogWind').dialog
    ({
       title: ititle,
-      // Восстанавливаем параметры закрытия, 
-      // так как они, возможно, были изменены
-      hide:{effect:"explode",delay:delayClose,duration:1000,easing:'swing'},
    });
+   if (isHide)
+   {
+      $('#DialogWind').dialog
+      ({
+         hide:{effect:"explode",delay:delayClose,duration:durClose,easing:'swing'},
+      });
+   }
    $('#DialogWind').dialog("open");
 }
 // ****************************************************************************
@@ -70,7 +73,7 @@ function Notice_Info(messa,ititle,delayClose=250)
 function Error_Info(messa)
 {
    $('#DialogWind').parent().find(".ui-dialog-content").css('color','red');
-   Notice_Info(messa,'Ошибка',250);
+   Notice_Info(messa,'Ошибка',false);
 }
 // ****************************************************************************
 // *                                 Информация!                              *
@@ -78,7 +81,7 @@ function Error_Info(messa)
 function Info_Info(messa)
 {
    $('#DialogWind').parent().find(".ui-dialog-content").css('color','blue');
-   Notice_Info(messa,'Оk',250);
+   Notice_Info(messa,'Оk',true,250);
 }
 // ****************************************************************************
 // *             Вывести диалоговое окно с сообщением (или с ошибкой),        *
@@ -87,10 +90,12 @@ function Info_Info(messa)
 function Dialog_errmess(aif,htmlText,titleText,comReload=false)
 {
    // Если передана ошибка, выводим сообщение
-   if (aif==nstErr)
+   if (aif==Err)
    {
       Error_Info(htmlText);
       $("#DialogWind").dialog("close");
+      // Перезагружаем страницу через 2.5 секунды 
+      //if (comReload==true) setTimeout(function() {location.reload();},2500);
    } 
    // При необходимости сообщения не выводим (только контроллируем ошибку)
    else if (titleText==null) {}
@@ -99,9 +104,9 @@ function Dialog_errmess(aif,htmlText,titleText,comReload=false)
    {
       Notice_Info(htmlText,titleText)
       $("#DialogWind").dialog("close");
+      // Перезагружаем страницу через 2.5 секунды 
+      //if (comReload==true) setTimeout(function() {location.reload();},2500);
    }
-   // Перезагружаем страницу через 2.5 секунды 
-   if (comReload==true) setTimeout(function() {location.reload();},2500);
 }
 
 // ************************************************************** Notice.js *** 
